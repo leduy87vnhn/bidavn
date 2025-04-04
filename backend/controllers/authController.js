@@ -2,7 +2,18 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const client = require('../config/db');
+const logger = require('../config/logger');
+const { logUserAction } = require('../models/userModel');
 
+
+//await logUserAction(user.id, user.user_name, 'REGISTERED');
+//...
+//await logUserAction(userId, result.rows[0].user_name, 'ACCOUNT_CONFIRMED');
+//logger.info(`Registering user: ${user_name}`);
+//...
+//logger.error(`Error sending email: ${error.message}`);
+//...
+//logger.info(`User confirmed: ${userId}`);
 // Register function
 const registerUser = async (req, res) => {
     const { user_name, password, user_type, birthday, phone_number } = req.body;
@@ -17,17 +28,17 @@ const registerUser = async (req, res) => {
         const modified_date = created_date;
 
         const query = `
-            INSERT INTO users (user_name, password, user_type, birthday, phone_number, created_date, modified_date)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            INSERT INTO users (user_name, password, user_type, birthday, phone_number, email, created_date, modified_date)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING id, user_name, user_type, created_date
         `;
-        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, phone_number, created_date, modified_date]);
+        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date]);
 
         const user = result.rows[0];
 
         // Send confirmation email
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        const confirmLink = `http://yourdomain.com/confirm/${token}`;
+        const confirmLink = `http://54.254.189.120/confirm/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
