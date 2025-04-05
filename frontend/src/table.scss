@@ -1,0 +1,40 @@
+.ReactTable {
+    height: 100%;
+    overflow: visible !important;
+    font-size: 20px;
+    .rt-table {
+      overflow: visible !important;
+      // font-family: agency;
+      .rt-thead {
+        background: rgb(51, 63, 79);
+        font-family: agency-fb-bold;
+        position: sticky;
+        top: 2px;
+  
+        .rt-th {
+          border-right: 2px solid gray;
+          .rt-resizable-header-content {
+            color: #fff;
+            height: 50px;
+            // font-family: "Agency FB";
+          }
+        }
+      }
+      .rt-tbody {
+        font-family: agency-fb;
+        overflow: visible !important;
+        .rt-td {
+          background: lightgray;
+          color: #000;
+        }
+      }
+    }
+    .rt-noData {
+      z-index: 0 !important;
+    }
+  }
+  
+  .break-word-all {
+    word-break: break-all;
+  }
+  
