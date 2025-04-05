@@ -1,0 +1,11 @@
+Start backend:
+pm2 start server.js --name backend-server
+
+
+Start front end:
+npm start --host 0.0.0.0
+
+cd frontend
+npm run build
+npm install -g serve
+serve -s build -l 80
