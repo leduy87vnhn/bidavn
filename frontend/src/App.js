@@ -1,15 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Register from './components/Register';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App() {
+export default function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/register" component={Register} />
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
