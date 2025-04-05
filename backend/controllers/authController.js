@@ -38,7 +38,7 @@ const registerUser = async (req, res) => {
 
         // Send confirmation email
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        const confirmLink = `http://54.254.189.120/confirm/${token}`;
+        const confirmLink = `http://54.169.185.252/confirm/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,

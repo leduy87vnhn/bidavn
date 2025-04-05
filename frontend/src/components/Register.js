@@ -13,7 +13,7 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://54.254.189.120:5000/api/auth/register', {
+            const response = await axios.post('http://54.169.185.252:5000/api/auth/register', {
                 user_name,
                 password,
                 user_type,
