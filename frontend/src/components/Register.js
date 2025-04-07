@@ -4,6 +4,7 @@ import '../register.scss';
 
 const Register = () => {
     const [user_name, setUserName] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [user_type, setUserType] = useState(0); // 0 for Vận Động Viên, 1 for Trọng Tài
     const [birthday, setBirthday] = useState('');
@@ -14,8 +15,9 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://54.169.185.252:5000/api/auth/register', {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
                 user_name,
+                name,
                 password,
                 user_type,
                 birthday,
@@ -38,6 +40,16 @@ const Register = () => {
                         type="text"
                         value={user_name}
                         onChange={(e) => setUserName(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Tên đăng nhập:</label>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>

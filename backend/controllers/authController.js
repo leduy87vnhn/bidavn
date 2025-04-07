@@ -28,17 +28,17 @@ const registerUser = async (req, res) => {
         const modified_date = created_date;
 
         const query = `
-            INSERT INTO users (user_name, password, user_type, birthday, phone_number, email, created_date, modified_date)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO users (user_name, name, password, user_type, birthday, phone_number, email, created_date, modified_date)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING id, user_name, user_type, created_date
         `;
-        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date]);
+        const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date]);
 
         const user = result.rows[0];
 
         // Send confirmation email
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        const confirmLink = `http://54.169.185.252/confirm/${token}`;
+        const confirmLink = `http://${process.env.TOKEN_URL}/confirm/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
