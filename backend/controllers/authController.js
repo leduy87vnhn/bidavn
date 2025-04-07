@@ -16,7 +16,7 @@ const { logUserAction } = require('../models/userModel');
 //logger.info(`User confirmed: ${userId}`);
 // Register function
 const registerUser = async (req, res) => {
-    const { user_name, password, user_type, birthday, phone_number } = req.body;
+    const { user_name, name, password, user_type, birthday, phone_number, email } = req.body;
 
     if (![0, 1].includes(user_type)) {
         return res.status(400).json({ message: 'Only "Vận Động Viên" or "Trọng Tài" can register.' });
@@ -35,6 +35,8 @@ const registerUser = async (req, res) => {
         const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date]);
 
         const user = result.rows[0];
+
+        logger.info(`Registered user: ${user_name}, now send email`);
 
         // Send confirmation email
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -65,6 +67,7 @@ const registerUser = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
+        logger.error(`Unknown error: ${error.message}`);
         res.status(500).json({ message: 'Error registering user.' });
     }
 };
