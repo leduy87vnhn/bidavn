@@ -7,5 +7,5 @@ npm start --host 0.0.0.0
 
 cd frontend
 npm run build
-npm install -g serve
-serve -s build -l 80
+//npm install -g serve
+sudo serve -s build -l 80

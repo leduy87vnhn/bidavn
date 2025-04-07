@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './register.scss';
 
 const Register = () => {
     const [user_name, setUserName] = useState('');
@@ -27,35 +28,66 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>User Name:</label>
-                    <input type="text" value={user_name} onChange={(e) => setUserName(e.target.value)} required />
+        <div className="register-container">
+            <form className="register-form" onSubmit={handleSubmit}>
+                <h2>Đăng ký tài khoản</h2>
+
+                <div className="form-group">
+                    <label>Tên đăng nhập:</label>
+                    <input
+                        type="text"
+                        value={user_name}
+                        onChange={(e) => setUserName(e.target.value)}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+                <div className="form-group">
+                    <label>Mật khẩu:</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>User Type:</label>
-                    <select value={user_type} onChange={(e) => setUserType(Number(e.target.value))} required>
+
+                <div className="form-group">
+                    <label>Loại người dùng:</label>
+                    <select
+                        value={user_type}
+                        onChange={(e) => setUserType(Number(e.target.value))}
+                        required
+                    >
                         <option value={0}>Vận Động Viên</option>
                         <option value={1}>Trọng Tài</option>
                     </select>
                 </div>
-                <div>
-                    <label>Birthday:</label>
-                    <input type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)} required />
+
+                <div className="form-group">
+                    <label>Ngày sinh:</label>
+                    <input
+                        type="date"
+                        value={birthday}
+                        onChange={(e) => setBirthday(e.target.value)}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Phone Number:</label>
-                    <input type="text" value={phone_number} onChange={(e) => setPhoneNumber(e.target.value)} required />
+
+                <div className="form-group">
+                    <label>Số điện thoại:</label>
+                    <input
+                        type="text"
+                        value={phone_number}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        required
+                    />
                 </div>
-                <button type="submit">Register</button>
+
+                <button type="submit">Đăng ký</button>
+
+                {message && <div className="form-message">{message}</div>}
             </form>
-            <div>{message}</div>
         </div>
     );
 };
