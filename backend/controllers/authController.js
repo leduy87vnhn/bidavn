@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: user_name,
+            to: email,
             subject: 'Please confirm your registration',
             html: `<p>Click the link to confirm your registration: <a href="${confirmLink}">${confirmLink}</a></p>`
         };
