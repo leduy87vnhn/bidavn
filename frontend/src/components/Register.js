@@ -8,6 +8,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [user_type, setUserType] = useState(0); // 0 for Vận Động Viên, 1 for Trọng Tài
     const [birthday, setBirthday] = useState('');
+    const [email, setEmail] = useState('');
     const [phone_number, setPhoneNumber] = useState('');
     const [message, setMessage] = useState('');
 
@@ -21,7 +22,8 @@ const Register = () => {
                 password,
                 user_type,
                 birthday,
-                phone_number
+                phone_number,
+                email
             });
             setMessage(response.data.message);
         } catch (error) {
@@ -45,7 +47,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Tên đăng nhập:</label>
+                    <label>Họ và tên:</label>
                     <input
                         type="text"
                         value={name}
@@ -92,6 +94,16 @@ const Register = () => {
                         type="text"
                         value={phone_number}
                         onChange={(e) => setPhoneNumber(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
