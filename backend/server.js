@@ -11,6 +11,9 @@ const port = 5000;
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 
+console.log("Server starting...");
+
 app.listen(port, () => {
     console.log(`Server running on http://0.0.0.0:${port}`);
 });
+console.log("Server is now listening.");
