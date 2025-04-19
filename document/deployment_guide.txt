@@ -10,4 +10,4 @@ sudo npm run build
 //npm install -g serve
 //sudo serve -s build -l 80
 
-sudo pm2 serve build 80 --name billard-frontend --spa
+sudo pm2 serve build 3000 --name billard-frontend --spa

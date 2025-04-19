@@ -37,12 +37,11 @@ const registerUser = async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING id, user_name, user_type, created_date
         `;
-        const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date, 0]);
+        const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date, false]);
         console.log('Insert successful');
 
         const user = result.rows[0];
-        logger.info(`Registered user: ${user_name}, now send email`);
-
+        
         logger.info(`Registered user: ${user_name}, now send email`);
 
         // Send confirmation email
