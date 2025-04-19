@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const port = 5000;
 
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
+app.use(cors());
 
 console.log("Server starting...");
 
