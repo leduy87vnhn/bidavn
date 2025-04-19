@@ -1,11 +1,13 @@
 Start backend:
-pm2 start server.js --name backend-server
+sudo pm2 start server.js --name backend-server
 
 
 Start front end:
 npm start --host 0.0.0.0
 
 cd frontend
-npm run build
+sudo npm run build
 //npm install -g serve
-sudo serve -s build -l 80
+//sudo serve -s build -l 80
+
+sudo pm2 serve build 80 --name billard-frontend --spa

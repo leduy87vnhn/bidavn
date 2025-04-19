@@ -18,23 +18,30 @@ const { logUserAction } = require('../models/userModel');
 const registerUser = async (req, res) => {
     const { user_name, name, password, user_type, birthday, phone_number, email } = req.body;
 
+    console.log('Register endpoint hit')
     if (![0, 1].includes(user_type)) {
+        console.log('Invalid user_type');
         return res.status(400).json({ message: 'Only "Vận Động Viên" or "Trọng Tài" can register.' });
     }
 
     try {
+        console.log('Start hashing password');
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Password hashed');
         const created_date = new Date().toISOString();
         const modified_date = created_date;
 
+        console.log('Start DB insert');
         const query = `
             INSERT INTO users (user_name, name, password, user_type, birthday, phone_number, email, created_date, modified_date, enable)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING id, user_name, user_type, created_date
         `;
         const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date, 0]);
+        console.log('Insert successful');
 
         const user = result.rows[0];
+        logger.info(`Registered user: ${user_name}, now send email`);
 
         logger.info(`Registered user: ${user_name}, now send email`);
 
