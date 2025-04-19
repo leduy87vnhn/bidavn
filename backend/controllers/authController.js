@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
 
         console.log('Start DB insert');
         const query = `
-            INSERT INTO users (user_name, name, password, user_type, birthday, phone_number, email, created_date, modified_date, enable)
+            INSERT INTO users (user_name, password, user_type, birthday, name, phone_number, created_date, modified_date, enable, email)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING id, user_name, user_type, created_date
         `;
@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
         console.log('8 created_date   =', created_date);
         console.log('9 modified_date  =', modified_date);
         console.log('10 enable        =', false); // dùng boolean thật
-        const result = await client.query(query, [user_name, name, hashedPassword, user_type, birthday, phone_number, email, created_date, modified_date, false]);
+        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, name, phone_number, created_date, modified_date, false, email]);
         console.log('Insert successful');
 
         const user = result.rows[0];
