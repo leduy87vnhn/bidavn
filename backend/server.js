@@ -11,7 +11,11 @@ const port = 5000;
 
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
-app.use(cors());
+app.use(cors({
+    origin: '*',              // Cho phép mọi nguồn gọi vào
+    methods: ['GET', 'POST'], // Cho phép các method
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
 
 console.log("Server starting...");
 
