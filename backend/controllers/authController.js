@@ -39,15 +39,15 @@ const registerUser = async (req, res) => {
         `;
         console.log('Parameters being passed:');
         console.log('1 user_name      =', user_name);
-        console.log('2 name           =', name);
-        console.log('3 hashedPassword =', hashedPassword);
-        console.log('4 user_type      =', user_type);
-        console.log('5 birthday       =', birthday);
+        console.log('2 hashedPassword =', hashedPassword);
+        console.log('3 user_type      =', user_type);
+        console.log('4 birthday       =', birthday);
+        console.log('5 name           =', name);
         console.log('6 phone_number   =', phone_number);
-        console.log('7 email          =', email);
-        console.log('8 created_date   =', created_date);
-        console.log('9 modified_date  =', modified_date);
-        console.log('10 enable        =', false); // dùng boolean thật
+        console.log('7 created_date   =', created_date);
+        console.log('8 modified_date  =', modified_date);
+        console.log('9 enable        =', false); // dùng boolean thật
+        console.log('10 email          =', email);
         const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, name, phone_number, created_date, modified_date, false, email]);
         console.log('Insert successful');
 
