@@ -11,3 +11,6 @@ sudo npm run build
 //sudo serve -s build -l 80
 
 sudo pm2 serve build 3000 --name billard-frontend --spa
+
+Show log:
+sudo pm2 logs backend-server
