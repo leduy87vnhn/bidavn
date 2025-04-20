@@ -83,9 +83,12 @@ const registerUser = async (req, res) => {
             res.status(200).json({ message: 'Registration successful. Check your email for confirmation.' });
         });
     } catch (error) {
-        console.error(error);
-        logger.error(`Unknown error: ${error.message}`);
-        res.status(500).json({ message: 'Error registering user.' });
+        console.error('Frontend registration error:', error.response || error.message);
+        if (error.response && error.response.data && error.response.data.message) {
+            setMessage(error.response.data.message);
+        } else {
+            setMessage('Error registering user.');
+        }
     }
 };
 

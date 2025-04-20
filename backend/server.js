@@ -9,7 +9,6 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use(cors({
     origin: '*', // Nếu muốn mở toàn bộ
@@ -17,6 +16,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
   }));
+app.use(bodyParser.json());
 
 console.log("Server starting...");
 
