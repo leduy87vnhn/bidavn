@@ -24,6 +24,8 @@ const Register = () => {
                 birthday,
                 phone_number,
                 email
+            }, {
+                withCredentials: false // <== THÊM DÒNG NÀY
             });
             setMessage(response.data.message);
         } catch (error) {

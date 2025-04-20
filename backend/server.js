@@ -9,7 +9,6 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-app.use('/api/auth', authRoutes);
 const whitelist = ['http://localhost:3000', 'http://18.141.197.31:3000'];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -19,10 +18,12 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: false
 };
 app.use(cors(corsOptions));
+app.options('*', cors());
 app.use(bodyParser.json());
+app.use('/api/auth', authRoutes);
 
 console.log("Server starting...");
 
