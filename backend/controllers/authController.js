@@ -14,9 +14,31 @@ const { logUserAction } = require('../models/userModel');
 //logger.error(`Error sending email: ${error.message}`);
 //...
 //logger.info(`User confirmed: ${userId}`);
+
+// Check if user already existed
+const checkExistingUser = async (user_name, phone_number, email) => {
+    const query = `
+        SELECT * FROM users
+        WHERE user_name = $1 OR phone_number = $2 OR email = $3
+    `;
+    const result = await client.query(query, [user_name, phone_number, email]);
+    return result.rows;
+};
+
 // Register function
 const registerUser = async (req, res) => {
     const { user_name, name, password, user_type, birthday, phone_number, email } = req.body;
+
+    const existing = await checkExistingUser(user_name, phone_number, email);
+    if (existing.length > 0) {
+        const conflicts = [];
+        existing.forEach(user => {
+            if (user.user_name === user_name) conflicts.push('Tên đăng nhập');
+            if (user.phone_number === phone_number) conflicts.push('Số điện thoại');
+            if (user.email === email) conflicts.push('Email');
+        });
+        return res.status(400).json({ message: `${conflicts.join(', ')} đã được sử dụng.` });
+    }
 
     console.log('Register endpoint hit')
     if (![0, 1].includes(user_type)) {
@@ -97,10 +119,12 @@ const registerUser = async (req, res) => {
         if (error.response && error.response.data && error.response.data.message) {
             setMessage(error.response.data.message);
         } else {
-            setMessage('Error registering user.');
+            setMessage('Đăng ký thất bại.');
         }
     }
 };
+
+
 
 // Confirm registration function
 const confirmRegistration = async (req, res) => {
@@ -124,7 +148,48 @@ const confirmRegistration = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+    const { user_name, password } = req.body;
+
+    try {
+        const query = 'SELECT * FROM users WHERE user_name = $1';
+        const result = await client.query(query, [user_name]);
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ message: 'Tên đăng nhập không tồn tại.' });
+        }
+
+        const user = result.rows[0];
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Sai mật khẩu.' });
+        }
+
+        // Kiểm tra nếu tài khoản chưa kích hoạt (nếu bạn dùng enable = false)
+        if (user.enable === false) {
+            return res.status(403).json({ message: 'Tài khoản chưa được xác nhận qua email.' });
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+
+        res.json({
+            message: 'Đăng nhập thành công.',
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                user_type: user.user_type
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Lỗi server khi đăng nhập.' });
+    }
+};
+
 module.exports = {
     registerUser,
-    confirmRegistration
+    confirmRegistration,
+    loginUser
 };
