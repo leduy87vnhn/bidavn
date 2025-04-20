@@ -24,7 +24,8 @@ const Login = () => {
     // ✅ Khi login thành công → chuyển sang tournaments
     useEffect(() => {
         if (loginSuccess) {
-            navigate('/tournaments');
+            //navigate('/tournaments');
+            window.location.href = '/tournaments';
         }
     }, [loginSuccess, navigate]);
 
