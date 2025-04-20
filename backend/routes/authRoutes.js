@@ -1,10 +1,11 @@
 const express = require('express');
 const { registerUser, confirmRegistration } = require('../controllers/authController');
-
+const { loginUser } = require('../controllers/authController');
 const router = express.Router();
 
 router.post('/register', registerUser);
 router.get('/confirm/:token', confirmRegistration);
+router.post('/login', loginUser);
 router.get('/tournaments', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
