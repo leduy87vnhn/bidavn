@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const TournamentList = () => {
     const [tournaments, setTournaments] = useState([]);
@@ -105,17 +106,44 @@ const TournamentList = () => {
         <div className="tournament-list-container" style={{ maxWidth: 800, margin: '40px auto', padding: 20 }}>
             <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>Danh sách giải đấu</h2>
-                {user?.user_type === 2 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {user && <span>Xin chào, <strong>{user.name}</strong></span>}
                     <button
-                        style={{ padding: '8px 16px', backgroundColor: '#007bff', color: 'white', borderRadius: '5px', border: 'none' }}
                         onClick={() => {
-                            setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
-                            setShowForm(true);
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user_info');
+                            navigate('/login');
+                        }}
+                        style={{
+                            padding: '6px 12px',
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
                         }}
                     >
-                        Thêm Giải Đấu
+                        Đăng xuất
                     </button>
-                )}
+                    {user?.user_type === 2 && (
+                        <button
+                            style={{
+                                padding: '6px 12px',
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '5px',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => {
+                                setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
+                                setShowForm(true);
+                            }}
+                        >
+                            Thêm Giải Đấu
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Thông báo */}

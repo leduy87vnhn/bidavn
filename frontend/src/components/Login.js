@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../login.scss';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [user_name, setUserName] = useState('');
@@ -10,6 +9,7 @@ const Login = () => {
     const [remember, setRemember] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
+    const [loginSuccess, setLoginSuccess] = useState(false); // 👈 NEW
     const navigate = useNavigate();
 
     // Khi mở trang: nếu có user_name được lưu từ trước
@@ -21,6 +21,13 @@ const Login = () => {
         }
     }, []);
 
+    // ✅ Khi login thành công → chuyển sang tournaments
+    useEffect(() => {
+        if (loginSuccess) {
+            navigate('/tournaments');
+        }
+    }, [loginSuccess, navigate]);
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -29,12 +36,11 @@ const Login = () => {
                 user_name,
                 password
             });
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user_info', JSON.stringify(response.data.user));
 
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user_info', JSON.stringify(response.data.user));
             setMessage('Đăng nhập thành công.');
-            navigate('/tournaments');
+            setLoginSuccess(true); // ✅ dùng flag để điều hướng
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {
@@ -42,9 +48,6 @@ const Login = () => {
             } else {
                 localStorage.removeItem('remembered_user');
             }
-
-            // Optional: chuyển hướng sau đăng nhập
-            // window.location.href = '/dashboard';
 
         } catch (error) {
             if (error.response?.data?.message) {
