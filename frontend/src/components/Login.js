@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../login.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [user_name, setUserName] = useState('');
@@ -9,6 +10,7 @@ const Login = () => {
     const [remember, setRemember] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     // Khi mở trang: nếu có user_name được lưu từ trước
     useEffect(() => {
@@ -32,6 +34,7 @@ const Login = () => {
 
             localStorage.setItem('token', response.data.token);
             setMessage('Đăng nhập thành công.');
+            navigate('/tournaments');
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {
