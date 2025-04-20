@@ -66,8 +66,18 @@ const registerUser = async (req, res) => {
             html: `<p>Click the link to confirm your registration: <a href="${confirmLink}">${confirmLink}</a></p>`
         };
 
+        // const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS
+        //     }
+        // });
+
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            secure: false, // dùng STARTTLS, không phải SSL
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
