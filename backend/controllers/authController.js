@@ -74,24 +74,24 @@ const registerUser = async (req, res) => {
         //     }
         // });
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            secure: false, // dùng STARTTLS, không phải SSL
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
+        // const transporter = nodemailer.createTransport({
+        //     host: process.env.SMTP_HOST,
+        //     port: process.env.SMTP_PORT,
+        //     secure: false, // dùng STARTTLS, không phải SSL
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS
+        //     }
+        // });
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-                return res.status(500).json({ message: 'Failed to send email' });
-            }
-            console.log('Email sent: ' + info.response);
-            res.status(200).json({ message: 'Registration successful. Check your email for confirmation.' });
-        });
+        // transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         console.error('Error sending email:', error);
+        //         return res.status(500).json({ message: 'Failed to send email' });
+        //     }
+        //     console.log('Email sent: ' + info.response);
+        //     res.status(200).json({ message: 'Registration successful. Check your email for confirmation.' });
+        // });
     } catch (error) {
         console.error('Frontend registration error:', error.response || error.message);
         if (error.response && error.response.data && error.response.data.message) {
