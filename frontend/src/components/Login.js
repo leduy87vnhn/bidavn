@@ -42,6 +42,7 @@ const Login = () => {
             localStorage.setItem('user_info', JSON.stringify(response.data.user));
             setMessage('Đăng nhập thành công.');
             setLoginSuccess(true); // ✅ dùng flag để điều hướng
+            window.location.href = '/tournaments';
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {
