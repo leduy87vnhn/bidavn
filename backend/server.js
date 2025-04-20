@@ -30,4 +30,13 @@ console.log("Server starting...");
 app.listen(port, () => {
     console.log(`Server running on http://0.0.0.0:${port}`);
 });
+
+// Serve React frontend from backend
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, '../frontend/build'))); // đường dẫn build frontend
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 console.log("Server is now listening.");
