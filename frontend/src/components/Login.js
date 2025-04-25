@@ -55,11 +55,11 @@ const Login = () => {
             } else {
                 localStorage.removeItem('remembered_user');
             }
-            navigate('/tournaments');
 
         } catch (error) {
             if (error.response?.data?.message) {
-                console.log(error);
+                console.error("❌ Lỗi khi gọi API đăng nhập:", error);
+                console.error("📨 Dữ liệu phản hồi từ server:", error.response?.data);
                 setMessage(error.response.data.message);
             } else {
                 setMessage('Đăng nhập thất bại.');
