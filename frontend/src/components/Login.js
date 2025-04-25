@@ -43,6 +43,7 @@ const Login = () => {
             setMessage('Đăng nhập thành công.');
             setLoginSuccess(true); // ✅ dùng flag để điều hướng
             window.location.href = '/tournaments';
+            navigate('/tournaments');
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {
