@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-const whitelist = ['http://localhost:3000', 'http://18.141.197.31:3000'];
+const whitelist = ['http://localhost:3000', 'http://18.143.246.46:3000'];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.includes(origin)) {

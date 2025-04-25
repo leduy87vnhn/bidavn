@@ -51,6 +51,7 @@ const Login = () => {
             } else {
                 localStorage.removeItem('remembered_user');
             }
+            navigate('/tournaments');
 
         } catch (error) {
             if (error.response?.data?.message) {
