@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import '../login.scss';
 
+const client = require('../config/db');
+const logger = require('../config/logger');
+
 const Login = () => {
     const [user_name, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -55,6 +58,7 @@ const Login = () => {
 
         } catch (error) {
             if (error.response?.data?.message) {
+                console.log(error);
                 setMessage(error.response.data.message);
             } else {
                 setMessage('Đăng nhập thất bại.');
