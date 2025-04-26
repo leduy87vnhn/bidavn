@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import '../login.scss';
 
-const client = require('../config/db');
-const logger = require('../config/logger');
+//const client = require('../config/db');
+//const logger = require('../config/logger');
 
 const Login = () => {
     const [user_name, setUserName] = useState('');
