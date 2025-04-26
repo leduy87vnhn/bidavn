@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const TournamentList = () => {
+    const navigate = useNavigate();
     const [tournaments, setTournaments] = useState([]);
     const [user, setUser] = useState(null);
     const [page, setPage] = useState(1);
@@ -19,6 +20,13 @@ const TournamentList = () => {
     });
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        }
+    }, []);
+
+    useEffect(() => {
         const userInfo = localStorage.getItem('user_info');
         if (userInfo) setUser(JSON.parse(userInfo));
     }, []);
@@ -28,7 +36,7 @@ const TournamentList = () => {
     }, [page]);
 
     const fetchTournaments = () => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/auth/tournaments?page=${page}&limit=${limit}`)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments?page=${page}&limit=${limit}`)
             .then(res => {
                 setTournaments(res.data.data);
                 setTotal(res.data.total);
@@ -48,10 +56,10 @@ const TournamentList = () => {
 
         try {
             if (newTournament.id) {
-                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/auth/tournaments/${newTournament.id}`, newTournament);
+                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${newTournament.id}`, newTournament);
                 setMessage('✅ Cập nhật giải đấu thành công.');
             } else {
-                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/tournaments`, newTournament);
+                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments`, newTournament);
                 const totalAfter = total + 1;
                 const newTotalPages = Math.ceil(totalAfter / limit);
                 setPage(newTotalPages);
@@ -82,7 +90,7 @@ const TournamentList = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc muốn xoá giải đấu này?')) {
             try {
-                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/auth/tournaments/${id}`);
+                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
                 fetchTournaments();
                 setMessage('✅ Đã xoá giải đấu.');
             } catch (err) {

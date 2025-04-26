@@ -24,6 +24,7 @@ app.use(cors(corsOptions));
 app.options('*', cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/tournaments', tournamentRouter);
 
 console.log("Server starting...");
 
