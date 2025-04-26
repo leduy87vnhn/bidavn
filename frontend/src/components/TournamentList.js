@@ -38,10 +38,15 @@ const TournamentList = () => {
     const fetchTournaments = () => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments?page=${page}&limit=${limit}`)
             .then(res => {
-                setTournaments(res.data.data);
-                setTotal(res.data.total);
+                console.log('Tournament API response:', res.data);  // 👈 Add this to debug!!
+                setTournaments(res.data?.data || []);  // 👈 always fallback to empty array
+                setTotal(res.data?.total || 0);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                setTournaments([]);  // 👈 On error, fallback
+                setTotal(0);
+            });
     };
 
     const handleSave = async () => {
