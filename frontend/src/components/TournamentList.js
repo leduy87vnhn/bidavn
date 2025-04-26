@@ -199,7 +199,7 @@ const TournamentList = () => {
             )}
 
             {/* Danh sách giải */}
-            {tournaments.map(tour => (
+            {Array.isArray(tournaments) && tournaments.map(tour => (
                 <div className="tournament-card" key={tour.id} style={{ border: '1px solid #ddd', padding: 15, borderRadius: 8, marginBottom: 10 }}>
                     <h3>{tour.name} ({tour.code})</h3>
                     <p>{tour.start_date} → {tour.end_date}</p>
