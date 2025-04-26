@@ -204,21 +204,26 @@ const TournamentList = () => {
             )}
 
             {/* Danh sách giải */}
-            {Array.isArray(tournaments) && tournaments.map(tour => (
-                <div className="tournament-card" key={tour.id} style={{ border: '1px solid #ddd', padding: 15, borderRadius: 8, marginBottom: 10 }}>
+            {Array.isArray(tournaments) && tournaments.length > 0 ? (
+                tournaments.map(tour => (
+                    <div className="tournament-card" key={tour.id} style={{ border: '1px solid #ddd', padding: 15, borderRadius: 8, marginBottom: 10 }}>
                     <h3>{tour.name} ({tour.code})</h3>
                     <p>{tour.start_date} → {tour.end_date}</p>
 
                     {user?.user_type === 2 && (
                         <div>
-                            <button onClick={() => alert(`Thêm VĐV cho giải ${tour.id}`)}>Thêm VĐV</button>
-                            <button onClick={() => alert(`Thêm Trọng Tài cho giải ${tour.id}`)}>Thêm Trọng Tài</button>
-                            <button onClick={() => handleEdit(tour)}>Sửa</button>
-                            <button onClick={() => handleDelete(tour.id)}>Xoá</button>
+                        <button onClick={() => alert(`Thêm VĐV cho giải ${tour.id}`)}>Thêm VĐV</button>
+                        <button onClick={() => alert(`Thêm Trọng Tài cho giải ${tour.id}`)}>Thêm Trọng Tài</button>
+                        <button onClick={() => handleEdit(tour)}>Sửa</button>
+                        <button onClick={() => handleDelete(tour.id)}>Xoá</button>
                         </div>
                     )}
-                </div>
-            ))}
+                    </div>
+                ))
+                ) : (
+                <p>Không có giải đấu nào.</p>
+                )
+            }
 
             {/* Phân trang */}
             <div style={{ marginTop: '20px' }}>
