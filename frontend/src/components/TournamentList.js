@@ -225,50 +225,33 @@ const TournamentList = () => {
 
             {/* Danh sách giải */}
             {Array.isArray(tournaments) && tournaments.length > 0 ? (
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                <thead>
-                <tr style={{ backgroundColor: '#f8f9fa' }}>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
-                    {user?.user_type === 2 && (
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
-                    )}
-                </tr>
-                </thead>
-                <tbody>
-                    {tournaments.map(tour => {
-                        const isPast = isPastTournament(tour.start_date);
+            <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+                    <thead>
+                    <tr style={{ backgroundColor: '#f8f9fa' }}>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
+                        {user?.user_type === 2 && (
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
+                        )}
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {tournaments.map(tour => {
+                            const isPast = isPastTournament(tour.start_date);
 
-                        return (
-                        <tr key={tour.id} style={{ backgroundColor: isPast ? '#eee' : 'white' }}>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.name}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                            {/* Đăng ký VĐV */}
-                            <button
-                                style={{
-                                padding: '5px 10px',
-                                backgroundColor: isPast ? '#ccc' : '#007bff',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: isPast ? 'not-allowed' : 'pointer'
-                                }}
-                                disabled={isPast}
-                                onClick={() => alert(`Đăng ký VĐV cho giải ${tour.name}`)}
-                            >
-                                Đăng Ký VĐV
-                            </button>
-
-                            {/* Nếu admin */}
-                            {user?.user_type === 2 && (
-                                <>
+                            return (
+                            <tr key={tour.id} style={{ backgroundColor: isPast ? '#eee' : 'white' }}>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.name}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexWrap: 'nowrap', gap: '5px', overflowX: 'auto' }}>
+                                {/* Đăng ký VĐV */}
                                 <button
                                     style={{
                                     padding: '5px 10px',
@@ -279,46 +262,65 @@ const TournamentList = () => {
                                     cursor: isPast ? 'not-allowed' : 'pointer'
                                     }}
                                     disabled={isPast}
-                                    onClick={() => alert(`Đăng ký Trọng Tài cho giải ${tour.name}`)}
+                                    onClick={() => alert(`Đăng ký VĐV cho giải ${tour.name}`)}
                                 >
-                                    Đăng Ký Trọng Tài
+                                    Đăng Ký VĐV
                                 </button>
 
-                                <button
-                                    style={{
-                                    padding: '5px 10px',
-                                    backgroundColor: '#007bff',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer'
-                                    }}
-                                    onClick={() => handleEdit(tour)}
-                                >
-                                    Sửa
-                                </button>
+                                {/* Nếu admin */}
+                                {user?.user_type === 2 && (
+                                    <>
+                                    <button
+                                        style={{
+                                        padding: '5px 10px',
+                                        backgroundColor: isPast ? '#ccc' : '#007bff',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        cursor: isPast ? 'not-allowed' : 'pointer'
+                                        }}
+                                        disabled={isPast}
+                                        onClick={() => alert(`Đăng ký Trọng Tài cho giải ${tour.name}`)}
+                                    >
+                                        Đăng Ký Trọng Tài
+                                    </button>
 
-                                <button
-                                    style={{
-                                    padding: '5px 10px',
-                                    backgroundColor: '#dc3545',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer'
-                                    }}
-                                    onClick={() => handleDelete(tour.id)}
-                                >
-                                    Xóa
-                                </button>
-                                </>
-                            )}
-                            </td>
-                        </tr>
-                        );
-                    })}
-                    </tbody>
-            </table>
+                                    <button
+                                        style={{
+                                        padding: '5px 10px',
+                                        backgroundColor: '#007bff',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer'
+                                        }}
+                                        onClick={() => handleEdit(tour)}
+                                    >
+                                        Sửa
+                                    </button>
+
+                                    <button
+                                        style={{
+                                        padding: '5px 10px',
+                                        backgroundColor: '#dc3545',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer'
+                                        }}
+                                        onClick={() => handleDelete(tour.id)}
+                                    >
+                                        Xóa
+                                    </button>
+                                    </>
+                                )}
+                                </td>
+                            </tr>
+                            );
+                        })}
+                        </tbody>
+                </table>
+            </div>
             ) : (
             <p>Không có giải đấu nào.</p>
             )}
