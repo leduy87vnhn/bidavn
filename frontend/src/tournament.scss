@@ -27,3 +27,28 @@
     border-radius: 4px;
     cursor: pointer;
   }
+
+  .tournament-list-container button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.tournament-list-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.tournament-list-container .primary {
+    background-color: #007bff;
+}
+
+.tournament-list-container .danger {
+    background-color: #dc3545;
+}
+
+.tournament-list-container .grey {
+    background-color: #6c757d;
+}

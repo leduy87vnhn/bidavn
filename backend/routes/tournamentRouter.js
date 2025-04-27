@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const offset = (page - 1) * limit;
 
     try {
-        const dataQuery = 'SELECT * FROM tournaments ORDER BY start_date DESC LIMIT $1 OFFSET $2';
+        const dataQuery = 'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2';
         const countQuery = 'SELECT COUNT(*) FROM tournaments';
 
         const dataResult = await client.query(dataQuery, [limit, offset]);
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
 // Add tournament
 router.post('/', async (req, res) => {
-    const { name, code, start_date, end_date } = req.body;
+    const { name, code, cost, start_date, end_date } = req.body;
 
     if (!name || !code || !start_date || !end_date) {
         return res.status(400).json({ message: 'Thiếu thông tin.' });
@@ -37,11 +37,11 @@ router.post('/', async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO tournaments (name, code, start_date, end_date)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO tournaments (name, code, cost, start_date, end_date)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *
         `;
-        const result = await client.query(query, [name, code, start_date, end_date]);
+        const result = await client.query(query, [name, code, cost, start_date, end_date]);
         res.json(result.rows[0]);
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -52,15 +52,15 @@ router.post('/', async (req, res) => {
 // Update tournament
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, code, start_date, end_date } = req.body;
+    const { name, code, cost, start_date, end_date } = req.body;
 
     try {
         const query = `
             UPDATE tournaments
-            SET name = $1, code = $2, start_date = $3, end_date = $4
-            WHERE id = $5
+            SET name = $1, code = $2, cost = $3, start_date = $4, end_date = $5
+            WHERE id = $6
         `;
-        await client.query(query, [name, code, start_date, end_date, id]);
+        await client.query(query, [name, code, cost, start_date, end_date, id]);
         res.json({ message: 'Cập nhật thành công.' });
     } catch (error) {
         console.error('Update tournament error:', error);
