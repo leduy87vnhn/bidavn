@@ -15,7 +15,7 @@ const TournamentList = () => {
         id: null,
         name: '',
         code: '',
-        cost: '',
+        attendance_price: '',
         start_date: '',
         end_date: ''
     });
@@ -98,7 +98,7 @@ const TournamentList = () => {
             id: tour.id,
             name: tour.name,
             code: tour.code,
-            cost: tour.cost,
+            attendance_price: tour.attendance_price,
             start_date: tour.start_date,
             end_date: tour.end_date
         });
@@ -121,7 +121,7 @@ const TournamentList = () => {
     const isFormValid =
         newTournament.name &&
         newTournament.code &&
-        newTournament.cost &&
+        newTournament.attendance_price &&
         newTournament.start_date &&
         newTournament.end_date &&
         new Date(newTournament.end_date) >= new Date(newTournament.start_date);
@@ -199,8 +199,8 @@ const TournamentList = () => {
                         onChange={(e) => setNewTournament({ ...newTournament, name: e.target.value })} />
                     <input type="text" placeholder="Mã giải" value={newTournament.code}
                         onChange={(e) => setNewTournament({ ...newTournament, code: e.target.value })} />
-                    <input type="number" placeholder="Lệ phí (VNĐ)" value={newTournament.cost}
-                        onChange={(e) => setNewTournament({ ...newTournament, cost: e.target.value })} />
+                    <input type="number" placeholder="Lệ phí (VNĐ)" value={newTournament.attendance_price}
+                        onChange={(e) => setNewTournament({ ...newTournament, attendance_price: e.target.value })} />
                     <input type="date" value={newTournament.start_date}
                         onChange={(e) => setNewTournament({ ...newTournament, start_date: e.target.value })} />
                     <input type="date" value={newTournament.end_date}
@@ -246,7 +246,7 @@ const TournamentList = () => {
                         <tr key={tour.id} style={{ backgroundColor: isPast ? '#eee' : 'white' }}>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.name}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.cost?.toLocaleString('vi-VN')} VNĐ</td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexWrap: 'wrap', gap: '5px' }}>

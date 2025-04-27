@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
 // Add tournament
 router.post('/', async (req, res) => {
-    const { name, code, cost, start_date, end_date } = req.body;
+    const { name, code, attendance_price, start_date, end_date } = req.body;
 
     if (!name || !code || !start_date || !end_date) {
         return res.status(400).json({ message: 'Thiếu thông tin.' });
@@ -37,11 +37,11 @@ router.post('/', async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO tournaments (name, code, cost, start_date, end_date)
+            INSERT INTO tournaments (name, code, attendance_price, start_date, end_date)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *
         `;
-        const result = await client.query(query, [name, code, cost, start_date, end_date]);
+        const result = await client.query(query, [name, code, attendance_price, start_date, end_date]);
         res.json(result.rows[0]);
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -52,15 +52,15 @@ router.post('/', async (req, res) => {
 // Update tournament
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, code, cost, start_date, end_date } = req.body;
+    const { name, code, attendance_price, start_date, end_date } = req.body;
 
     try {
         const query = `
             UPDATE tournaments
-            SET name = $1, code = $2, cost = $3, start_date = $4, end_date = $5
+            SET name = $1, code = $2, attendance_price = $3, start_date = $4, end_date = $5
             WHERE id = $6
         `;
-        await client.query(query, [name, code, cost, start_date, end_date, id]);
+        await client.query(query, [name, code, attendance_price, start_date, end_date, id]);
         res.json({ message: 'Cập nhật thành công.' });
     } catch (error) {
         console.error('Update tournament error:', error);
