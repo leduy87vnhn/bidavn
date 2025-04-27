@@ -205,25 +205,40 @@ const TournamentList = () => {
 
             {/* Danh sách giải */}
             {Array.isArray(tournaments) && tournaments.length > 0 ? (
-                tournaments.map(tour => (
-                    <div className="tournament-card" key={tour.id} style={{ border: '1px solid #ddd', padding: 15, borderRadius: 8, marginBottom: 10 }}>
-                    <h3>{tour.name} ({tour.code})</h3>
-                    <p>{tour.start_date} → {tour.end_date}</p>
-
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+                <thead>
+                <tr style={{ backgroundColor: '#f8f9fa' }}>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
                     {user?.user_type === 2 && (
-                        <div>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
+                    )}
+                </tr>
+                </thead>
+                <tbody>
+                {tournaments.map(tour => (
+                    <tr key={tour.id}>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.name}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.start_date}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.end_date}</td>
+                    {user?.user_type === 2 && (
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                         <button onClick={() => alert(`Thêm VĐV cho giải ${tour.id}`)}>Thêm VĐV</button>
                         <button onClick={() => alert(`Thêm Trọng Tài cho giải ${tour.id}`)}>Thêm Trọng Tài</button>
                         <button onClick={() => handleEdit(tour)}>Sửa</button>
                         <button onClick={() => handleDelete(tour.id)}>Xoá</button>
-                        </div>
+                        </td>
                     )}
-                    </div>
-                ))
-                ) : (
-                <p>Không có giải đấu nào.</p>
-                )
-            }
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+            ) : (
+            <p>Không có giải đấu nào.</p>
+            )}
 
             {/* Phân trang */}
             <div style={{ marginTop: '20px' }}>
