@@ -9,6 +9,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/tournaments/:id" element={<TournamentDetail />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 

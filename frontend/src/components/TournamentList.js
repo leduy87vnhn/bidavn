@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const TournamentList = () => {
     const navigate = useNavigate();
@@ -232,8 +232,10 @@ const TournamentList = () => {
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày khai mạc</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cơ cấu giải</th>
                         {user?.user_type === 2 && (
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
                         )}
@@ -250,6 +252,8 @@ const TournamentList = () => {
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.location}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.prize}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexWrap: 'nowrap', gap: '5px', overflowX: 'auto' }}>
                                 {/* Đăng ký VĐV */}
                                 <button
