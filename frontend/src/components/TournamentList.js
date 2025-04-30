@@ -293,7 +293,7 @@ const TournamentList = () => {
                                         Đăng Ký Trọng Tài
                                     </button>
 
-                                    <button
+                                    {/* <button
                                         style={{
                                         padding: '5px 10px',
                                         backgroundColor: '#007bff',
@@ -305,7 +305,7 @@ const TournamentList = () => {
                                         onClick={() => handleEdit(tour)}
                                     >
                                         Sửa
-                                    </button>
+                                    </button> */}
 
                                     <button
                                         style={{
