@@ -10,6 +10,8 @@ const TournamentDetail = () => {
     const [error, setError] = useState('');
     const [showEditForm, setShowEditForm] = useState(false);
     const [editData, setEditData] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState(null);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`)
@@ -35,34 +37,75 @@ const TournamentDetail = () => {
     return (
         <div style={{ maxWidth: 800, margin: '40px auto', padding: 20 }}>
             <h2>Chi tiết Giải đấu</h2>
-            <p><strong>Tên giải:</strong> {tournament.name}</p>
-            <p><strong>Mã giải:</strong> {tournament.code}</p>
-            <p><strong>Ngày bắt đầu:</strong> {formatDate(tournament.start_date)}</p>
-            <p><strong>Ngày kết thúc:</strong> {formatDate(tournament.end_date)}</p>
-            <p><strong>Địa điểm:</strong> {tournament.location}</p>
-            <p><strong>Lệ phí:</strong> {parseInt(tournament.attendance_price).toLocaleString('vi-VN')} VNĐ</p>
-            <p><strong>Cơ cấu giải thưởng:</strong> {tournament.prize}</p>
-            <p><strong>Ngày chọn thi đấu từ:</strong> {formatDate(tournament.registerable_date_start)}</p>
-            <p><strong>Ngày chọn thi đấu đến:</strong> {formatDate(tournament.registerable_date_end)}</p>
-            <p><strong>Mô tả:</strong> {tournament.description}</p>
-            {JSON.parse(localStorage.getItem('user_info'))?.user_type === 2 && (
+            <p><strong>Tên giải:</strong> {isEditing ? (
+                <input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+            ) : tournament.name}</p>
+
+            <p><strong>Mã giải:</strong> {isEditing ? (
+                <input value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value })} />
+            ) : tournament.code}</p>
+
+            <p><strong>Ngày bắt đầu:</strong> {isEditing ? (
+                <input type="date" value={formData.start_date.slice(0,10)} onChange={e => setFormData({ ...formData, start_date: e.target.value })} />
+            ) : formatDate(tournament.start_date)}</p>
+
+            <p><strong>Ngày kết thúc:</strong> {isEditing ? (
+                <input type="date" value={formData.end_date.slice(0,10)} onChange={e => setFormData({ ...formData, end_date: e.target.value })} />
+            ) : formatDate(tournament.end_date)}</p>
+
+            <p><strong>Địa điểm:</strong> {isEditing ? (
+                <input value={formData.location || ''} onChange={e => setFormData({ ...formData, location: e.target.value })} />
+            ) : tournament.location}</p>
+
+            <p><strong>Lệ phí:</strong> {isEditing ? (
+                <input type="number" value={formData.attendance_price} onChange={e => setFormData({ ...formData, attendance_price: e.target.value })} />
+            ) : `${parseInt(tournament.attendance_price).toLocaleString('vi-VN')} VNĐ`}</p>
+
+            <p><strong>Cơ cấu giải thưởng:</strong> {isEditing ? (
+                <input value={formData.prize || ''} onChange={e => setFormData({ ...formData, prize: e.target.value })} />
+            ) : tournament.prize}</p>
+
+            <p><strong>Ngày chọn thi đấu từ:</strong> {isEditing ? (
+                <input type="date" value={formData.registerable_date_start?.slice(0,10)} onChange={e => setFormData({ ...formData, registerable_date_start: e.target.value })} />
+            ) : formatDate(tournament.registerable_date_start)}</p>
+
+            <p><strong>Ngày chọn thi đấu đến:</strong> {isEditing ? (
+                <input type="date" value={formData.registerable_date_end?.slice(0,10)} onChange={e => setFormData({ ...formData, registerable_date_end: e.target.value })} />
+            ) : formatDate(tournament.registerable_date_end)}</p>
+
+            <p><strong>Mô tả:</strong> {isEditing ? (
+                <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} />
+            ) : tournament.description}</p>
+            {JSON.parse(localStorage.getItem('user_info'))?.user_type === 2 && !isEditing && (
                 <button
-                    style={{
-                        marginTop: '10px',
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        padding: '8px 16px',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
+                    style={{ marginTop: '10px' }}
                     onClick={() => {
-                        setEditData(tournament);
-                        setShowEditForm(true);
+                        setFormData(tournament);
+                        setIsEditing(true);
                     }}
                 >
                     Sửa
                 </button>
+            )}
+            {isEditing && (
+                <div style={{ marginTop: '10px' }}>
+                    <button
+                        style={{ marginRight: '10px', backgroundColor: '#28a745', color: 'white' }}
+                        onClick={async () => {
+                            try {
+                                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`, formData);
+                                alert('✅ Cập nhật thành công!');
+                                setIsEditing(false);
+                                setTournament(formData); // Cập nhật lại bản hiển thị
+                            } catch (err) {
+                                alert('❌ Lỗi khi cập nhật.');
+                            }
+                        }}
+                    >
+                        Lưu
+                    </button>
+                    <button onClick={() => setIsEditing(false)}>Huỷ</button>
+                </div>
             )}
             <div style={{ marginTop: 20 }}>
                 <button
@@ -80,7 +123,7 @@ const TournamentDetail = () => {
                 <button onClick={() => navigate('/tournaments')}>
                     Quay lại danh sách
                 </button>
-                {showEditForm && (
+                {/* {showEditForm && (
                     <div style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '20px' }}>
                         <h3>Cập nhật giải đấu</h3>
                         <input type="text" value={editData.name}
@@ -127,7 +170,7 @@ const TournamentDetail = () => {
                             Lưu thay đổi
                         </button>
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );
