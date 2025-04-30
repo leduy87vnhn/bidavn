@@ -1,11 +1,25 @@
+Build environment:
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+
 Start backend:
-pm2 start server.js --name backend-server
+sudo pm2 start server.js --name backend-server
 
 
 Start front end:
-npm start --host 0.0.0.0
+//npm start --host 0.0.0.0
 
+
+// .env variables are loaded only when you build/start the project.
+// Changing .env needs restart npm start (or rebuild).
 cd frontend
-npm run build
-npm install -g serve
-serve -s build -l 80
+sudo npm run build
+//npm install -g serve
+//sudo serve -s build -l 80
+
+sudo pm2 serve build 3000 --name billard-frontend --spa
+
+Show log:
+sudo pm2 logs backend-server
+sudo pm2 logs billard-frontend
