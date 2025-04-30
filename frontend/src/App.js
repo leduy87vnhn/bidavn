@@ -2,6 +2,7 @@ import React from 'react';
 import Register from './components/Register';
 import Login from './components/Login';
 import TournamentList from './components/TournamentList';
+import TournamentDetail from './components/TournamentDetail'
 import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 

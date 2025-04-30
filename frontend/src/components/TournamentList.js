@@ -247,7 +247,11 @@ const TournamentList = () => {
 
                             return (
                             <tr key={tour.id} style={{ backgroundColor: isPast ? '#eee' : 'white' }}>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.name}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                    <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>
+                                        {tour.name}
+                                    </Link>
+                                </td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
