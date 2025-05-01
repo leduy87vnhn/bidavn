@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
 
 const PlayerList = () => {
+    const navigate = useNavigate();
     const [players, setPlayers] = useState([]);
     const [filter, setFilter] = useState({ id: '', name: '', ranking: '', phone: '' });
     const [newPlayer, setNewPlayer] = useState({ id: '', name: '', phone: '', ranking: '', points: '' });
     const [message, setMessage] = useState('');
     const [user, setUser] = useState(null);
+    const [editingId, setEditingId] = useState(null);
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('user_info'));
         if (!userInfo || userInfo.user_type !== 2) {
-            window.location.href = '/login';
+            navigate('/login');
         } else {
             setUser(userInfo);
             fetchPlayers();
@@ -57,6 +60,23 @@ const PlayerList = () => {
         } catch (err) {
             console.error(err);
             setMessage('❌ Lỗi khi thêm VĐV');
+        }
+    };
+
+    const handleUpdate = async (id) => {
+        try {
+            const now = new Date().toISOString();
+            const player = players.find(p => p.id === id);
+            await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/players/${id}`, {
+                ...player,
+                modified_date: now
+            });
+            setMessage('✅ Đã cập nhật VĐV');
+            setEditingId(null);
+            fetchPlayers();
+        } catch (err) {
+            console.error(err);
+            setMessage('❌ Lỗi khi cập nhật');
         }
     };
 
@@ -111,33 +131,27 @@ const PlayerList = () => {
         reader.readAsBinaryString(file);
     };
 
+    const inputStyle = { padding: '8px', borderRadius: 5, border: '1px solid #ccc', flex: 1 };
+
     return (
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
             <h2>Danh sách VĐV</h2>
 
+            {/* Điều kiện lọc */}
             <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
-                <input placeholder="Tìm ID" name="id" value={filter.id} onChange={handleInput} />
-                <input placeholder="Tìm tên" name="name" value={filter.name} onChange={handleInput} />
-                <input placeholder="Tìm SĐT" name="phone" value={filter.phone} onChange={handleInput} />
-                <input placeholder="Tìm hạng" name="ranking" value={filter.ranking} onChange={handleInput} />
+                <input placeholder="ID" name="id" value={filter.id} onChange={handleInput} style={inputStyle} />
+                <input placeholder="Tên" name="name" value={filter.name} onChange={handleInput} style={inputStyle} />
+                <input placeholder="SĐT" name="phone" value={filter.phone} onChange={handleInput} style={inputStyle} />
+                <input placeholder="Ranking" name="ranking" value={filter.ranking} onChange={handleInput} style={inputStyle} />
+            </div>
+            <div style={{ marginBottom: 15 }}>
+                <button
+                    onClick={fetchPlayers}
+                    style={{ backgroundColor: '#007bff', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                >Tìm kiếm</button>
             </div>
 
-            <div style={{ marginBottom: 10 }}>
-                <input placeholder="Tên" value={newPlayer.name} onChange={e => setNewPlayer({ ...newPlayer, name: e.target.value })} />
-                <input placeholder="SĐT" value={newPlayer.phone} onChange={e => setNewPlayer({ ...newPlayer, phone: e.target.value })} />
-                <input placeholder="Ranking" value={newPlayer.ranking} onChange={e => setNewPlayer({ ...newPlayer, ranking: e.target.value })} />
-                <input placeholder="Points" value={newPlayer.points} onChange={e => setNewPlayer({ ...newPlayer, points: e.target.value })} />
-                <button onClick={handleSave}>Thêm VĐV</button>
-                <label style={{ marginLeft: 20 }}>
-                    <input type="file" accept=".xlsx" onChange={handleImport} style={{ display: 'none' }} />
-                    <span style={{ background: '#28a745', color: 'white', padding: '6px 12px', borderRadius: 5, cursor: 'pointer' }}>
-                        Import Excel
-                    </span>
-                </label>
-            </div>
-
-            {message && <p>{message}</p>}
-
+            {/* Danh sách player */}
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
                 <thead>
                     <tr>
@@ -146,24 +160,79 @@ const PlayerList = () => {
                         <th>SĐT</th>
                         <th>Ranking</th>
                         <th>Points</th>
-                        <th>Xoá</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredPlayers.map(p => (
                         <tr key={p.id}>
                             <td>{p.id}</td>
-                            <td>{p.name}</td>
-                            <td>{p.phone}</td>
-                            <td>{p.ranking}</td>
-                            <td>{p.points}</td>
                             <td>
-                                <button onClick={() => handleDelete(p.id)} style={{ color: 'red' }}>Xoá</button>
+                                {editingId === p.id ? (
+                                    <input value={p.name} onChange={e => {
+                                        setPlayers(players.map(x => x.id === p.id ? { ...x, name: e.target.value } : x))
+                                    }} />
+                                ) : p.name}
+                            </td>
+                            <td>
+                                {editingId === p.id ? (
+                                    <input value={p.phone} onChange={e => {
+                                        setPlayers(players.map(x => x.id === p.id ? { ...x, phone: e.target.value } : x))
+                                    }} />
+                                ) : p.phone}
+                            </td>
+                            <td>
+                                {editingId === p.id ? (
+                                    <input value={p.ranking} onChange={e => {
+                                        setPlayers(players.map(x => x.id === p.id ? { ...x, ranking: e.target.value } : x))
+                                    }} />
+                                ) : p.ranking}
+                            </td>
+                            <td>
+                                {editingId === p.id ? (
+                                    <input value={p.points} onChange={e => {
+                                        setPlayers(players.map(x => x.id === p.id ? { ...x, points: e.target.value } : x))
+                                    }} />
+                                ) : p.points}
+                            </td>
+                            <td>
+                                {editingId === p.id ? (
+                                    <>
+                                        <button onClick={() => handleUpdate(p.id)} style={{ backgroundColor: '#28a745', color: 'white', padding: '4px 10px', marginRight: 5, border: 'none', borderRadius: 5 }}>Lưu</button>
+                                        <button onClick={() => setEditingId(null)} style={{ padding: '4px 10px' }}>Huỷ</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={() => setEditingId(p.id)} style={{ backgroundColor: '#007bff', color: 'white', padding: '4px 10px', marginRight: 5, border: 'none', borderRadius: 5 }}>Sửa</button>
+                                        <button onClick={() => handleDelete(p.id)} style={{ backgroundColor: '#dc3545', color: 'white', padding: '4px 10px', border: 'none', borderRadius: 5 }}>Xoá</button>
+                                    </>
+                                )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+            {/* Form thêm mới + Import */}
+            <div style={{ marginTop: 30 }}>
+                <h4>Thêm VĐV mới</h4>
+                <input placeholder="Tên" value={newPlayer.name} onChange={e => setNewPlayer({ ...newPlayer, name: e.target.value })} style={{ marginRight: 10 }} />
+                <input placeholder="SĐT" value={newPlayer.phone} onChange={e => setNewPlayer({ ...newPlayer, phone: e.target.value })} style={{ marginRight: 10 }} />
+                <input placeholder="Ranking" value={newPlayer.ranking} onChange={e => setNewPlayer({ ...newPlayer, ranking: e.target.value })} style={{ marginRight: 10 }} />
+                <input placeholder="Points" value={newPlayer.points} onChange={e => setNewPlayer({ ...newPlayer, points: e.target.value })} style={{ marginRight: 10 }} />
+                <button
+                    onClick={handleSave}
+                    style={{ backgroundColor: '#28a745', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                >Thêm VĐV</button>
+                <label style={{ marginLeft: 20 }}>
+                    <input type="file" accept=".xlsx" onChange={handleImport} style={{ display: 'none' }} />
+                    <span style={{ background: '#28a745', color: 'white', padding: '6px 12px', borderRadius: 5, cursor: 'pointer' }}>
+                        Import Excel
+                    </span>
+                </label>
+            </div>
+
+            {message && <p style={{ marginTop: 10 }}>{message}</p>}
         </div>
     );
 };
