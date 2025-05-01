@@ -24,7 +24,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.options('*', cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
