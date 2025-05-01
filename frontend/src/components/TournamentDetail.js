@@ -15,7 +15,7 @@ const TournamentDetail = () => {
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}/upload-background`)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`)
             .then(res => {
                 setTournament(res.data);
                 setLoading(false);
@@ -40,7 +40,7 @@ const TournamentDetail = () => {
     
         try {
             const res = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/tournament/${id}/upload-background`,
+                `${process.env.REACT_APP_API_BASE_URL}/api/tournament/${tournament.id}/upload-background`,
                 formData,
                 {
                     headers: { 'Content-Type': 'multipart/form-data' }
@@ -48,8 +48,9 @@ const TournamentDetail = () => {
             );
             alert('✅ Cập nhật hình nền thành công');
             // Reload tournament để có ảnh mới
-            const updated = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
-            setTournament(updated.data);
+            // const updated = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`);
+            // setTournament(updated.data);
+            await loadTournament();
         } catch (err) {
             alert('❌ Lỗi khi cập nhật hình nền');
             console.error(err);
@@ -57,6 +58,21 @@ const TournamentDetail = () => {
             setUploading(false);
         }
     };
+
+    const loadTournament = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+            setTournament(res.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Không tìm thấy giải đấu.');
+            setLoading(false);
+        }
+    };
+    
+    useEffect(() => {
+        loadTournament();
+    }, [id]);
 
     if (loading) return <p>Đang tải dữ liệu...</p>;
     if (error) return <p>{error}</p>;
@@ -142,7 +158,7 @@ const TournamentDetail = () => {
                         style={{ marginRight: '10px', backgroundColor: '#28a745', color: 'white' }}
                         onClick={async () => {
                             try {
-                                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`, formData);
+                                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`, formData);
                                 alert('✅ Cập nhật thành công!');
                                 setIsEditing(false);
                                 setTournament(formData); // Cập nhật lại bản hiển thị
