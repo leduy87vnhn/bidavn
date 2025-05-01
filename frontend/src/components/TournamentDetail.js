@@ -61,6 +61,14 @@ const TournamentDetail = () => {
         }
     };
 
+    const inputStyle = {
+        width: '100%',
+        padding: '8px',
+        marginBottom: '10px',
+        borderRadius: '4px',
+        border: '1px solid #ccc'
+    };
+
     const primaryButtonStyle = {
         backgroundColor: '#28a745',
         color: '#fff',
@@ -104,64 +112,76 @@ const TournamentDetail = () => {
                     maxWidth: 800,
                     margin: '0 auto',
                     padding: '30px',
-                    backgroundColor: 'rgba(192, 240, 192, 0.9)',
+                    backgroundColor: 'rgba(200, 255, 200, 0.85)',
                     borderRadius: '16px',
                 }}
             >
-                <h2 style={{ marginBottom: 20 }}>📋 Chi tiết Giải đấu</h2>
-
-                <p><strong>Tên giải:</strong> {isEditing ? (
-                    <input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                ) : tournament.name}</p>
-
-                <p><strong>Mã giải:</strong> {isEditing ? (
-                    <input value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value })} />
-                ) : tournament.code}</p>
-
-                <p><strong>Ngày bắt đầu:</strong> {isEditing ? (
-                    <input type="date" value={formData.start_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, start_date: e.target.value })} />
-                ) : formatDate(tournament.start_date)}</p>
-
-                <p><strong>Ngày kết thúc:</strong> {isEditing ? (
-                    <input type="date" value={formData.end_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, end_date: e.target.value })} />
-                ) : formatDate(tournament.end_date)}</p>
-
-                <p><strong>Địa điểm:</strong> {isEditing ? (
-                    <input value={formData.location || ''} onChange={e => setFormData({ ...formData, location: e.target.value })} />
-                ) : tournament.location}</p>
-
-                <p><strong>Lệ phí:</strong> {isEditing ? (
-                    <input type="number" value={formData.attendance_price} onChange={e => setFormData({ ...formData, attendance_price: e.target.value })} />
-                ) : `${parseInt(tournament.attendance_price).toLocaleString('vi-VN')} VNĐ`}</p>
-
-                <p><strong>Cơ cấu giải thưởng:</strong> {isEditing ? (
-                    <input value={formData.prize || ''} onChange={e => setFormData({ ...formData, prize: e.target.value })} />
-                ) : tournament.prize}</p>
-
-                <p><strong>Ngày chọn thi đấu từ:</strong> {isEditing ? (
-                    <input type="date" value={formData.registerable_date_start?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_start: e.target.value })} />
-                ) : formatDate(tournament.registerable_date_start)}</p>
-
-                <p><strong>Ngày chọn thi đấu đến:</strong> {isEditing ? (
-                    <input type="date" value={formData.registerable_date_end?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_end: e.target.value })} />
-                ) : formatDate(tournament.registerable_date_end)}</p>
-
-                <p><strong>Mô tả:</strong> {isEditing ? (
-                    <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} />
-                ) : tournament.description}</p>
+                <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
 
                 {user?.user_type === 2 && !isEditing && (
-                    <>
-                        <button
-                            style={primaryButtonStyle}
-                            onClick={() => {
-                                setFormData(tournament);
-                                setIsEditing(true);
-                            }}
-                        >
-                            <FaEdit /> Sửa
-                        </button>
+                    <button
+                        style={primaryButtonStyle}
+                        onClick={() => {
+                            setFormData(tournament);
+                            setIsEditing(true);
+                        }}
+                    >
+                        <FaEdit /> Sửa
+                    </button>
+                )}
 
+                <p><strong>Tên giải:</strong><br /> {isEditing ? (
+                    <input style={inputStyle} value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                ) : tournament.name}</p>
+
+                <p><strong>Mã giải:</strong><br /> {isEditing ? (
+                    <input style={inputStyle} value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value })} />
+                ) : tournament.code}</p>
+
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <div style={{ flex: 1 }}>
+                        <p><strong>Ngày bắt đầu:</strong><br /> {isEditing ? (
+                            <input style={inputStyle} type="date" value={formData.start_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, start_date: e.target.value })} />
+                        ) : formatDate(tournament.start_date)}</p>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <p><strong>Ngày kết thúc:</strong><br /> {isEditing ? (
+                            <input style={inputStyle} type="date" value={formData.end_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, end_date: e.target.value })} />
+                        ) : formatDate(tournament.end_date)}</p>
+                    </div>
+                </div>
+
+                <p><strong>Địa điểm:</strong><br /> {isEditing ? (
+                    <textarea rows={2} style={inputStyle} value={formData.location || ''} onChange={e => setFormData({ ...formData, location: e.target.value })} />
+                ) : tournament.location}</p>
+
+                <p><strong>Lệ phí:</strong><br /> {isEditing ? (
+                    <input style={inputStyle} type="number" value={formData.attendance_price} onChange={e => setFormData({ ...formData, attendance_price: e.target.value })} />
+                ) : `${parseInt(tournament.attendance_price).toLocaleString('vi-VN')} VNĐ`}</p>
+
+                <p><strong>Cơ cấu giải thưởng:</strong><br /> {isEditing ? (
+                    <input style={inputStyle} value={formData.prize || ''} onChange={e => setFormData({ ...formData, prize: e.target.value })} />
+                ) : tournament.prize}</p>
+
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <div style={{ flex: 1 }}>
+                        <p><strong>Ngày chọn thi đấu từ:</strong><br /> {isEditing ? (
+                            <input style={inputStyle} type="date" value={formData.registerable_date_start?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_start: e.target.value })} />
+                        ) : formatDate(tournament.registerable_date_start)}</p>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <p><strong>Ngày chọn thi đấu đến:</strong><br /> {isEditing ? (
+                            <input style={inputStyle} type="date" value={formData.registerable_date_end?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_end: e.target.value })} />
+                        ) : formatDate(tournament.registerable_date_end)}</p>
+                    </div>
+                </div>
+
+                <p><strong>Mô tả:</strong><br /> {isEditing ? (
+                    <textarea rows={3} style={inputStyle} value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} />
+                ) : tournament.description}</p>
+
+                {user?.user_type === 2 && (
+                    <>
                         <label style={{ ...primaryButtonStyle, display: 'inline-block', cursor: 'pointer' }}>
                             <FaCamera /> Hình nền
                             <input
