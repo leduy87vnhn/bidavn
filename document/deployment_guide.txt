@@ -22,7 +22,7 @@ sudo ufw allow 443/tcp
 sudo ufw enable
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx
-
+npm install react-icons
 
 
 Start backend:

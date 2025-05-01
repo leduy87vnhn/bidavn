@@ -104,7 +104,7 @@ const TournamentDetail = () => {
                     maxWidth: 800,
                     margin: '0 auto',
                     padding: '30px',
-                    backgroundColor: 'rgba(144, 238, 144, 0.9)',
+                    backgroundColor: 'rgba(192, 240, 192, 0.9)',
                     borderRadius: '16px',
                 }}
             >
