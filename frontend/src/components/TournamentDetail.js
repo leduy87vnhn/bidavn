@@ -12,6 +12,7 @@ const TournamentDetail = () => {
     const [editData, setEditData] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState(null);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`)
@@ -29,13 +30,54 @@ const TournamentDetail = () => {
         const d = new Date(dateStr);
         return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
     };
+    const handleBackgroundUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+    
+        const formData = new FormData();
+        formData.append('background', file);
+        setUploading(true);
+    
+        try {
+            const res = await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/tournament/${tournament.id}/upload-background`,
+                formData,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }
+            );
+            alert('✅ Cập nhật hình nền thành công');
+            // Reload tournament để có ảnh mới
+            const updated = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+            setTournament(updated.data);
+        } catch (err) {
+            alert('❌ Lỗi khi cập nhật hình nền');
+            console.error(err);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     if (loading) return <p>Đang tải dữ liệu...</p>;
     if (error) return <p>{error}</p>;
     if (!tournament) return null;
 
     return (
-        <div style={{ maxWidth: 800, margin: '40px auto', padding: 20 }}>
+        <div
+            style={{
+                maxWidth: 800,
+                margin: '40px auto',
+                padding: 20,
+                backgroundImage: tournament.background_image
+                    ? `url(${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${tournament.background_image})`
+                    : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: 12,
+                backgroundColor: '#fff',
+                backdropFilter: 'brightness(0.95)', // để chữ dễ đọc
+            }}
+        >
             <h2>Chi tiết Giải đấu</h2>
             <p><strong>Tên giải:</strong> {isEditing ? (
                 <input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
@@ -87,6 +129,13 @@ const TournamentDetail = () => {
                     Sửa
                 </button>
             )}
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleBackgroundUpload}
+                style={{ marginTop: 10 }}
+            />
+            {uploading && <p>Đang tải lên...</p>}
             {isEditing && (
                 <div style={{ marginTop: '10px' }}>
                     <button

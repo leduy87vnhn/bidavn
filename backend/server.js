@@ -26,6 +26,7 @@ app.options('*', cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRouter);
+app.use('/uploads', express.static('uploads'));
 
 console.log("Server starting...");
 

@@ -1,6 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../config/db');
+const multer = require('multer');
+const path = require('path');
+const tournamentController = require('../controllers/tournament.controller');
+
+// Configure multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/backgrounds');
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
+
+// Route upload background
+router.post('/tournament/:id/upload-background', upload.single('background'), tournamentController.uploadBackground);
 
 // List tournaments (paginated)
 router.get('/', async (req, res) => {
