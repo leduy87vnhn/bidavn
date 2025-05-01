@@ -37,7 +37,10 @@ const TournamentDetail = () => {
         const formData = new FormData();
         formData.append('background', file);
         setUploading(true);
-    
+        if (!file) {
+            console.error('❌ Không có file nào được gửi lên từ client.');
+            return res.status(400).json({ message: 'Không có file nào được tải lên.' });
+        }
         try {
             const res = await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`,
@@ -52,8 +55,9 @@ const TournamentDetail = () => {
             // setTournament(updated.data);
             await loadTournament();
         } catch (err) {
+            console.error('❌ Lỗi khi cập nhật hình nền:', error.message);
+            console.error(error.stack);
             alert('❌ Lỗi khi cập nhật hình nền');
-            console.error(err);
         } finally {
             setUploading(false);
         }
