@@ -22,6 +22,23 @@ const TournamentDetail = () => {
         return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
     };
 
+    const formatCurrency = (value) => {
+        return parseInt(value).toLocaleString('vi-VN') + ' VNĐ';
+    };
+
+    const contentOptions = [
+        "Carom 1 băng nam",
+        "Carom 1 băng nữ",
+        "Carom 3 băng nam",
+        "Carom 3 băng nữ",
+        "Pool 9 bi nam",
+        "Pool 9 bi nữ",
+        "Pool 8 bi nam",
+        "Pool 8 bi nữ",
+        "Pool 10 bi nam",
+        "Pool 10 bi nữ"
+    ];
+
     const loadTournament = async () => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
@@ -69,6 +86,11 @@ const TournamentDetail = () => {
         border: '1px solid #ccc'
     };
 
+    const readOnlyStyle = {
+        ...inputStyle,
+        backgroundColor: '#f0f0f0'
+    };
+
     const primaryButtonStyle = {
         backgroundColor: '#28a745',
         color: '#fff',
@@ -93,6 +115,25 @@ const TournamentDetail = () => {
     if (loading) return <p>Đang tải dữ liệu...</p>;
     if (error) return <p>{error}</p>;
     if (!tournament) return null;
+
+    const getInput = (key, multiline = false, rows = 1) => (
+        isEditing ? (
+            key === 'content' ? (
+                <select style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })}>
+                    <option value="">-- Chọn nội dung --</option>
+                    {contentOptions.map((opt, idx) => (
+                        <option key={idx} value={opt}>{opt}</option>
+                    ))}
+                </select>
+            ) : multiline ? (
+                <textarea rows={rows} style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })} />
+            ) : (
+                <input style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })} />
+            )
+        ) : (
+            <input style={readOnlyStyle} value={key === 'attendance_price' ? formatCurrency(tournament[key]) : (tournament[key] || '')} readOnly />
+        )
+    );
 
     return (
         <div
@@ -130,55 +171,49 @@ const TournamentDetail = () => {
                     </button>
                 )}
 
-                <p><strong>Tên giải:</strong><br /> {isEditing ? (
-                    <input style={inputStyle} value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                ) : tournament.name}</p>
-
-                <p><strong>Mã giải:</strong><br /> {isEditing ? (
-                    <input style={inputStyle} value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value })} />
-                ) : tournament.code}</p>
+                <p><strong>Tên giải:</strong><br />{getInput('name')}</p>
+                <p><strong>Mã giải:</strong><br />{getInput('code')}</p>
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày bắt đầu:</strong><br /> {isEditing ? (
+                        <p><strong>Ngày bắt đầu:</strong><br />{isEditing ? (
                             <input style={inputStyle} type="date" value={formData.start_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, start_date: e.target.value })} />
-                        ) : formatDate(tournament.start_date)}</p>
+                        ) : (
+                            <input style={readOnlyStyle} value={formatDate(tournament.start_date)} readOnly />
+                        )}</p>
                     </div>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày kết thúc:</strong><br /> {isEditing ? (
+                        <p><strong>Ngày kết thúc:</strong><br />{isEditing ? (
                             <input style={inputStyle} type="date" value={formData.end_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, end_date: e.target.value })} />
-                        ) : formatDate(tournament.end_date)}</p>
+                        ) : (
+                            <input style={readOnlyStyle} value={formatDate(tournament.end_date)} readOnly />
+                        )}</p>
                     </div>
                 </div>
 
-                <p><strong>Địa điểm:</strong><br /> {isEditing ? (
-                    <textarea rows={2} style={inputStyle} value={formData.location || ''} onChange={e => setFormData({ ...formData, location: e.target.value })} />
-                ) : tournament.location}</p>
-
-                <p><strong>Lệ phí:</strong><br /> {isEditing ? (
-                    <input style={inputStyle} type="number" value={formData.attendance_price} onChange={e => setFormData({ ...formData, attendance_price: e.target.value })} />
-                ) : `${parseInt(tournament.attendance_price).toLocaleString('vi-VN')} VNĐ`}</p>
-
-                <p><strong>Cơ cấu giải thưởng:</strong><br /> {isEditing ? (
-                    <input style={inputStyle} value={formData.prize || ''} onChange={e => setFormData({ ...formData, prize: e.target.value })} />
-                ) : tournament.prize}</p>
+                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 2)}</p>
+                <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
+                <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+                <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize')}</p>
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày chọn thi đấu từ:</strong><br /> {isEditing ? (
+                        <p><strong>Ngày chọn thi đấu từ:</strong><br />{isEditing ? (
                             <input style={inputStyle} type="date" value={formData.registerable_date_start?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_start: e.target.value })} />
-                        ) : formatDate(tournament.registerable_date_start)}</p>
+                        ) : (
+                            <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_start)} readOnly />
+                        )}</p>
                     </div>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày chọn thi đấu đến:</strong><br /> {isEditing ? (
+                        <p><strong>Ngày chọn thi đấu đến:</strong><br />{isEditing ? (
                             <input style={inputStyle} type="date" value={formData.registerable_date_end?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_end: e.target.value })} />
-                        ) : formatDate(tournament.registerable_date_end)}</p>
+                        ) : (
+                            <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_end)} readOnly />
+                        )}</p>
                     </div>
                 </div>
 
-                <p><strong>Mô tả:</strong><br /> {isEditing ? (
-                    <textarea rows={3} style={inputStyle} value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} />
-                ) : tournament.description}</p>
+                <p><strong>Mô tả:</strong><br />{getInput('description', true, 3)}</p>
 
                 {user?.user_type === 2 && (
                     <>
@@ -219,7 +254,6 @@ const TournamentDetail = () => {
 
                 <div style={{ marginTop: 30 }}>
                     <button style={primaryButtonStyle} onClick={() => alert("Chức năng đăng ký VĐV chưa triển khai")}>Đăng ký VĐV</button>
-                    <button style={primaryButtonStyle} onClick={() => alert("Chức năng đăng ký trọng tài chưa triển khai")}>Đăng ký Trọng tài</button>
                     <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}><FaArrowLeft /> Quay lại danh sách</button>
                 </div>
             </div>

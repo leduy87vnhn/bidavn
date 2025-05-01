@@ -231,6 +231,7 @@ const TournamentList = () => {
                     <tr style={{ backgroundColor: '#f8f9fa' }}>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Nội dung</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày khai mạc</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
@@ -253,6 +254,7 @@ const TournamentList = () => {
                                     </Link>
                                 </td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.attendance_price?.toLocaleString('vi-VN')} VNĐ</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
@@ -278,7 +280,7 @@ const TournamentList = () => {
                                 {/* Nếu admin */}
                                 {user?.user_type === 2 && (
                                     <>
-                                    <button
+                                    {/* <button
                                         style={{
                                         padding: '5px 10px',
                                         backgroundColor: isPast ? '#ccc' : '#007bff',
@@ -291,7 +293,7 @@ const TournamentList = () => {
                                         onClick={() => alert(`Đăng ký Trọng Tài cho giải ${tour.name}`)}
                                     >
                                         Đăng Ký Trọng Tài
-                                    </button>
+                                    </button> */}
 
                                     {/* <button
                                         style={{

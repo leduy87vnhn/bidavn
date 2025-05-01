@@ -70,15 +70,41 @@ router.post('/', async (req, res) => {
 // Update tournament
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, code, attendance_price, start_date, end_date } = req.body;
+    const {
+        name,
+        code,
+        attendance_price,
+        start_date,
+        end_date,
+        location,
+        content,
+        prize,
+        registerable_date_start,
+        registerable_date_end,
+        description
+      } = req.body;
 
     try {
         const query = `
             UPDATE tournaments
-            SET name = $1, code = $2, attendance_price = $3, start_date = $4, end_date = $5
-            WHERE id = $6
+            SET name = $1,
+                code = $2,
+                attendance_price = $3,
+                start_date = $4,
+                end_date = $5,
+                location = $6,
+                content = $7,
+                prize = $8,
+                registerable_date_start = $9,
+                registerable_date_end = $10,
+                description = $11
+            WHERE id = $12
         `;
-        await client.query(query, [name, code, attendance_price, start_date, end_date, id]);
+        await client.query(query, [
+            name, code, attendance_price, start_date, end_date,
+            location, content, prize, registerable_date_start,
+            registerable_date_end, description, id
+        ]);
         res.json({ message: 'Cập nhật thành công.' });
     } catch (error) {
         console.error('Update tournament error:', error);
