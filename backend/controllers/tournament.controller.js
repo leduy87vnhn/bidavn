@@ -13,7 +13,7 @@ exports.uploadBackground = async (req, res) => {
         const fileName = file.filename;
 
         await pool.query(
-            'UPDATE tournament SET background_image = $1 WHERE id = $2',
+            'UPDATE tournaments SET background_image = $1 WHERE id = $2',
             [fileName, tournamentId]
         );
 
