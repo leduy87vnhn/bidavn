@@ -40,7 +40,7 @@ const TournamentDetail = () => {
     
         try {
             const res = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/tournament/${tournament.id}/upload-background`,
+                `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`,
                 formData,
                 {
                     headers: { 'Content-Type': 'multipart/form-data' }
