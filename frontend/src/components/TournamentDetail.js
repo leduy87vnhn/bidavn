@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
 import { FaEdit, FaCamera, FaArrowLeft } from 'react-icons/fa';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const TournamentDetail = () => {
     const { id } = useParams();
@@ -253,9 +253,14 @@ const TournamentDetail = () => {
                 )}
 
                 <div style={{ marginTop: 30 }}>
-                    <button style={primaryButtonStyle} onClick={() => alert("Chức năng đăng ký VĐV chưa triển khai")}>Đăng ký VĐV</button>
+                    <button style={primaryButtonStyle} onClick={() => alert("Chức năng đăng ký VĐV chưa triển khai")}>Đăng ký thi đấu</button>
                     <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}><FaArrowLeft /> Quay lại danh sách</button>
                 </div>
+                <p style={{ marginTop: '10px' }}>
+                <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Xem danh sách VĐV hiện có
+                </Link>
+                </p>
             </div>
         </div>
     );

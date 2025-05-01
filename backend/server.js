@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const tournamentRouter = require('./routes/tournamentRouter');
 const cors = require('cors');
+const playerRouter = require('./routes/playerRouter');
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/players', playerRouter);
 
 console.log("Server starting...");
 
