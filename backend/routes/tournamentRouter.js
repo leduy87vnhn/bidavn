@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route upload background
-router.post('/tournament/:id/upload-background', upload.single('background'), tournamentController.uploadBackground);
+router.post('/:id/upload-background', upload.single('background'), tournamentController.uploadBackground);
 
 // List tournaments (paginated)
 router.get('/', async (req, res) => {

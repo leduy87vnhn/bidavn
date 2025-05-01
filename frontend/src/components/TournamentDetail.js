@@ -15,7 +15,7 @@ const TournamentDetail = () => {
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`)
             .then(res => {
                 setTournament(res.data);
                 setLoading(false);
