@@ -140,4 +140,37 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/upload-list-background', upload.single('background'), async (req, res) => {
+    try {
+        const fileName = req.file.filename;
+
+        // Lưu tên file vào file config JSON đơn giản
+        const fs = require('fs');
+        fs.writeFileSync('uploads/list_background_config.json', JSON.stringify({ filename: fileName }));
+
+        res.json({ message: 'Upload thành công', filename: fileName });
+    } catch (error) {
+        console.error('Error uploading list background:', error);
+        res.status(500).json({ message: 'Lỗi khi upload hình nền' });
+    }
+});
+
+// Get current list background image
+router.get('/list-background', async (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = 'uploads/list_background_config.json';
+        if (fs.existsSync(path)) {
+            const content = fs.readFileSync(path);
+            const config = JSON.parse(content);
+            res.json({ filename: config.filename });
+        } else {
+            res.json({ filename: null });
+        }
+    } catch (error) {
+        console.error('Error reading list background config:', error);
+        res.status(500).json({ message: 'Lỗi khi đọc cấu hình hình nền' });
+    }
+});
+
 module.exports = router;

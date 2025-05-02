@@ -192,9 +192,9 @@ const TournamentDetail = () => {
                 </div>
 
                 <p><strong>Địa điểm:</strong><br />{getInput('location', true, 2)}</p>
-                <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
-                <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
-                <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize')}</p>
+                <p><strong>Nội dung:</strong><br />{getInput('content', true, 3)}</p>
+                <p><strong>Lệ phí:</strong><br />{getInput('attendance_price', true, 3)}</p>
+                <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 3)}</p>
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
@@ -211,6 +211,22 @@ const TournamentDetail = () => {
                             <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_end)} readOnly />
                         )}</p>
                     </div>
+                    <p><strong>Số vận động viên thi mỗi ngày:</strong><br />
+                        {isEditing ? (
+                            <input
+                                style={inputStyle}
+                                type="number"
+                                value={formData.competitor_per_day || ''}
+                                onChange={e => setFormData({ ...formData, competitor_per_day: e.target.value })}
+                            />
+                        ) : (
+                            <input
+                                style={readOnlyStyle}
+                                value={tournament.competitor_per_day || ''}
+                                readOnly
+                            />
+                        )}
+                    </p>
                 </div>
 
                 <p><strong>Mô tả:</strong><br />{getInput('description', true, 3)}</p>
