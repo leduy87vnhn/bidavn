@@ -91,6 +91,13 @@ const TournamentDetail = () => {
         backgroundColor: '#f0f0f0'
     };
 
+    const scrollableStyle = {
+        ...readOnlyStyle,
+        maxHeight: '120px',
+        overflowY: 'auto',
+        whiteSpace: 'pre-wrap'
+    };
+
     const primaryButtonStyle = {
         backgroundColor: '#28a745',
         color: '#fff',
@@ -112,11 +119,7 @@ const TournamentDetail = () => {
         backgroundColor: '#6c757d'
     };
 
-    if (loading) return <p>Đang tải dữ liệu...</p>;
-    if (error) return <p>{error}</p>;
-    if (!tournament) return null;
-
-    const getInput = (key, multiline = false, rows = 1) => (
+    const getInput = (key, multiline = false, rows = 1, scrollable = false) => (
         isEditing ? (
             key === 'content' ? (
                 <select style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })}>
@@ -126,14 +129,27 @@ const TournamentDetail = () => {
                     ))}
                 </select>
             ) : multiline ? (
-                <textarea rows={rows} style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })} />
+                <textarea
+                    rows={rows}
+                    style={{ ...inputStyle, maxHeight: '120px', overflowY: 'auto' }}
+                    value={formData[key] || ''}
+                    onChange={e => setFormData({ ...formData, [key]: e.target.value })}
+                />
             ) : (
                 <input style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })} />
             )
         ) : (
-            <input style={readOnlyStyle} value={key === 'attendance_price' ? formatCurrency(tournament[key]) : (tournament[key] || '')} readOnly />
+            <div style={scrollable ? scrollableStyle : readOnlyStyle}>
+                {key === 'attendance_price'
+                    ? formatCurrency(tournament[key])
+                    : (tournament[key] || '')}
+            </div>
         )
     );
+
+    if (loading) return <p>Đang tải dữ liệu...</p>;
+    if (error) return <p>{error}</p>;
+    if (!tournament) return null;
 
     return (
         <div
@@ -191,10 +207,10 @@ const TournamentDetail = () => {
                     </div>
                 </div>
 
-                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 3)}</p>
-                <p><strong>Nội dung:</strong><br />{getInput('content', true, 3)}</p>
-                <p><strong>Lệ phí:</strong><br />{getInput('attendance_price', true, 3)}</p>
-                <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 3)}</p>
+                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
+                <p><strong>Nội dung:</strong><br />{getInput('content', true, 5, true)}</p>
+                <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+                <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 5, true)}</p>
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
@@ -211,25 +227,26 @@ const TournamentDetail = () => {
                             <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_end)} readOnly />
                         )}</p>
                     </div>
-                    <p><strong>Số vận động viên thi mỗi ngày:</strong><br />
-                        {isEditing ? (
-                            <input
-                                style={inputStyle}
-                                type="number"
-                                value={formData.competitor_per_day || ''}
-                                onChange={e => setFormData({ ...formData, competitor_per_day: e.target.value })}
-                            />
-                        ) : (
-                            <input
-                                style={readOnlyStyle}
-                                value={tournament.competitor_per_day || ''}
-                                readOnly
-                            />
-                        )}
-                    </p>
                 </div>
 
-                <p><strong>Mô tả:</strong><br />{getInput('description', true, 3)}</p>
+                <p><strong>Số vận động viên thi mỗi ngày:</strong><br />
+                    {isEditing ? (
+                        <input
+                            style={inputStyle}
+                            type="number"
+                            value={formData.competitor_per_day || ''}
+                            onChange={e => setFormData({ ...formData, competitor_per_day: e.target.value })}
+                        />
+                    ) : (
+                        <input
+                            style={readOnlyStyle}
+                            value={tournament.competitor_per_day || ''}
+                            readOnly
+                        />
+                    )}
+                </p>
+
+                <p><strong>Mô tả:</strong><br />{getInput('description', true, 5, true)}</p>
 
                 {user?.user_type === 2 && (
                     <>
@@ -273,9 +290,9 @@ const TournamentDetail = () => {
                     <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}><FaArrowLeft /> Quay lại danh sách</button>
                 </div>
                 <p style={{ marginTop: '10px' }}>
-                <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                    Xem danh sách VĐV hiện có
-                </Link>
+                    <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                        Xem danh sách VĐV hiện có
+                    </Link>
                 </p>
             </div>
         </div>
