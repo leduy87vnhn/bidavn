@@ -191,7 +191,7 @@ const TournamentDetail = () => {
                     </div>
                 </div>
 
-                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 2)}</p>
+                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 3)}</p>
                 <p><strong>Nội dung:</strong><br />{getInput('content', true, 3)}</p>
                 <p><strong>Lệ phí:</strong><br />{getInput('attendance_price', true, 3)}</p>
                 <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 3)}</p>

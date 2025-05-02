@@ -12,6 +12,15 @@ const PlayerList = () => {
     const [user, setUser] = useState(null);
     const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [page, setPage] = useState(1);
+    const [limit] = useState(50);
+    const buttonStyle = {
+        padding: '6px 14px',
+        fontSize: '14px',
+        border: 'none',
+        borderRadius: 5,
+        cursor: 'pointer'
+    };
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('user_info'));
@@ -129,6 +138,8 @@ const PlayerList = () => {
         p.phone.includes(filter.phone) &&
         (filter.ranking === '' || String(p.ranking) === filter.ranking)
     );
+    const totalPages = Math.ceil(filteredPlayers.length / limit);
+    const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
     return (
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
@@ -170,7 +181,7 @@ const PlayerList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredPlayers.map(p => (
+                    {currentPagePlayers.map(p => (
                         <tr key={p.id}>
                             <td>{p.id}</td>
                             <td>
@@ -210,6 +221,25 @@ const PlayerList = () => {
                     ))}
                 </tbody>
             </table>
+            <div style={{ marginTop: 20, textAlign: 'center' }}>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                    <button
+                        key={p}
+                        onClick={() => setPage(p)}
+                        style={{
+                            margin: '0 4px',
+                            padding: '6px 12px',
+                            backgroundColor: p === page ? '#007bff' : '#f0f0f0',
+                            color: p === page ? '#fff' : '#000',
+                            border: 'none',
+                            borderRadius: 4,
+                            cursor: 'pointer'
+                        }}
+                    >
+                        {p}
+                    </button>
+                ))}
+            </div>
 
             {showForm && (
                 <div style={{ marginTop: 30 }}>
