@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const tournamentRouter = require('./routes/tournamentRouter');
 const cors = require('cors');
 const playerRouter = require('./routes/playerRouter');
+const registrationRouter = require('./routes/registrationRouter');
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
+app.use('/api/registration-form', registrationRouter);
 
 console.log("Server starting...");
 
