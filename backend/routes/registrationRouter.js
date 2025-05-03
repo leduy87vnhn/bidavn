@@ -60,4 +60,22 @@ router.patch('/:id/approve', async (req, res) => {
   }
 });
 
+// 4. Lấy background của giải đấu từ tournamentId
+router.get('/background/:tournamentId', async (req, res) => {
+  const { tournamentId } = req.params;
+  try {
+    const result = await client.query(
+      'SELECT background_image FROM tournaments WHERE id = $1',
+      [tournamentId]
+    );
+    if (result.rows.length === 0 || !result.rows[0].background_image) {
+      return res.json({ filename: null });
+    }
+    res.json({ filename: result.rows[0].background_image });
+  } catch (err) {
+    console.error('Error fetching background:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
