@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../tournamentRegistration.scss';
 
 const TournamentRegistration = () => {
   const { id: tournamentId } = useParams();
-  const navigate = useNavigate();
 
   const [tournament, setTournament] = useState(null);
   const [registeredPhone, setRegisteredPhone] = useState('');
   const [competitors, setCompetitors] = useState([]);
-  const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
   const [newCompetitor, setNewCompetitor] = useState({
     name: '',
@@ -20,27 +18,27 @@ const TournamentRegistration = () => {
     selected_date: '',
   });
 
+  // Load thông tin giải đấu
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) setUser(JSON.parse(storedUser));
-
     const fetchTournament = async () => {
       try {
         const res = await axios.get(`/api/tournaments/${tournamentId}`);
         setTournament(res.data);
       } catch (err) {
-        setMessage('Lỗi khi tải thông tin giải đấu');
+        console.error(err);
+        setMessage('Lỗi khi tải thông tin giải đấu.');
       }
     };
 
     fetchTournament();
   }, [tournamentId]);
 
-  const handleSubmit = (e) => {
+  // Thêm VĐV vào danh sách
+  const handleAddCompetitor = (e) => {
     e.preventDefault();
 
     if (!registeredPhone || !newCompetitor.name || !newCompetitor.phone || !newCompetitor.selected_date) {
-      setMessage('Vui lòng nhập đủ thông tin trước khi thêm.');
+      setMessage('Vui lòng nhập đủ thông tin.');
       return;
     }
 
@@ -58,7 +56,15 @@ const TournamentRegistration = () => {
     setMessage('');
   };
 
-  const handleRegister = async () => {
+  // Xoá VĐV khỏi danh sách
+  const handleRemove = (index) => {
+    const updatedList = [...competitors];
+    updatedList.splice(index, 1);
+    setCompetitors(updatedList);
+  };
+
+  // Gửi đăng ký
+  const handleRegisterSubmit = async () => {
     try {
       const res = await axios.post(`/api/registration_form`, {
         tournament_id: tournamentId,
@@ -67,7 +73,8 @@ const TournamentRegistration = () => {
       });
       setMessage(res.data.message || 'Đăng ký thành công');
       setCompetitors([]);
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       setMessage('Lỗi khi gửi đăng ký.');
     }
   };
@@ -76,14 +83,18 @@ const TournamentRegistration = () => {
     <div className="tournament-registration">
       <h2>Đăng ký giải đấu</h2>
 
-      {tournament && (
-        <div>
+      {tournament ? (
+        <div className="tournament-info">
           <p><strong>Tên giải:</strong> {tournament.name}</p>
           <p><strong>Thời gian:</strong> {tournament.start_date} → {tournament.end_date}</p>
+          <p><strong>Địa điểm:</strong> {tournament.location}</p>
+          <p><strong>Nội dung:</strong> {tournament.content}</p>
         </div>
+      ) : (
+        <p>Đang tải thông tin giải đấu...</p>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAddCompetitor}>
         <input
           type="text"
           placeholder="Số điện thoại người đăng ký"
@@ -100,7 +111,7 @@ const TournamentRegistration = () => {
 
         <input
           type="text"
-          placeholder="Số điện thoại VĐV"
+          placeholder="SĐT VĐV"
           value={newCompetitor.phone}
           onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
         />
@@ -121,12 +132,11 @@ const TournamentRegistration = () => {
 
         <input
           type="date"
-          placeholder="Ngày chọn thi đấu"
           value={newCompetitor.selected_date}
           onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })}
         />
 
-        <button type="submit">Thêm vận động viên</button>
+        <button type="submit">➕ Thêm vận động viên</button>
         {message && <div className={message.includes('Lỗi') || message.includes('tồn tại') ? 'error-message' : 'success-message'}>{message}</div>}
       </form>
 
@@ -135,21 +145,29 @@ const TournamentRegistration = () => {
           <table>
             <thead>
               <tr>
+                <th>STT</th>
                 <th>Tên</th>
                 <th>SĐT</th>
                 <th>Nickname</th>
                 <th>CLB</th>
                 <th>Ngày thi đấu</th>
+                <th>Xoá</th>
               </tr>
             </thead>
             <tbody>
               {competitors.map((c, index) => (
                 <tr key={index}>
+                  <td>{index + 1}</td>
                   <td>{c.name}</td>
                   <td>{c.phone}</td>
                   <td>{c.nickname}</td>
                   <td>{c.club}</td>
                   <td>{c.selected_date}</td>
+                  <td>
+                    <button onClick={() => handleRemove(index)} style={{ color: 'red' }}>
+                      Xoá
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -158,7 +176,7 @@ const TournamentRegistration = () => {
       </div>
 
       {competitors.length > 0 && (
-        <button onClick={handleRegister}>Gửi đăng ký</button>
+        <button onClick={handleRegisterSubmit} style={{ marginTop: '20px' }}>📤 Gửi đăng ký</button>
       )}
     </div>
   );
