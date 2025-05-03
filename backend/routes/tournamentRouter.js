@@ -159,7 +159,7 @@ router.post('/upload-list-background', upload.single('background'), async (req, 
 router.get('/list-background', async (req, res) => {
     try {
         const fs = require('fs');
-        const path = 'uploads/list_background_config.json';
+        const path = 'uploads/backgrounds/list_background_config.json';
         if (fs.existsSync(path)) {
             const content = fs.readFileSync(path);
             const config = JSON.parse(content);
