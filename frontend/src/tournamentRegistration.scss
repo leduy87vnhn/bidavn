@@ -1,89 +1,78 @@
-.registration-container {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    padding: 30px;
+.tournament-registration {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f6fff5;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.2);
   
-    .registration-box {
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      padding: 20px 30px;
-      max-width: 1000px;
-      width: 100%;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2e7d32;
+    }
   
-      h2, h3 {
-        margin-top: 0;
-        color: #2b7a4b;
-      }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
   
-      label {
-        font-weight: bold;
-      }
-  
-      input[type="text"],
-      input[type="date"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border-radius: 6px;
+      input,
+      select {
+        padding: 10px;
         border: 1px solid #ccc;
-      }
-  
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-  
-        th, td {
-          padding: 8px;
-          border: 1px solid #ddd;
-          text-align: center;
-        }
-      }
-  
-      .button-group {
-        margin-top: 20px;
-        display: flex;
-        gap: 10px;
-  
-        button {
-          padding: 10px 20px;
-          background-color: #2b7a4b;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-  
-          &:hover {
-            background-color: #256d3d;
-          }
-        }
+        border-radius: 8px;
+        font-size: 16px;
       }
   
       button {
-        padding: 10px 20px;
-        background-color: #2b7a4b;
-        color: white;
+        padding: 10px 15px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s;
   
         &:hover {
-          background-color: #256d3d;
+          background-color: #388e3c;
+        }
+  
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
         }
       }
   
-      .message {
-        margin-top: 20px;
+      .error-message {
+        color: red;
         font-weight: bold;
-        color: #d9534f;
+        margin-top: 5px;
+      }
+  
+      .success-message {
+        color: green;
+        font-weight: bold;
+        margin-top: 5px;
+      }
+    }
+  
+    .competitor-list {
+      margin-top: 20px;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+  
+        th, td {
+          padding: 10px;
+          border: 1px solid #ccc;
+          text-align: left;
+        }
+  
+        th {
+          background-color: #a5d6a7;
+        }
       }
     }
   }
-  

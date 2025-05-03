@@ -1,5 +1,3 @@
-// File: frontend/components/TournamentRegistration.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -8,212 +6,160 @@ import '../tournamentRegistration.scss';
 const TournamentRegistration = () => {
   const { id: tournamentId } = useParams();
   const navigate = useNavigate();
+
   const [tournament, setTournament] = useState(null);
   const [registeredPhone, setRegisteredPhone] = useState('');
   const [competitors, setCompetitors] = useState([]);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
-  const [suggestions, setSuggestions] = useState({});
+  const [newCompetitor, setNewCompetitor] = useState({
+    name: '',
+    phone: '',
+    nickname: '',
+    club: '',
+    selected_date: '',
+  });
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem('user_info'));
-    setUser(loggedUser);
-    fetchTournament();
-  }, []);
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) setUser(JSON.parse(storedUser));
 
-  const fetchTournament = async () => {
-    try {
-      const res = await axios.get(`/api/tournaments/${tournamentId}`);
-      setTournament(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleAddCompetitor = () => {
-    setCompetitors([
-      ...competitors,
-      { player_id: '', name: '', phone: '', nick_name: '', club: '', selected_date: '', suggestion: [] }
-    ]);
-  };
-
-  const fetchSuggestions = async (keyword, index) => {
-    if (!keyword) return;
-    try {
-      const res = await axios.get(`/api/registration-form/search-player?q=${keyword}`);
-      const updated = [...competitors];
-      updated[index].suggestion = res.data;
-      setCompetitors(updated);
-    } catch (err) {
-      console.error('Suggestion error', err);
-    }
-  };
-
-  const handlePlayerIdChange = (index, value) => {
-    const updated = [...competitors];
-    updated[index].player_id = value;
-    updated[index].suggestion = [];
-    setCompetitors(updated);
-    fetchSuggestions(value, index);
-  };
-
-  const handleSelectSuggestion = async (index, player) => {
-    const updated = [...competitors];
-    updated[index].player_id = player.id;
-    updated[index].name = player.name;
-    updated[index].phone = player.phone_number;
-    updated[index].suggestion = [];
-    setCompetitors(updated);
-  };
-
-  const handleCompetitorChange = (index, field, value) => {
-    const updated = [...competitors];
-    updated[index][field] = value;
-    setCompetitors(updated);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const res = await axios.post('/api/registration-form', {
-        user_id: user.id,
-        tournament_id: tournamentId,
-        registered_phone: registeredPhone
-      });
-      const registrationId = res.data.id;
-
-      for (const comp of competitors) {
-        await axios.post('/api/registration-form/competitors', {
-          registration_form_id: registrationId,
-          player_id: comp.player_id,
-          nick_name: comp.nick_name,
-          club: comp.club,
-          selected_date: comp.selected_date,
-          name: comp.name,
-          phone: comp.phone
-        });
+    const fetchTournament = async () => {
+      try {
+        const res = await axios.get(`/api/tournaments/${tournamentId}`);
+        setTournament(res.data);
+      } catch (err) {
+        setMessage('Lỗi khi tải thông tin giải đấu');
       }
+    };
 
-      setMessage('Đăng ký thành công!');
-    } catch (err) {
-      setMessage('Lỗi khi đăng ký.');
+    fetchTournament();
+  }, [tournamentId]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!registeredPhone || !newCompetitor.name || !newCompetitor.phone || !newCompetitor.selected_date) {
+      setMessage('Vui lòng nhập đủ thông tin trước khi thêm.');
+      return;
     }
+
+    const isDuplicate = competitors.some(
+      (c) => c.name === newCompetitor.name && c.phone === newCompetitor.phone
+    );
+
+    if (isDuplicate) {
+      setMessage('Vận động viên này đã tồn tại.');
+      return;
+    }
+
+    setCompetitors([...competitors, newCompetitor]);
+    setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '' });
+    setMessage('');
   };
 
-  const handleApproval = async (status) => {
+  const handleRegister = async () => {
     try {
-      await axios.patch(`/api/registration-form/${tournamentId}/approve`, { status });
-      setMessage(status === 1 ? 'Đã phê duyệt' : 'Đã từ chối');
-    } catch (err) {
-      setMessage('Lỗi khi cập nhật trạng thái');
+      const res = await axios.post(`/api/registration_form`, {
+        tournament_id: tournamentId,
+        phone: registeredPhone,
+        competitors,
+      });
+      setMessage(res.data.message || 'Đăng ký thành công');
+      setCompetitors([]);
+    } catch (error) {
+      setMessage('Lỗi khi gửi đăng ký.');
     }
   };
 
   return (
-    <div
-      className="registration-container"
-      style={{ backgroundImage: `url(${tournament?.background_url})` }}
-    >
-      <div className="registration-box">
-        <h2>Đăng ký Vận Động Viên</h2>
-        <label>Số điện thoại đăng ký:</label>
+    <div className="tournament-registration">
+      <h2>Đăng ký giải đấu</h2>
+
+      {tournament && (
+        <div>
+          <p><strong>Tên giải:</strong> {tournament.name}</p>
+          <p><strong>Thời gian:</strong> {tournament.start_date} → {tournament.end_date}</p>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
+          placeholder="Số điện thoại người đăng ký"
           value={registeredPhone}
           onChange={(e) => setRegisteredPhone(e.target.value)}
         />
 
-        <button onClick={handleAddCompetitor}>➕ Thêm VĐV</button>
+        <input
+          type="text"
+          placeholder="Tên vận động viên"
+          value={newCompetitor.name}
+          onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })}
+        />
 
-        <h3>Danh sách VĐV</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>ID</th>
-              <th>Họ Tên</th>
-              <th>Nick Name</th>
-              <th>SĐT</th>
-              <th>CLB</th>
-              <th>Ngày thi đấu</th>
-            </tr>
-          </thead>
-          <tbody>
-            {competitors.map((comp, idx) => (
-              <>
-                <tr key={idx}>
-                  <td>{idx + 1}</td>
-                  <td>
-                    <input
-                      type="text"
-                      value={comp.player_id}
-                      onChange={(e) => handlePlayerIdChange(idx, e.target.value)}
-                    />
-                    {comp.suggestion && comp.suggestion.length > 0 && (
-                      <ul className="autocomplete-list">
-                        {comp.suggestion.map((sug, i) => (
-                          <li
-                            key={i}
-                            onClick={() => handleSelectSuggestion(idx, sug)}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {sug.id} - {sug.name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={comp.name}
-                      onChange={(e) => handleCompetitorChange(idx, 'name', e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={comp.nick_name}
-                      onChange={(e) => handleCompetitorChange(idx, 'nick_name', e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={comp.phone}
-                      onChange={(e) => handleCompetitorChange(idx, 'phone', e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={comp.club}
-                      onChange={(e) => handleCompetitorChange(idx, 'club', e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="date"
-                      value={comp.selected_date}
-                      onChange={(e) => handleCompetitorChange(idx, 'selected_date', e.target.value)}
-                    />
-                  </td>
+        <input
+          type="text"
+          placeholder="Số điện thoại VĐV"
+          value={newCompetitor.phone}
+          onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
+        />
+
+        <input
+          type="text"
+          placeholder="Nickname"
+          value={newCompetitor.nickname}
+          onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
+        />
+
+        <input
+          type="text"
+          placeholder="Câu lạc bộ"
+          value={newCompetitor.club}
+          onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
+        />
+
+        <input
+          type="date"
+          placeholder="Ngày chọn thi đấu"
+          value={newCompetitor.selected_date}
+          onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })}
+        />
+
+        <button type="submit">Thêm vận động viên</button>
+        {message && <div className={message.includes('Lỗi') || message.includes('tồn tại') ? 'error-message' : 'success-message'}>{message}</div>}
+      </form>
+
+      <div className="competitor-list">
+        {competitors.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>SĐT</th>
+                <th>Nickname</th>
+                <th>CLB</th>
+                <th>Ngày thi đấu</th>
+              </tr>
+            </thead>
+            <tbody>
+              {competitors.map((c, index) => (
+                <tr key={index}>
+                  <td>{c.name}</td>
+                  <td>{c.phone}</td>
+                  <td>{c.nickname}</td>
+                  <td>{c.club}</td>
+                  <td>{c.selected_date}</td>
                 </tr>
-              </>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="button-group">
-          <button onClick={handleSubmit}>Gửi đăng ký</button>
-          {user?.user_type === 2 && (
-            <>
-              <button onClick={() => handleApproval(1)}>✅ Phê duyệt</button>
-              <button onClick={() => handleApproval(2)}>❌ Từ chối</button>
-            </>
-          )}
-        </div>
-        <p className="message">{message}</p>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
+
+      {competitors.length > 0 && (
+        <button onClick={handleRegister}>Gửi đăng ký</button>
+      )}
     </div>
   );
 };
