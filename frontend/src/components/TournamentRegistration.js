@@ -21,6 +21,7 @@ const TournamentRegistration = () => {
   const [playerSuggestions, setPlayerSuggestions] = useState([]);
   const [playerSearchText, setPlayerSearchText] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Load thông tin giải đấu
 //   useEffect(() => {
