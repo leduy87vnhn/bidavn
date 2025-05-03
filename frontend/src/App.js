@@ -6,6 +6,8 @@ import TournamentDetail from './components/TournamentDetail'
 import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlayerList from './components/PlayerList';
+import TournamentRegistration from './components/TournamentRegistration'; // đường dẫn tới file bạn đã tạo
+
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/players" element={<PlayerList />} />
+        <Route path="/tournament/:id/register" element={<TournamentRegistration />} />
+
 
         {/* Route bảo vệ: chỉ vào nếu đã login */}
         <Route
