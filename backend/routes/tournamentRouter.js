@@ -146,7 +146,7 @@ router.post('/upload-list-background', upload.single('background'), async (req, 
 
         // Lưu tên file vào file config JSON đơn giản
         const fs = require('fs');
-        fs.writeFileSync('uploads/list_background_config.json', JSON.stringify({ filename: fileName }));
+        fs.writeFileSync('uploads/backgrounds/list_background_config.json', JSON.stringify({ filename: fileName }));
 
         res.json({ message: 'Upload thành công', filename: fileName });
     } catch (error) {
