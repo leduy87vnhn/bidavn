@@ -24,8 +24,28 @@ router.post('/', async (req, res) => {
 
 // 2. Thêm competitor vào bản đăng ký
 router.post('/competitors', async (req, res) => {
-  const { registration_form_id, player_id, nick_name, club, selected_date } = req.body;
+  let { registration_form_id, player_id, nick_name, club, selected_date, name, phone } = req.body;
+
   try {
+    // Nếu không có player_id thì cần tạo mới player dựa vào name và phone (yêu cầu cả hai phải có)
+    if (!player_id && name && phone) {
+      const prefix = 'H';
+      const result = await client.query("SELECT id FROM players WHERE id LIKE $1 ORDER BY id DESC LIMIT 1", [`${prefix}%`]);
+
+      let nextId = prefix + '10001';
+      if (result.rows.length > 0) {
+        const lastId = result.rows[0].id;
+        const number = parseInt(lastId.slice(prefix.length)) + 1;
+        nextId = prefix + number.toString();
+      }
+
+      player_id = nextId;
+      await client.query(
+        `INSERT INTO players (id, name, phone_number) VALUES ($1, $2, $3)`,
+        [player_id, name, phone]
+      );
+    }
+
     await client.query(
       `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date)
        VALUES ($1, $2, $3, $4, $5)`,
@@ -74,6 +94,21 @@ router.get('/background/:tournamentId', async (req, res) => {
     res.json({ filename: result.rows[0].background_image });
   } catch (err) {
     console.error('Error fetching background:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// 5. API tìm kiếm player theo từ khoá
+router.get('/search-player', async (req, res) => {
+  const keyword = req.query.q;
+  try {
+    const result = await client.query(
+      `SELECT id, name, phone_number FROM players WHERE id ILIKE $1 OR name ILIKE $1 LIMIT 10`,
+      [`%${keyword}%`]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error searching player:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

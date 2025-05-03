@@ -1,3 +1,5 @@
+// File: frontend/components/TournamentRegistration.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,9 +13,10 @@ const TournamentRegistration = () => {
   const [competitors, setCompetitors] = useState([]);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
+  const [suggestions, setSuggestions] = useState({});
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem('user'));
+    const loggedUser = JSON.parse(localStorage.getItem('user_info'));
     setUser(loggedUser);
     fetchTournament();
   }, []);
@@ -28,20 +31,38 @@ const TournamentRegistration = () => {
   };
 
   const handleAddCompetitor = () => {
-    setCompetitors([...competitors, { player_id: '', name: '', phone: '', nick_name: '', club: '', selected_date: '' }]);
+    setCompetitors([
+      ...competitors,
+      { player_id: '', name: '', phone: '', nick_name: '', club: '', selected_date: '', suggestion: [] }
+    ]);
   };
 
-  const handlePlayerIdChange = async (index, value) => {
+  const fetchSuggestions = async (keyword, index) => {
+    if (!keyword) return;
+    try {
+      const res = await axios.get(`/api/registration-form/search-player?q=${keyword}`);
+      const updated = [...competitors];
+      updated[index].suggestion = res.data;
+      setCompetitors(updated);
+    } catch (err) {
+      console.error('Suggestion error', err);
+    }
+  };
+
+  const handlePlayerIdChange = (index, value) => {
     const updated = [...competitors];
     updated[index].player_id = value;
-    try {
-      const res = await axios.get(`/api/players/${value}`);
-      updated[index].name = res.data.name;
-      updated[index].phone = res.data.phone_number;
-    } catch (err) {
-      updated[index].name = 'Không tìm thấy';
-      updated[index].phone = '';
-    }
+    updated[index].suggestion = [];
+    setCompetitors(updated);
+    fetchSuggestions(value, index);
+  };
+
+  const handleSelectSuggestion = async (index, player) => {
+    const updated = [...competitors];
+    updated[index].player_id = player.id;
+    updated[index].name = player.name;
+    updated[index].phone = player.phone_number;
+    updated[index].suggestion = [];
     setCompetitors(updated);
   };
 
@@ -61,12 +82,14 @@ const TournamentRegistration = () => {
       const registrationId = res.data.id;
 
       for (const comp of competitors) {
-        await axios.post('/api/competitors', {
+        await axios.post('/api/registration-form/competitors', {
           registration_form_id: registrationId,
           player_id: comp.player_id,
           nick_name: comp.nick_name,
           club: comp.club,
-          selected_date: comp.selected_date
+          selected_date: comp.selected_date,
+          name: comp.name,
+          phone: comp.phone
         });
       }
 
@@ -99,6 +122,8 @@ const TournamentRegistration = () => {
           onChange={(e) => setRegisteredPhone(e.target.value)}
         />
 
+        <button onClick={handleAddCompetitor}>➕ Thêm VĐV</button>
+
         <h3>Danh sách VĐV</h3>
         <table>
           <thead>
@@ -114,43 +139,69 @@ const TournamentRegistration = () => {
           </thead>
           <tbody>
             {competitors.map((comp, idx) => (
-              <tr key={idx}>
-                <td>{idx + 1}</td>
-                <td>
-                  <input
-                    type="text"
-                    value={comp.player_id}
-                    onChange={(e) => handlePlayerIdChange(idx, e.target.value)}
-                  />
-                </td>
-                <td>{comp.name}</td>
-                <td>
-                  <input
-                    type="text"
-                    value={comp.nick_name}
-                    onChange={(e) => handleCompetitorChange(idx, 'nick_name', e.target.value)}
-                  />
-                </td>
-                <td>{comp.phone}</td>
-                <td>
-                  <input
-                    type="text"
-                    value={comp.club}
-                    onChange={(e) => handleCompetitorChange(idx, 'club', e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="date"
-                    value={comp.selected_date}
-                    onChange={(e) => handleCompetitorChange(idx, 'selected_date', e.target.value)}
-                  />
-                </td>
-              </tr>
+              <>
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>
+                    <input
+                      type="text"
+                      value={comp.player_id}
+                      onChange={(e) => handlePlayerIdChange(idx, e.target.value)}
+                    />
+                    {comp.suggestion && comp.suggestion.length > 0 && (
+                      <ul className="autocomplete-list">
+                        {comp.suggestion.map((sug, i) => (
+                          <li
+                            key={i}
+                            onClick={() => handleSelectSuggestion(idx, sug)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {sug.id} - {sug.name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={comp.name}
+                      onChange={(e) => handleCompetitorChange(idx, 'name', e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={comp.nick_name}
+                      onChange={(e) => handleCompetitorChange(idx, 'nick_name', e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={comp.phone}
+                      onChange={(e) => handleCompetitorChange(idx, 'phone', e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={comp.club}
+                      onChange={(e) => handleCompetitorChange(idx, 'club', e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      value={comp.selected_date}
+                      onChange={(e) => handleCompetitorChange(idx, 'selected_date', e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </>
             ))}
           </tbody>
         </table>
-        <button onClick={handleAddCompetitor}>➕ Thêm VĐV</button>
 
         <div className="button-group">
           <button onClick={handleSubmit}>Gửi đăng ký</button>
