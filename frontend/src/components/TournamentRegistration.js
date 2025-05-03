@@ -20,6 +20,7 @@ const TournamentRegistration = () => {
   });
   const [playerSuggestions, setPlayerSuggestions] = useState([]);
   const [playerSearchText, setPlayerSearchText] = useState('');
+  const [error, setError] = useState('');
 
   // Load thông tin giải đấu
 //   useEffect(() => {
@@ -127,7 +128,8 @@ const TournamentRegistration = () => {
 
   return (
     <div className="tournament-registration">
-      <h2>Đăng ký giải đấu</h2>
+      <h2>Đăng ký thi đấu</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {tournament ? (
         <div className="tournament-info">
