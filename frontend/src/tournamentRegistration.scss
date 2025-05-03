@@ -75,4 +75,22 @@
         }
       }
     }
-  }
+    .autocomplete-list {
+        list-style: none;
+        padding: 0;
+        border: 1px solid #ccc;
+        max-height: 150px;
+        overflow-y: auto;
+        background: white;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        li {
+          padding: 8px 10px;
+          cursor: pointer;
+          &:hover {
+            background: #e6f5e6;
+          }
+        }
+    }
+}

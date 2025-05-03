@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import '../tournamentRegistration.scss';
 
 const TournamentRegistration = () => {
-  const { id: tournamentId } = useParams();
+  //const { id: tournamentId } = useParams();
+  const { id } = useParams();
 
   const [tournament, setTournament] = useState(null);
   const [registeredPhone, setRegisteredPhone] = useState('');
@@ -17,21 +18,37 @@ const TournamentRegistration = () => {
     club: '',
     selected_date: '',
   });
+  const [playerSuggestions, setPlayerSuggestions] = useState([]);
+  const [playerSearchText, setPlayerSearchText] = useState('');
 
   // Load thông tin giải đấu
-  useEffect(() => {
-    const fetchTournament = async () => {
-      try {
-        const res = await axios.get(`/api/tournaments/${tournamentId}`);
-        setTournament(res.data);
-      } catch (err) {
-        console.error(err);
-        setMessage('Lỗi khi tải thông tin giải đấu.');
-      }
-    };
+//   useEffect(() => {
+//     const fetchTournament = async () => {
+//       try {
+//         const res = await axios.get(`/api/tournaments/${tournamentId}`);
+//         setTournament(res.data);
+//       } catch (err) {
+//         console.error(err);
+//         setMessage('Lỗi khi tải thông tin giải đấu.');
+//       }
+//     };
 
-    fetchTournament();
-  }, [tournamentId]);
+//     fetchTournament();
+//   }, [tournamentId]);
+
+  const loadTournament = async () => {
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+        setTournament(res.data);
+        setLoading(false);
+    } catch (err) {
+        setError('Không tìm thấy giải đấu.');
+        setLoading(false);
+    }
+  };
+    useEffect(() => {
+        loadTournament();
+    }, [id]);
 
   // Thêm VĐV vào danh sách
   const handleAddCompetitor = (e) => {
@@ -67,7 +84,7 @@ const TournamentRegistration = () => {
   const handleRegisterSubmit = async () => {
     try {
       const res = await axios.post(`/api/registration_form`, {
-        tournament_id: tournamentId,
+        tournament_id: tournament.id,
         phone: registeredPhone,
         competitors,
       });
@@ -77,6 +94,35 @@ const TournamentRegistration = () => {
       console.error(err);
       setMessage('Lỗi khi gửi đăng ký.');
     }
+  };
+
+  const handlePlayerSearch = async (e) => {
+    const text = e.target.value;
+    setPlayerSearchText(text);
+  
+    if (text.length < 2) {
+      setPlayerSuggestions([]);
+      return;
+    }
+  
+    try {
+      const res = await axios.get(`/api/players/search?query=${text}`);
+      setPlayerSuggestions(res.data);
+    } catch (err) {
+      console.error('Lỗi khi tìm kiếm VĐV:', err);
+    }
+  };
+
+  const handleSelectSuggestion = (player) => {
+    setNewCompetitor({
+      name: player.name,
+      phone: player.phone,
+      nickname: player.nickname || '',
+      club: player.club || '',
+      selected_date: ''
+    });
+    setPlayerSearchText(player.id);
+    setPlayerSuggestions([]);
   };
 
   return (
@@ -101,7 +147,22 @@ const TournamentRegistration = () => {
           value={registeredPhone}
           onChange={(e) => setRegisteredPhone(e.target.value)}
         />
+        <input
+        type="text"
+        placeholder="ID VĐV (gõ vài ký tự)"
+        value={playerSearchText}
+        onChange={handlePlayerSearch}
+        />
 
+        {playerSuggestions.length > 0 && (
+        <ul className="autocomplete-list">
+            {playerSuggestions.map((p) => (
+            <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                #{p.id} - {p.name} ({p.phone})
+            </li>
+            ))}
+        </ul>
+        )}
         <input
           type="text"
           placeholder="Tên vận động viên"

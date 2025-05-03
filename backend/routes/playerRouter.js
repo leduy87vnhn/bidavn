@@ -74,4 +74,26 @@ router.post('/import', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const query = req.query.query;
+  
+    if (!query || query.trim() === '') {
+      return res.status(400).json({ message: 'Thiếu từ khoá tìm kiếm' });
+    }
+  
+    try {
+      const result = await client.query(`
+        SELECT id, name, phone, nickname, club
+        FROM players
+        WHERE CAST(id AS TEXT) ILIKE $1 OR name ILIKE $1
+        LIMIT 10
+      `, [`%${query}%`]);
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Lỗi tìm kiếm VĐV:', err);
+      res.status(500).json({ message: 'Lỗi server khi tìm kiếm VĐV' });
+    }
+  });
+
 module.exports = router;
