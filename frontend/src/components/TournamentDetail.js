@@ -1,3 +1,5 @@
+// File: TournamentDetail.js
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaEdit, FaCamera, FaArrowLeft } from 'react-icons/fa';
@@ -71,7 +73,6 @@ const TournamentDetail = () => {
             alert('✅ Cập nhật hình nền thành công');
             await loadTournament();
         } catch (err) {
-            console.error('❌ Lỗi khi cập nhật hình nền:', err.message);
             alert('❌ Lỗi khi cập nhật hình nền');
         } finally {
             setUploading(false);
@@ -136,13 +137,18 @@ const TournamentDetail = () => {
                     onChange={e => setFormData({ ...formData, [key]: e.target.value })}
                 />
             ) : (
-                <input style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })} />
+                <input
+                    type={key.includes('date') ? 'date' : key.includes('price') || key.includes('per_day') ? 'number' : 'text'}
+                    style={inputStyle}
+                    value={formData[key]?.slice?.(0, 10) || formData[key] || ''}
+                    onChange={e => setFormData({ ...formData, [key]: e.target.value })}
+                />
             )
         ) : (
             <div style={scrollable ? scrollableStyle : readOnlyStyle}>
                 {key === 'attendance_price'
                     ? formatCurrency(tournament[key])
-                    : (tournament[key] || '')}
+                    : key.includes('date') ? formatDate(tournament[key]) : (tournament[key] || '')}
             </div>
         )
     );
@@ -192,18 +198,10 @@ const TournamentDetail = () => {
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày bắt đầu:</strong><br />{isEditing ? (
-                            <input style={inputStyle} type="date" value={formData.start_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, start_date: e.target.value })} />
-                        ) : (
-                            <input style={readOnlyStyle} value={formatDate(tournament.start_date)} readOnly />
-                        )}</p>
+                        <p><strong>Ngày bắt đầu:</strong><br />{getInput('start_date')}</p>
                     </div>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày kết thúc:</strong><br />{isEditing ? (
-                            <input style={inputStyle} type="date" value={formData.end_date?.slice(0, 10)} onChange={e => setFormData({ ...formData, end_date: e.target.value })} />
-                        ) : (
-                            <input style={readOnlyStyle} value={formatDate(tournament.end_date)} readOnly />
-                        )}</p>
+                        <p><strong>Ngày kết thúc:</strong><br />{getInput('end_date')}</p>
                     </div>
                 </div>
 
@@ -214,38 +212,14 @@ const TournamentDetail = () => {
 
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày chọn thi đấu từ:</strong><br />{isEditing ? (
-                            <input style={inputStyle} type="date" value={formData.registerable_date_start?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_start: e.target.value })} />
-                        ) : (
-                            <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_start)} readOnly />
-                        )}</p>
+                        <p><strong>Ngày chọn thi đấu từ:</strong><br />{getInput('registerable_date_start')}</p>
                     </div>
                     <div style={{ flex: 1 }}>
-                        <p><strong>Ngày chọn thi đấu đến:</strong><br />{isEditing ? (
-                            <input style={inputStyle} type="date" value={formData.registerable_date_end?.slice(0, 10)} onChange={e => setFormData({ ...formData, registerable_date_end: e.target.value })} />
-                        ) : (
-                            <input style={readOnlyStyle} value={formatDate(tournament.registerable_date_end)} readOnly />
-                        )}</p>
+                        <p><strong>Ngày chọn thi đấu đến:</strong><br />{getInput('registerable_date_end')}</p>
                     </div>
                 </div>
 
-                <p><strong>Số vận động viên thi mỗi ngày:</strong><br />
-                    {isEditing ? (
-                        <input
-                            style={inputStyle}
-                            type="number"
-                            value={formData.competitor_per_day || ''}
-                            onChange={e => setFormData({ ...formData, competitor_per_day: e.target.value })}
-                        />
-                    ) : (
-                        <input
-                            style={readOnlyStyle}
-                            value={tournament.competitor_per_day || ''}
-                            readOnly
-                        />
-                    )}
-                </p>
-
+                <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitor_per_day')}</p>
                 <p><strong>Mô tả:</strong><br />{getInput('description', true, 5, true)}</p>
 
                 {user?.user_type === 2 && (
@@ -286,9 +260,15 @@ const TournamentDetail = () => {
                 )}
 
                 <div style={{ marginTop: 30 }}>
-                    <button style={primaryButtonStyle} onClick={() => alert("Chức năng đăng ký VĐV chưa triển khai")}>Đăng ký thi đấu</button>
+                    <button
+                        style={primaryButtonStyle}
+                        onClick={() => navigate(`/tournament/${tournament.id}/register`)}
+                    >
+                        Đăng ký thi đấu
+                    </button>
                     <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}><FaArrowLeft /> Quay lại danh sách</button>
                 </div>
+
                 <p style={{ marginTop: '10px' }}>
                     <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
                         Xem danh sách VĐV hiện có

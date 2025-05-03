@@ -296,6 +296,7 @@ const TournamentList = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cơ cấu giải</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Đăng ký</th>
                                     {user?.user_type === 2 && (
                                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
                                     )}
@@ -323,6 +324,21 @@ const TournamentList = () => {
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.location}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.prize}</td>
+                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                                <button
+                                                    style={{
+                                                    padding: '5px 10px',
+                                                    backgroundColor: '#28a745',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '5px',
+                                                    cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => navigate(`/tournament/${tour.id}/register`)}
+                                                >
+                                                    Đăng ký
+                                                </button>
+                                            </td>
                                             {user?.user_type === 2 && (
                                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                     <button
