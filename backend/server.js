@@ -32,6 +32,7 @@ app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
 app.use('/api/registration-form', registrationRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 console.log("Server starting...");
 
