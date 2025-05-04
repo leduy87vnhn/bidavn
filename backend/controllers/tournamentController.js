@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+const client = require('../config/db');
 
 // Upload background image
 exports.uploadBackground = async (req, res) => {
@@ -12,7 +12,7 @@ exports.uploadBackground = async (req, res) => {
     try {
         const fileName = file.filename;
 
-        await pool.query(
+        await client.query(
             'UPDATE tournaments SET background_image = $1 WHERE id = $2',
             [fileName, tournamentId]
         );
