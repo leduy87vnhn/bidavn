@@ -45,4 +45,7 @@ const getTournamentById = async (req, res) => {
     }
   };
   
-  module.exports = { getTournamentById };
+  module.exports = {
+    getTournamentById,
+    uploadBackground
+  };
