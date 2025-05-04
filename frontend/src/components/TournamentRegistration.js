@@ -148,14 +148,14 @@ const TournamentRegistration = () => {
 
   const handleRegisterSubmit = async () => {
     try {
-      const res = await axios.post(`/api/registration_form`, {
+      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournament.id,
         registered_phone: registeredPhone,
         user_id: user?.id,
       });
       const registration_form_id = res.data.id;
       for (const competitor of competitors) {
-        await axios.post(`/api/registration_form/competitors`, {
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
           registration_form_id,
           name: competitor.name,
           phone: competitor.phone,

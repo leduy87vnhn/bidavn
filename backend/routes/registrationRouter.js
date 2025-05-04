@@ -41,7 +41,7 @@ router.post('/competitors', async (req, res) => {
 
       player_id = nextId;
       await client.query(
-        `INSERT INTO players (id, name, phone_number) VALUES ($1, $2, $3)`,
+        `INSERT INTO players (id, name, phone) VALUES ($1, $2, $3)`,
         [player_id, name, phone]
       );
     }
