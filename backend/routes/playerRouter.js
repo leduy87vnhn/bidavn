@@ -83,7 +83,7 @@ router.get('/search', async (req, res) => {
   
     try {
       const result = await client.query(`
-        SELECT id, name, phone, nickname, club
+        SELECT id, name, phone
         FROM players
         WHERE CAST(id AS TEXT) ILIKE $1 OR name ILIKE $1
         LIMIT 10
