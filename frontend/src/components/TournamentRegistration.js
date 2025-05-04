@@ -80,20 +80,37 @@ const TournamentRegistration = () => {
     }
   }, [tournamentId, registrationId]);
 
-  const handlePlayerSearch = async (e) => {
-    const text = e.target.value;
-    setPlayerSearchText(text);
-    if (text.length < 2) {
-      setPlayerSuggestions([]);
-      return;
-    }
-    try {
-      const res = await axios.get(`/api/players/search?query=${text}`);
-      setPlayerSuggestions(res.data);
-    } catch (err) {
-      console.error('Lỗi tìm kiếm VĐV:', err);
-    }
-  };
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (playerSearchText.length < 2) {
+        setPlayerSuggestions([]);
+        return;
+      }
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${playerSearchText}`);
+        setPlayerSuggestions(res.data);
+      } catch (err) {
+        console.error('Lỗi tìm kiếm VĐV:', err);
+      }
+    }, 300); // debounce 300ms
+  
+    return () => clearTimeout(delayDebounce);
+  }, [playerSearchText]);
+
+  // const handlePlayerSearch = async (e) => {
+  //   const text = e.target.value;
+  //   setPlayerSearchText(text);
+  //   if (text.length < 2) {
+  //     setPlayerSuggestions([]);
+  //     return;
+  //   }
+  //   try {
+  //     const res = await axios.get(`/api/players/search?query=${text}`);
+  //     setPlayerSuggestions(res.data);
+  //   } catch (err) {
+  //     console.error('Lỗi tìm kiếm VĐV:', err);
+  //   }
+  // };
 
   const handleSelectSuggestion = (player) => {
     setNewCompetitor({
@@ -203,7 +220,12 @@ const TournamentRegistration = () => {
 
         <form onSubmit={handleAddCompetitor}>
           <input type="text" placeholder="Số điện thoại người đăng ký" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
-          <input type="text" placeholder="ID VĐV (gõ vài ký tự)" value={playerSearchText} onChange={handlePlayerSearch} />
+          <input
+            type="text"
+            placeholder="ID VĐV (gõ vài ký tự)"
+            value={playerSearchText}
+            onChange={(e) => setPlayerSearchText(e.target.value)}
+          />
           {playerSuggestions.length > 0 && (
             <ul className="autocomplete-list">
               {playerSuggestions.map((p) => (
@@ -250,7 +272,9 @@ const TournamentRegistration = () => {
                 ))}
               </tbody>
             </table>
-            <button onClick={handleRegisterSubmit} style={{ marginTop: '20px' }}>📤 Gửi đăng ký</button>
+            <button type="button" onClick={handleRegisterSubmit} style={{ marginTop: '20px' }}>
+              📤 Gửi đăng ký
+            </button>
           </>
         )}
       </div>
