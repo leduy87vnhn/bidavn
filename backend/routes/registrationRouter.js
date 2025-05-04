@@ -103,7 +103,7 @@ router.get('/search-player', async (req, res) => {
   const keyword = req.query.q;
   try {
     const result = await client.query(
-      `SELECT id, name, phone_number FROM players WHERE id ILIKE $1 OR name ILIKE $1 LIMIT 10`,
+      `SELECT id, name, phone FROM players WHERE id ILIKE $1 OR name ILIKE $1 LIMIT 10`,
       [`%${keyword}%`]
     );
     res.json(result.rows);
@@ -178,7 +178,7 @@ router.get('/:id/competitors', async (req, res) => {
   }
 });
 
-// GET /api/registration-form/:id
+// GET /api/registration_form/:id
 // ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
 router.get('/:id', async (req, res) => {
   const { id } = req.params;

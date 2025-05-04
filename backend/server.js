@@ -34,7 +34,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
-app.use('/api/registration-form', registrationRouter);
+app.use('/api/registration_form', registrationRouter);
 app.use('/api/registrations', registrationRouter); // dùng cho màn hình admin xem danh sách đơn đăng ký
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

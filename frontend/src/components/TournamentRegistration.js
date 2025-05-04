@@ -48,7 +48,7 @@ const TournamentRegistration = () => {
 
   const loadRegistrationInfo = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration-form/${registrationId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${registrationId}`);
       setRegisteredPhone(res.data.registered_phone);
       setStatus(res.data.status);
     } catch (err) {
@@ -58,7 +58,7 @@ const TournamentRegistration = () => {
 
   const loadCompetitorList = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration-form/${registrationId}/competitors`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${registrationId}/competitors`);
       const formatted = res.data.map(c => ({
         name: c.name,
         phone: c.phone_number,
@@ -174,7 +174,7 @@ const TournamentRegistration = () => {
 
   const handleApproval = async (newStatus) => {
     try {
-      await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/api/registration-form/${registrationId}/approve`, { status: newStatus });
+      await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${registrationId}/approve`, { status: newStatus });
       setStatus(newStatus);
       alert('✅ Đã cập nhật trạng thái.');
     } catch (err) {
