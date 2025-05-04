@@ -3,18 +3,18 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const AdminRegistrationList = () => {
-  const [filters, setFilters] = useState({
-    tournament: defaultTournament,
-    phone: '',
-    user_name: '',
-    club: ''
-  });
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const defaultTournament = queryParams.get('tournament'); // hoặc đặt tên là tournamentFilter
 
+  const [filters, setFilters] = useState({
+    tournament: defaultTournament,
+    phone: '',
+    user_name: '',
+    club: ''
+  });
   const fetchData = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registrations`, {
