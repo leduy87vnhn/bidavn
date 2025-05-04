@@ -3,7 +3,7 @@ const router = express.Router();
 const client = require('../config/db');
 const multer = require('multer');
 const path = require('path');
-const tournamentController = require('../controllers/tournament.controller');
+const tournamentController = require('../controllers/tournamentController');
 
 // Configure multer
 const storage = multer.diskStorage({
