@@ -220,7 +220,7 @@ const TournamentDetail = () => {
                 </div>
 
                 <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitor_per_day')}</p>
-                <p><strong>Mô tả:</strong><br />{getInput('description', true, 5, true)}</p>
+                <p><strong>Mô tả:</strong><br />{getInput('description', true, 10, true)}</p>
 
                 {user?.user_type === 2 && (
                     <>
@@ -266,7 +266,23 @@ const TournamentDetail = () => {
                     >
                         Đăng ký thi đấu
                     </button>
-                    <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}><FaArrowLeft /> Quay lại danh sách</button>
+
+                    {/* ✅ See list of registration forms */}
+                    <button
+                        style={{ ...primaryButtonStyle, marginLeft: 10 }}
+                        onClick={() =>
+                            navigate(`/registrations?tournament=${encodeURIComponent(tournament?.name || '')}`)
+                        }
+                    >
+                        Xem Đăng Ký
+                    </button>
+
+                    <button
+                        style={secondaryButtonStyle}
+                        onClick={() => navigate('/tournaments')}
+                    >
+                        <FaArrowLeft /> Quay lại danh sách
+                    </button>
                 </div>
 
                 <p style={{ marginTop: '10px' }}>

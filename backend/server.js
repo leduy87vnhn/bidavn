@@ -7,6 +7,7 @@ const cors = require('cors');
 const playerRouter = require('./routes/playerRouter');
 const registrationRouter = require('./routes/registrationRouter');
 
+
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/tournaments', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
 app.use('/api/registration-form', registrationRouter);
+app.use('/api/registrations', registrationRouter); // dùng cho màn hình admin xem danh sách đơn đăng ký
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 console.log("Server starting...");

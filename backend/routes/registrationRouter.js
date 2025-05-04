@@ -113,4 +113,89 @@ router.get('/search-player', async (req, res) => {
   }
 });
 
+// 6. Danh sách đơn đăng ký (dành cho admin)
+router.get('/', async (req, res) => {
+  const { tournament, phone, user_name, club } = req.query;
+
+  try {
+    const result = await client.query(
+      `
+      SELECT 
+        rf.id AS registration_id,
+        t.name AS tournament_name,
+        rf.registered_phone,
+        u.name AS user_name,
+        rf.status,
+        (
+          SELECT c.club
+          FROM competitors c
+          WHERE c.registration_form_id = rf.id
+          LIMIT 1
+        ) AS club,
+        (
+          SELECT STRING_AGG(c.nick_name, ', ')
+          FROM competitors c
+          WHERE c.registration_form_id = rf.id
+        ) AS athlete_names
+      FROM registration_form rf
+      JOIN tournaments t ON rf.tournament_id = t.id
+      JOIN users u ON rf.user_id = u.id
+      WHERE
+        ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%')) AND
+        ($2::text IS NULL OR LOWER(rf.registered_phone) LIKE LOWER('%' || $2 || '%')) AND
+        ($3::text IS NULL OR LOWER(u.name) LIKE LOWER('%' || $3 || '%')) AND
+        ($4::text IS NULL OR EXISTS (
+          SELECT 1 FROM competitors c
+          WHERE c.registration_form_id = rf.id AND LOWER(c.club) LIKE LOWER('%' || $4 || '%')
+        ))
+      ORDER BY rf.id DESC
+      `,
+      [tournament || null, phone || null, user_name || null, club || null]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching registrations:', err);
+    res.status(500).json({ message: 'Lỗi server khi lấy danh sách đăng ký.' });
+  }
+});
+
+// GET danh sách VĐV theo registration_id
+router.get('/:id/competitors', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await client.query(`
+      SELECT c.*, p.name, p.phone_number
+      FROM competitors c
+      JOIN players p ON c.player_id = p.id
+      WHERE c.registration_form_id = $1
+    `, [id]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error loading competitors:', err);
+    res.status(500).json({ message: 'Lỗi khi tải danh sách VĐV' });
+  }
+});
+
+// GET /api/registration-form/:id
+// ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await client.query(
+      `SELECT * FROM registration_form WHERE id = $1`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy bản đăng ký' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching registration form:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 module.exports = router;
