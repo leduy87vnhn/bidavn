@@ -23,6 +23,8 @@ const corsOptions = {
   },
   credentials: false
 };
+// Serve React frontend from backend
+const path = require('path');
 app.use(cors(corsOptions));
 app.options('*', cors());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -40,8 +42,6 @@ app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${port}`);
 });
 
-// Serve React frontend from backend
-const path = require('path');
 
 app.use(express.static(path.join(__dirname, '../frontend/build'))); // đường dẫn build frontend
 
