@@ -1,7 +1,7 @@
 const client = require('../config/db');
 
 // Upload background image
-exports.uploadBackground = async (req, res) => {
+const uploadBackground = async (req, res) => {
     const tournamentId = req.params.id;
     const file = req.file;
 
