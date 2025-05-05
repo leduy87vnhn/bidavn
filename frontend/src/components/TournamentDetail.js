@@ -140,7 +140,11 @@ const TournamentDetail = () => {
                 <input
                     type={key.includes('date') ? 'date' : key.includes('price') || key.includes('per_day') ? 'number' : 'text'}
                     style={inputStyle}
-                    value={formData[key]?.slice?.(0, 10) || formData[key] || ''}
+                    value={
+                        key.includes('date') 
+                            ? (formData[key]?.slice?.(0, 10) || '') 
+                            : (formData[key] || '')
+                    }
                     onChange={e => setFormData({ ...formData, [key]: e.target.value })}
                 />
             )
