@@ -147,6 +147,8 @@ const TournamentRegistration = () => {
   };
 
   const handleRegisterSubmit = async () => {
+    console.log('📤 Đăng ký với:', { tournamentId: tournament.id, registeredPhone, userId: user?.id });
+    console.log('👤 Danh sách VĐV:', competitors);
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournament.id,
@@ -155,6 +157,9 @@ const TournamentRegistration = () => {
       });
       const registration_form_id = res.data.id;
       for (const competitor of competitors) {
+        if (!competitor.selected_date || !competitor.name || !competitor.phone) {
+          console.error('🚫 Dữ liệu thiếu:', competitor);
+        }
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
           registration_form_id,
           name: competitor.name,

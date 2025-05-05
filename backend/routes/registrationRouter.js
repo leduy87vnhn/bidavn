@@ -33,6 +33,9 @@ router.post('/competitors', async (req, res) => {
       const result = await client.query("SELECT id FROM players WHERE id LIKE $1 ORDER BY id DESC LIMIT 1", [`${prefix}%`]);
 
       let nextId = prefix + '10001';
+      console.log('🚀 Competitor Received:', {
+        registration_form_id, player_id, nick_name, club, selected_date, name, phone
+      });
       if (result.rows.length > 0) {
         const lastId = result.rows[0].id;
         const number = parseInt(lastId.slice(prefix.length)) + 1;
@@ -53,8 +56,9 @@ router.post('/competitors', async (req, res) => {
     );
     res.json({ message: 'Success' });
   } catch (err) {
-    console.error('Error inserting competitor:', err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('❌ Lỗi khi thêm competitor:', err.message);
+    console.error(err.stack);
+    res.status(500).json({ message: 'Server error', detail: err.message });
   }
 });
 
