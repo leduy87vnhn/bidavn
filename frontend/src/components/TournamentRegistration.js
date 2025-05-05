@@ -212,17 +212,20 @@ const TournamentRegistration = () => {
         {tournament && (
           <div className="tournament-info">
             <p><strong>Tên giải:</strong> {tournament.name}</p>
-            <p><strong>Thời gian:</strong> {tournament.start_date} → {tournament.end_date}</p>
+            <p>
+              <strong>Thời gian:</strong>{' '}
+              {tournament.start_date?.slice(0, 10)} → {tournament.end_date?.slice(0, 10)}
+            </p>
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
           </div>
         )}
 
         <form onSubmit={handleAddCompetitor}>
-          <input type="text" placeholder="Số điện thoại người đăng ký" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
+          <input type="text" placeholder="Số điện thoại người đăng ký (*)" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
           <input
             type="text"
-            placeholder="ID VĐV (gõ vài ký tự)"
+            placeholder="ID VĐV (*) (gõ vài ký tự đầu để được gợi ý)"
             value={playerSearchText}
             onChange={(e) => setPlayerSearchText(e.target.value)}
           />
@@ -235,10 +238,10 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
-          <input type="text" placeholder="Tên VĐV" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
-          <input type="text" placeholder="SĐT VĐV" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
+          <input type="text" placeholder="Tên VĐV (*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
+          <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
-          <input type="text" placeholder="Câu lạc bộ" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
+          <input type="text" placeholder="Câu lạc bộ (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
           <input type="date" value={newCompetitor.selected_date} onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })} />
           <button type="submit">➕ Thêm vận động viên</button>
           {message && <div className={message.includes('Lỗi') ? 'error-message' : 'success-message'}>{message}</div>}

@@ -7,7 +7,7 @@ const client = require('../config/db'); // giả sử bạn đã có client kế
 // 1. Tạo bản đăng ký mới
 router.post('/', async (req, res) => {
   const { user_id, registered_phone, tournament_id } = req.body;
-  const now = new Date();
+  const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   try {
     const result = await client.query(
