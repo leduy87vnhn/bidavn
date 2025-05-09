@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlayerList from './components/PlayerList';
 import TournamentRegistration from './components/TournamentRegistration'; // đường dẫn tới file bạn đã tạo
 import AdminRegistrationList from './components/AdminRegistrationList';
+import RegistrationDetail from './components/RegistrationDetail';
+
 
 export default function App() {
   return (
