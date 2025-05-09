@@ -83,7 +83,7 @@ const AdminRegistrationList = () => {
               <td>{row.club}</td>
               <td>{row.athlete_names}</td>
               <td>
-                <button onClick={() => navigate(`/tournament/${row.registration_id}/register`)}>
+                <button onClick={() => navigate(`/registration/${row.registration_id}/detail`)}>
                   Xem
                 </button>
               </td>

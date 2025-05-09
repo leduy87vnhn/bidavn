@@ -202,5 +202,50 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// ✅ Cập nhật danh sách competitors theo registration_form_id
+router.post('/:id/update-competitors', async (req, res) => {
+  const { id } = req.params;
+  const { competitors } = req.body;
+
+  if (!Array.isArray(competitors)) {
+    return res.status(400).json({ message: 'Danh sách competitors không hợp lệ' });
+  }
+
+  const client = require('../config/db'); // Đảm bảo đã khai báo
+
+  const clientConnection = await client.connect();
+
+  try {
+    await clientConnection.query('BEGIN');
+
+    // Xoá toàn bộ VĐV cũ
+    await clientConnection.query(
+      `DELETE FROM competitors WHERE registration_form_id = $1`,
+      [id]
+    );
+
+    // Thêm lại từng VĐV mới
+    for (const c of competitors) {
+      if (!c.player_id || !c.selected_date) {
+        throw new Error('Thiếu thông tin bắt buộc: player_id hoặc selected_date');
+      }
+
+      await clientConnection.query(
+        `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [id, c.player_id, c.nick_name || '', c.club || '', c.selected_date]
+      );
+    }
+
+    await clientConnection.query('COMMIT');
+    res.json({ message: 'Cập nhật thành công' });
+  } catch (err) {
+    await clientConnection.query('ROLLBACK');
+    console.error('❌ Lỗi khi cập nhật competitors:', err);
+    res.status(500).json({ message: 'Lỗi server', detail: err.message });
+  } finally {
+    clientConnection.release();
+  }
+});
 
 module.exports = router;

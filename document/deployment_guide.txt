@@ -43,3 +43,4 @@ sudo pm2 serve build 3000 --name billard-frontend --spa
 Show log:
 sudo pm2 logs backend-server
 sudo pm2 logs billard-frontend
+sudo pm2 flush
