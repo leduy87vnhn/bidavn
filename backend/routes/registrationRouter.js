@@ -170,7 +170,7 @@ router.get('/:id/competitors', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await client.query(`
-      SELECT c.*, p.name, p.phone_number
+      SELECT c.*, p.name, p.phone
       FROM competitors c
       JOIN players p ON c.player_id = p.id
       WHERE c.registration_form_id = $1
