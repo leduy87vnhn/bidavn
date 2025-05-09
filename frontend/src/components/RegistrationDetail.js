@@ -115,9 +115,9 @@ const RegistrationDetail = () => {
     <h2 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
     Chi tiết đơn đăng ký #{id}
     <span style={getStatusStyle()}>
-        {String(row.status) === '0' && 'Chờ duyệt'}
-        {String(row.status) === '1' && 'Đã duyệt'}
-        {String(row.status) === '2' && 'Đã huỷ'}
+        {String(status) === '0' && 'Chờ duyệt'}
+        {String(status) === '1' && 'Đã duyệt'}
+        {String(status) === '2' && 'Đã huỷ'}
     </span>
     </h2>
 
@@ -193,9 +193,9 @@ const RegistrationDetail = () => {
 
       <div style={{ marginTop: 20 }}>
         <strong>Trạng thái: </strong>
-        {String(row.status) === '0' && 'Chờ duyệt'}
-        {String(row.status) === '1' && 'Đã duyệt'}
-        {String(row.status) === '2' && 'Đã huỷ'}
+        {String(status) === '0' && 'Chờ duyệt'}
+        {String(status) === '1' && 'Đã duyệt'}
+        {String(status) === '2' && 'Đã huỷ'}
 
         {user?.user_type === 2 ? (
           <div style={{ marginTop: 10 }}>
