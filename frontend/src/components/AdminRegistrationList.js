@@ -76,9 +76,9 @@ const AdminRegistrationList = () => {
               <td>{row.registered_phone}</td>
               <td>{row.user_name}</td>
               <td>
-                {row.status === 0 && 'Chờ duyệt'}
-                {row.status === 1 && 'Đã duyệt'}
-                {row.status === 2 && 'Đã huỷ'}
+                {String(row.status) === '0' && 'Chờ duyệt'}
+                {String(row.status) === '1' && 'Đã duyệt'}
+                {String(row.status) === '2' && 'Đã huỷ'}
               </td>
               <td>{row.club}</td>
               <td>{row.athlete_names}</td>
