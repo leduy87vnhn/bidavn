@@ -12,6 +12,21 @@ const RegistrationDetail = () => {
   const [status, setStatus] = useState(0);
   const [tournament, setTournament] = useState(null);
 
+  const buttonStyle = {
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '6px',
+    padding: '8px 14px',
+    cursor: 'pointer'
+  };
+  
+  const grayButton = {
+    ...buttonStyle,
+    backgroundColor: '#ccc',
+    cursor: 'not-allowed'
+  };
+
   const loadCompetitors = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${id}/competitors`);
@@ -84,9 +99,27 @@ const RegistrationDetail = () => {
     }
   };
 
+  const getStatusStyle = () => {
+    switch (status) {
+      case 1:
+        return { backgroundColor: '#d0ecff', color: '#0056b3', padding: '6px 12px', borderRadius: '6px' };
+      case 2:
+        return { backgroundColor: '#ccc', color: '#000', padding: '6px 12px', borderRadius: '6px' };
+      default:
+        return { backgroundColor: '#ffe0b3', color: '#cc7000', padding: '6px 12px', borderRadius: '6px' };
+    }
+  };
+
   return (
     <div style={{ padding: 30 }}>
-      <h2>Chi tiết đơn đăng ký #{id}</h2>
+    <h2 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    Chi tiết đơn đăng ký #{id}
+    <span style={getStatusStyle()}>
+        {status === 0 && 'Chờ duyệt'}
+        {status === 1 && 'Đã duyệt'}
+        {status === 2 && 'Đã huỷ'}
+    </span>
+    </h2>
 
       {tournament && (
         <div style={{ backgroundColor: '#e6ffe6', padding: 15, borderRadius: 8, marginBottom: 20 }}>
@@ -144,16 +177,16 @@ const RegistrationDetail = () => {
         {user?.user_type === 2 ? (
           isEditing ? (
             <>
-              <button onClick={handleSave}>💾 Lưu</button>
+              <button onClick={handleSave} style={buttonStyle}>💾 Lưu</button>
               <button onClick={handleCancelEdit} style={{ marginLeft: 10 }}>↩️ Huỷ</button>
             </>
           ) : (
-            <button onClick={() => setIsEditing(true)}>✏️ Chỉnh sửa</button>
+            <button onClick={() => setIsEditing(true)} style={buttonStyle}>✏️ Chỉnh sửa</button>
           )
         ) : (
           <>
-            <button disabled style={{ backgroundColor: '#ccc' }}>Chỉnh sửa</button>
-            <button disabled style={{ backgroundColor: '#ccc', marginLeft: 10 }}>Lưu</button>
+            <button disabled style={grayButton}>Chỉnh sửa</button>
+            <button disabled style={{ ...grayButton, marginLeft: 10 }}>Lưu</button>
           </>
         )}
       </div>
@@ -166,13 +199,13 @@ const RegistrationDetail = () => {
 
         {user?.user_type === 2 ? (
           <div style={{ marginTop: 10 }}>
-            <button onClick={() => handleApproval(1)} style={{ marginRight: 10 }}>✔️ Phê duyệt</button>
-            <button onClick={() => handleApproval(2)}>❌ Từ chối</button>
+            <button onClick={() => handleApproval(1)} style={buttonStyle}>✔️ Phê duyệt</button>
+            <button onClick={() => handleApproval(2)} style={{ ...buttonStyle, backgroundColor: '#dc3545', marginLeft: 10 }}>❌ Từ chối</button>
           </div>
         ) : (
           <div style={{ marginTop: 10 }}>
-            <button disabled style={{ backgroundColor: '#ccc' }}>Phê duyệt</button>
-            <button disabled style={{ backgroundColor: '#ccc', marginLeft: 10 }}>Từ chối</button>
+            <button disabled style={grayButton}>Phê duyệt</button>
+            <button disabled style={{ ...grayButton, marginLeft: 10 }}>Từ chối</button>
           </div>
         )}
       </div>
