@@ -66,8 +66,8 @@ router.post('/competitors', async (req, res) => {
 router.patch('/:id/approve', async (req, res) => {
   const id = req.params.id;
   const { status } = req.body;
-  const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
+  //const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const now = new Date();
 
   if (![1, 2].includes(status)) {
     return res.status(400).json({ message: 'Invalid status' });
