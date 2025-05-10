@@ -338,11 +338,11 @@ router.get('/slots', async (req, res) => {
 
     const usedMap = {};
     compRes.rows.forEach(row => {
-      if (row.selected_date) {
-        const dateStr = row.selected_date.toISOString
-          ? row.selected_date.toISOString().slice(0, 10)
-          : row.selected_date.toString().slice(0, 10);
+      try {
+        const dateStr = new Date(row.selected_date).toISOString().slice(0, 10);
         usedMap[dateStr] = parseInt(row.count);
+      } catch (e) {
+        console.error('⚠️ Lỗi khi xử lý ngày:', row.selected_date, e.message);
       }
     });
 
