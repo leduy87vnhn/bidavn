@@ -81,7 +81,8 @@ router.put('/:id', async (req, res) => {
         prize,
         registerable_date_start,
         registerable_date_end,
-        description
+        description,
+        competitor_per_day
       } = req.body;
 
     try {
@@ -97,13 +98,14 @@ router.put('/:id', async (req, res) => {
                 prize = $8,
                 registerable_date_start = $9,
                 registerable_date_end = $10,
-                description = $11
-            WHERE id = $12
+                description = $11,
+                competitor_per_day = $12
+            WHERE id = $13
         `;
         await client.query(query, [
             name, code, attendance_price, start_date, end_date,
             location, content, prize, registerable_date_start,
-            registerable_date_end, description, id
+            registerable_date_end, description, competitor_per_day, id
         ]);
         res.json({ message: 'Cập nhật thành công.' });
     } catch (error) {
