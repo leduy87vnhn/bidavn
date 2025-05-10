@@ -57,32 +57,11 @@ const TournamentRegistration = () => {
       const end = res.data.registerable_date_end ? new Date(res.data.registerable_date_end) : null;
 
       if (start && end && start <= end) {
-        await loadAvailableSlots(res.data.id);
-        const formatDate = (d) => {
-          const day = String(d.getDate()).padStart(2, '0');
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          const year = d.getFullYear();
-          return `${year}-${month}-${day}`; // dùng làm value để gửi đi
-        };
-
-        const formatDisplayDate = (d) => {
-          const day = String(d.getDate()).padStart(2, '0');
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          const year = d.getFullYear();
-          return `${day}/${month}/${year}`; // dùng để hiển thị
-        };
-
-        const dates = [];
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          const raw = new Date(d); // tránh reference bị thay đổi
-          dates.push({
-            value: formatDate(raw),
-            display: formatDisplayDate(raw)
-          });
-        }
-        setAvailableDates(dates);
+        // ✅ Gọi API đã tính sẵn remaining
+        const slotRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${res.data.id}`);
+        setAvailableDates(slotRes.data.available_dates || []);
       } else {
-        setAvailableDates([]); // Không có ngày nào hợp lệ
+        setAvailableDates([]);
         setNewCompetitor(prev => ({ ...prev, selected_date: '' }));
       }
     } catch {
