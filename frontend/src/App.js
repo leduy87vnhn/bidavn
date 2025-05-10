@@ -23,6 +23,7 @@ export default function App() {
         <Route path="/admin/registrations" element={<AdminRegistrationList />} />
         <Route path="/registrations" element={<AdminRegistrationList />} />
         <Route path="/registration/:id/detail" element={<RegistrationDetail />} />
+        <Route path="/tournament/:id/competitors" element={<TournamentCompetitorList />} />
 
 
         {/* Route bảo vệ: chỉ vào nếu đã login */}

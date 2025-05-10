@@ -43,6 +43,27 @@ router.post('/competitors', async (req, res) => {
   }
 });
 
+// GET all competitors of a tournament
+router.get('/by-tournament/:tournamentId', async (req, res) => {
+  const { tournamentId } = req.params;
+  try {
+    const result = await client.query(`
+      SELECT c.id, c.nick_name, c.club, c.selected_date,
+             p.name, p.phone,
+             rf.status
+      FROM competitors c
+      JOIN players p ON c.player_id = p.id
+      JOIN registration_form rf ON c.registration_form_id = rf.id
+      WHERE rf.tournament_id = $1
+      ORDER BY rf.status ASC, c.selected_date ASC
+    `, [tournamentId]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Lỗi khi lấy competitors theo tournament:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // 3. Phê duyệt hoặc từ chối đăng ký
 router.patch('/:id/approve', async (req, res) => {
   const id = req.params.id;
