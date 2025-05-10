@@ -223,7 +223,7 @@ const TournamentDetail = () => {
                     </div>
                 </div>
 
-                <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitor_per_day')}</p>
+                <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitors_per_day')}</p>
                 <p><strong>Mô tả:</strong><br />{getInput('description', true, 10, true)}</p>
 
                 {user?.user_type === 2 && (
