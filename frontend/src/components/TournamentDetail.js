@@ -42,18 +42,18 @@ const TournamentDetail = () => {
     ];
 
     const loadTournament = async () => {
-    try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
-        setTournament(res.data);
-        setBackgroundImage(res.data.background_image);
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+            setTournament(res.data);
+            setBackgroundImage(res.data.background_image);
 
-        // Gọi API lấy available_dates kèm remaining slot
-        await loadAvailableSlots(res.data.id);
+            // Gọi API lấy available_dates kèm remaining slot
+            await loadAvailableSlots(res.data.id);
 
-    } catch (err) {
-        console.error('Lỗi khi tải giải đấu hoặc slot:', err?.response?.data || err?.message || err);
-        setError('Không tìm thấy giải đấu.');
-    }
+        } catch (err) {
+            console.error('Lỗi khi tải giải đấu hoặc slot:', err?.response?.data || err?.message || err);
+            setError('Không tìm thấy giải đấu.');
+        }
     };
 
     useEffect(() => {

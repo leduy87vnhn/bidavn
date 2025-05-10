@@ -322,9 +322,15 @@ router.get('/slots', async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy giải đấu' });
     }
 
-    const { registerable_date_start, registerable_date_end, competitors_per_day } = tourRes.rows[0];
-    const competitorsPerDay = parseInt(competitors_per_day);
+    const {
+      registerable_date_start,
+      registerable_date_end,
+      competitors_per_day
+    } = tourRes.rows[0];
 
+    // ⚠️ convert từ numeric (string) sang number
+    const competitorsPerDay = Number(competitors_per_day);
+  
     if (!registerable_date_start || !registerable_date_end || isNaN(competitorsPerDay)) {
       return res.json({ available_dates: [] }); // Không đủ thông tin hợp lệ
     }
