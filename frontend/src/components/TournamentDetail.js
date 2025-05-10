@@ -290,7 +290,7 @@ const TournamentDetail = () => {
                 </div>
 
                 <div style={{ marginTop: '12px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                <Link to={`/tournament/${tournament.id}/registered-players`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+                <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
                     Xem danh sách VĐV đã đăng ký
                 </Link>
                 <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
