@@ -239,7 +239,7 @@ const TournamentRegistration = () => {
           registration_form_id,
           name: competitor.name,
           phone: competitor.phone,
-          nick_name: competitor.nickname,
+          nick_name: competitor.nickname?.trim() || competitor.name, // nếu nickname rỗng => lấy name
           club: competitor.club,
           selected_date: competitor.selected_date,
         });
