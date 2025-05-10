@@ -12,7 +12,7 @@ const TournamentCompetitorList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
+        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/tournament/${tournamentId}/competitors`);
         setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);

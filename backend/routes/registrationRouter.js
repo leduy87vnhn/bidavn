@@ -44,23 +44,26 @@ router.post('/competitors', async (req, res) => {
 });
 
 // GET all competitors of a tournament
+// ✅ Chỉ lấy competitors của giải đấu với registration_form đã được duyệt
 router.get('/by-tournament/:tournamentId', async (req, res) => {
   const { tournamentId } = req.params;
   try {
     const result = await client.query(`
-      SELECT c.id, c.nick_name, c.club, c.selected_date,
-             p.name, p.phone,
-             rf.status
+      SELECT 
+        c.*, 
+        p.name, p.phone, 
+        rf.status 
       FROM competitors c
       JOIN players p ON c.player_id = p.id
       JOIN registration_form rf ON c.registration_form_id = rf.id
-      WHERE rf.tournament_id = $1
-      ORDER BY rf.status ASC, c.selected_date ASC
+      WHERE rf.tournament_id = $1 AND rf.status = 1
+      ORDER BY c.selected_date ASC, c.id ASC
     `, [tournamentId]);
+
     res.json(result.rows);
   } catch (err) {
-    console.error('Lỗi khi lấy competitors theo tournament:', err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('❌ Lỗi khi lấy competitors theo giải:', err);
+    res.status(500).json({ message: 'Lỗi server' });
   }
 });
 
