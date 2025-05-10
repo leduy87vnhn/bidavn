@@ -101,3 +101,34 @@
     }
   }
 }
+
+.date-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.date-radio-group label {
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+.date-radio-group input[type="radio"] {
+  margin-right: 6px;
+}
+
+.date-radio-group label:hover {
+  background-color: #e0f7e9;
+  border-color: #27ae60;
+}
+
+.date-radio-group input[type="radio"]:checked + span,
+.date-radio-group input[type="radio"]:checked ~ * {
+  font-weight: bold;
+  color: #2e7d32;
+}

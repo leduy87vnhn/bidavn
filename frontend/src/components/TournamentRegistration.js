@@ -37,19 +37,48 @@ const TournamentRegistration = () => {
     }
   };
 
+  const loadAvailableSlots = async (tournamentId) => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${tournamentId}`);
+      setAvailableDates(res.data.available_dates || []);
+    } catch (err) {
+      console.error('Lỗi khi tải danh sách ngày và slot:', err);
+      setAvailableDates([]);
+    }
+  };
+
   const loadTournament = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
       setTournament(res.data);
       setBackgroundImage(res.data.background_image);
+      await loadAvailableSlots(res.data.id);
 
       const start = res.data.registerable_date_start ? new Date(res.data.registerable_date_start) : null;
       const end = res.data.registerable_date_end ? new Date(res.data.registerable_date_end) : null;
 
       if (start && end && start <= end) {
+        const formatDate = (d) => {
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          return `${year}-${month}-${day}`; // dùng làm value để gửi đi
+        };
+
+        const formatDisplayDate = (d) => {
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          return `${day}/${month}/${year}`; // dùng để hiển thị
+        };
+
         const dates = [];
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          dates.push(d.toISOString().slice(0, 10));
+          const raw = new Date(d); // tránh reference bị thay đổi
+          dates.push({
+            value: formatDate(raw),
+            display: formatDisplayDate(raw)
+          });
         }
         setAvailableDates(dates);
       } else {
@@ -318,16 +347,16 @@ const TournamentRegistration = () => {
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
               <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
-                {availableDates.map(date => (
-                  <label key={date} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {availableDates.map(({ value, display }) => (
+                  <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <input
                       type="radio"
                       name="selected_date"
-                      value={date}
-                      checked={newCompetitor.selected_date === date}
+                      value={value}
+                      checked={newCompetitor.selected_date === value}
                       onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })}
                     />
-                    {date}
+                    <span>{display}</span>
                   </label>
                 ))}
               </div>
