@@ -52,12 +52,12 @@ const TournamentRegistration = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
       setTournament(res.data);
       setBackgroundImage(res.data.background_image);
-      await loadAvailableSlots(res.data.id);
 
       const start = res.data.registerable_date_start ? new Date(res.data.registerable_date_start) : null;
       const end = res.data.registerable_date_end ? new Date(res.data.registerable_date_end) : null;
 
       if (start && end && start <= end) {
+        await loadAvailableSlots(res.data.id);
         const formatDate = (d) => {
           const day = String(d.getDate()).padStart(2, '0');
           const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -347,7 +347,7 @@ const TournamentRegistration = () => {
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
               <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
-                {availableDates.map(({ value, display }) => (
+                {availableDates.map(({ value, display, remaining }) => (
                   <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <input
                       type="radio"
@@ -356,7 +356,7 @@ const TournamentRegistration = () => {
                       checked={newCompetitor.selected_date === value}
                       onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })}
                     />
-                    <span>{display}</span>
+                    <span>{display} (còn lại: {remaining})</span>
                   </label>
                 ))}
               </div>
