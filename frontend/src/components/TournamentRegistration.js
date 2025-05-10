@@ -27,6 +27,7 @@ const TournamentRegistration = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const user = JSON.parse(localStorage.getItem('user_info'));
+  const [availableDates, setAvailableDates] = useState([]);
 
   const getStatusStyle = () => {
     switch (status) {
@@ -41,6 +42,20 @@ const TournamentRegistration = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
       setTournament(res.data);
       setBackgroundImage(res.data.background_image);
+
+      const start = res.data.registerable_date_start ? new Date(res.data.registerable_date_start) : null;
+      const end = res.data.registerable_date_end ? new Date(res.data.registerable_date_end) : null;
+
+      if (start && end && start <= end) {
+        const dates = [];
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(d.toISOString().slice(0, 10));
+        }
+        setAvailableDates(dates);
+      } else {
+        setAvailableDates([]); // Không có ngày nào hợp lệ
+        setNewCompetitor(prev => ({ ...prev, selected_date: '' }));
+      }
     } catch {
       setError('Không tìm thấy giải đấu.');
     }
@@ -79,6 +94,12 @@ const TournamentRegistration = () => {
       loadCompetitorList();
     }
   }, [tournamentId, registrationId]);
+
+  useEffect(() => {
+    if (!registrationId && user?.phone_number) {
+      setRegisteredPhone(user.phone_number);
+    }
+  }, [registrationId, user]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
@@ -124,20 +145,66 @@ const TournamentRegistration = () => {
     setPlayerSuggestions([]);
   };
 
-  const handleAddCompetitor = (e) => {
+  const handleAddCompetitor = async (e) => {
     e.preventDefault();
-    if (!registeredPhone || !newCompetitor.name || !newCompetitor.phone || !newCompetitor.selected_date) {
+
+    // Kiểm tra đủ thông tin cơ bản
+    const { name, phone, nickname, club, selected_date } = newCompetitor;
+    if (!registeredPhone || !name || !phone) {
       setMessage('Vui lòng nhập đủ thông tin.');
       return;
     }
-    const duplicate = competitors.find(c => c.name === newCompetitor.name && c.phone === newCompetitor.phone);
+
+    // Kiểm tra trùng trong danh sách local
+    const duplicate = competitors.find(c => c.name === name && c.phone === phone);
     if (duplicate) {
-      setMessage('Vận động viên này đã tồn tại.');
+      setMessage('Vận động viên này đã tồn tại trong danh sách.');
       return;
     }
-    setCompetitors([...competitors, newCompetitor]);
-    setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '' });
-    setMessage('');
+
+    try {
+      // Gọi API resolve-player để lấy player_id phù hợp
+      const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
+        name,
+        phone
+      });
+
+      if (resolveRes.data.status !== 'ok') {
+        setMessage('❌ Lỗi khi xác định VĐV.');
+        return;
+      }
+
+      const player_id = resolveRes.data.player_id;
+
+      // Gửi competitor lên backend
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
+        registration_form_id: registrationId,
+        player_id,
+        nick_name: nickname,
+        club,
+        selected_date: selected_date || null
+      });
+
+      // Thêm vào danh sách local (hiển thị trên bảng)
+      setCompetitors([...competitors, {
+        id: player_id,
+        name,
+        phone,
+        nickname,
+        club,
+        selected_date
+      }]);
+
+      // Reset form
+      setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '' });
+      setPlayerSearchText('');
+      setMessage('✅ Đã thêm vận động viên.');
+
+    } catch (err) {
+      console.error('Lỗi khi thêm VĐV:', err);
+      const errorMsg = err.response?.data?.message || '❌ Lỗi khi thêm vận động viên.';
+      setMessage(errorMsg);
+    }
   };
 
   const handleRemove = (index) => {
@@ -230,7 +297,7 @@ const TournamentRegistration = () => {
           <input type="text" placeholder="Số điện thoại người đăng ký (*)" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
           <input
             type="text"
-            placeholder="ID VĐV (*) (gõ vài ký tự đầu để được gợi ý)"
+            placeholder="ID VĐV (Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234)"
             value={playerSearchText}
             onChange={(e) => setPlayerSearchText(e.target.value)}
           />
@@ -243,11 +310,33 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
-          <input type="text" placeholder="Tên VĐV (*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
+          <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
           <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
           <input type="text" placeholder="Câu lạc bộ (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
-          <input type="date" value={newCompetitor.selected_date} onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })} />
+          {availableDates.length > 0 ? (
+            <div style={{ marginBottom: '10px' }}>
+              <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
+              <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
+                {availableDates.map(date => (
+                  <label key={date} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <input
+                      type="radio"
+                      name="selected_date"
+                      value={date}
+                      checked={newCompetitor.selected_date === date}
+                      onChange={(e) => setNewCompetitor({ ...newCompetitor, selected_date: e.target.value })}
+                    />
+                    {date}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{ marginBottom: '10px' }}>
+              <strong>Không có ngày thi đấu cụ thể — sẽ để trống ngày thi đấu.</strong>
+            </div>
+          )}
           <button type="submit">➕ Thêm vận động viên</button>
           {message && <div className={message.includes('Lỗi') ? 'error-message' : 'success-message'}>{message}</div>}
         </form>

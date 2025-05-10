@@ -22,42 +22,23 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 2. Thêm competitor vào bản đăng ký
+// 2. Thêm competitor vào bản đăng ký, với player_id đã được xác định trước
 router.post('/competitors', async (req, res) => {
-  let { registration_form_id, player_id, nick_name, club, selected_date, name, phone } = req.body;
+  const { registration_form_id, player_id, nick_name, club, selected_date } = req.body;
+
+  if (!registration_form_id || !player_id) {
+    return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
+  }
 
   try {
-    // Nếu không có player_id thì cần tạo mới player dựa vào name và phone (yêu cầu cả hai phải có)
-    if (!player_id && name && phone) {
-      const prefix = 'H';
-      const result = await client.query("SELECT id FROM players WHERE id LIKE $1 ORDER BY id DESC LIMIT 1", [`${prefix}%`]);
-
-      let nextId = prefix + '10001';
-      console.log('🚀 Competitor Received:', {
-        registration_form_id, player_id, nick_name, club, selected_date, name, phone
-      });
-      if (result.rows.length > 0) {
-        const lastId = result.rows[0].id;
-        const number = parseInt(lastId.slice(prefix.length)) + 1;
-        nextId = prefix + number.toString();
-      }
-
-      player_id = nextId;
-      await client.query(
-        `INSERT INTO players (id, name, phone) VALUES ($1, $2, $3)`,
-        [player_id, name, phone]
-      );
-    }
-
     await client.query(
       `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date)
        VALUES ($1, $2, $3, $4, $5)`,
-      [registration_form_id, player_id, nick_name, club, selected_date]
+      [registration_form_id, player_id, nick_name || '', club || '', selected_date]
     );
     res.json({ message: 'Success' });
   } catch (err) {
     console.error('❌ Lỗi khi thêm competitor:', err.message);
-    console.error(err.stack);
     res.status(500).json({ message: 'Server error', detail: err.message });
   }
 });
@@ -247,5 +228,80 @@ router.post('/:id/update-competitors', async (req, res) => {
     clientConnection.release();
   }
 });
+
+// ✅ Xử lý tìm hoặc tạo player phù hợp dựa vào name + phone
+router.post('/resolve-player', async (req, res) => {
+  const { name, phone } = req.body;
+
+  if (!name || !phone) {
+    return res.status(400).json({ status: 'error', message: 'Thiếu tên hoặc số điện thoại' });
+  }
+
+  try {
+    // (1) Nếu name + phone trùng
+    const existing = await client.query(
+      `SELECT id FROM players WHERE name = $1 AND phone = $2 LIMIT 1`,
+      [name, phone]
+    );
+    if (existing.rows.length > 0) {
+      return res.json({ status: 'ok', player_id: existing.rows[0].id });
+    }
+
+    // (2) Nếu name trùng nhưng phone null hoặc rỗng => cập nhật
+    const nameMatch = await client.query(
+      `SELECT id, phone FROM players WHERE name = $1 LIMIT 1`,
+      [name]
+    );
+    if (nameMatch.rows.length > 0) {
+      const player = nameMatch.rows[0];
+      if (!player.phone) {
+        await client.query(`UPDATE players SET phone = $1 WHERE id = $2`, [phone, player.id]);
+        return res.json({ status: 'ok', player_id: player.id });
+      } else {
+        // (3) Nếu phone khác => tạo mới
+        const newId = await getNextPlayerId();
+        await client.query(
+          `INSERT INTO players (id, name, phone) VALUES ($1, $2, $3)`,
+          [newId, name, phone]
+        );
+        return res.json({ status: 'ok', player_id: newId });
+      }
+    }
+
+    // (4) Nếu phone đã tồn tại với name khác => lỗi
+    const phoneMatch = await client.query(
+      `SELECT name FROM players WHERE phone = $1 LIMIT 1`,
+      [phone]
+    );
+    if (phoneMatch.rows.length > 0 && phoneMatch.rows[0].name !== name) {
+      return res.status(400).json({ status: 'error', message: 'SĐT đã tồn tại với VĐV khác.' });
+    }
+
+    // (5) Tạo mới hoàn toàn
+    const newId = await getNextPlayerId();
+    await client.query(
+      `INSERT INTO players (id, name, phone) VALUES ($1, $2, $3)`,
+      [newId, name, phone]
+    );
+    return res.json({ status: 'ok', player_id: newId });
+
+  } catch (err) {
+    console.error('❌ Lỗi resolve-player:', err);
+    res.status(500).json({ status: 'error', message: 'Lỗi server khi xử lý VĐV' });
+  }
+});
+
+// 🔧 Tạo ID mới dạng H00001, H00002,...
+async function getNextPlayerId() {
+  const prefix = 'H';
+  const result = await client.query(
+    `SELECT id FROM players WHERE id ~ '^H\\d+$' ORDER BY id DESC LIMIT 1`
+  );
+  if (result.rows.length === 0) return prefix + '00001';
+
+  const lastId = result.rows[0].id;
+  const nextNumber = parseInt(lastId.slice(prefix.length)) + 1;
+  return prefix + nextNumber.toString().padStart(5, '0');
+}
 
 module.exports = router;
