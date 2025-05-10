@@ -289,14 +289,14 @@ const TournamentDetail = () => {
                     </button>
                 </div>
 
-                <p style={{ marginTop: '10px' }}>
-                    <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                        Xem danh sách VĐV thuộc Liên đoàn
-                    </Link>
-                    <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
-                        Xem danh sách VĐV đã đăng ký
-                    </Link>
-                </p>
+                <div style={{ marginTop: '12px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <Link to={`/tournament/${tournament.id}/registered-players`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Xem danh sách VĐV đã đăng ký
+                </Link>
+                <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Xem danh sách VĐV hiện có
+                </Link>
+                </div>
             </div>
         </div>
     );
