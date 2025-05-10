@@ -12,7 +12,7 @@ const TournamentCompetitorList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/tournament/${tournamentId}/competitors`);
+        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
         setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
@@ -26,8 +26,9 @@ const TournamentCompetitorList = () => {
   }, [tournamentId]);
 
   const statusText = (status) => {
-    if (status === 1) return 'Đã duyệt';
-    if (status === 2) return 'Đã huỷ';
+    if (String(status) === '0') return 'Chờ duyệt';
+    if (String(status) === '1') return 'Đã duyệt';
+    if (String(status) === '2') return 'Đã huỷ';
     return 'Chờ duyệt';
   };
 

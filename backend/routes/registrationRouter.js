@@ -56,7 +56,7 @@ router.get('/by-tournament/:tournamentId', async (req, res) => {
       FROM competitors c
       JOIN players p ON c.player_id = p.id
       JOIN registration_form rf ON c.registration_form_id = rf.id
-      WHERE rf.tournament_id = $1 AND rf.status = 1
+      WHERE rf.tournament_id = $1 AND (rf.status = 1 OR rf.status = 0)
       ORDER BY c.selected_date ASC, c.id ASC
     `, [tournamentId]);
 
