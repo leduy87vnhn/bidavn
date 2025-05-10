@@ -291,7 +291,10 @@ const TournamentDetail = () => {
 
                 <p style={{ marginTop: '10px' }}>
                     <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                        Xem danh sách VĐV hiện có
+                        Xem danh sách VĐV thuộc Liên đoàn
+                    </Link>
+                    <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+                        Xem danh sách VĐV đã đăng ký
                     </Link>
                 </p>
             </div>
