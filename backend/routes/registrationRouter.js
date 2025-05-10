@@ -313,7 +313,7 @@ router.get('/slots', async (req, res) => {
   }
 
   try {
-    // Lấy competitors_per_day từ bảng tournaments
+    // Lấy thông tin giải đấu
     const tourRes = await client.query(
       'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournaments WHERE id = $1',
       [tournament_id]
@@ -323,11 +323,13 @@ router.get('/slots', async (req, res) => {
     }
 
     const { registerable_date_start, registerable_date_end, competitors_per_day } = tourRes.rows[0];
-    if (!registerable_date_start || !registerable_date_end || !competitors_per_day) {
-      return res.json({ available_dates: [] }); // Không đủ thông tin để tính
+    const competitorsPerDay = parseInt(competitors_per_day);
+
+    if (!registerable_date_start || !registerable_date_end || isNaN(competitorsPerDay)) {
+      return res.json({ available_dates: [] }); // Không đủ thông tin hợp lệ
     }
 
-    // Lấy số lượng competitor đã đăng ký cho từng ngày (chỉ tính status != 2)
+    // Đếm số lượng đã đăng ký cho từng ngày
     const compRes = await client.query(`
       SELECT c.selected_date, COUNT(*) AS count
       FROM competitors c
@@ -338,15 +340,15 @@ router.get('/slots', async (req, res) => {
 
     const usedMap = {};
     compRes.rows.forEach(row => {
-      try {
-        const dateStr = new Date(row.selected_date).toISOString().slice(0, 10);
+      if (row.selected_date) {
+        const dateStr = row.selected_date.toISOString
+          ? row.selected_date.toISOString().slice(0, 10)
+          : row.selected_date.toString().slice(0, 10);
         usedMap[dateStr] = parseInt(row.count);
-      } catch (e) {
-        console.error('⚠️ Lỗi khi xử lý ngày:', row.selected_date, e.message);
       }
     });
 
-    // Tạo danh sách ngày hợp lệ và tính số slot còn lại
+    // Tính toán danh sách ngày và số slot còn lại
     const dates = [];
     const start = new Date(registerable_date_start);
     const end = new Date(registerable_date_end);
@@ -354,7 +356,7 @@ router.get('/slots', async (req, res) => {
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().slice(0, 10);
       const used = usedMap[dateStr] || 0;
-      const remaining = competitors_per_day - used;
+      const remaining = competitorsPerDay - used;
 
       dates.push({
         value: dateStr,
