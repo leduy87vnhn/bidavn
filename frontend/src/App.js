@@ -9,6 +9,7 @@ import PlayerList from './components/PlayerList';
 import TournamentRegistration from './components/TournamentRegistration'; // đường dẫn tới file bạn đã tạo
 import AdminRegistrationList from './components/AdminRegistrationList';
 import RegistrationDetail from './components/RegistrationDetail';
+import TournamentCompetitorList from './components/TournamentCompetitorList';
 
 
 export default function App() {
