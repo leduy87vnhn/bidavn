@@ -336,7 +336,7 @@ router.get('/slots', async (req, res) => {
       JOIN registration_form rf ON c.registration_form_id = rf.id
       WHERE rf.tournament_id = $1 AND rf.status != 2
       GROUP BY c.selected_date
-    `, [tournament_id]);
+    `, [parseInt(tournament_id)]);
 
     const usedMap = {};
     compRes.rows.forEach(row => {
