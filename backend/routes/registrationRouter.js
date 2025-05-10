@@ -164,6 +164,81 @@ router.get('/:id/competitors', async (req, res) => {
   }
 });
 
+
+// ✅ API: Tính số slot còn lại theo từng ngày thi đấu
+router.get('/slots', async (req, res) => {
+  const { tournament_id } = req.query;
+
+  if (!tournament_id) {
+    return res.status(400).json({ message: 'Thiếu tournament_id' });
+  }
+
+  try {
+    // Lấy thông tin giải đấu
+    const tourRes = await client.query(
+      'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournaments WHERE id = $1',
+      [parseInt(tournament_id)]
+    );
+
+    if (tourRes.rows.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy giải đấu' });
+    }
+
+    const {
+      registerable_date_start,
+      registerable_date_end,
+      competitors_per_day
+    } = tourRes.rows[0];
+
+    console.log('🎯 DATA FROM TOURNAMENT:', {
+      registerable_date_start,
+      registerable_date_end,
+      competitors_per_day
+    });
+
+    if (!registerable_date_start || !registerable_date_end || competitors_per_day == null) {
+      return res.status(400).json({ message: 'Thiếu dữ liệu thời gian hoặc số lượng' });
+    }
+
+    // Đếm số lượng đã đăng ký cho từng ngày
+    const compRes = await client.query(`
+      SELECT c.selected_date, COUNT(*) AS count
+      FROM competitors c
+      JOIN registration_form rf ON c.registration_form_id = rf.id
+      WHERE rf.tournament_id = $1 AND rf.status != 2
+      GROUP BY c.selected_date
+    `, [parseInt(tournament_id)]);
+
+    const usedMap = {};
+    compRes.rows.forEach(row => {
+      const date = row.selected_date?.toISOString?.().slice(0, 10) ?? row.selected_date?.toString()?.slice(0, 10);
+      usedMap[date] = parseInt(row.count);
+    });
+
+    // Tính toán danh sách ngày và số slot còn lại
+    const dates = [];
+    const start = new Date(registerable_date_start);
+    const end = new Date(registerable_date_end);
+
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dateStr = d.toISOString().slice(0, 10);
+      const used = usedMap[dateStr] || 0;
+      const remaining = competitors_per_day - used;
+
+      dates.push({
+        value: dateStr,
+        display: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`,
+        remaining
+      });
+    }
+
+    res.json({ available_dates: dates });
+  } catch (err) {
+    console.error('❌ Lỗi khi tính slot:', err.stack || err);
+    res.status(500).json({ message: 'Lỗi server khi tính số slot còn lại' });
+  }
+});
+
 // GET /api/registration_form/:id
 // ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
 router.get('/:id', async (req, res) => {
@@ -304,78 +379,5 @@ async function getNextPlayerId() {
   return prefix + nextNumber.toString().padStart(5, '0');
 }
 
-// ✅ API: Tính số slot còn lại theo từng ngày thi đấu
-router.get('/slots', async (req, res) => {
-  const { tournament_id } = req.query;
-
-  if (!tournament_id) {
-    return res.status(400).json({ message: 'Thiếu tournament_id' });
-  }
-
-  try {
-    // Lấy thông tin giải đấu
-    const tourRes = await client.query(
-      'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournaments WHERE id = $1',
-      [parseInt(tournament_id)]
-    );
-
-    if (tourRes.rows.length === 0) {
-      return res.status(404).json({ message: 'Không tìm thấy giải đấu' });
-    }
-
-    const {
-      registerable_date_start,
-      registerable_date_end,
-      competitors_per_day
-    } = tourRes.rows[0];
-
-    console.log('🎯 DATA FROM TOURNAMENT:', {
-      registerable_date_start,
-      registerable_date_end,
-      competitors_per_day
-    });
-
-    if (!registerable_date_start || !registerable_date_end || competitors_per_day == null) {
-      return res.status(400).json({ message: 'Thiếu dữ liệu thời gian hoặc số lượng' });
-    }
-
-    // Đếm số lượng đã đăng ký cho từng ngày
-    const compRes = await client.query(`
-      SELECT c.selected_date, COUNT(*) AS count
-      FROM competitors c
-      JOIN registration_form rf ON c.registration_form_id = rf.id
-      WHERE rf.tournament_id = $1 AND rf.status != 2
-      GROUP BY c.selected_date
-    `, [parseInt(tournament_id)]);
-
-    const usedMap = {};
-    compRes.rows.forEach(row => {
-      const date = row.selected_date?.toISOString?.().slice(0, 10) ?? row.selected_date?.toString()?.slice(0, 10);
-      usedMap[date] = parseInt(row.count);
-    });
-
-    // Tính toán danh sách ngày và số slot còn lại
-    const dates = [];
-    const start = new Date(registerable_date_start);
-    const end = new Date(registerable_date_end);
-
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().slice(0, 10);
-      const used = usedMap[dateStr] || 0;
-      const remaining = competitors_per_day - used;
-
-      dates.push({
-        value: dateStr,
-        display: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`,
-        remaining
-      });
-    }
-
-    res.json({ available_dates: dates });
-  } catch (err) {
-    console.error('❌ Lỗi khi tính slot:', err.stack || err);
-    res.status(500).json({ message: 'Lỗi server khi tính số slot còn lại' });
-  }
-});
 
 module.exports = router;
