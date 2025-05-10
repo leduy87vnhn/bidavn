@@ -316,8 +316,9 @@ router.get('/slots', async (req, res) => {
     // Lấy thông tin giải đấu
     const tourRes = await client.query(
       'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournaments WHERE id = $1',
-      [tournament_id]
+      [parseInt(tournament_id)]
     );
+
     if (tourRes.rows.length === 0) {
       return res.status(404).json({ message: 'Không tìm thấy giải đấu' });
     }
@@ -328,11 +329,14 @@ router.get('/slots', async (req, res) => {
       competitors_per_day
     } = tourRes.rows[0];
 
-    // ⚠️ convert từ numeric (string) sang number
-    const competitorsPerDay = Number(competitors_per_day);
-  
-    if (!registerable_date_start || !registerable_date_end || isNaN(competitorsPerDay)) {
-      return res.json({ available_dates: [] }); // Không đủ thông tin hợp lệ
+    console.log('🎯 DATA FROM TOURNAMENT:', {
+      registerable_date_start,
+      registerable_date_end,
+      competitors_per_day
+    });
+
+    if (!registerable_date_start || !registerable_date_end || competitors_per_day == null) {
+      return res.status(400).json({ message: 'Thiếu dữ liệu thời gian hoặc số lượng' });
     }
 
     // Đếm số lượng đã đăng ký cho từng ngày
@@ -346,12 +350,8 @@ router.get('/slots', async (req, res) => {
 
     const usedMap = {};
     compRes.rows.forEach(row => {
-      if (row.selected_date) {
-        const dateStr = row.selected_date.toISOString
-          ? row.selected_date.toISOString().slice(0, 10)
-          : row.selected_date.toString().slice(0, 10);
-        usedMap[dateStr] = parseInt(row.count);
-      }
+      const date = row.selected_date?.toISOString?.().slice(0, 10) ?? row.selected_date?.toString()?.slice(0, 10);
+      usedMap[date] = parseInt(row.count);
     });
 
     // Tính toán danh sách ngày và số slot còn lại
@@ -362,7 +362,7 @@ router.get('/slots', async (req, res) => {
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().slice(0, 10);
       const used = usedMap[dateStr] || 0;
-      const remaining = competitorsPerDay - used;
+      const remaining = competitors_per_day - used;
 
       dates.push({
         value: dateStr,
@@ -372,9 +372,8 @@ router.get('/slots', async (req, res) => {
     }
 
     res.json({ available_dates: dates });
-
   } catch (err) {
-    console.error('❌ Lỗi khi tính slot:', err);
+    console.error('❌ Lỗi khi tính slot:', err.stack || err);
     res.status(500).json({ message: 'Lỗi server khi tính số slot còn lại' });
   }
 });
