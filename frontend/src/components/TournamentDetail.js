@@ -44,13 +44,11 @@ const TournamentDetail = () => {
     const loadTournament = async () => {
     try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
-        const tournamentData = res.data;
-        setTournament(tournamentData);
-        setBackgroundImage(tournamentData.background_image);
+        setTournament(res.data);
+        setBackgroundImage(res.data.background_image);
 
-        // Gọi API lấy available_dates và remaining
-        const slotRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${tournamentData.id}`);
-        setAvailableDates(slotRes.data.available_dates || []);
+        // Gọi API lấy available_dates kèm remaining slot
+        await loadAvailableSlots(res.data.id);
 
     } catch (err) {
         console.error('Lỗi khi tải giải đấu hoặc slot:', err?.response?.data || err?.message || err);
