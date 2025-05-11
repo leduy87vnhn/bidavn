@@ -157,6 +157,7 @@ const TournamentRegistration = () => {
     e.preventDefault();
 
     // Kiểm tra đủ thông tin cơ bản
+    const { name, phone, nickname, club, selected_date } = newCompetitor;
     if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
       const fallback = playerSuggestions.find(p => p.id === playerSearchText);
       if (fallback) {
@@ -164,7 +165,6 @@ const TournamentRegistration = () => {
         newCompetitor.phone = fallback.phone;
       }
     }
-    const { name, phone, nickname, club, selected_date } = newCompetitor;
     if (!registeredPhone) {
       setMessage('❌ Thiếu số điện thoại người đăng ký.');
       return;
