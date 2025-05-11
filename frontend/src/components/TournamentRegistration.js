@@ -309,8 +309,12 @@ const TournamentRegistration = () => {
       }
 
     } catch (err) {
-      console.error('Đăng ký thất bại:', err);
-      setMessage('❌ Lỗi khi gửi đăng ký.');
+      console.error('Đăng ký thất bại:', {
+        message: err.message,
+        status: err.response?.status,
+        responseData: err.response?.data
+      });
+      setMessage(`❌ Lỗi khi gửi đăng ký: ${err.response?.data?.message || err.message}`);
     }
   };
 
