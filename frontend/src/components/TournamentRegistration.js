@@ -276,17 +276,44 @@ const TournamentRegistration = () => {
         user_id: user?.id,
       });
       const registration_form_id = res.data.id;
+      // for (const competitor of competitors) {
+      //   if (!competitor.selected_date || !competitor.name || !competitor.phone) {
+      //     console.error('🚫 Dữ liệu thiếu:', competitor);
+      //   }
+      //   await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
+      //     registration_form_id,
+      //     name: competitor.name,
+      //     phone: competitor.phone,
+      //     nick_name: competitor.nickname?.trim() || competitor.name, // nếu nickname rỗng => lấy name
+      //     club: competitor.club,
+      //     selected_date: competitor.selected_date,
+      //   });
+      // }
       for (const competitor of competitors) {
-        if (!competitor.selected_date || !competitor.name || !competitor.phone) {
-          console.error('🚫 Dữ liệu thiếu:', competitor);
+        if (!competitor.name || !competitor.phone) {
+          console.error('🚫 Thiếu name hoặc phone:', competitor);
+          continue;
         }
+
+        // resolve player
+        const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
+          name: competitor.name,
+          phone: competitor.phone
+        });
+
+        if (resolveRes.data.status !== 'ok') {
+          console.error('❌ Lỗi khi resolve-player:', competitor);
+          continue;
+        }
+
+        const player_id = resolveRes.data.player_id;
+
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
           registration_form_id,
-          name: competitor.name,
-          phone: competitor.phone,
-          nick_name: competitor.nickname?.trim() || competitor.name, // nếu nickname rỗng => lấy name
+          player_id,
+          nick_name: competitor.nickname?.trim() || competitor.name,
           club: competitor.club,
-          selected_date: competitor.selected_date,
+          selected_date: competitor.selected_date || null
         });
       }
       //setMessage('✅ Đăng ký thành công!');
