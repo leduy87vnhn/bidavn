@@ -292,7 +292,7 @@ const TournamentRegistration = () => {
       //setMessage('✅ Đăng ký thành công!');
       setCompetitors([]);
       const totalAthletes = competitors.length;
-      const totalFee = totalAthletes * parseInt(tournament.attendance_price || 10);
+      const totalFee = totalAthletes * parseInt(tournament.attendance_price || 0);
       const { bank_name, bank_number } = tournament;
 
       if (bank_name?.trim() && bank_number?.trim()) {
