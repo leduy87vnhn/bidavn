@@ -218,13 +218,16 @@ const TournamentRegistration = () => {
       const player_id = resolveRes.data.player_id;
 
       // Gửi competitor lên backend
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
-        registration_form_id: registrationId,
-        player_id,
-        nick_name: nickname,
-        club,
-        selected_date: selected_date || null
-      });
+      if (registrationId) {
+        // Nếu đang chỉnh sửa đăng ký cũ → gửi lên backend
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
+          registration_form_id: registrationId,
+          player_id,
+          nick_name: nickname,
+          club,
+          selected_date: selected_date || null
+        });
+      }
 
       // Thêm vào danh sách hiển thị
       setCompetitors(prev => [
@@ -244,7 +247,11 @@ const TournamentRegistration = () => {
       setPlayerSearchText('');
       setMessage('✅ Đã thêm vận động viên.');
     } catch (err) {
-      console.error('Lỗi khi thêm VĐV:', err);
+      console.error('Lỗi khi thêm VĐV:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
       const errorMsg = err.response?.data?.message || '❌ Lỗi khi thêm vận động viên.';
       setMessage(errorMsg);
     }
