@@ -10,7 +10,9 @@ import TournamentRegistration from './components/TournamentRegistration'; // Ä‘Æ
 import AdminRegistrationList from './components/AdminRegistrationList';
 import RegistrationDetail from './components/RegistrationDetail';
 import TournamentCompetitorList from './components/TournamentCompetitorList';
+import ReactModal from 'react-modal';
 
+ReactModal.setAppElement('#root');
 
 export default function App() {
   return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import '../tournamentRegistration.scss';
+import ReactModal from 'react-modal';
 
 const TournamentRegistration = () => {
   const { id: tournamentId } = useParams();
@@ -28,6 +29,8 @@ const TournamentRegistration = () => {
   const [error, setError] = useState('');
   const user = JSON.parse(localStorage.getItem('user_info'));
   const [availableDates, setAvailableDates] = useState([]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalInfo, setModalInfo] = useState({});
 
   const getStatusStyle = () => {
     switch (status) {
@@ -286,8 +289,25 @@ const TournamentRegistration = () => {
           selected_date: competitor.selected_date,
         });
       }
-      setMessage('✅ Đăng ký thành công!');
+      //setMessage('✅ Đăng ký thành công!');
       setCompetitors([]);
+      const totalAthletes = competitors.length;
+      const totalFee = totalAthletes * parseInt(tournament.attendance_price || 0);
+      const { bank_name, bank_number } = tournament;
+
+      if (bank_name?.trim() && bank_number?.trim()) {
+        setModalInfo({
+          totalAthletes,
+          tournamentName: tournament.name,
+          totalFee,
+          bankNumber: bank_number,
+          bankName: bank_name
+        });
+        setShowSuccessModal(true);
+      } else {
+        setMessage('✅ Đăng ký thành công!');
+      }
+
     } catch (err) {
       console.error('Đăng ký thất bại:', err);
       setMessage('❌ Lỗi khi gửi đăng ký.');
@@ -453,6 +473,26 @@ const TournamentRegistration = () => {
           </>
         )}
       </div>
+      <ReactModal
+        isOpen={showSuccessModal}
+        onRequestClose={() => setShowSuccessModal(false)}
+        ariaHideApp={false}
+        style={{
+          overlay: { backgroundColor: 'rgba(0,0,0,0.4)' },
+          content: {
+            maxWidth: '500px', margin: 'auto', padding: '20px', borderRadius: '12px'
+          }
+        }}
+      >
+        <h2>🎉 Đăng ký thi đấu thành công</h2>
+        <p>Đã đăng ký cho <strong>{modalInfo.totalAthletes}</strong> vận động viên tham gia giải <strong>{modalInfo.tournamentName}</strong>.</p>
+        <p>Số tiền lệ phí là: <strong>{modalInfo.totalFee.toLocaleString('vi-VN')} VND</strong></p>
+        <p>Hãy gửi lệ phí cho ban tổ chức theo số tài khoản:</p>
+        <p><strong>{modalInfo.bankNumber}</strong> tại <strong>{modalInfo.bankName}</strong></p>
+        <div style={{ marginTop: '20px', textAlign: 'right' }}>
+          <button onClick={() => setShowSuccessModal(false)} style={{ padding: '8px 16px', borderRadius: '6px', background: '#28a745', color: '#fff', border: 'none' }}>OK</button>
+        </div>
+      </ReactModal>
     </div>
   );
 };

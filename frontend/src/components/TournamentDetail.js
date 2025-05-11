@@ -212,6 +212,10 @@ const TournamentDetail = () => {
                 <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
                 <p><strong>Nội dung:</strong><br />{getInput('content', true, 5, true)}</p>
                 <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+                <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
+                <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
+                <p><strong>Hướng dẫn đăng ký:</strong><br />{getInput('registration_method', true, 5, true)}</p>
+
                 <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 5, true)}</p>
 
                 <div style={{ display: 'flex', gap: '20px' }}>
@@ -224,6 +228,9 @@ const TournamentDetail = () => {
                 </div>
 
                 <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitors_per_day')}</p>
+                <p><strong>Điều kiện thi đấu:</strong><br />{getInput('conditions', true, 5, true)}</p>
+                <p><strong>Quy định:</strong><br />{getInput('rules', true, 5, true)}</p>
+                <p><strong>Đồng phục và thiết bị thi đấu:</strong><br />{getInput('uniform', true, 5, true)}</p>
                 <p><strong>Mô tả:</strong><br />{getInput('description', true, 10, true)}</p>
 
                 {user?.user_type === 2 && (
