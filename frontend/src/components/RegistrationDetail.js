@@ -30,8 +30,20 @@ const RegistrationDetail = () => {
   const loadCompetitors = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${id}/competitors`);
-      setCompetitors(res.data);
-      setOriginalData(res.data); // backup để cancel
+      // setCompetitors(res.data);
+      // setOriginalData(res.data); // backup để cancel
+      const formatted = res.data.map(c => ({
+        id: c.id,
+        player_id: c.player_id,
+        name: c.name,
+        phone: c.phone,
+        nick_name: c.nick_name,
+        club: c.club,
+        selected_date: c.selected_date?.slice(0, 10) || '',
+        uniform_size: c.uniform_size || 'L' // 👈 mặc định nếu thiếu
+      }));
+      setCompetitors(formatted);
+      setOriginalData(formatted);
     } catch (err) {
       console.error('Lỗi khi tải danh sách VĐV:', err);
     }
