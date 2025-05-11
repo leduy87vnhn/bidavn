@@ -292,7 +292,7 @@ const TournamentRegistration = () => {
       //setMessage('✅ Đăng ký thành công!');
       setCompetitors([]);
       const totalAthletes = competitors.length;
-      const totalFee = totalAthletes * parseInt(tournament.attendance_price || 0);
+      const totalFee = totalAthletes * parseInt(tournament.attendance_price || 10);
       const { bank_name, bank_number } = tournament;
 
       if (bank_name?.trim() && bank_number?.trim()) {
@@ -473,26 +473,49 @@ const TournamentRegistration = () => {
           </>
         )}
       </div>
-      <ReactModal
-        isOpen={showSuccessModal}
-        onRequestClose={() => setShowSuccessModal(false)}
-        ariaHideApp={false}
-        style={{
-          overlay: { backgroundColor: 'rgba(0,0,0,0.4)' },
-          content: {
-            maxWidth: '500px', margin: 'auto', padding: '20px', borderRadius: '12px'
-          }
-        }}
-      >
-        <h2>🎉 Đăng ký thi đấu thành công</h2>
-        <p>Đã đăng ký cho <strong>{modalInfo.totalAthletes}</strong> vận động viên tham gia giải <strong>{modalInfo.tournamentName}</strong>.</p>
-        <p>Số tiền lệ phí là: <strong>{modalInfo.totalFee.toLocaleString('vi-VN')} VND</strong></p>
-        <p>Hãy gửi lệ phí cho ban tổ chức theo số tài khoản:</p>
-        <p><strong>{modalInfo.bankNumber}</strong> tại <strong>{modalInfo.bankName}</strong></p>
-        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-          <button onClick={() => setShowSuccessModal(false)} style={{ padding: '8px 16px', borderRadius: '6px', background: '#28a745', color: '#fff', border: 'none' }}>OK</button>
-        </div>
-      </ReactModal>
+        <ReactModal
+          isOpen={showSuccessModal}
+          onRequestClose={() => setShowSuccessModal(false)}
+          ariaHideApp={false}
+          style={{
+            overlay: { backgroundColor: 'rgba(0,0,0,0.4)' },
+            content: {
+              maxWidth: '500px',
+              margin: 'auto',
+              padding: '20px',
+              borderRadius: '12px'
+            }
+          }}
+        >
+          <h2>🎉 Đăng ký thi đấu thành công</h2>
+          <p>
+            Đã đăng ký cho <strong>{modalInfo.totalAthletes}</strong> vận động viên tham gia giải
+            <strong> {modalInfo.tournamentName}</strong>.
+          </p>
+          <p>
+            Số tiền lệ phí là:
+            <strong> {(Number(modalInfo.totalFee || 0)).toLocaleString('vi-VN')} VND</strong>
+          </p>
+          <p>Hãy gửi lệ phí cho ban tổ chức theo số tài khoản:</p>
+          <p>
+            <strong>{modalInfo.bankNumber}</strong> tại <strong>{modalInfo.bankName}</strong>
+          </p>
+          <div style={{ marginTop: '20px', textAlign: 'right' }}>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '6px',
+                background: '#28a745',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold'
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </ReactModal>
     </div>
   );
 };
