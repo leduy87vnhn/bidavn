@@ -397,7 +397,7 @@ router.post('/resolve-player', async (req, res) => {
 async function getNextPlayerId() {
   const prefix = 'H';
   const result = await client.query(
-    `SELECT id FROM players WHERE id ~ '^H\\d+$' ORDER BY id DESC LIMIT 1`
+    `SELECT id FROM players WHERE id ~ '^H\\d+$' ORDER BY CAST(SUBSTRING(id FROM 2) AS INTEGER) DESC LIMIT 1`
   );
   if (result.rows.length === 0) return prefix + '00001';
 
