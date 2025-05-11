@@ -157,12 +157,22 @@ const TournamentRegistration = () => {
     e.preventDefault();
 
     // Kiểm tra đủ thông tin cơ bản
+    if ((!name || !phone) && playerSearchText.length > 2) {
+      const fallback = playerSuggestions.find(p => p.id === playerSearchText);
+      if (fallback) {
+        newCompetitor.name = fallback.name;
+        newCompetitor.phone = fallback.phone;
+      }
+    }
     const { name, phone, nickname, club, selected_date } = newCompetitor;
     if (!registeredPhone || !name || !phone) {
       setMessage('Vui lòng nhập đủ thông tin.');
       return;
     }
-
+    console.log('💬 Debug:', {
+      playerSearchText,
+      newCompetitor
+    });
     // Kiểm tra trùng trong danh sách local
     const duplicate = competitors.find(c => c.name === name && c.phone === phone);
     if (duplicate) {
