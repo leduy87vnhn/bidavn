@@ -156,32 +156,47 @@ const TournamentRegistration = () => {
   const handleAddCompetitor = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra đủ thông tin cơ bản
-    const { name, phone, nickname, club, selected_date } = newCompetitor;
+    // Lấy giá trị từ newCompetitor (ban đầu)
+    let { name, phone, nickname, club, selected_date } = newCompetitor;
+
+    // Nếu thiếu name/phone, fallback từ playerSuggestions theo ID
     if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
       const fallback = playerSuggestions.find(p => p.id === playerSearchText);
       if (fallback) {
-        newCompetitor.name = fallback.name;
-        newCompetitor.phone = fallback.phone;
+        name = fallback.name;
+        phone = fallback.phone;
+
+        // Cập nhật lại state
+        setNewCompetitor(prev => ({
+          ...prev,
+          name,
+          phone
+        }));
       }
     }
+
+    // Kiểm tra bắt buộc
     if (!registeredPhone) {
       setMessage('❌ Thiếu số điện thoại người đăng ký.');
       return;
     }
-    if (!newCompetitor.name) {
+    if (!name) {
       setMessage('❌ Thiếu tên VĐV.');
       return;
     }
-    if (!newCompetitor.phone) {
+    if (!phone) {
       setMessage('❌ Thiếu SĐT VĐV.');
       return;
     }
+
     console.log('💬 Debug:', {
       playerSearchText,
+      name,
+      phone,
       newCompetitor
     });
-    // Kiểm tra trùng trong danh sách local
+
+    // Kiểm tra trùng
     const duplicate = competitors.find(c => c.name === name && c.phone === phone);
     if (duplicate) {
       setMessage('Vận động viên này đã tồn tại trong danh sách.');
@@ -189,7 +204,7 @@ const TournamentRegistration = () => {
     }
 
     try {
-      // Gọi API resolve-player để lấy player_id phù hợp
+      // Gọi API resolve-player
       const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
         name,
         phone
@@ -211,21 +226,23 @@ const TournamentRegistration = () => {
         selected_date: selected_date || null
       });
 
-      // Thêm vào danh sách local (hiển thị trên bảng)
-      setCompetitors([...competitors, {
-        id: player_id,
-        name,
-        phone,
-        nickname,
-        club,
-        selected_date
-      }]);
+      // Thêm vào danh sách hiển thị
+      setCompetitors(prev => [
+        ...prev,
+        {
+          id: player_id,
+          name,
+          phone,
+          nickname,
+          club,
+          selected_date
+        }
+      ]);
 
       // Reset form
       setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '' });
       setPlayerSearchText('');
       setMessage('✅ Đã thêm vận động viên.');
-
     } catch (err) {
       console.error('Lỗi khi thêm VĐV:', err);
       const errorMsg = err.response?.data?.message || '❌ Lỗi khi thêm vận động viên.';
