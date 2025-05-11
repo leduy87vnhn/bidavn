@@ -152,7 +152,7 @@ const RegistrationDetail = () => {
                   <input value={c.nick_name || ''} onChange={(e) => handleInputChange(index, 'nick_name', e.target.value)} />
                 ) : c.nick_name}
               </td>
-              <td>{c.phone_number}</td>
+              <td>{c.phone}</td>
               <td>
                 {user?.user_type === 2 && isEditing ? (
                   <input type="date" value={c.selected_date?.slice(0, 10)} onChange={(e) => handleInputChange(index, 'selected_date', e.target.value)} />
