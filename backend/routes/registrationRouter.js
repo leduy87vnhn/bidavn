@@ -335,7 +335,7 @@ router.post('/:id/update-competitors', async (req, res) => {
 router.post('/resolve-player', async (req, res) => {
   const { name, phone } = req.body;
 
-  if (!player.phone || player.phone.toLowerCase() === 'unknown' || player.phone === '') {
+  if (!name || !phone) {
     return res.status(400).json({ status: 'error', message: 'Thiếu tên hoặc số điện thoại' });
   }
 
@@ -356,7 +356,7 @@ router.post('/resolve-player', async (req, res) => {
     );
     if (nameMatch.rows.length > 0) {
       const player = nameMatch.rows[0];
-      if (!player.phone) {
+      if (!player.phone || player.phone.toLowerCase() === 'unknown' || player.phone === '') {
         await client.query(`UPDATE players SET phone = $1 WHERE id = $2`, [phone, player.id]);
         return res.json({ status: 'ok', player_id: player.id });
       } else {
