@@ -178,7 +178,7 @@ router.get('/:id/competitors', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await client.query(`
-      SELECT c.*, p.name, p.phone
+      SELECT c.*, c.player_id, p.name, p.phone
       FROM competitors c
       JOIN players p ON c.player_id = p.id
       WHERE c.registration_form_id = $1
@@ -309,8 +309,8 @@ router.post('/:id/update-competitors', async (req, res) => {
 
     // Thêm lại từng VĐV mới
     for (const c of competitors) {
-      if (!c.player_id || !c.selected_date) {
-        throw new Error('Thiếu thông tin bắt buộc: player_id hoặc selected_date');
+      if (!c.player_id) {
+        throw new Error('Thiếu thông tin bắt buộc: player_id');
       }
 
       await clientConnection.query(
