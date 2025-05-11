@@ -57,7 +57,10 @@ router.get('/by-tournament/:tournamentId', async (req, res) => {
       JOIN players p ON c.player_id = p.id
       JOIN registration_form rf ON c.registration_form_id = rf.id
       WHERE rf.tournament_id = $1 AND (rf.status = 1 OR rf.status = 0)
-      ORDER BY c.selected_date ASC, c.id ASC
+      ORDER BY 
+        CASE WHEN c.selected_date IS NULL THEN 1 ELSE 0 END,
+        c.selected_date ASC,
+        c.id ASC
     `, [tournamentId]);
 
     res.json(result.rows);
@@ -332,7 +335,7 @@ router.post('/:id/update-competitors', async (req, res) => {
 router.post('/resolve-player', async (req, res) => {
   const { name, phone } = req.body;
 
-  if (!name || !phone) {
+  if (!player.phone || player.phone.toLowerCase() === 'unknown' || player.phone === '') {
     return res.status(400).json({ status: 'error', message: 'Thiếu tên hoặc số điện thoại' });
   }
 
