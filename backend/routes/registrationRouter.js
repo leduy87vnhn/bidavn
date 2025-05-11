@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 
 // 2. Thêm competitor vào bản đăng ký, với player_id đã được xác định trước
 router.post('/competitors', async (req, res) => {
-  const { registration_form_id, player_id, nick_name, club, selected_date } = req.body;
+  const { registration_form_id, player_id, nick_name, club, selected_date , uniform_size } = req.body;
 
   if (!registration_form_id || !player_id) {
     return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
@@ -32,9 +32,9 @@ router.post('/competitors', async (req, res) => {
 
   try {
     await client.query(
-      `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [registration_form_id, player_id, nick_name || '', club || '', selected_date]
+      `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date, uniform_size)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [registration_form_id, player_id, nick_name || '', club || '', selected_date || null, uniform_size || 'L']
     );
     res.json({ message: 'Success' });
   } catch (err) {
@@ -352,9 +352,9 @@ router.get('/:id', async (req, res) => {
         }
 
         await client.query(
-          `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date)
-          VALUES ($1, $2, $3, $4, $5)`,
-          [id, c.player_id, c.nick_name || '', c.club || '', c.selected_date || null]
+          `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date, uniform_size)
+          VALUES ($1, $2, $3, $4, $5, $6)`,
+          [id, c.player_id, c.nick_name || '', c.club || '', c.selected_date || null, c.uniform_size || 'L']
         );
       }
 

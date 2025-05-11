@@ -50,6 +50,7 @@ const TournamentCompetitorList = () => {
             <th>Tên</th>
             <th>Nickname</th>
             <th>SĐT</th>
+            <th>Size</th>
             <th>Ngày thi đấu</th>
             <th>Trạng thái</th>
             <th>CLB</th>
@@ -62,6 +63,7 @@ const TournamentCompetitorList = () => {
               <td>{c.name}</td>
               <td>{c.nick_name}</td>
               <td>{c.phone}</td>
+              <td>{c.uniform_size}</td>
               <td>{c.selected_date?.slice(0, 10)}</td>
               <td>{statusText(c.status)}</td>
               <td>{c.club}</td>

@@ -137,6 +137,7 @@ const RegistrationDetail = () => {
             <th>Tên</th>
             <th>Nickname</th>
             <th>SĐT</th>
+            <th>Size</th>
             <th>Ngày thi đấu</th>
             <th>CLB</th>
             {user?.user_type === 2 && isEditing && <th>Xoá</th>}
@@ -153,6 +154,22 @@ const RegistrationDetail = () => {
                 ) : c.nick_name}
               </td>
               <td>{c.phone}</td>
+              <td>
+                {user?.user_type === 2 && isEditing ? (
+                  <select
+                    value={c.uniform_size || 'L'}
+                    onChange={(e) => handleInputChange(index, 'uniform_size', e.target.value)}
+                  >
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                  </select>
+                ) : (
+                  c.uniform_size
+                )}
+              </td>
               <td>
                 {user?.user_type === 2 && isEditing ? (
                   <input type="date" value={c.selected_date?.slice(0, 10)} onChange={(e) => handleInputChange(index, 'selected_date', e.target.value)} />

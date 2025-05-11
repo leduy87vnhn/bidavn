@@ -19,7 +19,8 @@ const TournamentRegistration = () => {
     phone: '',
     nickname: '',
     club: '',
-    selected_date: ''
+    selected_date: '',
+    uniform_size: 'L' // mặc định
   });
   const [playerSuggestions, setPlayerSuggestions] = useState([]);
   const [playerSearchText, setPlayerSearchText] = useState('');
@@ -90,6 +91,7 @@ const TournamentRegistration = () => {
         phone: c.phone_number,
         nickname: c.nick_name,
         club: c.club,
+        uniform_size: c.uniform_size || 'L',
         selected_date: c.selected_date?.slice(0, 10) || ''
       }));
       setCompetitors(formatted);
@@ -150,6 +152,7 @@ const TournamentRegistration = () => {
       phone: player.phone,
       nickname: player.nickname || '',
       club: player.club || '',
+      uniform_size: 'L',
       selected_date: ''
     });
     setPlayerSearchText(player.id);
@@ -160,7 +163,7 @@ const TournamentRegistration = () => {
     e.preventDefault();
 
     // Lấy giá trị từ newCompetitor (ban đầu)
-    let { name, phone, nickname, club, selected_date } = newCompetitor;
+    let { name, phone, nickname, club, selected_date, uniform_size } = newCompetitor;
 
     // Nếu thiếu name/phone, fallback từ playerSuggestions theo ID
     if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
@@ -228,6 +231,7 @@ const TournamentRegistration = () => {
           player_id,
           nick_name: nickname,
           club,
+          uniform_size,
           selected_date: selected_date || null
         });
       }
@@ -241,12 +245,13 @@ const TournamentRegistration = () => {
           phone,
           nickname,
           club,
+          uniform_size,
           selected_date
         }
       ]);
 
       // Reset form
-      setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '' });
+      setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '', uniform_size: 'L' });
       setPlayerSearchText('');
       setMessage('✅ Đã thêm vận động viên.');
     } catch (err) {
@@ -313,6 +318,7 @@ const TournamentRegistration = () => {
           player_id,
           nick_name: competitor.nickname?.trim() || competitor.name,
           club: competitor.club,
+          uniform_size: competitor.uniform_size || 'L',
           selected_date: competitor.selected_date || null
         });
       }
@@ -415,6 +421,18 @@ const TournamentRegistration = () => {
           <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
           <input type="text" placeholder="Câu lạc bộ (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
+          <select
+            value={newCompetitor.uniform_size}
+            onChange={(e) => setNewCompetitor({ ...newCompetitor, uniform_size: e.target.value })}
+            required
+          >
+            <option value="">-- Chọn size đồng phục --</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
           {availableDates.length > 0 ? (
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
@@ -472,6 +490,7 @@ const TournamentRegistration = () => {
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>SĐT</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Nickname</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>CLB</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Size</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Ngày thi đấu</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Xoá</th>
                 </tr>
@@ -484,6 +503,7 @@ const TournamentRegistration = () => {
                     <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.phone}</td>
                     <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.nickname}</td>
                     <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.club}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.uniform_size}</td>
                     <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.selected_date}</td>
                     <td style={{ padding: '8px', border: '1px solid #ccc', textAlign: 'center' }}>
                       <button onClick={() => handleRemove(i)} style={{
