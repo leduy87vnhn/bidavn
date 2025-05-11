@@ -157,7 +157,7 @@ const TournamentRegistration = () => {
     e.preventDefault();
 
     // Kiểm tra đủ thông tin cơ bản
-    if ((!name || !phone) && playerSearchText.length > 2) {
+    if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
       const fallback = playerSuggestions.find(p => p.id === playerSearchText);
       if (fallback) {
         newCompetitor.name = fallback.name;
@@ -165,8 +165,16 @@ const TournamentRegistration = () => {
       }
     }
     const { name, phone, nickname, club, selected_date } = newCompetitor;
-    if (!registeredPhone || !name || !phone) {
-      setMessage('Vui lòng nhập đủ thông tin.');
+    if (!registeredPhone) {
+      setMessage('❌ Thiếu số điện thoại người đăng ký.');
+      return;
+    }
+    if (!newCompetitor.name) {
+      setMessage('❌ Thiếu tên VĐV.');
+      return;
+    }
+    if (!newCompetitor.phone) {
+      setMessage('❌ Thiếu SĐT VĐV.');
       return;
     }
     console.log('💬 Debug:', {
