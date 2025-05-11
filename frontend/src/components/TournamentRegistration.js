@@ -368,6 +368,19 @@ const TournamentRegistration = () => {
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
               <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
+                {/* ✅ OPTION: Không chọn ngày */}
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <input
+                    type="radio"
+                    name="selected_date"
+                    value=""
+                    checked={newCompetitor.selected_date === ''}
+                    onChange={() => setNewCompetitor({ ...newCompetitor, selected_date: '' })}
+                  />
+                  <span>Không chọn ngày</span>
+                </label>
+
+                {/* Các ngày thi đấu thực tế */}
                 {availableDates.map(({ value, display, remaining }) => (
                   <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <input
@@ -393,28 +406,43 @@ const TournamentRegistration = () => {
 
         {competitors.length > 0 && (
           <>
-            <table className="competitor-list">
-              <thead>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              marginTop: 20,
+              fontSize: '15px',
+              backgroundColor: '#fefefe',
+              boxShadow: '0 0 5px rgba(0,0,0,0.1)'
+            }}>
+              <thead style={{ backgroundColor: '#e9f5e9' }}>
                 <tr>
-                  <th>STT</th>
-                  <th>Tên</th>
-                  <th>SĐT</th>
-                  <th>Nickname</th>
-                  <th>CLB</th>
-                  <th>Ngày thi đấu</th>
-                  <th>Xoá</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>#</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Tên</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>SĐT</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Nickname</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>CLB</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Ngày thi đấu</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Xoá</th>
                 </tr>
               </thead>
               <tbody>
                 {competitors.map((c, i) => (
                   <tr key={i}>
-                    <td>{i + 1}</td>
-                    <td>{c.name}</td>
-                    <td>{c.phone}</td>
-                    <td>{c.nickname}</td>
-                    <td>{c.club}</td>
-                    <td>{c.selected_date}</td>
-                    <td><button onClick={() => handleRemove(i)} style={{ color: 'red' }}>Xoá</button></td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{i + 1}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.name}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.phone}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.nickname}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.club}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc' }}>{c.selected_date}</td>
+                    <td style={{ padding: '8px', border: '1px solid #ccc', textAlign: 'center' }}>
+                      <button onClick={() => handleRemove(i)} style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'red',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                      }}>✖</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
