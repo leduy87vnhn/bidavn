@@ -1,3 +1,4 @@
+// Login.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -123,6 +124,15 @@ const Login = () => {
                 <p className="form-link">
                     Chưa có tài khoản? <Link to="/register">Đăng ký tại đây</Link>
                 </p>
+                <div className="login-demo-info">
+                    <p style={{ marginTop: '12px', fontStyle: 'italic', fontSize: '14px' }}>
+                        Sử dụng tài khoản sau nếu không muốn đăng ký:
+                    </p>
+                    <ul style={{ listStyle: 'none', paddingLeft: 0, fontSize: '14px' }}>
+                        <li><strong>Tài khoản:</strong> vandongvien</li>
+                        <li><strong>Mật khẩu:</strong> vandongvien</li>
+                    </ul>
+                </div>
             </form>
         </div>
     );

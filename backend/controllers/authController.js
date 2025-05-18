@@ -5,16 +5,6 @@ const client = require('../config/db');
 const logger = require('../config/logger');
 const { logUserAction } = require('../models/userModel');
 
-
-//await logUserAction(user.id, user.user_name, 'REGISTERED');
-//...
-//await logUserAction(userId, result.rows[0].user_name, 'ACCOUNT_CONFIRMED');
-//logger.info(`Registering user: ${user_name}`);
-//...
-//logger.error(`Error sending email: ${error.message}`);
-//...
-//logger.info(`User confirmed: ${userId}`);
-
 // Check if user already existed
 const checkExistingUser = async (user_name, phone_number, email) => {
     const query = `
@@ -72,21 +62,23 @@ const registerUser = async (req, res) => {
         console.log('10 email          =', email);
         const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, name, phone_number, created_date, modified_date, false, email]);
         console.log('Insert successful');
+        // Temporarily add return while not yet send email
+        return res.status(200).json({ message: 'Đăng ký thành công.' });
 
-        const user = result.rows[0];
+        // const user = result.rows[0];
         
-        logger.info(`Registered user: ${user_name}, now send email`);
+        // logger.info(`Registered user: ${user_name}, now send email`);
 
-        // Send confirmation email
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        const confirmLink = `http://${process.env.TOKEN_URL}/confirm/${token}`;
+        // // Send confirmation email
+        // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // const confirmLink = `http://${process.env.TOKEN_URL}/confirm/${token}`;
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Please confirm your registration',
-            html: `<p>Click the link to confirm your registration: <a href="${confirmLink}">${confirmLink}</a></p>`
-        };
+        // const mailOptions = {
+        //     from: process.env.EMAIL_USER,
+        //     to: email,
+        //     subject: 'Please confirm your registration',
+        //     html: `<p>Click the link to confirm your registration: <a href="${confirmLink}">${confirmLink}</a></p>`
+        // };
 
         // const transporter = nodemailer.createTransport({
         //     service: 'gmail',
