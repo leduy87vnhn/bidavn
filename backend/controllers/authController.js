@@ -58,9 +58,9 @@ const registerUser = async (req, res) => {
         console.log('6 phone_number   =', phone_number);
         console.log('7 created_date   =', created_date);
         console.log('8 modified_date  =', modified_date);
-        console.log('9 enable        =', false); // dùng boolean thật
+        console.log('9 enable        =', true); // dùng boolean thật
         console.log('10 email          =', email);
-        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, name, phone_number, created_date, modified_date, false, email]);
+        const result = await client.query(query, [user_name, hashedPassword, user_type, birthday, name, phone_number, created_date, modified_date, true, email]);
         console.log('Insert successful');
         // Temporarily add return while not yet send email
         return res.status(200).json({ message: 'Đăng ký thành công.' });
