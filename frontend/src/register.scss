@@ -67,3 +67,18 @@ button[type="submit"]:hover {
     margin-top: 15px;
     color: #d9534f;
 }
+
+.form-link {
+    margin-top: 12px;
+    font-size: 14px;
+    text-align: center;
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    svg {
+        color: #007bff;
+    }
+}

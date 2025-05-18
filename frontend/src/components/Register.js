@@ -113,6 +113,12 @@ const Register = () => {
                 <button type="submit">Đăng ký</button>
 
                 {message && <div className="form-message">{message}</div>}
+                <p className="form-link">
+                    <span title="Chuyển đến trang đăng nhập">
+                        <FaSignInAlt style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                    </span>
+                    Đã có tài khoản? <Link to="/login">Đăng nhập tại đây</Link>
+                </p>
             </form>
         </div>
     );
