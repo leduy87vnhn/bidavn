@@ -279,14 +279,16 @@ const TournamentDetail = () => {
                     </button>
 
                     {/* ✅ See list of registration forms */}
-                    <button
-                        style={{ ...primaryButtonStyle, marginLeft: 10 }}
-                        onClick={() =>
-                            navigate(`/registrations?tournament=${encodeURIComponent(tournament?.name || '')}`)
-                        }
-                    >
-                        Xem Đăng Ký
-                    </button>
+                    {user?.user_type === 2 && (
+                        <button
+                            style={{ ...primaryButtonStyle, marginLeft: 10 }}
+                            onClick={() =>
+                                navigate(`/registrations?tournament=${encodeURIComponent(tournament?.name || '')}`)
+                            }
+                        >
+                            Xem Đăng Ký
+                        </button>
+                    )}
 
                     <button
                         style={secondaryButtonStyle}

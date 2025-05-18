@@ -8,6 +8,7 @@ const TournamentCompetitorList = () => {
   const user = JSON.parse(localStorage.getItem('user_info'));
   const [data, setData] = useState([]);
   const [tournament, setTournament] = useState(null);
+  const isAdmin = user?.user_type === 2;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +17,9 @@ const TournamentCompetitorList = () => {
         setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
-        setData(compRes.data);
+        const allData = compRes.data;
+        const filtered = isAdmin ? allData : allData.filter(c => String(c.status) === '1');
+        setData(filtered);
       } catch (err) {
         console.error('Lỗi khi tải danh sách:', err);
       }

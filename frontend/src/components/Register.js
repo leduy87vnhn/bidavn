@@ -31,7 +31,11 @@ const Register = () => {
             });
             setMessage(response.data.message);
         } catch (error) {
-            setMessage('Error registering user.');
+            if (error.response && error.response.data && error.response.data.message) {
+                setMessage(error.response.data.message);
+            } else {
+                setMessage('Đăng ký thất bại.');
+            }
         }
     };
 
