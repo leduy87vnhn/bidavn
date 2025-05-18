@@ -139,6 +139,7 @@ router.get('/', async (req, res) => {
         rf.registered_phone,
         u.name AS user_name,
         rf.status,
+        rf.created_date,
         (
           SELECT c.club
           FROM competitors c
