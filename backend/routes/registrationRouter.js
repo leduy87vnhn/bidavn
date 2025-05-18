@@ -128,7 +128,7 @@ router.get('/search-player', async (req, res) => {
 
 // 6. Danh sách đơn đăng ký (dành cho admin)
 router.get('/', async (req, res) => {
-  const { tournament, phone, user_name, club } = req.query;
+  const { tournament, phone, user_name, club, status } = req.query;
 
   try {
     const result = await client.query(
@@ -161,10 +161,11 @@ router.get('/', async (req, res) => {
         ($4::text IS NULL OR EXISTS (
           SELECT 1 FROM competitors c
           WHERE c.registration_form_id = rf.id AND LOWER(c.club) LIKE LOWER('%' || $4 || '%')
-        ))
+        )) AND
+        ($5::text IS NULL OR rf.status::text = $5::text)
       ORDER BY rf.id DESC
       `,
-      [tournament || null, phone || null, user_name || null, club || null]
+      [tournament || null, phone || null, user_name || null, club || null, status || null]
     );
 
     res.json(result.rows);
