@@ -51,12 +51,11 @@ const TournamentCompetitorList = () => {
           <tr>
             <th>ID</th>
             <th>Tên</th>
-            <th>Nickname</th>
             <th>SĐT</th>
+            <th>Đơn vị</th>
             <th>Size</th>
             <th>Ngày thi đấu</th>
             <th>Trạng thái</th>
-            <th>CLB</th>
           </tr>
         </thead>
         <tbody>
@@ -64,12 +63,11 @@ const TournamentCompetitorList = () => {
             <tr key={idx}>
               <td>{c.id}</td>
               <td>{c.name}</td>
-              <td>{c.nick_name}</td>
               <td>{c.phone}</td>
+              <td>{c.club}</td>
               <td>{c.uniform_size}</td>
               <td>{c.selected_date?.slice(0, 10)}</td>
               <td>{statusText(c.status)}</td>
-              <td>{c.club}</td>
             </tr>
           ))}
         </tbody>
