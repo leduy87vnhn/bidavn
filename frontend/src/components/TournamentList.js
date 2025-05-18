@@ -322,8 +322,27 @@ const TournamentList = () => {
                                             </td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
-                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.location}</td>
-                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.prize}</td>
+                                            <td style={{
+                                                border: '1px solid #ddd',
+                                                padding: '8px',
+                                                maxHeight: '100px',
+                                                overflowY: 'auto',
+                                                whiteSpace: 'pre-wrap',
+                                                wordBreak: 'break-word'
+                                            }}>
+                                                {tour.location}
+                                            </td>
+
+                                            <td style={{
+                                                border: '1px solid #ddd',
+                                                padding: '8px',
+                                                maxHeight: '100px',
+                                                overflowY: 'auto',
+                                                whiteSpace: 'pre-wrap',
+                                                wordBreak: 'break-word'
+                                            }}>
+                                                {tour.prize}
+                                            </td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                 <button
                                                     style={{

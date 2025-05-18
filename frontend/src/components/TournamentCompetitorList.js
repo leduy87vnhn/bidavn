@@ -58,7 +58,7 @@ const TournamentCompetitorList = () => {
             <th>Tên</th>
             <th>SĐT</th>
             <th>Đơn vị</th>
-            <th>Size</th>
+            <th>Size trang phục</th>
             <th>Ngày thi đấu</th>
             <th>Trạng thái</th>
           </tr>
