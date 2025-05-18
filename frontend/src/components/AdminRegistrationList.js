@@ -76,6 +76,21 @@ const AdminRegistrationList = () => {
     return 'Không rõ';
   };
 
+  const buttonStyle = {
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '6px',
+    padding: '6px 12px',
+    cursor: 'pointer'
+  };
+
+  const grayButton = {
+    ...buttonStyle,
+    backgroundColor: '#ccc',
+    cursor: 'not-allowed'
+  };
+
   return (
     <div style={{ padding: 30 }}>
       <h2>Danh sách đơn đăng ký</h2>
@@ -113,14 +128,26 @@ const AdminRegistrationList = () => {
               <td>{statusText(row.status)}</td>
               <td>{row.athlete_names}</td>
               <td>
-                <button onClick={() => navigate(`/registration/${row.registration_id}/detail`)}>Xem</button>
-                {isAdmin && row.status === 0 && (
+                <button
+                  onClick={() => navigate(`/registration/${row.registration_id}/detail`)}
+                  style={buttonStyle}
+                >
+                  🔍 Xem
+                </button>
+
+                {isAdmin && (
                   <>
-                    <button onClick={() => handleApproval(row.registration_id, 1)} style={{ marginLeft: 5 }}>
-                      Duyệt
+                    <button
+                      onClick={() => handleApproval(row.registration_id, 1)}
+                      style={{ ...buttonStyle, marginLeft: 6 }}
+                    >
+                      ✔️ Duyệt
                     </button>
-                    <button onClick={() => handleApproval(row.registration_id, 2)} style={{ marginLeft: 5 }}>
-                      Từ chối
+                    <button
+                      onClick={() => handleApproval(row.registration_id, 2)}
+                      style={{ ...buttonStyle, backgroundColor: '#dc3545', marginLeft: 6 }}
+                    >
+                      ❌ Từ chối
                     </button>
                   </>
                 )}
