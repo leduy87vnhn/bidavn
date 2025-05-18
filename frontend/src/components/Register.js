@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../register.scss';
+import { FaSignInAlt } from 'react-icons/fa';
 
 const Register = () => {
     const [user_name, setUserName] = useState('');
