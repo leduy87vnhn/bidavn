@@ -35,6 +35,11 @@ const TournamentCompetitorList = () => {
     return 'Chờ duyệt';
   };
 
+  const maskPhone = (phone) => {
+    if (!phone || phone.length < 3) return '***';
+    return '*******' + phone.slice(-3);
+  };
+
   return (
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
@@ -61,9 +66,9 @@ const TournamentCompetitorList = () => {
         <tbody>
           {data.map((c, idx) => (
             <tr key={idx}>
-              <td>{c.id}</td>
+              <td>{c.player_id}</td>
               <td>{c.name}</td>
-              <td>{c.phone}</td>
+              <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
               <td>{c.club}</td>
               <td>{c.uniform_size}</td>
               <td>{c.selected_date?.slice(0, 10)}</td>
