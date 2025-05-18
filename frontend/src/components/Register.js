@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../register.scss';
 import { FaSignInAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
     const [user_name, setUserName] = useState('');
