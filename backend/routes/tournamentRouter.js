@@ -6,21 +6,34 @@ const path = require('path');
 const tournamentController = require('../controllers/tournamentController');
 
 // Configure multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/backgrounds');
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
+// Multer config cho ảnh nền
+const backgroundStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/backgrounds');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
 });
-const upload = multer({ storage: storage });
+const uploadBackground = multer({ storage: backgroundStorage });
+
+// Multer config cho QR code
+const qrStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/qr'); // ✅ CHỈNH THƯ MỤC LƯU QR
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const uploadQR = multer({ storage: qrStorage });
 
 // Route upload background
-router.post('/:id/upload-background', upload.single('background'), tournamentController.uploadBackground);
+router.post('/:id/upload-background', uploadBackground.single('background'), tournamentController.uploadBackground);
 
-router.post('/:id/upload-bankqr', upload.single('bank_qr'), tournamentController.uploadBankQr);
+router.post('/:id/upload-bankqr', uploadQR.single('bank_qr'), tournamentController.uploadBankQr);
 
 
 // List tournaments (paginated)

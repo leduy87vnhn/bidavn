@@ -589,7 +589,7 @@ const TournamentRegistration = () => {
             <div style={{ marginTop: '15px', textAlign: 'center' }}>
               <p><strong>Hoặc quét mã QR để thanh toán:</strong></p>
               <img
-                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${modalInfo.bankQr}`}
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/qr/${modalInfo.bankQr}`}
                 alt="QR chuyển khoản"
                 style={{ width: '220px', borderRadius: '12px', boxShadow: '0 0 6px rgba(0,0,0,0.3)' }}
                 onError={(e) => (e.target.style.display = 'none')}
