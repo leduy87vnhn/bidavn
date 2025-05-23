@@ -159,7 +159,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.post('/upload-list-background', upload.single('background'), async (req, res) => {
+router.post('/upload-list-background', uploadBackground.single('background'), async (req, res) => {
     try {
         const fileName = req.file.filename;
 
