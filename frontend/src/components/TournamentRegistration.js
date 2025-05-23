@@ -294,6 +294,30 @@ const TournamentRegistration = () => {
       //     selected_date: competitor.selected_date,
       //   });
       // }
+      // ✅ Đếm số lượng đăng ký theo từng ngày
+      const competitorCountByDate = {};
+      for (const comp of competitors) {
+        if (!comp.selected_date) continue;
+        competitorCountByDate[comp.selected_date] = (competitorCountByDate[comp.selected_date] || 0) + 1;
+      }
+
+      // ✅ Kiểm tra với availableDates
+      let exceeded = false;
+      let overbookedDate = '';
+      for (const date of Object.keys(competitorCountByDate)) {
+        const remainingSlot = availableDates.find(d => d.value === date)?.remaining ?? 0;
+        const toRegister = competitorCountByDate[date];
+        if (toRegister > remainingSlot) {
+          exceeded = true;
+          overbookedDate = date;
+          break;
+        }
+      }
+
+      if (exceeded) {
+        setMessage(`❌ Vượt quá số lượng VĐV cho ngày ${overbookedDate}. Vui lòng kiểm tra lại.`);
+        return;
+      }
       for (const competitor of competitors) {
         if (!competitor.name || !competitor.phone) {
           console.error('🚫 Thiếu name hoặc phone:', competitor);
