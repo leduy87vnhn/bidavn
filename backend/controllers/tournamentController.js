@@ -24,6 +24,30 @@ const uploadBackground = async (req, res) => {
     }
 };
 
+// Upload QR code
+const uploadBankQr = async (req, res) => {
+    const tournamentId = req.params.id;
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).json({ message: 'Không có file nào được tải lên.' });
+    }
+
+    try {
+        const fileName = file.filename;
+
+        await client.query(
+            'UPDATE tournaments SET bank_qr = $1 WHERE id = $2',
+            [fileName, tournamentId]
+        );
+
+        res.status(200).json({ message: 'Cập nhật QR ngân hàng thành công', filename: fileName });
+    } catch (error) {
+        console.error('Lỗi khi cập nhật QR ngân hàng:', error);
+        res.status(500).json({ message: 'Lỗi server khi cập nhật QR ngân hàng' });
+    }
+};
+
 const getTournamentById = async (req, res) => {
     const tournamentId = req.params.id;
     try {
@@ -47,5 +71,6 @@ const getTournamentById = async (req, res) => {
   
   module.exports = {
     getTournamentById,
-    uploadBackground
+    uploadBackground,
+    uploadBankQr
   };

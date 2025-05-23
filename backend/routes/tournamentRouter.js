@@ -20,6 +20,9 @@ const upload = multer({ storage: storage });
 // Route upload background
 router.post('/:id/upload-background', upload.single('background'), tournamentController.uploadBackground);
 
+router.post('/:id/upload-bankqr', upload.single('bank_qr'), tournamentController.uploadBankQr);
+
+
 // List tournaments (paginated)
 router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -85,6 +88,7 @@ router.put('/:id', async (req, res) => {
         competitors_per_day,
         bank_name,
         bank_number,
+        bank_acc_name,
         conditions,
         registration_method,
         rules,
@@ -108,17 +112,18 @@ router.put('/:id', async (req, res) => {
                 competitors_per_day = $12,
                 bank_name = $13,
                 bank_number = $14,
-                conditions = $15,
-                registration_method = $16,
-                rules = $17,
-                uniform = $18
-            WHERE id = $19
+                bank_acc_name = $15,
+                conditions = $16,
+                registration_method = $17,
+                rules = $18,
+                uniform = $19
+            WHERE id = $20
         `;
         await client.query(query, [
             name, code, attendance_price, start_date, end_date,
             location, content, prize, registerable_date_start,
             registerable_date_end, description, competitors_per_day,
-            bank_name, bank_number, conditions, registration_method, rules, uniform,
+            bank_name, bank_number, bank_acc_name, conditions, registration_method, rules, uniform,
             id
         ]);
         res.json({ message: 'Cập nhật thành công.' });

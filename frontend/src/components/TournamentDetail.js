@@ -79,6 +79,29 @@ const TournamentDetail = () => {
         }
     };
 
+    const handleBankQrUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file || !tournament) return;
+
+        const form = new FormData();
+        form.append('bank_qr', file);
+        setUploading(true);
+
+        try {
+            await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+                form,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+            );
+            alert('✅ Cập nhật QR ngân hàng thành công');
+            await loadTournament();
+        } catch (err) {
+            alert('❌ Lỗi khi cập nhật QR ngân hàng');
+        } finally {
+            setUploading(false);
+        }
+    };
+
     const inputStyle = {
         width: '100%',
         padding: '8px',
@@ -214,6 +237,7 @@ const TournamentDetail = () => {
                 <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
                 <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
                 <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
+                <p><strong>Tên tài khoản:</strong><br />{getInput('bank_acc_name')}</p>
                 <p><strong>Hướng dẫn đăng ký:</strong><br />{getInput('registration_method', true, 5, true)}</p>
 
                 <p><strong>Cơ cấu giải thưởng:</strong><br />{getInput('prize', true, 5, true)}</p>
@@ -235,12 +259,24 @@ const TournamentDetail = () => {
 
                 {user?.user_type === 2 && (
                     <>
+                        {/* Nút upload hình nền */}
                         <label style={{ ...primaryButtonStyle, display: 'inline-block', cursor: 'pointer' }}>
                             <FaCamera /> Hình nền
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleBackgroundUpload}
+                                style={{ display: 'none' }}
+                            />
+                        </label>
+
+                        {/* Nút upload QR code */}
+                        <label style={{ ...primaryButtonStyle, display: 'inline-block', cursor: 'pointer' }}>
+                            <FaCamera /> QR ngân hàng
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleBankQrUpload}
                                 style={{ display: 'none' }}
                             />
                         </label>

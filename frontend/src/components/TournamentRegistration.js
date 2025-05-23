@@ -326,15 +326,22 @@ const TournamentRegistration = () => {
       setCompetitors([]);
       const totalAthletes = competitors.length;
       const totalFee = totalAthletes * parseInt(tournament.attendance_price || 0);
-      const { bank_name, bank_number } = tournament;
+      const { bank_name, bank_number, bank_acc_name, bank_qr } = tournament;
 
-      if (bank_name?.trim() && bank_number?.trim()) {
+      if (
+        totalFee &&
+        bank_number?.trim() &&
+        bank_acc_name?.trim() &&
+        bank_name?.trim()
+      ) {
         setModalInfo({
           totalAthletes,
           tournamentName: tournament.name,
           totalFee,
           bankNumber: bank_number,
-          bankName: bank_name
+          bankAccName: bank_acc_name,
+          bankName: bank_name,
+          bankQr: bank_qr
         });
         setShowSuccessModal(true);
       } else {
@@ -538,19 +545,34 @@ const TournamentRegistration = () => {
             }
           }}
         >
-          <h2>🎉 Đăng ký thi đấu thành công</h2>
+          <h2>📢 Thông tin nộp lệ phí</h2>
           <p>
-            Đã đăng ký cho <strong>{modalInfo.totalAthletes}</strong> vận động viên tham gia giải
-            <strong> {modalInfo.tournamentName}</strong>.
+            Hãy chuyển số tiền&nbsp;
+            <strong>{(modalInfo.totalFee || 0).toLocaleString('vi-VN')} VND</strong>
+            &nbsp;đến tài khoản sau:
           </p>
           <p>
-            Số tiền lệ phí là:
-            <strong> {(Number(modalInfo.totalFee || 0)).toLocaleString('vi-VN')} VND</strong>
+            📄 <strong>Số tài khoản:</strong> {modalInfo.bankNumber}
           </p>
-          <p>Hãy gửi lệ phí cho ban tổ chức theo số tài khoản:</p>
           <p>
-            <strong>{modalInfo.bankNumber}</strong> tại <strong>{modalInfo.bankName}</strong>
+            👤 <strong>Chủ tài khoản:</strong> {modalInfo.bankAccName}
           </p>
+          <p>
+            🏦 <strong>Ngân hàng:</strong> {modalInfo.bankName}
+          </p>
+
+          {modalInfo.bankQr && (
+            <div style={{ marginTop: '15px', textAlign: 'center' }}>
+              <p><strong>Hoặc quét mã QR để thanh toán:</strong></p>
+              <img
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${modalInfo.bankQr}`}
+                alt="QR chuyển khoản"
+                style={{ width: '220px', borderRadius: '12px', boxShadow: '0 0 6px rgba(0,0,0,0.3)' }}
+                onError={(e) => (e.target.style.display = 'none')}
+              />
+            </div>
+          )}
+
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button
               onClick={() => setShowSuccessModal(false)}
@@ -563,7 +585,7 @@ const TournamentRegistration = () => {
                 fontWeight: 'bold'
               }}
             >
-              OK
+              Đóng
             </button>
           </div>
         </ReactModal>
