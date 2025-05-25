@@ -262,7 +262,7 @@ const TournamentDetail = () => {
                 <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitors_per_day')}</p>
                 <p><strong>Điều kiện thi đấu:</strong><br />{getInput('conditions', true, 5, true)}</p>
                 <p><strong>Quy định:</strong><br />{getInput('rules', true, 5, true)}</p>
-                <p><strong>Đồng phục và thiết bị thi đấu:</strong><br />{getInput('uniform', true, 5, true)}</p>
+                <p><strong>Trang phục và thiết bị thi đấu:</strong><br />{getInput('uniform', true, 5, true)}</p>
                 <p><strong>Mô tả:</strong><br />{getInput('description', true, 10, true)}</p>
 
                 {user?.user_type === 2 && (

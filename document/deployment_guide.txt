@@ -25,6 +25,7 @@ sudo certbot --nginx
 npm install react-icons
 npm install xlsx
 npm install react-modal
+npm install xlsx file-saver
 
 
 Start backend:
