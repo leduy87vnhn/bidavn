@@ -228,19 +228,6 @@ const TournamentDetail = () => {
                 </Link>
             </div>
 
-            {/* ✅ Nút Sửa (admin) đưa xuống cuối */}
-            {user?.user_type === 2 && !isEditing && (
-                <button
-                    style={primaryButtonStyle}
-                    onClick={() => {
-                        setFormData(tournament);
-                        setIsEditing(true);
-                    }}
-                >
-                    <FaEdit /> Sửa
-                </button>
-            )}
-
                 <p><strong>Tên giải:</strong><br />{getInput('name')}</p>
                 <p><strong>Mã giải:</strong><br />{getInput('code')}</p>
 
@@ -328,12 +315,19 @@ const TournamentDetail = () => {
                 )}
 
                 <div style={{ marginTop: 30 }}>
-                    <button
-                        style={primaryButtonStyle}
-                        onClick={() => navigate(`/tournament/${tournament.id}/register`)}
-                    >
-                        Đăng ký thi đấu
-                    </button>
+
+                    {/* ✅ Nút Sửa (admin) đưa xuống cuối */}
+                    {user?.user_type === 2 && !isEditing && (
+                        <button
+                            style={primaryButtonStyle}
+                            onClick={() => {
+                                setFormData(tournament);
+                                setIsEditing(true);
+                            }}
+                        >
+                            <FaEdit /> Sửa
+                        </button>
+                    )}
 
                     {/* ✅ See list of registration forms */}
                     {user?.user_type === 2 && (
