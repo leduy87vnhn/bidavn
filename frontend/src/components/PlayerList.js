@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom';
 const PlayerList = () => {
     const navigate = useNavigate();
     const [players, setPlayers] = useState([]);
-    const [filter, setFilter] = useState({ id: '', name: '', ranking: '', phone: '' });
+    const [filter, setFilter] = useState({
+    id: '',
+    name: '',
+    ranking: '',
+    pool_ranking: '',
+    phone: ''
+    });
     const [newPlayer, setNewPlayer] = useState({ id: '', name: '', phone: '', ranking: '', points: '' });
     const [message, setMessage] = useState('');
     const [user, setUser] = useState(null);
@@ -135,10 +141,11 @@ const PlayerList = () => {
     };
 
     const filteredPlayers = players.filter(p =>
-        p.id.includes(filter.id) &&
-        p.name.toLowerCase().includes(filter.name.toLowerCase()) &&
-        p.phone.includes(filter.phone) &&
-        (filter.ranking === '' || String(p.ranking) === filter.ranking)
+    p.id.includes(filter.id) &&
+    p.name.toLowerCase().includes(filter.name.toLowerCase()) &&
+    p.phone.includes(filter.phone) &&
+    (filter.ranking === '' || String(p.ranking) === filter.ranking) &&
+    (filter.pool_ranking === '' || String(p.pool_ranking) === filter.pool_ranking)
     );
     const totalPages = Math.ceil(filteredPlayers.length / limit);
     const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
@@ -169,7 +176,20 @@ const PlayerList = () => {
                 <input placeholder="ID" name="id" value={filter.id} onChange={handleInput} style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }} />
                 <input placeholder="Tên" name="name" value={filter.name} onChange={handleInput} style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }} />
                 <input placeholder="SĐT" name="phone" value={filter.phone} onChange={handleInput} style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }} />
-                <input placeholder="Ranking" name="ranking" value={filter.ranking} onChange={handleInput} style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }} />
+                <input
+                placeholder="Hạng Carom"
+                name="ranking"
+                value={filter.ranking}
+                onChange={handleInput}
+                style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
+                />
+                <input
+                placeholder="Hạng Pool"
+                name="pool_ranking"
+                value={filter.pool_ranking}
+                onChange={handleInput}
+                style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
+                />
             </div>
 
             <div style={{ marginBottom: 20, display: 'flex', gap: 10 }}>
