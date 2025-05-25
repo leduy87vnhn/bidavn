@@ -43,25 +43,16 @@ router.get('/', async (req, res) => {
     const offset = (page - 1) * limit;
     const status = req.query.status || 'all';
 
-    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).replace(' ', 'T');
-    console.log('[DEBUG] now (Asia/Ho_Chi_Minh):', now);
-
     let condition = '';
     let dataParams = [limit, offset];
     let countParams = [];
 
     if (status === 'upcoming') {
-        condition = 'WHERE start_date > $3::date';
-        dataParams.push(now);
-        countParams = [now];
+        condition = `WHERE start_date > (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     } else if (status === 'ongoing') {
-        condition = 'WHERE start_date <= $3::date AND end_date >= $3::date';
-        dataParams.push(now);
-        countParams = [now];
+        condition = `WHERE start_date <= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh') AND end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     } else if (status === 'ended') {
-        condition = 'WHERE end_date < $3::date';
-        dataParams.push(now);
-        countParams = [now];
+        condition = `WHERE end_date < (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     }
 
     const dataQuery = `
@@ -85,11 +76,9 @@ router.get('/', async (req, res) => {
             );
             countResult = await client.query('SELECT COUNT(*) FROM tournaments');
         } else {
-            dataResult = await client.query(dataQuery, dataParams);
-            countResult = await client.query(countQuery, countParams);
+            dataResult = await client.query(dataQuery, [limit, offset]);
+            countResult = await client.query(countQuery);
         }
-
-        console.log('[DEBUG] Số giải trả về:', dataResult.rows.length);
 
         res.json({
             data: dataResult.rows,
