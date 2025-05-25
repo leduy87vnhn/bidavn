@@ -42,22 +42,26 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const offset = (page - 1) * limit;
     const status = req.query.status || 'all';
-    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).replace(' ', 'T'); // ✅ đúng giờ VN
- // Chuẩn ISO để so sánh timestamp
-    console.log('[DEBUG] Thời gian hiện tại (giờ VN):', now);
+
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).replace(' ', 'T');
+    console.log('[DEBUG] now (Asia/Ho_Chi_Minh):', now);
 
     let condition = '';
-    let params = [limit, offset];
+    let dataParams = [limit, offset];
+    let countParams = [];
 
     if (status === 'upcoming') {
-        condition = 'WHERE start_date > CAST($3 AS date)';
-        params.push(now);
+        condition = 'WHERE start_date > $3::date';
+        dataParams.push(now);
+        countParams = [now];
     } else if (status === 'ongoing') {
-        condition = 'WHERE start_date <= CAST($3 AS date) AND end_date >= CAST($3 AS date)';
-        params.push(now);
+        condition = 'WHERE start_date <= $3::date AND end_date >= $3::date';
+        dataParams.push(now);
+        countParams = [now];
     } else if (status === 'ended') {
-        condition = 'WHERE end_date < CAST($3 AS date)';
-        params.push(now);
+        condition = 'WHERE end_date < $3::date';
+        dataParams.push(now);
+        countParams = [now];
     }
 
     const dataQuery = `
@@ -66,7 +70,6 @@ router.get('/', async (req, res) => {
         ORDER BY start_date ASC
         LIMIT $1 OFFSET $2
     `;
-
     const countQuery = `
         SELECT COUNT(*) FROM tournaments
         ${condition}
@@ -75,21 +78,18 @@ router.get('/', async (req, res) => {
     try {
         let dataResult, countResult;
 
-        if (status === 'upcoming') {
-            condition = 'WHERE start_date > $3::date';
-            dataParams = [limit, offset, now];
-            countParams = [now];
-        } else if (status === 'ongoing') {
-            condition = 'WHERE start_date <= $3::date AND end_date >= $3::date';
-            dataParams = [limit, offset, now];
-            countParams = [now];
-        } else if (status === 'ended') {
-            condition = 'WHERE end_date < $3::date';
-            dataParams = [limit, offset, now];
-            countParams = [now];
+        if (status === 'all') {
+            dataResult = await client.query(
+                'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2',
+                [limit, offset]
+            );
+            countResult = await client.query('SELECT COUNT(*) FROM tournaments');
         } else {
-            dataParams = [limit, offset];
+            dataResult = await client.query(dataQuery, dataParams);
+            countResult = await client.query(countQuery, countParams);
         }
+
+        console.log('[DEBUG] Số giải trả về:', dataResult.rows.length);
 
         res.json({
             data: dataResult.rows,
@@ -101,7 +101,7 @@ router.get('/', async (req, res) => {
         console.error('Error fetching tournaments:', error);
         res.status(500).json({ message: 'Lỗi server khi lấy danh sách giải đấu.' });
     }
-    });
+});
 
 // Add tournament
 router.post('/', async (req, res) => {
