@@ -213,6 +213,18 @@ const PlayerList = () => {
                 >
                     Export Excel
                 </button>
+                <button
+                onClick={() => navigate('/tournaments')}
+                style={{
+                    backgroundColor: '#6c757d',
+                    color: '#fff',
+                    padding: '6px 14px',
+                    border: 'none',
+                    borderRadius: 5
+                }}
+                >
+                ⬅️ Quay về danh sách giải
+                </button>
             </div>
 
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>

@@ -147,8 +147,9 @@ router.get('/', async (req, res) => {
           LIMIT 1
         ) AS club,
         (
-          SELECT STRING_AGG(c.nick_name, ', ')
+          SELECT STRING_AGG(p.name, ', ')
           FROM competitors c
+          JOIN players p ON c.player_id = p.id
           WHERE c.registration_form_id = rf.id
         ) AS athlete_names
       FROM registration_form rf

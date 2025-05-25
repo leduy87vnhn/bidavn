@@ -120,8 +120,8 @@ const AdminRegistrationList = () => {
           <tr>
             <th>Mã</th>
             {/*<th>Giải đấu</th>*/}
-            <th>Đơn vị</th>
             <th>Vận Động Viên</th>
+            <th>Đơn vị</th>
             <th>Người đăng ký</th>
             <th>SĐT đăng ký</th>
             <th>Ngày đăng ký</th>
@@ -134,8 +134,8 @@ const AdminRegistrationList = () => {
             <tr key={row.registration_id}>
               <td>{row.registration_id}</td>
               {/*<td>{row.tournament_name}</td>*/}
-              <td>{row.club}</td>
               <td>{row.athlete_names}</td>
+              <td>{row.club}</td>
               <td>{row.user_name}</td>
               <td>{isAdmin ? row.registered_phone : maskPhone(row.registered_phone)}</td>
               <td>{formatDate(row.created_date)}</td>
