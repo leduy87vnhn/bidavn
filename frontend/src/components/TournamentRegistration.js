@@ -597,6 +597,13 @@ const TournamentRegistration = () => {
             </div>
           )}
 
+          {tournament?.registration_method && (
+            <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#f1f1f1', borderRadius: '8px' }}>
+              <strong>📌 Cú pháp nội dung chuyển khoản:</strong>
+              <p style={{ marginTop: '6px', whiteSpace: 'pre-wrap' }}>{tournament.registration_method}</p>
+            </div>
+          )}
+          
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button
               onClick={() => setShowSuccessModal(false)}

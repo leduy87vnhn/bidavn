@@ -11,6 +11,7 @@ const TournamentCompetitorList = () => {
   const [data, setData] = useState([]);
   const [tournament, setTournament] = useState(null);
   const isAdmin = user?.user_type === 2;
+  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,8 +20,19 @@ const TournamentCompetitorList = () => {
         setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
-        const allData = compRes.data;
-        const filtered = isAdmin ? allData : allData.filter(c => String(c.status) === '1');
+        const rawData = compRes.data;
+
+        // Lưu toàn bộ danh sách để filter sau
+        setAllData(rawData);
+
+        // Lọc nếu không phải admin → chỉ lấy status = 1 (Đã duyệt)
+        const filtered = isAdmin ? rawData : rawData.filter(c => String(c.status) === '1');
+
+        // Sắp xếp theo trạng thái: 1 (Đã duyệt) → 0 (Chờ duyệt) → 2 (Đã huỷ)
+        filtered.sort((a, b) => {
+          const order = { '1': 0, '0': 1, '2': 2 };
+          return order[String(a.status)] - order[String(b.status)];
+        });
         setData(filtered);
       } catch (err) {
         console.error('Lỗi khi tải danh sách:', err);
@@ -62,6 +74,19 @@ const TournamentCompetitorList = () => {
     return '*******' + phone.slice(-3);
   };
 
+  const handleStatusFilter = (value) => {
+    let filtered = value === 'all'
+      ? (isAdmin ? allData : allData.filter(c => String(c.status) === '1'))
+      : allData.filter(c => String(c.status) === value);
+
+    filtered.sort((a, b) => {
+      const order = { '1': 0, '0': 1, '2': 2 };
+      return order[String(a.status)] - order[String(b.status)];
+    });
+
+    setData(filtered);
+  };
+
   return (
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
@@ -80,6 +105,16 @@ const TournamentCompetitorList = () => {
         📥 Xuất danh sách
       </button>
 
+      <div style={{ marginBottom: 10 }}>
+        <label>Lọc theo trạng thái: </label>
+        <select onChange={(e) => handleStatusFilter(e.target.value)}>
+          <option value="all">Tất cả</option>
+          <option value="1">Đã duyệt</option>
+          <option value="0">Chờ duyệt</option>
+          <option value="2">Đã huỷ</option>
+        </select>
+      </div>
+
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -94,7 +129,11 @@ const TournamentCompetitorList = () => {
         </thead>
         <tbody>
           {data.map((c, idx) => (
-            <tr key={idx}>
+            <tr key={idx} style={{
+              backgroundColor:
+                String(c.status) === '1' ? '#d0ebff' : // Xanh da trời nhạt
+                String(c.status) === '2' ? '#f0f0f0' : 'white'
+            }}>
               <td>{c.player_id}</td>
               <td>{c.name}</td>
               <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
