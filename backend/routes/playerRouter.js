@@ -100,4 +100,23 @@ router.get('/search', async (req, res) => {
     }
   });
 
+// Cập nhật thông tin 1 player
+router.put('/:id', async (req, res) => {
+    const { name, phone, ranking, points, pool_ranking, pool_points, modified_date } = req.body;
+
+    try {
+        await client.query(
+            `UPDATE players
+             SET name = $1, phone = $2, ranking = $3, points = $4,
+                 pool_ranking = $5, pool_points = $6, modified_date = $7
+             WHERE id = $8`,
+            [name, phone || 'unknown', ranking, points, pool_ranking, pool_points, modified_date, req.params.id]
+        );
+        res.json({ message: 'Đã cập nhật VĐV' });
+    } catch (err) {
+        console.error('Error updating player:', err);
+        res.status(500).json({ message: 'Lỗi khi cập nhật VĐV' });
+    }
+});
+
 module.exports = router;
