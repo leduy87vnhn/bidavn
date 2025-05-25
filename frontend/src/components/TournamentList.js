@@ -318,7 +318,6 @@ const TournamentList = () => {
                             <thead>
                                 <tr style={{ backgroundColor: '#f8f9fa' }}>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên giải</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Nội dung</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
@@ -347,7 +346,6 @@ const TournamentList = () => {
                                                     {tour.name}
                                                 </Link>
                                             </td>
-                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                 {tour.attendance_price != null

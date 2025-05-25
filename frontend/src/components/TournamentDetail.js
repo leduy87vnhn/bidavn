@@ -208,17 +208,38 @@ const TournamentDetail = () => {
             >
                 <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
 
-                {user?.user_type === 2 && !isEditing && (
-                    <button
-                        style={primaryButtonStyle}
-                        onClick={() => {
-                            setFormData(tournament);
-                            setIsEditing(true);
-                        }}
-                    >
-                        <FaEdit /> Sửa
-                    </button>
-                )}
+            {/* ✅ Đưa nút Đăng ký thi đấu lên đầu */}
+            <div style={{ marginBottom: '10px' }}>
+                <button
+                    style={primaryButtonStyle}
+                    onClick={() => navigate(`/tournament/${tournament.id}/register`)}
+                >
+                    Đăng ký thi đấu
+                </button>
+            </div>
+
+            {/* ✅ Các liên kết nằm dưới nút Đăng ký thi đấu */}
+            <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Xem danh sách VĐV đã đăng ký
+                </Link>
+                <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Xem ID Vận Động Viên
+                </Link>
+            </div>
+
+            {/* ✅ Nút Sửa (admin) đưa xuống cuối */}
+            {user?.user_type === 2 && !isEditing && (
+                <button
+                    style={primaryButtonStyle}
+                    onClick={() => {
+                        setFormData(tournament);
+                        setIsEditing(true);
+                    }}
+                >
+                    <FaEdit /> Sửa
+                </button>
+            )}
 
                 <p><strong>Tên giải:</strong><br />{getInput('name')}</p>
                 <p><strong>Mã giải:</strong><br />{getInput('code')}</p>
@@ -332,15 +353,6 @@ const TournamentDetail = () => {
                     >
                         <FaArrowLeft /> Quay lại danh sách
                     </button>
-                </div>
-
-                <div style={{ marginTop: '12px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
-                    Xem danh sách VĐV đã đăng ký
-                </Link>
-                <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                    Xem danh sách VĐV hiện có
-                </Link>
                 </div>
             </div>
         </div>
