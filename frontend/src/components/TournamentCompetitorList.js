@@ -94,16 +94,39 @@ const TournamentCompetitorList = () => {
       {tournament && (
         <div style={{ backgroundColor: '#e6ffe6', padding: 15, borderRadius: 8, marginBottom: 20 }}>
           <p><strong>Giải đấu:</strong> {tournament.name}</p>
-          <p><strong>Thời gian:</strong> {tournament.start_date?.slice(0, 10)} → {tournament.end_date?.slice(0, 10)}</p>
+          <p><strong>Thời gian:</strong> {tournament.start_date?.slice(0, 10)} đến {tournament.end_date?.slice(0, 10)}</p>
         </div>
       )}
 
-      <button
-        style={{ marginBottom: '10px', backgroundColor: '#007bff', color: 'white', padding: '8px 14px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
-        onClick={() => exportToExcel(data)}
-      >
-        📥 Xuất danh sách
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <button
+          style={{
+            backgroundColor: '#007bff',
+            color: 'white',
+            padding: '8px 14px',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+          onClick={() => exportToExcel(data)}
+        >
+          📥 Xuất danh sách
+        </button>
+
+        <button
+          style={{
+            backgroundColor: '#6c757d',
+            color: 'white',
+            padding: '8px 14px',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+          onClick={() => navigate(`/tournaments/${tournamentId}`)}
+        >
+          ⬅️ Quay Lại Chi Tiết Giải Đấu
+        </button>
+      </div>
 
       <div style={{ marginBottom: 10 }}>
         <label>Lọc theo trạng thái: </label>
