@@ -44,6 +44,7 @@ router.get('/', async (req, res) => {
     const status = req.query.status || 'all';
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).replace(' ', 'T'); // ✅ đúng giờ VN
  // Chuẩn ISO để so sánh timestamp
+    console.log('[DEBUG] Thời gian hiện tại (giờ VN):', now);
 
     let condition = '';
     let params = [limit, offset];
@@ -84,6 +85,8 @@ router.get('/', async (req, res) => {
             dataResult = await client.query(dataQuery, params);
             countResult = await client.query(countQuery, params);
         }
+        console.log('[DEBUG] Số lượng giải trả về:', dataResult.rows.length);
+        console.log('[DEBUG] Danh sách giải:', dataResult.rows);
 
         res.json({
             data: dataResult.rows,
