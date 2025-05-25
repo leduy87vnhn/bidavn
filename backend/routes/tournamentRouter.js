@@ -41,13 +41,48 @@ router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
     const offset = (page - 1) * limit;
+    const status = req.query.status || 'all';
+    const now = new Date().toISOString(); // Chuẩn ISO để so sánh timestamp
+
+    let condition = '';
+    let params = [limit, offset];
+
+    if (status === 'upcoming') {
+        condition = 'WHERE start_date > $3';
+        params.push(now);
+    } else if (status === 'ongoing') {
+        condition = 'WHERE start_date <= $3 AND end_date >= $3';
+        params.push(now);
+    } else if (status === 'ended') {
+        condition = 'WHERE end_date < $3';
+        params.push(now);
+    }
+
+    const dataQuery = `
+        SELECT * FROM tournaments
+        ${condition}
+        ORDER BY start_date ASC
+        LIMIT $1 OFFSET $2
+    `;
+
+    const countQuery = `
+        SELECT COUNT(*) FROM tournaments
+        ${condition}
+    `;
 
     try {
-        const dataQuery = 'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2';
-        const countQuery = 'SELECT COUNT(*) FROM tournaments';
+        let dataResult, countResult;
 
-        const dataResult = await client.query(dataQuery, [limit, offset]);
-        const countResult = await client.query(countQuery);
+        if (status === 'all') {
+            dataResult = await client.query(
+                'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2',
+                [limit, offset]
+            );
+            countResult = await client.query('SELECT COUNT(*) FROM tournaments');
+        } else {
+            dataResult = await client.query(dataQuery, params);
+            countResult = await client.query(countQuery, params);
+        }
 
         res.json({
             data: dataResult.rows,

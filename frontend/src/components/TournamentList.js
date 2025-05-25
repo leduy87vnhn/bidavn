@@ -13,6 +13,8 @@ const TournamentList = () => {
     const [message, setMessage] = useState('');
     const [uploading, setUploading] = useState(false);
     const [listBackground, setListBackground] = useState(null);
+    const [statusFilter, setStatusFilter] = useState('upcoming'); // 'open', 'ongoing', 'ended', 'all'
+
 
     const [newTournament, setNewTournament] = useState({
         id: null,
@@ -38,19 +40,36 @@ const TournamentList = () => {
     useEffect(() => {
         fetchTournaments();
         fetchListBackground();
-    }, [page]);
+    }, [page, statusFilter]);
 
     const fetchTournaments = () => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments?page=${page}&limit=${limit}`)
-            .then(res => {
-                setTournaments(res.data?.data || []);
-                setTotal(res.data?.total || 0);
-            })
-            .catch(err => {
-                console.error(err);
-                setTournaments([]);
-                setTotal(0);
-            });
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments`, {
+            params: {
+                page,
+                limit,
+                status: statusFilter // Gửi thêm status filter
+            }
+        })
+        .then(res => {
+            setTournaments(res.data?.data || []);
+            setTotal(res.data?.total || 0);
+        })
+        .catch(err => {
+            console.error(err);
+            setTournaments([]);
+            setTotal(0);
+        });
+    };
+
+    const getTournamentStatus = (start, end) => {
+        const now = new Date();
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (startDate > now) return 'upcoming';
+        if (startDate <= now && endDate >= now) return 'ongoing';
+        if (endDate < now) return 'ended';
+        return 'unknown';
     };
 
     const fetchListBackground = async () => {
@@ -282,6 +301,16 @@ const TournamentList = () => {
                     </div>
                 )}
 
+                {/* Bộ lọc trạng thái giải đấu */}
+                <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <label>Lọc theo trạng thái:</label>
+                    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                        <option value="upcoming">Mở đăng ký</option>
+                        <option value="ongoing">Đang diễn ra</option>
+                        <option value="ended">Đã kết thúc</option>
+                        <option value="all">Toàn bộ</option>
+                    </select>
+                </div>
                 {/* Table danh sách giải */}
                 {Array.isArray(tournaments) && tournaments.length > 0 ? (
                     <div style={{ overflowX: 'auto' }}>
@@ -292,7 +321,7 @@ const TournamentList = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Mã giải</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Nội dung</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày khai mạc</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cơ cấu giải</th>
@@ -303,11 +332,25 @@ const TournamentList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {tournaments.map(tour => {
+                        {tournaments
+                            .map(tour => ({
+                                ...tour,
+                                status: getTournamentStatus(tour.start_date, tour.end_date)
+                            }))
+                            .filter(tour => statusFilter === 'all' || tour.status === statusFilter)
+                            .sort((a, b) => {
+                                const priority = { upcoming: 0, ongoing: 1, ended: 2 };
+                                return priority[a.status] - priority[b.status];
+                            })
+                            .map(tour => {
                                     const isPast = isPastTournament(tour.start_date);
 
+                                    let bgColor = 'white';
+                                    if (tour.status === 'ongoing') bgColor = '#d0ebff';     // Xanh da trời nhạt
+                                    else if (tour.status === 'ended') bgColor = '#f0f0f0';  // Xám nhạt
+
                                     return (
-                                        <tr key={tour.id} style={{ backgroundColor: isPast ? '#eee' : 'white' }}>
+                                        <tr key={tour.id} style={{ backgroundColor: bgColor }}>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                 <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>
                                                     {tour.name}
