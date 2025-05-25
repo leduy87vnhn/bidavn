@@ -82,11 +82,13 @@ router.get('/', async (req, res) => {
             );
             countResult = await client.query('SELECT COUNT(*) FROM tournaments');
         } else {
-            dataResult = await client.query(dataQuery, params);
-            countResult = await client.query(countQuery, params);
+            // 💡 TÁCH params: vì count không cần limit/offset
+            const filterParams = [now];
+            const dataParams = [limit, offset, now];
+
+            dataResult = await client.query(dataQuery, dataParams);
+            countResult = await client.query(countQuery, filterParams);
         }
-        console.log('[DEBUG] Số lượng giải trả về:', dataResult.rows.length);
-        console.log('[DEBUG] Danh sách giải:', dataResult.rows);
 
         res.json({
             data: dataResult.rows,
@@ -98,7 +100,7 @@ router.get('/', async (req, res) => {
         console.error('Error fetching tournaments:', error);
         res.status(500).json({ message: 'Lỗi server khi lấy danh sách giải đấu.' });
     }
-});
+    });
 
 // Add tournament
 router.post('/', async (req, res) => {
