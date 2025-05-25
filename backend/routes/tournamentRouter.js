@@ -42,7 +42,8 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const offset = (page - 1) * limit;
     const status = req.query.status || 'all';
-    const now = new Date().toISOString(); // Chuẩn ISO để so sánh timestamp
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).replace(' ', 'T'); // ✅ đúng giờ VN
+ // Chuẩn ISO để so sánh timestamp
 
     let condition = '';
     let params = [limit, offset];
