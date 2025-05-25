@@ -75,19 +75,20 @@ router.get('/', async (req, res) => {
     try {
         let dataResult, countResult;
 
-        if (status === 'all') {
-            dataResult = await client.query(
-                'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2',
-                [limit, offset]
-            );
-            countResult = await client.query('SELECT COUNT(*) FROM tournaments');
+        if (status === 'upcoming') {
+            condition = 'WHERE start_date > $3::date';
+            dataParams = [limit, offset, now];
+            countParams = [now];
+        } else if (status === 'ongoing') {
+            condition = 'WHERE start_date <= $3::date AND end_date >= $3::date';
+            dataParams = [limit, offset, now];
+            countParams = [now];
+        } else if (status === 'ended') {
+            condition = 'WHERE end_date < $3::date';
+            dataParams = [limit, offset, now];
+            countParams = [now];
         } else {
-            // 💡 TÁCH params: vì count không cần limit/offset
-            const filterParams = [now];
-            const dataParams = [limit, offset, now];
-
-            dataResult = await client.query(dataQuery, dataParams);
-            countResult = await client.query(countQuery, filterParams);
+            dataParams = [limit, offset];
         }
 
         res.json({
