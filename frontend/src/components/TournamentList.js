@@ -332,22 +332,13 @@ const TournamentList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                        {tournaments
-                            .map(tour => ({
-                                ...tour,
-                                status: getTournamentStatus(tour.start_date, tour.end_date)
-                            }))
-                            .filter(tour => statusFilter === 'all' || tour.status === statusFilter)
-                            .sort((a, b) => {
-                                const priority = { upcoming: 0, ongoing: 1, ended: 2 };
-                                return priority[a.status] - priority[b.status];
-                            })
-                            .map(tour => {
-                                    const isPast = isPastTournament(tour.start_date);
+                                {tournaments.map(tour => {
+                                    const status = getTournamentStatus(tour.start_date, tour.end_date);
 
+                                    // Tô màu nền theo trạng thái
                                     let bgColor = 'white';
-                                    if (tour.status === 'ongoing') bgColor = '#d0ebff';     // Xanh da trời nhạt
-                                    else if (tour.status === 'ended') bgColor = '#f0f0f0';  // Xám nhạt
+                                    if (status === 'ongoing') bgColor = '#d0ebff';
+                                    else if (status === 'ended') bgColor = '#f0f0f0';
 
                                     return (
                                         <tr key={tour.id} style={{ backgroundColor: bgColor }}>
@@ -359,9 +350,9 @@ const TournamentList = () => {
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.code}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                            {tour.attendance_price != null
-                                                ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
-                                                : ''}
+                                                {tour.attendance_price != null
+                                                    ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
+                                                    : ''}
                                             </td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
@@ -375,7 +366,6 @@ const TournamentList = () => {
                                             }}>
                                                 {tour.location}
                                             </td>
-
                                             <td style={{
                                                 border: '1px solid #ddd',
                                                 padding: '8px',
@@ -389,12 +379,12 @@ const TournamentList = () => {
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                 <button
                                                     style={{
-                                                    padding: '5px 10px',
-                                                    backgroundColor: '#28a745',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '5px',
-                                                    cursor: 'pointer'
+                                                        padding: '5px 10px',
+                                                        backgroundColor: '#28a745',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '5px',
+                                                        cursor: 'pointer'
                                                     }}
                                                     onClick={() => navigate(`/tournament/${tour.id}/register`)}
                                                 >
