@@ -49,13 +49,15 @@ router.post('/import', async (req, res) => {
             const now = new Date().toISOString();
 
             await client.query(`
-                INSERT INTO players (id, name, phone, ranking, points, created_date, modified_date)
-                VALUES ($1, $2, $3, $4, $5, $6, $6)
+                INSERT INTO players (id, name, phone, ranking, points, pool_ranking, pool_points, created_date, modified_date)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $8)
                 ON CONFLICT (id) DO UPDATE SET
                     name = EXCLUDED.name,
                     phone = EXCLUDED.phone,
                     ranking = EXCLUDED.ranking,
                     points = EXCLUDED.points,
+                    pool_ranking = EXCLUDED.pool_ranking,
+                    pool_points = EXCLUDED.pool_points,
                     modified_date = EXCLUDED.modified_date
             `, [
                 p.id,
@@ -63,7 +65,9 @@ router.post('/import', async (req, res) => {
                 p.phone || 'unknown',
                 p.ranking,
                 p.points,
-                now // dùng chung cho cả created_date và modified_date
+                p.pool_ranking,
+                p.pool_points,
+                now
             ]);
         }
 

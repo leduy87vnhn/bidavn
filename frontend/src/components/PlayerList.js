@@ -115,6 +115,8 @@ const PlayerList = () => {
                     id,
                     phone: row[3] || 'unknown',
                     points: row[4],
+                    pool_ranking: row[5],
+                    pool_points: row[6],
                     created_date: now,
                     modified_date: now
                 };
@@ -146,8 +148,10 @@ const PlayerList = () => {
             ID: p.id,
             Tên: p.name,
             'SĐT': p.phone,
-            Ranking: p.ranking,
-            Points: p.points
+            'Hạng Carom': p.ranking,
+            'Điểm Carom': p.points,
+            'Hạng Pool': p.pool_ranking,
+            'Điểm Pool': p.pool_points
         }));
 
         const worksheet = XLSX.utils.json_to_sheet(exportData);
