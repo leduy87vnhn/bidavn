@@ -197,14 +197,16 @@ const PlayerList = () => {
 
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>SĐT</th>
-                        <th>Ranking</th>
-                        <th>Points</th>
-                        <th>Thao tác</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>SĐT</th>
+                    <th>Hạng Carom</th>
+                    <th>Điểm Carom</th>
+                    <th>Hạng Pool</th>
+                    <th>Điểm Pool</th>
+                    <th>Thao tác</th>
+                </tr>
                 </thead>
                 <tbody>
                     {currentPagePlayers.map(p => (
@@ -229,6 +231,16 @@ const PlayerList = () => {
                                 {editingId === p.id ? (
                                     <input value={p.points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, points: e.target.value } : x))} />
                                 ) : p.points}
+                            </td>
+                            <td>
+                            {editingId === p.id ? (
+                                <input value={p.pool_ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_ranking: e.target.value } : x))} />
+                            ) : p.pool_ranking}
+                            </td>
+                            <td>
+                            {editingId === p.id ? (
+                                <input value={p.pool_points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_points: e.target.value } : x))} />
+                            ) : p.pool_points}
                             </td>
                             <td>
                                 {editingId === p.id ? (
