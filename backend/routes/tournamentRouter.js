@@ -49,13 +49,13 @@ router.get('/', async (req, res) => {
     let params = [limit, offset];
 
     if (status === 'upcoming') {
-        condition = 'WHERE start_date > $3';
+        condition = 'WHERE start_date > CAST($3 AS date)';
         params.push(now);
     } else if (status === 'ongoing') {
-        condition = 'WHERE start_date <= $3 AND end_date >= $3';
+        condition = 'WHERE start_date <= CAST($3 AS date) AND end_date >= CAST($3 AS date)';
         params.push(now);
     } else if (status === 'ended') {
-        condition = 'WHERE end_date < $3';
+        condition = 'WHERE end_date < CAST($3 AS date)';
         params.push(now);
     }
 
