@@ -224,7 +224,7 @@ const TournamentDetail = () => {
                     Xem danh sách VĐV đã đăng ký
                 </Link>
                 <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                    Xem ID Vận Động Viên
+                    Tra cứu ID Vận Động Viên
                 </Link>
             </div>
 
@@ -240,7 +240,7 @@ const TournamentDetail = () => {
                     </div>
                 </div>
 
-                <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
+                <p><strong>Địa điểm thi đấu:</strong><br />{getInput('location', true, 5, true)}</p>
                 <p><strong>Nội dung:</strong><br />{getInput('content', true, 5, true)}</p>
                 <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
                 <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>

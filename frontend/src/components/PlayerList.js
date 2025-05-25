@@ -141,6 +141,22 @@ const PlayerList = () => {
     const totalPages = Math.ceil(filteredPlayers.length / limit);
     const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
+    const exportToExcel = () => {
+        const exportData = filteredPlayers.map(p => ({
+            ID: p.id,
+            Tên: p.name,
+            'SĐT': p.phone,
+            Ranking: p.ranking,
+            Points: p.points
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "VĐV");
+
+        XLSX.writeFile(workbook, "Danh_sach_VDV.xlsx");
+    };
+
     return (
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
             <h2>Danh sách VĐV</h2>
@@ -167,6 +183,12 @@ const PlayerList = () => {
                         Import Excel
                     </span>
                 </label>
+                <button
+                    onClick={exportToExcel}
+                    style={{ backgroundColor: '#28a745', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                >
+                    Export Excel
+                </button>
             </div>
 
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
