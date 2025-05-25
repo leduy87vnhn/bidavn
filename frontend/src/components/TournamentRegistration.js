@@ -405,6 +405,21 @@ const TournamentRegistration = () => {
       }}
     >
       <div style={{ backgroundColor: 'white', maxWidth: 900, margin: '0 auto', padding: 20, borderRadius: 12 }}>
+        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+          <button
+            onClick={() => navigate(`/tournaments/${tournamentId}`)}
+            style={{
+              backgroundColor: '#6c757d',
+              color: 'white',
+              padding: '8px 14px',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            ⬅️ Quay Lại Chi Tiết Giải Đấu
+          </button>
+        </div>
         <h2 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           Đăng ký thi đấu
           <span style={getStatusStyle()}>
@@ -603,7 +618,7 @@ const TournamentRegistration = () => {
               <p style={{ marginTop: '6px', whiteSpace: 'pre-wrap' }}>{tournament.registration_method}</p>
             </div>
           )}
-          
+
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button
               onClick={() => setShowSuccessModal(false)}
