@@ -1,12 +1,13 @@
 // File: TournamentCompetitorList.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const TournamentCompetitorList = () => {
   const { id: tournamentId } = useParams(); // tournament id
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user_info'));
   const [data, setData] = useState([]);
   const [tournament, setTournament] = useState(null);
