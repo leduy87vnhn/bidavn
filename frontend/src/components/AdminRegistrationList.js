@@ -95,7 +95,20 @@ const AdminRegistrationList = () => {
     <div style={{ padding: 30 }}>
       <h2>Danh sách đơn đăng ký</h2>
       <div style={{ marginBottom: 20, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        <input name="tournament" placeholder="Tên giải đấu" onChange={handleChange} value={filters.tournament} />
+        <input
+          name="tournament"
+          placeholder="Tên giải đấu"
+          value={filters.tournament}
+          disabled
+          style={{
+            backgroundColor: '#f0f0f0',
+            cursor: 'not-allowed',
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            flex: 2 // 👈 Input này sẽ chiếm gấp đôi không gian so với các input khác
+          }}
+        />
         <input name="phone" placeholder="SĐT đăng ký" onChange={handleChange} value={filters.phone} />
         <input name="user_name" placeholder="Người đăng ký" onChange={handleChange} value={filters.user_name} />
         <input name="club" placeholder="Tên câu lạc bộ" onChange={handleChange} value={filters.club} />
@@ -106,13 +119,13 @@ const AdminRegistrationList = () => {
         <thead>
           <tr>
             <th>Mã</th>
-            <th>Giải đấu</th>
+            {/*<th>Giải đấu</th>*/}
             <th>Đơn vị</th>
+            <th>Vận Động Viên</th>
             <th>Người đăng ký</th>
             <th>SĐT đăng ký</th>
             <th>Ngày đăng ký</th>
             <th>Trạng thái</th>
-            <th>Vận Động Viên</th>
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -120,13 +133,13 @@ const AdminRegistrationList = () => {
           {data.map(row => (
             <tr key={row.registration_id}>
               <td>{row.registration_id}</td>
-              <td>{row.tournament_name}</td>
+              {/*<td>{row.tournament_name}</td>*/}
               <td>{row.club}</td>
+              <td>{row.athlete_names}</td>
               <td>{row.user_name}</td>
               <td>{isAdmin ? row.registered_phone : maskPhone(row.registered_phone)}</td>
               <td>{formatDate(row.created_date)}</td>
               <td>{statusText(row.status)}</td>
-              <td>{row.athlete_names}</td>
               <td>
                 <button
                   onClick={() => navigate(`/registration/${row.registration_id}/detail`)}
