@@ -161,15 +161,17 @@ const PlayerList = () => {
     const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
     const exportToExcel = () => {
-        const exportData = filteredPlayers.map(p => ({
-            ID: p.id,
-            Tên: p.name,
-            'SĐT': p.phone,
-            'Hạng Carom': p.ranking,
-            'Điểm Carom': p.points,
-            'Hạng Pool': p.pool_ranking,
-            'Điểm Pool': p.pool_points
-        }));
+        const exportData = [...filteredPlayers]
+            .sort((a, b) => a.id.localeCompare(b.id)) // <-- Sắp xếp theo ID
+            .map(p => ({
+                ID: p.id,
+                Tên: p.name,
+                'SĐT': p.phone,
+                'Hạng Carom': p.ranking,
+                'Điểm Carom': p.points,
+                'Hạng Pool': p.pool_ranking,
+                'Điểm Pool': p.pool_points
+            }));
 
         const worksheet = XLSX.utils.json_to_sheet(exportData);
         const workbook = XLSX.utils.book_new();
