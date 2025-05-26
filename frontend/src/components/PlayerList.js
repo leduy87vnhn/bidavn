@@ -116,7 +116,9 @@ const PlayerList = () => {
                 return isNaN(num) ? null : num;
             };
 
-            const newPlayers = rows.slice(1).map(row => {
+            const newPlayers = rows.slice(1) // bỏ header
+            .filter(row => row[0] || row[1]) // chỉ giữ dòng có ID hoặc Tên
+            .map(row => {
                 let id = String(row[0] || '').trim();
                 if (/^H\d{4}$/.test(id)) {
                     id = 'H0' + id.slice(1);
