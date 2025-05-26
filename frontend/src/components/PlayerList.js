@@ -110,19 +110,26 @@ const PlayerList = () => {
             const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
             const now = new Date().toISOString();
+
+            const parseNumber = (val) => {
+                const num = parseFloat(val);
+                return isNaN(num) ? null : num;
+            };
+
             const newPlayers = rows.slice(1).map(row => {
-                let id = String(row[2] || '').trim();
+                let id = String(row[0] || '').trim();
                 if (/^H\d{4}$/.test(id)) {
                     id = 'H0' + id.slice(1);
                 }
+
                 return {
-                    ranking: row[0],
-                    name: row[1],
                     id,
-                    phone: row[3] || 'unknown',
-                    points: row[4],
-                    pool_ranking: row[5],
-                    pool_points: row[6],
+                    name: row[1] || '',
+                    phone: row[2] || 'unknown',
+                    ranking: parseNumber(row[3]),
+                    points: parseNumber(row[4]),
+                    pool_ranking: parseNumber(row[5]),
+                    pool_points: parseNumber(row[6]),
                     created_date: now,
                     modified_date: now
                 };
@@ -137,6 +144,7 @@ const PlayerList = () => {
                 setMessage('❌ Import thất bại');
             }
         };
+
         reader.readAsBinaryString(file);
     };
 
