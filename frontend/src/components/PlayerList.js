@@ -20,6 +20,7 @@ const PlayerList = () => {
     const [showForm, setShowForm] = useState(false);
     const [page, setPage] = useState(1);
     const [limit] = useState(50);
+    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
     const buttonStyle = {
         padding: '6px 14px',
         fontSize: '14px',
@@ -30,7 +31,7 @@ const PlayerList = () => {
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('user_info'));
-        if (!userInfo || userInfo.user_type !== 2) {
+        if (!userInfo) {
             navigate('/login');
         } else {
             setUser(userInfo);
@@ -180,6 +181,30 @@ const PlayerList = () => {
         XLSX.writeFile(workbook, "Danh_sach_VDV.xlsx");
     };
 
+    const maskPhone = (phone) => {
+        if (!phone || phone.length < 3) return '***';
+        return '*'.repeat(phone.length - 3) + phone.slice(-3);
+    };
+
+    const sortedPlayers = [...filteredPlayers].sort((a, b) => {
+        const { key, direction } = sortConfig;
+        const valA = a[key] ?? '';
+        const valB = b[key] ?? '';
+
+        if (valA < valB) return direction === 'asc' ? -1 : 1;
+        if (valA > valB) return direction === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    // const currentPagePlayers = sortedPlayers.slice((page - 1) * limit, page * limit);
+
+    const handleSort = (key) => {
+        setSortConfig(prev => ({
+            key,
+            direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+        }));
+    };
+
     return (
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
             <h2>Danh sách VĐV</h2>
@@ -240,18 +265,18 @@ const PlayerList = () => {
             </div>
 
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
-                <thead>
+            <thead>
                 <tr>
-                    <th>ID</th>
+                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>ID</th>
                     <th>Tên</th>
                     <th>SĐT</th>
-                    <th>Hạng Carom</th>
-                    <th>Điểm Carom</th>
+                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>Hạng Carom</th>
+                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>Điểm Carom</th>
                     <th>Hạng Pool</th>
                     <th>Điểm Pool</th>
                     <th>Thao tác</th>
                 </tr>
-                </thead>
+            </thead>
                 <tbody>
                     {currentPagePlayers.map(p => (
                         <tr key={p.id}>
@@ -264,7 +289,9 @@ const PlayerList = () => {
                             <td>
                                 {editingId === p.id ? (
                                     <input value={p.phone} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, phone: e.target.value } : x))} />
-                                ) : p.phone}
+                                ) : (
+                                    user?.user_type === 2 ? p.phone : maskPhone(p.phone)  // 👈 Che số nếu không phải admin
+                                )}
                             </td>
                             <td>
                                 {editingId === p.id ? (
