@@ -18,6 +18,17 @@ const backgroundStorage = multer.diskStorage({
 });
 const uploadBackground = multer({ storage: backgroundStorage });
 
+const logoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/logos');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const uploadLogo = multer({ storage: logoStorage });
+
 // Multer config cho QR code
 const qrStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -35,6 +46,34 @@ router.post('/:id/upload-background', uploadBackground.single('background'), tou
 
 router.post('/:id/upload-bankqr', uploadQR.single('bank_qr'), tournamentController.uploadBankQr);
 
+
+router.post('/upload-logo', uploadLogo.single('logo'), async (req, res) => {
+  try {
+    const fileName = req.file.filename;
+    const fs = require('fs');
+    fs.writeFileSync('uploads/logos/logo_config.json', JSON.stringify({ filename: fileName }));
+    res.json({ message: 'Upload logo thành công', filename: fileName });
+  } catch (error) {
+    console.error('Upload logo error:', error);
+    res.status(500).json({ message: 'Lỗi khi upload logo' });
+  }
+});
+
+router.get('/logo', async (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = 'uploads/logos/logo_config.json';
+    if (fs.existsSync(path)) {
+      const config = JSON.parse(fs.readFileSync(path));
+      res.json({ filename: config.filename });
+    } else {
+      res.json({ filename: null });
+    }
+  } catch (error) {
+    console.error('Get logo error:', error);
+    res.status(500).json({ message: 'Lỗi khi lấy logo' });
+  }
+});
 
 // List tournaments (paginated)
 router.get('/', async (req, res) => {

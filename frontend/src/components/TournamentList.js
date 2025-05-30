@@ -14,6 +14,7 @@ const TournamentList = () => {
     const [uploading, setUploading] = useState(false);
     const [listBackground, setListBackground] = useState(null);
     const [statusFilter, setStatusFilter] = useState('upcoming'); // 'open', 'ongoing', 'ended', 'all'
+    const [logoFile, setLogoFile] = useState(null);
 
 
     const [newTournament, setNewTournament] = useState({
@@ -41,6 +42,19 @@ const TournamentList = () => {
         fetchTournaments();
         fetchListBackground();
     }, [page, statusFilter]);
+
+    useEffect(() => {
+        fetchLogo();
+    }, []);
+
+    const fetchLogo = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+            setLogoFile(res.data.filename);
+        } catch (error) {
+            console.error('Error fetching logo:', error);
+        }
+    };
 
     const fetchTournaments = () => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments`, {
@@ -100,6 +114,25 @@ const TournamentList = () => {
             alert('❌ Lỗi khi cập nhật hình nền danh sách.');
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const form = new FormData();
+        form.append('logo', file);
+
+        try {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/upload-logo`, form, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            alert('✅ Logo đã được cập nhật!');
+            fetchLogo();
+        } catch (err) {
+            console.error(err);
+            alert('❌ Lỗi khi tải lên logo.');
         }
     };
 
@@ -193,6 +226,13 @@ const TournamentList = () => {
             >
                 <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
+                        {logoFile && (
+                            <img
+                                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
+                                alt="Logo"
+                                style={{ height: 60, objectFit: 'contain', marginRight: 20 }}
+                            />
+                        )}
                         <h2>Danh sách giải đấu</h2>
                         {user?.user_type === 2 && (
                             <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -227,6 +267,24 @@ const TournamentList = () => {
                                         type="file"
                                         accept="image/*"
                                         onChange={handleListBackgroundUpload}
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+                                <label
+                                    style={{
+                                        padding: '6px 12px',
+                                        backgroundColor: '#ffc107',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Tải Logo
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleLogoUpload}
                                         style={{ display: 'none' }}
                                     />
                                 </label>
