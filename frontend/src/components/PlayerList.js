@@ -159,7 +159,7 @@ const PlayerList = () => {
     (filter.pool_ranking === '' || String(p.pool_ranking) === filter.pool_ranking)
     );
     const totalPages = Math.ceil(filteredPlayers.length / limit);
-    const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
+    //const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
     const exportToExcel = () => {
         const exportData = [...filteredPlayers]
@@ -192,7 +192,6 @@ const PlayerList = () => {
         let valA = a[key];
         let valB = b[key];
 
-        // So sánh số nếu là các field số
         const numericFields = ['ranking', 'points', 'pool_ranking', 'pool_points'];
         if (numericFields.includes(key)) {
             valA = Number(valA);
@@ -207,7 +206,7 @@ const PlayerList = () => {
         return 0;
     });
 
-    // const currentPagePlayers = sortedPlayers.slice((page - 1) * limit, page * limit);
+    const currentPagePlayers = sortedPlayers.slice((page - 1) * limit, page * limit);
 
     const handleSort = (key) => {
         setSortConfig(prev => ({
