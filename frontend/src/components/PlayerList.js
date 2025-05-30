@@ -188,8 +188,19 @@ const PlayerList = () => {
 
     const sortedPlayers = [...filteredPlayers].sort((a, b) => {
         const { key, direction } = sortConfig;
-        const valA = a[key] ?? '';
-        const valB = b[key] ?? '';
+
+        let valA = a[key];
+        let valB = b[key];
+
+        // So sánh số nếu là các field số
+        const numericFields = ['ranking', 'points', 'pool_ranking', 'pool_points'];
+        if (numericFields.includes(key)) {
+            valA = Number(valA);
+            valB = Number(valB);
+        } else {
+            valA = (valA ?? '').toString().toLowerCase();
+            valB = (valB ?? '').toString().toLowerCase();
+        }
 
         if (valA < valB) return direction === 'asc' ? -1 : 1;
         if (valA > valB) return direction === 'asc' ? 1 : -1;
@@ -265,18 +276,28 @@ const PlayerList = () => {
             </div>
 
             <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
-            <thead>
-                <tr>
-                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>ID</th>
-                    <th>Tên</th>
-                    <th>SĐT</th>
-                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>Hạng Carom</th>
-                    <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>Điểm Carom</th>
-                    <th>Hạng Pool</th>
-                    <th>Điểm Pool</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                            ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th>Tên</th>
+                        <th>SĐT</th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
+                            Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
+                            Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
+                            Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
+                            Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {currentPagePlayers.map(p => (
                         <tr key={p.id}>
