@@ -466,7 +466,7 @@ const TournamentRegistration = () => {
           <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
           <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
-          <input type="text" placeholder="Câu lạc bộ (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
+          <input type="text" placeholder="Đơn vị (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
           {/*<select
             value={newCompetitor.uniform_size}
             onChange={(e) => setNewCompetitor({ ...newCompetitor, uniform_size: e.target.value })}
@@ -535,7 +535,7 @@ const TournamentRegistration = () => {
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Tên</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>SĐT</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Nickname</th>
-                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>CLB</th>
+                  <th style={{ padding: '10px', border: '1px solid #ccc' }}>Đơn vị</th>
                   {/*<th style={{ padding: '10px', border: '1px solid #ccc' }}>Size</th>*/}
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Ngày thi đấu</th>
                   <th style={{ padding: '10px', border: '1px solid #ccc' }}>Xoá</th>
