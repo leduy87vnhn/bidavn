@@ -245,33 +245,41 @@ const PlayerList = () => {
                     onClick={fetchPlayers}
                     style={{ backgroundColor: '#007bff', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
                 >Tìm kiếm</button>
+
+                {user?.user_type === 2 && (
+                    <>
+                        <button
+                            onClick={() => setShowForm(!showForm)}
+                            style={{ backgroundColor: '#007bff', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                        >{showForm ? 'Đóng Form' : 'Thêm VĐV'}</button>
+
+                        <label style={{ cursor: 'pointer' }}>
+                            <input type="file" accept=".xlsx" onChange={handleImport} style={{ display: 'none' }} />
+                            <span style={{ backgroundColor: '#007bff', color: 'white', padding: '6px 14px', borderRadius: 5 }}>
+                                Import Excel
+                            </span>
+                        </label>
+
+                        <button
+                            onClick={exportToExcel}
+                            style={{ backgroundColor: '#28a745', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                        >
+                            Export Excel
+                        </button>
+                    </>
+                )}
+
                 <button
-                    onClick={() => setShowForm(!showForm)}
-                    style={{ backgroundColor: '#007bff', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
-                >{showForm ? 'Đóng Form' : 'Thêm VĐV'}</button>
-                <label style={{ cursor: 'pointer' }}>
-                    <input type="file" accept=".xlsx" onChange={handleImport} style={{ display: 'none' }} />
-                    <span style={{ backgroundColor: '#007bff', color: 'white', padding: '6px 14px', borderRadius: 5 }}>
-                        Import Excel
-                    </span>
-                </label>
-                <button
-                    onClick={exportToExcel}
-                    style={{ backgroundColor: '#28a745', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                    onClick={() => navigate('/tournaments')}
+                    style={{
+                        backgroundColor: '#6c757d',
+                        color: '#fff',
+                        padding: '6px 14px',
+                        border: 'none',
+                        borderRadius: 5
+                    }}
                 >
-                    Export Excel
-                </button>
-                <button
-                onClick={() => navigate('/tournaments')}
-                style={{
-                    backgroundColor: '#6c757d',
-                    color: '#fff',
-                    padding: '6px 14px',
-                    border: 'none',
-                    borderRadius: 5
-                }}
-                >
-                ⬅️ Quay về danh sách giải
+                    ⬅️ Quay về danh sách giải
                 </button>
             </div>
 
