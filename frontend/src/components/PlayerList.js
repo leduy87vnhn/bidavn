@@ -213,6 +213,7 @@ const PlayerList = () => {
             key,
             direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
         }));
+        setPage(1); // 👈 reset về trang 1
     };
 
     return (
