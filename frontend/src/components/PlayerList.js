@@ -193,13 +193,19 @@ const PlayerList = () => {
         let valB = b[key];
 
         const numericFields = ['ranking', 'points', 'pool_ranking', 'pool_points'];
+
         if (numericFields.includes(key)) {
-            valA = Number(valA);
-            valB = Number(valB);
+            valA = valA === null || valA === undefined ? null : Number(valA);
+            valB = valB === null || valB === undefined ? null : Number(valB);
         } else {
-            valA = (valA ?? '').toString().toLowerCase();
-            valB = (valB ?? '').toString().toLowerCase();
+            valA = (valA ?? '').toString().trim().toLowerCase();
+            valB = (valB ?? '').toString().trim().toLowerCase();
         }
+
+        const isEmpty = (v) => v === null || v === '' || typeof v === 'undefined';
+
+        if (isEmpty(valA) && !isEmpty(valB)) return 1;   // valA empty -> xuống cuối
+        if (!isEmpty(valA) && isEmpty(valB)) return -1;  // valB empty -> xuống cuối
 
         if (valA < valB) return direction === 'asc' ? -1 : 1;
         if (valA > valB) return direction === 'asc' ? 1 : -1;
@@ -245,6 +251,11 @@ const PlayerList = () => {
                     onClick={fetchPlayers}
                     style={{ backgroundColor: '#007bff', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
                 >Tìm kiếm</button>
+
+                <button
+                    onClick={() => setFilter({ id: '', name: '', ranking: '', pool_ranking: '', phone: '' })}
+                    style={{ backgroundColor: '#6c757d', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                >❌ Huỷ Tìm Kiếm</button>
 
                 {user?.user_type === 2 && (
                     <>
