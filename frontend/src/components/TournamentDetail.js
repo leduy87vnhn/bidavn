@@ -15,7 +15,7 @@ const TournamentDetail = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState(null);
     const [uploading, setUploading] = useState(false);
-    // const logoFile = localStorage.getItem('logo_file');
+    const logoFile = localStorage.getItem('logo_file');
 
     const user = JSON.parse(localStorage.getItem('user_info'));
 
@@ -58,10 +58,10 @@ const TournamentDetail = () => {
         loadTournament();
     }, [id]);
 
-    // useEffect(() => {
-    //     const logo = localStorage.getItem('logo_file');
-    //     if (logo) setLogoFile(logo);
-    // }, []);
+    useEffect(() => {
+        const logo = localStorage.getItem('logo_file');
+        if (logo) setLogoFile(logo);
+    }, []);
 
     const handleBackgroundUpload = async (e) => {
         const file = e.target.files[0];
@@ -205,6 +205,17 @@ const TournamentDetail = () => {
                     backdropFilter: 'blur(3px)',
                 }}
             >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'right' }}>
+                    <div>
+                        {logoFile && (
+                        <img
+                            src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
+                            alt="Logo"
+                            style={{ height: 60 }}
+                        />
+                        )}
+                    </div>
+                </div>
                 <div
                     style={{
                         maxWidth: 800,
