@@ -1,7 +1,7 @@
 // src/components/MainLayout.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './MainLayout.scss';
+import '../MainLayout.scss';
 
 const MainLayout = ({ children }) => {
   const navigate = useNavigate();
