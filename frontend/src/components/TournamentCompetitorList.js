@@ -146,7 +146,7 @@ const TournamentCompetitorList = () => {
             <th>Tên</th>
             <th>SĐT</th>
             <th>Đơn vị</th>
-            <th>Size trang phục</th>
+            {/* <th>Size trang phục</th> */}
             <th>Ngày thi đấu</th>
             <th>Trạng thái</th>
           </tr>
@@ -162,7 +162,7 @@ const TournamentCompetitorList = () => {
               <td>{c.name}</td>
               <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
               <td>{c.club}</td>
-              <td>{c.uniform_size}</td>
+              {/* <td>{c.uniform_size}</td> */}
               <td>{c.selected_date?.slice(0, 10)}</td>
               <td>{statusText(c.status)}</td>
             </tr>
