@@ -100,6 +100,22 @@ router.get('/search', async (req, res) => {
     }
   });
 
+
+// CHUẨN HÓA TÊN: update toàn bộ tên thành chữ in hoa
+router.put('/normalize-names', async (req, res) => {
+    try {
+        await client.query(`
+            UPDATE players
+            SET name = UPPER(name),
+                modified_date = NOW()
+        `);
+        res.json({ message: 'Đã chuẩn hoá toàn bộ tên VĐV' });
+    } catch (err) {
+        console.error('Lỗi khi chuẩn hoá tên:', err);
+        res.status(500).json({ message: 'Lỗi khi chuẩn hoá tên VĐV' });
+    }
+});
+
 // Cập nhật thông tin 1 player
 router.put('/:id', async (req, res) => {
     const { name, phone, ranking, points, pool_ranking, pool_points, modified_date } = req.body;
@@ -116,21 +132,6 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         console.error('Error updating player:', err);
         res.status(500).json({ message: 'Lỗi khi cập nhật VĐV' });
-    }
-});
-
-// CHUẨN HÓA TÊN: update toàn bộ tên thành chữ in hoa
-router.put('/normalize-names', async (req, res) => {
-    try {
-        await client.query(`
-            UPDATE players
-            SET name = UPPER(name),
-                modified_date = NOW()
-        `);
-        res.json({ message: 'Đã chuẩn hoá toàn bộ tên VĐV' });
-    } catch (err) {
-        console.error('Lỗi khi chuẩn hoá tên:', err);
-        res.status(500).json({ message: 'Lỗi khi chuẩn hoá tên VĐV' });
     }
 });
 
