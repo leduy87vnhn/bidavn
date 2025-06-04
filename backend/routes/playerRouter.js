@@ -119,4 +119,19 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+// CHUẨN HÓA TÊN: update toàn bộ tên thành chữ in hoa
+router.put('/normalize-names', async (req, res) => {
+    try {
+        await client.query(`
+            UPDATE players
+            SET name = UPPER(name),
+                modified_date = NOW()
+        `);
+        res.json({ message: 'Đã chuẩn hoá toàn bộ tên VĐV' });
+    } catch (err) {
+        console.error('Lỗi khi chuẩn hoá tên:', err);
+        res.status(500).json({ message: 'Lỗi khi chuẩn hoá tên VĐV' });
+    }
+});
+
 module.exports = router;

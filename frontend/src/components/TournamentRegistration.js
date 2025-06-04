@@ -452,7 +452,7 @@ const TournamentRegistration = () => {
             type="text"
             placeholder="ID VĐV (Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234)"
             value={playerSearchText}
-            onChange={(e) => setPlayerSearchText(e.target.value)}
+            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
           />
           {playerSuggestions.length > 0 && (
             <ul className="autocomplete-list">
@@ -463,7 +463,7 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
-          <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value })} />
+          <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })} />
           <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
           <input type="text" placeholder="Đơn vị (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />

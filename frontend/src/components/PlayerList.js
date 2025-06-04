@@ -151,6 +151,19 @@ const PlayerList = () => {
         reader.readAsBinaryString(file);
     };
 
+    const handleNormalizeNames = async () => {
+        if (!window.confirm("Bạn có chắc chắn muốn CHUẨN HÓA toàn bộ tên VĐV thành chữ IN HOA?")) return;
+
+        try {
+            await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/players/normalize-names`);
+            setMessage("✅ Đã chuẩn hoá tên VĐV");
+            fetchPlayers();
+        } catch (err) {
+            console.error(err);
+            setMessage("❌ Lỗi khi chuẩn hoá tên");
+        }
+    };
+
     const filteredPlayers = players.filter(p =>
     p.id.includes(filter.id) &&
     p.name.toLowerCase().includes(filter.name.toLowerCase()) &&
@@ -276,6 +289,12 @@ const PlayerList = () => {
                             style={{ backgroundColor: '#28a745', color: '#fff', padding: '6px 14px', border: 'none', borderRadius: 5 }}
                         >
                             Export Excel
+                        </button>
+                        <button
+                            onClick={handleNormalizeNames}
+                            style={{ backgroundColor: '#ffc107', color: '#000', padding: '6px 14px', border: 'none', borderRadius: 5 }}
+                        >
+                            🔠 Chuẩn Hóa Tên
                         </button>
                     </>
                 )}
