@@ -32,6 +32,8 @@ const TournamentRegistration = () => {
   const [availableDates, setAvailableDates] = useState([]);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalInfo, setModalInfo] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [resolvedPlayerId, setResolvedPlayerId] = useState('');
 
   const getStatusStyle = () => {
     switch (status) {
@@ -131,6 +133,42 @@ const TournamentRegistration = () => {
     return () => clearTimeout(delayDebounce);
   }, [playerSearchText]);
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (
+        newCompetitor.name === '' &&
+        playerSearchText === '' &&
+        newCompetitor.phone?.length >= 4
+      ) {
+        try {
+          const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${newCompetitor.phone}`);
+          setPlayerSuggestions(res.data.slice(0, 5));
+        } catch (err) {
+          console.error('Lỗi tìm VĐV theo phone:', err);
+        }
+      }
+    }, 300);
+    return () => clearTimeout(delayDebounce);
+  }, [newCompetitor.phone]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (
+        playerSearchText === '' &&
+        newCompetitor.phone === '' &&
+        newCompetitor.name?.length >= 2
+      ) {
+        try {
+          const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${newCompetitor.name}`);
+          setPlayerSuggestions(res.data.slice(0, 5));
+        } catch (err) {
+          console.error('Lỗi tìm VĐV theo tên:', err);
+        }
+      }
+    }, 300);
+    return () => clearTimeout(delayDebounce);
+  }, [newCompetitor.name]);
+
   // const handlePlayerSearch = async (e) => {
   //   const text = e.target.value;
   //   setPlayerSearchText(text);
@@ -162,55 +200,14 @@ const TournamentRegistration = () => {
   const handleAddCompetitor = async (e) => {
     e.preventDefault();
 
-    // Lấy giá trị từ newCompetitor (ban đầu)
-    let { name, phone, nickname, club, selected_date, uniform_size } = newCompetitor;
+    const { name, phone } = newCompetitor;
 
-    // Nếu thiếu name/phone, fallback từ playerSuggestions theo ID
-    if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
-      const fallback = playerSuggestions.find(p => p.id === playerSearchText);
-      if (fallback) {
-        name = fallback.name;
-        phone = fallback.phone;
-
-        // Cập nhật lại state
-        setNewCompetitor(prev => ({
-          ...prev,
-          name,
-          phone
-        }));
-      }
-    }
-
-    // Kiểm tra bắt buộc
-    if (!registeredPhone) {
-      setMessage('❌ Thiếu số điện thoại người đăng ký.');
-      return;
-    }
-    if (!name) {
-      setMessage('❌ Thiếu tên VĐV.');
-      return;
-    }
-    if (!phone) {
-      setMessage('❌ Thiếu SĐT VĐV.');
-      return;
-    }
-
-    console.log('💬 Debug:', {
-      playerSearchText,
-      name,
-      phone,
-      newCompetitor
-    });
-
-    // Kiểm tra trùng
-    const duplicate = competitors.find(c => c.name === name && c.phone === phone);
-    if (duplicate) {
-      setMessage('Vận động viên này đã tồn tại trong danh sách.');
+    if (!phone || phone.trim().toLowerCase() === 'unknown') {
+      setMessage('❌ Cần nhập thông tin số điện thoại');
       return;
     }
 
     try {
-      // Gọi API resolve-player
       const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
         name,
         phone
@@ -221,49 +218,156 @@ const TournamentRegistration = () => {
         return;
       }
 
-      const player_id = resolveRes.data.player_id;
-
-      // Gửi competitor lên backend
-      if (registrationId) {
-        // Nếu đang chỉnh sửa đăng ký cũ → gửi lên backend
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
-          registration_form_id: registrationId,
-          player_id,
-          nick_name: nickname,
-          club,
-          uniform_size,
-          selected_date: selected_date || null
-        });
-      }
-
-      // Thêm vào danh sách hiển thị
-      setCompetitors(prev => [
-        ...prev,
-        {
-          id: player_id,
-          name,
-          phone,
-          nickname,
-          club,
-          uniform_size,
-          selected_date
-        }
-      ]);
-
-      // Reset form
-      setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '', uniform_size: 'L' });
-      setPlayerSearchText('');
-      setMessage('✅ Đã thêm vận động viên.');
+      setResolvedPlayerId(resolveRes.data.player_id);
+      setShowConfirmModal(true);
     } catch (err) {
-      console.error('Lỗi khi thêm VĐV:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status
-      });
-      const errorMsg = err.response?.data?.message || '❌ Lỗi khi thêm vận động viên.';
-      setMessage(errorMsg);
+      console.error('Lỗi resolve-player:', err);
+      setMessage('❌ Lỗi khi xác định VĐV.');
     }
   };
+
+  const confirmAddCompetitor = async () => {
+    const { name, phone, nickname, club, selected_date, uniform_size } = newCompetitor;
+
+    const duplicate = competitors.find(c => c.name === name && c.phone === phone);
+    if (duplicate) {
+      setMessage('Vận động viên này đã tồn tại trong danh sách.');
+      setShowConfirmModal(false);
+      return;
+    }
+
+    if (registrationId) {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
+        registration_form_id: registrationId,
+        player_id: resolvedPlayerId,
+        nick_name: nickname,
+        club,
+        uniform_size,
+        selected_date: selected_date || null
+      });
+    }
+
+    setCompetitors(prev => [...prev, {
+      id: resolvedPlayerId,
+      name,
+      phone,
+      nickname,
+      club,
+      uniform_size,
+      selected_date
+    }]);
+
+    setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '', uniform_size: 'L' });
+    setPlayerSearchText('');
+    setShowConfirmModal(false);
+    setMessage('✅ Đã thêm vận động viên.');
+  };
+
+  // const handleAddCompetitor = async (e) => {
+  //   e.preventDefault();
+
+  //   // Lấy giá trị từ newCompetitor (ban đầu)
+  //   let { name, phone, nickname, club, selected_date, uniform_size } = newCompetitor;
+
+  //   // Nếu thiếu name/phone, fallback từ playerSuggestions theo ID
+  //   if ((!name || !phone) && playerSearchText && playerSearchText.length > 2) {
+  //     const fallback = playerSuggestions.find(p => p.id === playerSearchText);
+  //     if (fallback) {
+  //       name = fallback.name;
+  //       phone = fallback.phone;
+
+  //       // Cập nhật lại state
+  //       setNewCompetitor(prev => ({
+  //         ...prev,
+  //         name,
+  //         phone
+  //       }));
+  //     }
+  //   }
+
+  //   // Kiểm tra bắt buộc
+  //   if (!registeredPhone) {
+  //     setMessage('❌ Thiếu số điện thoại người đăng ký.');
+  //     return;
+  //   }
+  //   if (!name) {
+  //     setMessage('❌ Thiếu tên VĐV.');
+  //     return;
+  //   }
+  //   if (!phone) {
+  //     setMessage('❌ Thiếu SĐT VĐV.');
+  //     return;
+  //   }
+
+  //   console.log('💬 Debug:', {
+  //     playerSearchText,
+  //     name,
+  //     phone,
+  //     newCompetitor
+  //   });
+
+  //   // Kiểm tra trùng
+  //   const duplicate = competitors.find(c => c.name === name && c.phone === phone);
+  //   if (duplicate) {
+  //     setMessage('Vận động viên này đã tồn tại trong danh sách.');
+  //     return;
+  //   }
+
+  //   try {
+  //     // Gọi API resolve-player
+  //     const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
+  //       name,
+  //       phone
+  //     });
+
+  //     if (resolveRes.data.status !== 'ok') {
+  //       setMessage('❌ Lỗi khi xác định VĐV.');
+  //       return;
+  //     }
+
+  //     const player_id = resolveRes.data.player_id;
+
+  //     // Gửi competitor lên backend
+  //     if (registrationId) {
+  //       // Nếu đang chỉnh sửa đăng ký cũ → gửi lên backend
+  //       await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/competitors`, {
+  //         registration_form_id: registrationId,
+  //         player_id,
+  //         nick_name: nickname,
+  //         club,
+  //         uniform_size,
+  //         selected_date: selected_date || null
+  //       });
+  //     }
+
+  //     // Thêm vào danh sách hiển thị
+  //     setCompetitors(prev => [
+  //       ...prev,
+  //       {
+  //         id: player_id,
+  //         name,
+  //         phone,
+  //         nickname,
+  //         club,
+  //         uniform_size,
+  //         selected_date
+  //       }
+  //     ]);
+
+  //     // Reset form
+  //     setNewCompetitor({ name: '', phone: '', nickname: '', club: '', selected_date: '', uniform_size: 'L' });
+  //     setPlayerSearchText('');
+  //     setMessage('✅ Đã thêm vận động viên.');
+  //   } catch (err) {
+  //     console.error('Lỗi khi thêm VĐV:', {
+  //       message: err.message,
+  //       response: err.response?.data,
+  //       status: err.response?.status
+  //     });
+  //     const errorMsg = err.response?.data?.message || '❌ Lỗi khi thêm vận động viên.';
+  //     setMessage(errorMsg);
+  //   }
+  // };
 
   const handleRemove = (index) => {
     const updated = [...competitors];
@@ -519,6 +623,26 @@ const TournamentRegistration = () => {
           {message && <div className={message.includes('Lỗi') ? 'error-message' : 'success-message'}>{message}</div>}
         </form>
 
+        <ReactModal
+          isOpen={showConfirmModal}
+          onRequestClose={() => setShowConfirmModal(false)}
+          ariaHideApp={false}
+          style={{
+            overlay: { backgroundColor: 'rgba(0,0,0,0.4)' },
+            content: { maxWidth: '500px', margin: 'auto', padding: '20px', borderRadius: '12px' }
+          }}
+        >
+          <h2>Xác Nhận Thông Tin Vận Động Viên</h2>
+          <p>Hãy Xác Nhận Lại Thông Tin Đăng Ký Của Vận Động Viên</p>
+          <p><strong>ID Vận Động Viên:</strong> {resolvedPlayerId}</p>
+          <p><strong>Tên Vận Động Viên:</strong> {newCompetitor.name}</p>
+          <p><strong>Số Điện Thoại:</strong> {newCompetitor.phone}</p>
+          <div style={{ marginTop: '20px', textAlign: 'right' }}>
+            <button onClick={() => setShowConfirmModal(false)} style={{ marginRight: '10px' }}>Hủy</button>
+            <button onClick={confirmAddCompetitor} style={{ backgroundColor: '#28a745', color: 'white', padding: '6px 14px' }}>Xác Nhận</button>
+          </div>
+        </ReactModal>
+
         {competitors.length > 0 && (
           <>
             <table style={{
@@ -618,6 +742,10 @@ const TournamentRegistration = () => {
               <p style={{ marginTop: '6px', whiteSpace: 'pre-wrap' }}>{tournament.registration_method}</p>
             </div>
           )}
+          
+          <p style={{ marginTop: '10px', color: '#cc7000' }}>
+            Sau khi chuyển khoản hoàn tất lệ phí, BTC sẽ phê duyệt và bạn sẽ có tên trên danh sách thi đấu.
+          </p>
 
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button
