@@ -290,12 +290,6 @@ const PlayerList = () => {
                         >
                             Export Excel
                         </button>
-                        <button
-                            onClick={handleNormalizeNames}
-                            style={{ backgroundColor: '#ffc107', color: '#000', padding: '6px 14px', border: 'none', borderRadius: 5 }}
-                        >
-                            🔠 Chuẩn Hóa Tên
-                        </button>
                     </>
                 )}
 
@@ -408,6 +402,24 @@ const PlayerList = () => {
                     </button>
                 ))}
             </div>
+            {user?.user_type === 2 && (
+            <div style={{ marginTop: 20, textAlign: 'center' }}>
+                <button
+                onClick={handleNormalizeNames}
+                style={{
+                    backgroundColor: '#ffc107',
+                    color: '#000',
+                    padding: '8px 16px',
+                    border: 'none',
+                    borderRadius: 6,
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                }}
+                >
+                🔠 Chuẩn Hóa Tên VĐV
+                </button>
+            </div>
+            )}
 
             {showForm && (
                 <div style={{ marginTop: 30 }}>
