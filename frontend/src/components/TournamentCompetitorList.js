@@ -54,19 +54,19 @@ const TournamentCompetitorList = () => {
     fetchSlots();
   }, [tournamentId]);
 
-  useEffect(() => {
-    let sorted = [...data];
-    if (sortConfig.key) {
-      sorted.sort((a, b) => {
-        const valA = a[sortConfig.key] || '';
-        const valB = b[sortConfig.key] || '';
-        return sortConfig.direction === 'asc'
-          ? String(valA).localeCompare(String(valB))
-          : String(valB).localeCompare(String(valA));
-      });
-      setData(sorted);
-    }
-  }, [sortConfig]);
+  // useEffect(() => {
+  //   let sorted = [...data];
+  //   if (sortConfig.key) {
+  //     sorted.sort((a, b) => {
+  //       const valA = a[sortConfig.key] || '';
+  //       const valB = b[sortConfig.key] || '';
+  //       return sortConfig.direction === 'asc'
+  //         ? String(valA).localeCompare(String(valB))
+  //         : String(valB).localeCompare(String(valA));
+  //     });
+  //     setData(sorted);
+  //   }
+  // }, [sortConfig]);
 
   const exportToExcel = (rows) => {
     const formatted = rows.map(c => ({
@@ -120,7 +120,17 @@ const TournamentCompetitorList = () => {
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
+
+    const sorted = [...data].sort((a, b) => {
+      const valA = a[key] || '';
+      const valB = b[key] || '';
+      return direction === 'asc'
+        ? String(valA).localeCompare(String(valB))
+        : String(valB).localeCompare(String(valA));
+    });
+
     setSortConfig({ key, direction });
+    setData(sorted);
   };
 
   return (
