@@ -133,6 +133,23 @@ const TournamentCompetitorList = () => {
     setData(sorted);
   };
 
+  const getDailyCounts = () => {
+    if (!slots || slots.length === 0) return [];
+
+    return slots.map(slot => {
+      const competitorsOfDay = allData.filter(c => c.selected_date?.slice(0, 10) === slot.value);
+      const approvedCount = competitorsOfDay.filter(c => String(c.status) === '1').length;
+      const totalCount = competitorsOfDay.length;
+
+      return {
+        date: slot.display,
+        approved: approvedCount,
+        total: totalCount,
+        remaining: slot.remaining
+      };
+    });
+  };
+
   return (
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
@@ -186,22 +203,22 @@ const TournamentCompetitorList = () => {
 
       <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
 
-      {isAdmin && tournament && (
+      {tournament && (
         <div style={{ marginTop: 20, marginBottom: 30 }}>
-          <h4>📅 Số lượng VĐV mỗi ngày</h4>
+          <h4>📅 Số lượng VĐV thi đấu mỗi ngày</h4>
           <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '50%' }}>
             <thead>
               <tr>
                 <th>Ngày</th>
-                <th>Số lượng</th>
-                <th>Số còn lại</th>
+                <th>Số đăng ký đã duyệt / Tổng số đơn đăng ký</th>
+                <th>Số slot còn lại</th>
               </tr>
             </thead>
             <tbody>
-              {slots.map((s, idx) => (
+              {getDailyCounts().map((s, idx) => (
                 <tr key={idx}>
-                  <td>{s.display}</td>
-                  <td>{s.remaining !== null ? (tournament.competitors_per_day - s.remaining) : '-'}</td>
+                  <td>{s.date}</td>
+                  <td>{s.approved} / {s.total}</td>
                   <td>{s.remaining}</td>
                 </tr>
               ))}
