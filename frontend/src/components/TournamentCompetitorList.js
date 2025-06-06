@@ -137,7 +137,9 @@ const TournamentCompetitorList = () => {
     if (!slots || slots.length === 0) return [];
 
     return slots.map(slot => {
-      const competitorsOfDay = allData.filter(c => c.selected_date?.slice(0, 10) === slot.value);
+      const competitorsOfDay = allData.filter(c =>
+        c.selected_date?.slice(0, 10) === slot.value && String(c.status) !== '2' // loại bỏ đã huỷ
+      );
       const approvedCount = competitorsOfDay.filter(c => String(c.status) === '1').length;
       const totalCount = competitorsOfDay.length;
 

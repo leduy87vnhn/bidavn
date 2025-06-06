@@ -34,6 +34,7 @@ const TournamentRegistration = () => {
   const [modalInfo, setModalInfo] = useState({});
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resolvedPlayerId, setResolvedPlayerId] = useState('');
+  const [clubSuggestions, setClubSuggestions] = useState([]);
 
   const getStatusStyle = () => {
     switch (status) {
@@ -184,6 +185,18 @@ const TournamentRegistration = () => {
   //   }
   // };
 
+  useEffect(() => {
+    const loadClubs = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/clubs`);
+        setClubSuggestions(res.data);
+      } catch (err) {
+        console.error('Lỗi khi tải danh sách CLB:', err);
+      }
+    };
+    loadClubs();
+  }, []);
+
   const handleSelectSuggestion = (player) => {
     setNewCompetitor({
       name: player.name,
@@ -261,6 +274,13 @@ const TournamentRegistration = () => {
     setPlayerSearchText('');
     setShowConfirmModal(false);
     setMessage('✅ Đã thêm vận động viên.');
+  };
+
+  const getFilteredClubs = () => {
+    if (!newCompetitor.club.trim()) return [];
+    return clubSuggestions.filter(c =>
+      c.toLowerCase().includes(newCompetitor.club.toLowerCase())
+    ).slice(0, 5); // giới hạn 5 gợi ý
   };
 
   // const handleAddCompetitor = async (e) => {
@@ -570,7 +590,22 @@ const TournamentRegistration = () => {
           <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })} />
           <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
           <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
-          <input type="text" placeholder="Đơn vị (*)" value={newCompetitor.club} onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })} />
+          <input
+            type="text"
+            placeholder="Đơn vị (*)"
+            value={newCompetitor.club}
+            onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
+          />
+
+          {getFilteredClubs().length > 0 && (
+            <ul className="autocomplete-list">
+              {getFilteredClubs().map((club, idx) => (
+                <li key={idx} onClick={() => setNewCompetitor({ ...newCompetitor, club })}>
+                  {club}
+                </li>
+              ))}
+            </ul>
+          )}
           {/*<select
             value={newCompetitor.uniform_size}
             onChange={(e) => setNewCompetitor({ ...newCompetitor, uniform_size: e.target.value })}
