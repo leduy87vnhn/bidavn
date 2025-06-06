@@ -13,6 +13,7 @@ const TournamentCompetitorList = () => {
   const [tournament, setTournament] = useState(null);
   const isAdmin = user?.user_type === 2;
   const [allData, setAllData] = useState([]);
+  const [slots, setSlots] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,18 +23,16 @@ const TournamentCompetitorList = () => {
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
         const rawData = compRes.data;
-
-        // Lưu toàn bộ danh sách để filter sau
         setAllData(rawData);
 
-        // Lọc nếu không phải admin → chỉ lấy status = 1 (Đã duyệt)
         const filtered = isAdmin ? rawData : rawData.filter(c => String(c.status) === '1');
 
-        // Sắp xếp theo trạng thái: 1 (Đã duyệt) → 0 (Chờ duyệt) → 2 (Đã huỷ)
+        // Sort theo trạng thái mặc định
         filtered.sort((a, b) => {
           const order = { '1': 0, '0': 1, '2': 2 };
           return order[String(a.status)] - order[String(b.status)];
         });
+
         setData(filtered);
       } catch (err) {
         console.error('Lỗi khi tải danh sách:', err);
@@ -42,6 +41,32 @@ const TournamentCompetitorList = () => {
 
     fetchData();
   }, [tournamentId]);
+
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${tournamentId}`);
+        setSlots(res.data.available_dates);
+      } catch (err) {
+        console.error('Lỗi khi lấy slot:', err);
+      }
+    };
+    fetchSlots();
+  }, [tournamentId]);
+
+  useEffect(() => {
+    let sorted = [...data];
+    if (sortConfig.key) {
+      sorted.sort((a, b) => {
+        const valA = a[sortConfig.key] || '';
+        const valB = b[sortConfig.key] || '';
+        return sortConfig.direction === 'asc'
+          ? String(valA).localeCompare(String(valB))
+          : String(valB).localeCompare(String(valA));
+      });
+      setData(sorted);
+    }
+  }, [sortConfig]);
 
   const exportToExcel = (rows) => {
     const formatted = rows.map(c => ({
@@ -62,6 +87,8 @@ const TournamentCompetitorList = () => {
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(file, `VDV_dang_ky_${tournament?.code || 'giai'}.xlsx`);
   };
+
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   const statusText = (status) => {
     if (String(status) === '0') return 'Chờ duyệt';
@@ -86,6 +113,14 @@ const TournamentCompetitorList = () => {
     });
 
     setData(filtered);
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
   };
 
   return (
@@ -139,15 +174,44 @@ const TournamentCompetitorList = () => {
         </select>
       </div>
 
+      <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
+
+      {isAdmin && (
+        <div style={{ marginTop: 20, marginBottom: 30 }}>
+          <h4>📅 Số lượng VĐV mỗi ngày</h4>
+          <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '50%' }}>
+            <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Số lượng</th>
+                <th>Số còn lại</th>
+              </tr>
+            </thead>
+            <tbody>
+              {slots.map((s, idx) => (
+                <tr key={idx}>
+                  <td>{s.display}</td>
+                  <td>{s.remaining !== null ? (tournament.competitors_per_day - s.remaining) : '-'}</td>
+                  <td>{s.remaining}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Tên</th>
             <th>SĐT</th>
-            <th>Đơn vị</th>
-            {/* <th>Size trang phục</th> */}
-            <th>Ngày thi đấu</th>
+            <th onClick={() => handleSort('club')} style={{ cursor: 'pointer' }}>
+              Đơn vị {sortConfig.key === 'club' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+            </th>
+            <th onClick={() => handleSort('selected_date')} style={{ cursor: 'pointer' }}>
+              Ngày thi đấu {sortConfig.key === 'selected_date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+            </th>
             <th>Trạng thái</th>
           </tr>
         </thead>
