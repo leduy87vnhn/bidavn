@@ -104,6 +104,13 @@ const TournamentRegistration = () => {
   };
 
   useEffect(() => {
+    if (!user) {
+      alert('Bạn cần đăng nhập để tiếp tục.');
+      navigate('/login'); // hoặc navigate đến URL màn hình login của bạn
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     loadTournament();
     if (registrationId) {
       loadRegistrationInfo();
@@ -570,6 +577,10 @@ const TournamentRegistration = () => {
           </div>
         )}
 
+        <div style={{ margin: '40px 0 20px', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '22px', color: '#333' }}>📝 Điền Thông Tin Vận Động Viên</h3>
+        </div>
+
         <form onSubmit={handleAddCompetitor}>
           <input type="text" placeholder="Số điện thoại người đăng ký (*)" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
           <input
@@ -723,8 +734,23 @@ const TournamentRegistration = () => {
                 ))}
               </tbody>
             </table>
-            <button type="button" onClick={handleRegisterSubmit} style={{ marginTop: '20px' }}>
-              📤 Gửi đăng ký
+            <button
+              type="button"
+              onClick={handleRegisterSubmit}
+              style={{
+                marginTop: '30px',
+                padding: '14px 24px',
+                backgroundColor: '#007bff',
+                color: '#fff',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+              }}
+            >
+              📤 Gửi Đăng Ký
             </button>
           </>
         )}
