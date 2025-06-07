@@ -15,7 +15,7 @@ const TournamentDetail = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState(null);
     const [uploading, setUploading] = useState(false);
-    const logoFile = localStorage.getItem('logo_file');
+    const [logoFile, setLogoFile] = useState(localStorage.getItem('logo_file'));
 
     const user = JSON.parse(localStorage.getItem('user_info'));
 
