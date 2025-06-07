@@ -213,6 +213,7 @@ const TournamentDetail = () => {
                     backdropFilter: 'blur(3px)',
                 }}
             >
+            {/*
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'right' }}>
                     <div>
                         {logoFile && (
@@ -224,6 +225,7 @@ const TournamentDetail = () => {
                         )}
                     </div>
                 </div>
+                */}
                 <div
                     style={{
                         maxWidth: 800,
@@ -233,6 +235,15 @@ const TournamentDetail = () => {
                         borderRadius: '16px',
                     }}
                 >
+                    {logoFile && (
+                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                        <img
+                        src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
+                        alt="Logo"
+                        style={{ height: 60, objectFit: 'contain' }}
+                        />
+                    </div>
+                    )}
                     <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
 
                 {/* ✅ Đưa nút Đăng ký thi đấu lên đầu */}
