@@ -582,16 +582,19 @@ const TournamentRegistration = () => {
         </div>
 
         <form onSubmit={handleAddCompetitor}>
+          {/* ✅ SĐT Người đăng ký */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
             <input
               type="text"
+              placeholder="Số điện thoại người đăng ký (*)"
               value={registeredPhone}
               onChange={(e) => setRegisteredPhone(e.target.value)}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
 
+          {/* ✅ ID VĐV */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>ID VĐV:</label>
             <input
@@ -613,40 +616,48 @@ const TournamentRegistration = () => {
             </ul>
           )}
 
+          {/* ✅ Tên VĐV */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>Tên VĐV:</label>
             <input
               type="text"
+              placeholder="Tên VĐV có dấu (*)"
               value={newCompetitor.name}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
 
+          {/* ✅ SĐT VĐV */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT VĐV:</label>
             <input
               type="text"
+              placeholder="SĐT VĐV (*)"
               value={newCompetitor.phone}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
 
+          {/* ✅ Nickname */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
             <input
               type="text"
+              placeholder="Tên thường gọi"
               value={newCompetitor.nickname}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
 
+          {/* ✅ Đơn vị */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>Đơn vị:</label>
             <input
               type="text"
+              placeholder="Tên CLB hoặc nơi sinh hoạt (*)"
               value={newCompetitor.club}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
@@ -676,7 +687,7 @@ const TournamentRegistration = () => {
             <option value="XXL">XXL</option>
           </select>*/}
 
-          {/* Phần chọn ngày thi đấu */}
+          {/* ✅ Chọn ngày thi đấu */}
           {availableDates.length > 0 ? (
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
