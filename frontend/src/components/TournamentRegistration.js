@@ -582,13 +582,27 @@ const TournamentRegistration = () => {
         </div>
 
         <form onSubmit={handleAddCompetitor}>
-          <input type="text" placeholder="Số điện thoại người đăng ký (*)" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} />
-          <input
-            type="text"
-            placeholder="ID VĐV (Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234)"
-            value={playerSearchText}
-            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
-          />
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
+            <input
+              type="text"
+              value={registeredPhone}
+              onChange={(e) => setRegisteredPhone(e.target.value)}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>ID VĐV:</label>
+            <input
+              type="text"
+              placeholder="Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234"
+              value={playerSearchText}
+              onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
           {playerSuggestions.length > 0 && (
             <ul className="autocomplete-list">
               {playerSuggestions.map((p) => (
@@ -598,15 +612,46 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
-          <input type="text" placeholder="Tên VĐV có dấu(*)" value={newCompetitor.name} onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })} />
-          <input type="text" placeholder="SĐT VĐV (*)" value={newCompetitor.phone} onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })} />
-          <input type="text" placeholder="Nickname" value={newCompetitor.nickname} onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })} />
-          <input
-            type="text"
-            placeholder="Đơn vị (*)"
-            value={newCompetitor.club}
-            onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
-          />
+
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>Tên VĐV:</label>
+            <input
+              type="text"
+              value={newCompetitor.name}
+              onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT VĐV:</label>
+            <input
+              type="text"
+              value={newCompetitor.phone}
+              onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
+            <input
+              type="text"
+              value={newCompetitor.nickname}
+              onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '160px', fontWeight: 'bold' }}>Đơn vị:</label>
+            <input
+              type="text"
+              value={newCompetitor.club}
+              onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
+              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
 
           {getFilteredClubs().length > 0 && (
             <ul className="autocomplete-list">
@@ -617,6 +662,7 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
+
           {/*<select
             value={newCompetitor.uniform_size}
             onChange={(e) => setNewCompetitor({ ...newCompetitor, uniform_size: e.target.value })}
@@ -629,11 +675,12 @@ const TournamentRegistration = () => {
             <option value="XL">XL</option>
             <option value="XXL">XXL</option>
           </select>*/}
+
+          {/* Phần chọn ngày thi đấu */}
           {availableDates.length > 0 ? (
             <div style={{ marginBottom: '10px' }}>
               <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
               <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
-                {/* ✅ OPTION: Không chọn ngày */}
                 <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <input
                     type="radio"
@@ -645,7 +692,6 @@ const TournamentRegistration = () => {
                   <span>Không chọn ngày</span>
                 </label>
 
-                {/* Các ngày thi đấu thực tế */}
                 {availableDates.map(({ value, display, remaining }) => (
                   <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <input
@@ -665,8 +711,14 @@ const TournamentRegistration = () => {
               <strong>Không có ngày thi đấu cụ thể — sẽ để trống ngày thi đấu.</strong>
             </div>
           )}
+
           <button type="submit">➕ Thêm vận động viên</button>
-          {message && <div className={message.includes('Lỗi') ? 'error-message' : 'success-message'}>{message}</div>}
+
+          {message && (
+            <div className={message.includes('Lỗi') ? 'error-message' : 'success-message'}>
+              {message}
+            </div>
+          )}
         </form>
 
         <ReactModal
