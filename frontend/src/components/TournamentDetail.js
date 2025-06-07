@@ -15,7 +15,7 @@ const TournamentDetail = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState(null);
     const [uploading, setUploading] = useState(false);
-    const [logoFile, setLogoFile] = useState(localStorage.getItem('logo_file'));
+    const [logoFile, setLogoFile] = useState(null);
 
     const user = JSON.parse(localStorage.getItem('user_info'));
 
@@ -59,8 +59,7 @@ const TournamentDetail = () => {
     }, [id]);
 
     useEffect(() => {
-        const logo = localStorage.getItem('logo_file');
-        if (logo) setLogoFile(logo);
+    fetchLogo();
     }, []);
 
     const handleBackgroundUpload = async (e) => {
@@ -107,6 +106,15 @@ const TournamentDetail = () => {
         } finally {
             setUploading(false);
         }
+    };
+
+    const fetchLogo = async () => {
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+        setLogoFile(res.data.filename);
+    } catch (err) {
+        console.error('Lỗi khi tải logo:', err);
+    }
     };
 
     const inputStyle = {
