@@ -134,24 +134,51 @@ const TournamentCompetitorList = () => {
   };
 
   const getDailyCounts = () => {
-    if (!slots || slots.length === 0 || !tournament?.competitors_per_day) return [];
+    if (!slots || slots.length === 0 || !tournament) return [];
 
-    return slots.map(slot => {
+    let totalApproved = 0;
+    let totalPending = 0;
+
+    const daily = slots.map(slot => {
       const competitorsOfDay = allData.filter(c =>
         c.selected_date?.slice(0, 10) === slot.value && String(c.status) !== '2'
       );
 
       const approved = competitorsOfDay.filter(c => String(c.status) === '1').length;
       const pending = competitorsOfDay.filter(c => String(c.status) === '0').length;
+      const dailyMax = tournament.competitors_per_day || 0;
+      const remaining = dailyMax > 0 ? dailyMax - approved - pending : '-';
+
+      totalApproved += approved;
+      totalPending += pending;
 
       return {
         date: slot.display,
         approved,
         pending,
-        max: tournament.competitors_per_day,
-        remaining: slot.remaining
+        max: dailyMax,
+        remaining
       };
     });
+
+    const totalMax = tournament.maximum_competitors && tournament.maximum_competitors > 0
+      ? tournament.maximum_competitors
+      : null;
+
+    const totalRemaining =
+      totalMax !== null
+        ? totalMax - totalApproved - totalPending
+        : '-';
+
+    daily.push({
+      date: 'Tổng cộng (gồm cả không chọn ngày)',
+      approved: totalApproved,
+      pending: totalPending,
+      max: totalMax ?? '-',
+      remaining: totalRemaining
+    });
+
+    return daily;
   };
 
   return (
@@ -221,7 +248,7 @@ const TournamentCompetitorList = () => {
             </thead>
             <tbody>
               {getDailyCounts().map((s, idx) => (
-                <tr key={idx}>
+                <tr key={idx} style={s.date === 'Tổng cộng (gồm cả không chọn ngày)' ? { fontWeight: 'bold', backgroundColor: '#f9f9f9' } : {}}>
                   <td>{s.date}</td>
                   <td>{s.approved} / {s.max}</td>
                   <td>{s.pending} / {s.max}</td>
