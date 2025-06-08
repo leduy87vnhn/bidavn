@@ -149,4 +149,29 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+// ✅ API: Lấy thông tin VĐV theo số điện thoại (để kiểm tra trùng SĐT)
+router.get('/by-phone', async (req, res) => {
+  const { phone } = req.query;
+
+  if (!phone) {
+    return res.status(400).json({ message: 'Thiếu số điện thoại' });
+  }
+
+  try {
+    const result = await client.query(
+      `SELECT id, name, phone FROM players WHERE phone = $1 LIMIT 1`,
+      [phone]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy VĐV với SĐT này' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('❌ Lỗi khi lấy VĐV theo SĐT:', err);
+    res.status(500).json({ message: 'Lỗi server khi lấy VĐV' });
+  }
+});
+
 module.exports = router;

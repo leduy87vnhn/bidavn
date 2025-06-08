@@ -35,6 +35,8 @@ const TournamentRegistration = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resolvedPlayerId, setResolvedPlayerId] = useState('');
   const [clubSuggestions, setClubSuggestions] = useState([]);
+  const [showConflictModal, setShowConflictModal] = useState(false);
+  const [conflictInfo, setConflictInfo] = useState({ id: '', name: '', phone: '' });
 
   const getStatusStyle = () => {
     switch (status) {
@@ -269,7 +271,31 @@ const TournamentRegistration = () => {
       }
     } catch (err) {
       console.error('Lỗi khi gọi resolve-player:', err);
-      setMessage('❌ Lỗi khi xác định VĐV.');
+
+      if (
+        err.response?.status === 400 &&
+        err.response.data?.message?.includes('SĐT đã tồn tại với VĐV khác.')
+      ) {
+        // gọi lại API để lấy thông tin chi tiết vận động viên xung đột
+        try {
+          const conflictRes = await axios.get(
+            `${process.env.REACT_APP_API_BASE_URL}/api/players/by-phone?phone=${newCompetitor.phone}`
+          );
+          const conflict = conflictRes.data;
+          setConflictInfo({
+            id: conflict.id,
+            name: conflict.name,
+            phone: conflict.phone
+          });
+          setShowConflictModal(true);
+        } catch (fetchErr) {
+          console.error('Lỗi khi lấy thông tin VĐV bị trùng:', fetchErr);
+          setMessage('❌ SĐT đã được dùng bởi VĐV khác, và không thể lấy thông tin chi tiết.');
+        }
+      } else {
+        const errorMsg = err.response?.data?.message || '❌ Lỗi khi xác định VĐV.';
+        setMessage(errorMsg);
+      }
     }
   };
 
@@ -933,6 +959,36 @@ const TournamentRegistration = () => {
               }}
             >
               Đóng
+            </button>
+          </div>
+        </ReactModal>
+        <ReactModal
+          isOpen={showConflictModal}
+          onRequestClose={() => setShowConflictModal(false)}
+          ariaHideApp={false}
+          style={{
+            overlay: { backgroundColor: 'rgba(0,0,0,0.4)' },
+            content: { maxWidth: '500px', margin: 'auto', padding: '20px', borderRadius: '12px' }
+          }}
+        >
+          <h2>⚠️ Số điện thoại đã tồn tại</h2>
+          <p>Số điện thoại này đã được đăng ký cho vận động viên:</p>
+          <p><strong>ID:</strong> {conflictInfo.id}</p>
+          <p><strong>Tên:</strong> {conflictInfo.name}</p>
+          <p><strong>Số điện thoại:</strong> {conflictInfo.phone}</p>
+          <div style={{ marginTop: '20px', textAlign: 'right' }}>
+            <button
+              onClick={() => setShowConflictModal(false)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '6px',
+                background: '#007bff',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold'
+              }}
+            >
+              Xác Nhận
             </button>
           </div>
         </ReactModal>
