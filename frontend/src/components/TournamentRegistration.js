@@ -198,7 +198,8 @@ const TournamentRegistration = () => {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/clubs`);
         setClubSuggestions(res.data);
       } catch (err) {
-        console.error('Lỗi khi tải danh sách CLB:', err);
+        console.warn('⚠️ Không thể tải danh sách gợi ý CLB — người dùng vẫn có thể nhập thủ công.');
+        // Không cần setClubSuggestions, vì autocomplete sẽ hoạt động rỗng
       }
     };
     loadClubs();
