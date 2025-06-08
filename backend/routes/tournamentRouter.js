@@ -169,6 +169,7 @@ router.put('/:id', async (req, res) => {
         registerable_date_end,
         description,
         competitors_per_day,
+        maximum_competitors,
         bank_name,
         bank_number,
         bank_acc_name,
@@ -193,19 +194,20 @@ router.put('/:id', async (req, res) => {
                 registerable_date_end = $10,
                 description = $11,
                 competitors_per_day = $12,
-                bank_name = $13,
-                bank_number = $14,
-                bank_acc_name = $15,
-                conditions = $16,
-                registration_method = $17,
-                rules = $18,
-                uniform = $19
-            WHERE id = $20
+                maximum_competitors=$13,
+                bank_name = $14,
+                bank_number = $15,
+                bank_acc_name = $16,
+                conditions = $17,
+                registration_method = $18,
+                rules = $19,
+                uniform = $20
+            WHERE id = $21
         `;
         await client.query(query, [
             name, code, attendance_price, start_date, end_date,
             location, content, prize, registerable_date_start,
-            registerable_date_end, description, competitors_per_day,
+            registerable_date_end, description, competitors_per_day, maximum_competitors,
             bank_name, bank_number, bank_acc_name, conditions, registration_method, rules, uniform,
             id
         ]);

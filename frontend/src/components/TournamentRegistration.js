@@ -217,33 +217,53 @@ const TournamentRegistration = () => {
     setPlayerSuggestions([]);
   };
 
-  const handleAddCompetitor = async (e) => {
-    e.preventDefault();
-
-    const { name, phone } = newCompetitor;
-
-    if (!phone || phone.trim().toLowerCase() === 'unknown') {
-      setMessage('❌ Cần nhập thông tin số điện thoại');
+  const handleAddCompetitor = async () => {
+    if (!newCompetitor.name || !newCompetitor.phone) {
+      alert('Vui lòng nhập đầy đủ tên và số điện thoại VĐV.');
       return;
     }
 
-    try {
-      const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
-        name,
-        phone
-      });
+    if (!newCompetitor.selected_date) {
+      alert('Vui lòng chọn ngày thi đấu cho VĐV.');
+      return;
+    }
 
-      if (resolveRes.data.status !== 'ok') {
-        setMessage('❌ Lỗi khi xác định VĐV.');
+    // ✅ Kiểm tra competitors_per_day (đã có sẵn trong hệ thống)
+    const sameDateCount = competitors.filter(c => c.selected_date === newCompetitor.selected_date).length;
+    if (tournament.competitors_per_day > 0 && sameDateCount >= tournament.competitors_per_day) {
+      alert(`Đã vượt quá số lượng VĐV tối đa cho ngày ${newCompetitor.selected_date}`);
+      return;
+    }
+
+    // ✅ Kiểm tra tổng maximum_competitors
+    if (tournament.maximum_competitors > 0) {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/count?tournament_id=${tournamentId}`);
+        const currentRegistered = res.data.total;
+
+        if ((currentRegistered + competitors.length) >= tournament.maximum_competitors) {
+          alert('🚫 Đã vượt quá số lượng VĐV tối đa toàn giải.');
+          return;
+        }
+      } catch (err) {
+        console.error('Lỗi kiểm tra giới hạn VĐV:', err);
+        alert('Không thể kiểm tra giới hạn VĐV. Vui lòng thử lại.');
         return;
       }
-
-      setResolvedPlayerId(resolveRes.data.player_id);
-      setShowConfirmModal(true);
-    } catch (err) {
-      console.error('Lỗi resolve-player:', err);
-      setMessage('❌ Lỗi khi xác định VĐV.');
     }
+
+    // ✅ Nếu vượt qua mọi kiểm tra thì thêm vào danh sách
+    setCompetitors([...competitors, newCompetitor]);
+    setNewCompetitor({
+      name: '',
+      phone: '',
+      nickname: '',
+      club: '',
+      selected_date: '',
+      uniform_size: 'L'
+    });
+    setPlayerSearchText('');
+    setPlayerSuggestions([]);
   };
 
   const confirmAddCompetitor = async () => {

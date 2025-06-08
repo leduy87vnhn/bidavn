@@ -44,14 +44,13 @@ const TournamentDetail = () => {
     ];
 
     const loadTournament = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
-            setTournament(res.data);
-            setLoading(false);
-        } catch (err) {
-            setError('Không tìm thấy giải đấu.');
-            setLoading(false);
-        }
+    try {
+        const res = await axios.get(`/api/tournaments/${id}`);
+        setTournament(res.data);
+        // có thể set thêm state như: setMaxCompetitors(...)
+    } catch (err) {
+        console.error(err);
+    }
     };
 
     useEffect(() => {
@@ -298,6 +297,7 @@ const TournamentDetail = () => {
                     </div>
 
                     <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitors_per_day')}</p>
+                    <p><strong>Số lượng VĐV tối đa:</strong><br />{getInput('maximum_competitors')}</p>
                     <p><strong>Điều kiện thi đấu:</strong><br />{getInput('conditions', true, 5, true)}</p>
                     <p><strong>Quy định:</strong><br />{getInput('rules', true, 5, true)}</p>
                     <p><strong>Trang phục và thiết bị thi đấu:</strong><br />{getInput('uniform', true, 5, true)}</p>

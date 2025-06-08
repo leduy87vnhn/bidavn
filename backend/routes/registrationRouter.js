@@ -269,6 +269,23 @@ router.get('/slots', async (req, res) => {
   }
 });
 
+// Cuối file registrationRouter.js
+router.get('/count', async (req, res) => {
+  const { tournament_id } = req.query;
+  try {
+    const result = await client.query(
+      `SELECT COUNT(*) FROM registration_form f
+       JOIN competitors c ON f.id = c.registration_id
+       WHERE f.tournament_id = $1 AND f.status IN (0, 1)`,
+      [tournament_id]
+    );
+    res.json({ total: Number(result.rows[0].count) });
+  } catch (err) {
+    console.error('Lỗi khi đếm số lượng VĐV:', err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 // GET /api/registration_form/:id
 // ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
 router.get('/:id', async (req, res) => {
