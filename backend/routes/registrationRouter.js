@@ -286,6 +286,20 @@ router.get('/count', async (req, res) => {
   }
 });
 
+router.get('/clubs', async (req, res) => {
+  try {
+    const result = await client.query(`
+      SELECT DISTINCT LOWER(TRIM(club)) as club
+      FROM competitors
+      WHERE club IS NOT NULL AND TRIM(club) <> ''
+    `);
+    res.json(result.rows.map(row => row.club));
+  } catch (err) {
+    console.error('Lỗi lấy danh sách CLB:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // GET /api/registration_form/:id
 // ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
 router.get('/:id', async (req, res) => {

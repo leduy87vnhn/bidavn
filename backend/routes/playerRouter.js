@@ -116,19 +116,19 @@ router.put('/normalize-names', async (req, res) => {
     }
 });
 
-router.get('/clubs', async (req, res) => {
-  try {
-    const result = await client.query(`
-      SELECT DISTINCT LOWER(TRIM(club)) as club
-      FROM competitors
-      WHERE club IS NOT NULL AND TRIM(club) <> ''
-    `);
-    res.json(result.rows.map(row => row.club));
-  } catch (err) {
-    console.error('Lỗi lấy danh sách CLB:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+// router.get('/clubs', async (req, res) => {
+//   try {
+//     const result = await client.query(`
+//       SELECT DISTINCT LOWER(TRIM(club)) as club
+//       FROM competitors
+//       WHERE club IS NOT NULL AND TRIM(club) <> ''
+//     `);
+//     res.json(result.rows.map(row => row.club));
+//   } catch (err) {
+//     console.error('Lỗi lấy danh sách CLB:', err);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
 
 // Cập nhật thông tin 1 player
 router.put('/:id', async (req, res) => {
