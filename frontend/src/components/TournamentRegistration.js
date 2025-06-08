@@ -658,7 +658,20 @@ const TournamentRegistration = () => {
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
-
+          {/* Gợi ý theo ID nhập ở playerSearchText */}
+          {playerSearchText &&
+          playerSuggestions.length > 0 &&
+          newCompetitor.name === '' &&
+          newCompetitor.phone === '' && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map((p) => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                  #{p.id} - {p.name} ({p.phone})
+                </li>
+              ))}
+            </ul>
+          )}
+{/*
           {playerSuggestions.length > 0 && (
             <ul className="autocomplete-list">
               {playerSuggestions.map((p) => (
@@ -668,7 +681,7 @@ const TournamentRegistration = () => {
               ))}
             </ul>
           )}
-
+        */}
           {/* ✅ Tên VĐV */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>Tên VĐV:</label>
@@ -680,6 +693,19 @@ const TournamentRegistration = () => {
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
           </div>
+          {/* Gợi ý khi nhập tên mà chưa nhập ID hoặc SĐT */}
+          {newCompetitor.name &&
+          !newCompetitor.phone &&
+          !playerSearchText &&
+          playerSuggestions.length > 0 && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map((p) => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                  #{p.id} - {p.name} ({p.phone})
+                </li>
+              ))}
+            </ul>
+          )}
 
           {/* ✅ SĐT VĐV */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
@@ -713,6 +739,19 @@ const TournamentRegistration = () => {
               }}
             />
           </div>
+          {/* Gợi ý khi nhập SĐT mà chưa có name/ID */}
+          {newCompetitor.phone &&
+          !newCompetitor.name &&
+          !playerSearchText &&
+          playerSuggestions.length > 0 && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map((p) => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                  #{p.id} - {p.name} ({p.phone})
+                </li>
+              ))}
+            </ul>
+          )}
 
           {/* ✅ Nickname */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
