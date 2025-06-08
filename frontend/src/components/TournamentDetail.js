@@ -8,6 +8,7 @@ import MainLayout from '../components/MainLayout';
 
 const TournamentDetail = () => {
     const { id } = useParams();
+    console.log('Tournament ID:', id);  // ← Xem giá trị
     const navigate = useNavigate();
     const [tournament, setTournament] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -44,13 +45,13 @@ const TournamentDetail = () => {
     ];
 
     const loadTournament = async () => {
-    try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
-        console.log('✅ Tournament data:', res.data);
-        setTournament(res.data);
-    } catch (err) {
-        console.error('❌ API lỗi:', err);
-    }
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+            console.log('✅ Tournament data:', res.data);
+            setTournament(res.data);
+        } catch (err) {
+            console.error('❌ API lỗi:', err.response?.data || err.message);
+        }
     };
 
     useEffect(() => {
