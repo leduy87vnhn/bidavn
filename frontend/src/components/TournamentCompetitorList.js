@@ -134,19 +134,21 @@ const TournamentCompetitorList = () => {
   };
 
   const getDailyCounts = () => {
-    if (!slots || slots.length === 0) return [];
+    if (!slots || slots.length === 0 || !tournament?.competitors_per_day) return [];
 
     return slots.map(slot => {
       const competitorsOfDay = allData.filter(c =>
-        c.selected_date?.slice(0, 10) === slot.value && String(c.status) !== '2' // loại bỏ đã huỷ
+        c.selected_date?.slice(0, 10) === slot.value && String(c.status) !== '2'
       );
-      const approvedCount = competitorsOfDay.filter(c => String(c.status) === '1').length;
-      const totalCount = competitorsOfDay.length;
+
+      const approved = competitorsOfDay.filter(c => String(c.status) === '1').length;
+      const pending = competitorsOfDay.filter(c => String(c.status) === '0').length;
 
       return {
         date: slot.display,
-        approved: approvedCount,
-        total: totalCount,
+        approved,
+        pending,
+        max: tournament.competitors_per_day,
         remaining: slot.remaining
       };
     });
@@ -208,11 +210,12 @@ const TournamentCompetitorList = () => {
       {tournament && (
         <div style={{ marginTop: 20, marginBottom: 30 }}>
           <h4>📅 Số lượng VĐV thi đấu mỗi ngày</h4>
-          <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '50%' }}>
+          <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '80%' }}>
             <thead>
               <tr>
                 <th>Ngày</th>
-                <th>Số đăng ký đã duyệt / Tổng số đơn đăng ký</th>
+                <th>Đã duyệt / Tối đa</th>
+                <th>Chờ duyệt / Tối đa</th>
                 <th>Số slot còn lại</th>
               </tr>
             </thead>
@@ -220,7 +223,8 @@ const TournamentCompetitorList = () => {
               {getDailyCounts().map((s, idx) => (
                 <tr key={idx}>
                   <td>{s.date}</td>
-                  <td>{s.approved} / {s.total}</td>
+                  <td>{s.approved} / {s.max}</td>
+                  <td>{s.pending} / {s.max}</td>
                   <td>{s.remaining}</td>
                 </tr>
               ))}
