@@ -635,8 +635,29 @@ const TournamentRegistration = () => {
               type="text"
               placeholder="SĐT VĐV (*)"
               value={newCompetitor.phone}
-              onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+              onChange={(e) =>
+                setNewCompetitor({ ...newCompetitor, phone: e.target.value })
+              }
+              onClick={() => {
+                if (newCompetitor.phone.trim().toLowerCase() === 'unknown') {
+                  // Clear value AND reset màu đen
+                  setNewCompetitor({ ...newCompetitor, phone: '' });
+                }
+              }}
+              style={{
+                flex: 1,
+                padding: '6px 10px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                color:
+                  newCompetitor.phone.trim().toLowerCase() === 'unknown'
+                    ? 'red'
+                    : 'black',
+                fontWeight:
+                  newCompetitor.phone.trim().toLowerCase() === 'unknown'
+                    ? 'bold'
+                    : 'normal'
+              }}
             />
           </div>
 
@@ -645,7 +666,7 @@ const TournamentRegistration = () => {
             <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
             <input
               type="text"
-              placeholder="Tên thường gọi"
+              placeholder="Tên thường gọi (cho phép bỏ trống)"
               value={newCompetitor.nickname}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
@@ -690,7 +711,7 @@ const TournamentRegistration = () => {
           {/* ✅ Chọn ngày thi đấu */}
           {availableDates.length > 0 ? (
             <div style={{ marginBottom: '10px' }}>
-              <label><strong>Chọn ngày thi đấu (1 ngày):</strong></label>
+              <label><strong>Chọn 1 ngày thi đấu (nếu đã hết suất, chọn "Không chọn ngày"):</strong></label>
               <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <input
@@ -746,6 +767,7 @@ const TournamentRegistration = () => {
           <p><strong>ID Vận Động Viên:</strong> {resolvedPlayerId}</p>
           <p><strong>Tên Vận Động Viên:</strong> {newCompetitor.name}</p>
           <p><strong>Số Điện Thoại:</strong> {newCompetitor.phone}</p>
+          <p>Chú ý: Sau khi thêm đầy đủ danh sách vận động viên, phải bấm nút Gửi Đăng Ký</p>
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button onClick={() => setShowConfirmModal(false)} style={{ marginRight: '10px' }}>Hủy</button>
             <button onClick={confirmAddCompetitor} style={{ backgroundColor: '#28a745', color: 'white', padding: '6px 14px' }}>Xác Nhận</button>
