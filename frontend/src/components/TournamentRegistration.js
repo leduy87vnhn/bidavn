@@ -223,22 +223,24 @@ const TournamentRegistration = () => {
       return;
     }
 
-    if (!newCompetitor.selected_date) {
-      alert('Vui lòng chọn ngày thi đấu cho VĐV.');
-      return;
-    }
+    // if (!newCompetitor.selected_date) {
+    //   alert('Vui lòng chọn ngày thi đấu cho VĐV.');
+    //   return;
+    // }
 
-    // ✅ Kiểm tra competitors_per_day (đã có sẵn trong hệ thống)
-    const sameDateCount = competitors.filter(c => c.selected_date === newCompetitor.selected_date).length;
 
     // Chỉ kiểm tra nếu người dùng đã chọn ngày
-    if (
-      newCompetitor.selected_date && 
-      tournament.competitors_per_day > 0 &&
-      sameDateCount >= tournament.competitors_per_day
-    ) {
-      alert(`Đã vượt quá số lượng VĐV tối đa cho ngày ${newCompetitor.selected_date}`);
-      return;
+    if (newCompetitor.selected_date) {
+      // ✅ Kiểm tra competitors_per_day (đã có sẵn trong hệ thống)
+      const sameDateCount = competitors.filter(c => c.selected_date === newCompetitor.selected_date).length;
+
+      if (
+        tournament.competitors_per_day > 0 &&
+        sameDateCount >= tournament.competitors_per_day
+      ) {
+        alert(`Đã vượt quá số lượng VĐV tối đa cho ngày ${newCompetitor.selected_date}`);
+        return;
+      }
     }
 
     // ✅ Kiểm tra tổng maximum_competitors
