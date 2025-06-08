@@ -235,7 +235,7 @@ router.get('/slots', async (req, res) => {
       SELECT c.selected_date, COUNT(*) AS count
       FROM competitors c
       JOIN registration_form rf ON c.registration_form_id = rf.id
-      WHERE rf.tournament_id = $1 AND rf.status != 2 AND c.selected_date IS NOT NULL
+      WHERE rf.tournament_id = $1 AND (rf.status = 0 OR rf.status = 1) AND c.selected_date IS NOT NULL
       GROUP BY c.selected_date
     `, [parseInt(tournament_id)]);
 
