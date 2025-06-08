@@ -275,7 +275,7 @@ router.get('/count', async (req, res) => {
   try {
     const result = await client.query(
       `SELECT COUNT(*) FROM registration_form f
-       JOIN competitors c ON f.id = c.registration_id
+       JOIN competitors c ON f.id = c.registration_form_id
        WHERE f.tournament_id = $1 AND f.status IN (0, 1)`,
       [tournament_id]
     );
