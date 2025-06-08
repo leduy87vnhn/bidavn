@@ -43,14 +43,15 @@ const TournamentDetail = () => {
         "Pool 10 bi nữ"
     ];
 
-const loadTournament = async () => {
-  try {
-    const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
-    setTournament(res.data);
-  } catch (error) {
-    console.error('Lỗi khi tải giải đấu:', error);
-  }
-};
+    const loadTournament = async () => {
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+        console.log('✅ Tournament data:', res.data);
+        setTournament(res.data);
+    } catch (err) {
+        console.error('❌ API lỗi:', err);
+    }
+    };
 
     useEffect(() => {
         loadTournament();
