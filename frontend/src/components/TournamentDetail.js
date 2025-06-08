@@ -51,6 +51,9 @@ const TournamentDetail = () => {
             setTournament(res.data);
         } catch (err) {
             console.error('❌ API lỗi:', err.response?.data || err.message);
+            setError('Không tải được dữ liệu.');
+        } finally {
+            setLoading(false); // ✅ Quan trọng
         }
     };
 
