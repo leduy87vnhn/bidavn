@@ -89,7 +89,7 @@ router.get('/search', async (req, res) => {
       const result = await client.query(`
         SELECT id, name, phone
         FROM players
-        WHERE CAST(id AS TEXT) ILIKE $1 OR name ILIKE $1
+        WHERE CAST(id AS TEXT) ILIKE $1 OR name ILIKE $1 OR phone ILIKE $1
         LIMIT 10
       `, [`%${query}%`]);
   
