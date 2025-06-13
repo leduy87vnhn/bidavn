@@ -271,6 +271,7 @@ const TournamentCompetitorList = () => {
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
+            <th>STT</th>
             <th>ID</th>
             <th>Tên</th>
             <th>SĐT</th>
@@ -284,21 +285,42 @@ const TournamentCompetitorList = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((c, idx) => (
-            <tr key={idx} style={{
-              backgroundColor:
-                String(c.status) === '1' ? '#d0ebff' : // Xanh da trời nhạt
-                String(c.status) === '2' ? '#f0f0f0' : 'white'
-            }}>
-              <td>{c.player_id}</td>
-              <td>{c.name}</td>
-              <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
-              <td>{c.club}</td>
-              {/* <td>{c.uniform_size}</td> */}
-              <td>{c.selected_date?.slice(0, 10)}</td>
-              <td>{statusText(c.status)}</td>
-            </tr>
-          ))}
+          {(() => {
+            const grouped = {};
+
+            // Gom nhóm theo ngày thi đấu + trạng thái
+            data.forEach(c => {
+              const dateKey = c.selected_date?.slice(0, 10) || 'Không chọn ngày';
+              const statusKey = statusText(c.status);
+              const groupKey = `${dateKey}-${statusKey}`;
+              if (!grouped[groupKey]) grouped[groupKey] = [];
+              grouped[groupKey].push(c);
+            });
+
+            const rows = [];
+
+            Object.entries(grouped).forEach(([groupKey, competitors]) => {
+              competitors.forEach((c, index) => {
+                rows.push(
+                  <tr key={`${groupKey}-${index}`} style={{
+                    backgroundColor:
+                      String(c.status) === '1' ? '#d0ebff' :
+                      String(c.status) === '2' ? '#f0f0f0' : 'white'
+                  }}>
+                    <td>{index + 1}</td> {/* STT theo nhóm */}
+                    <td>{c.player_id}</td>
+                    <td>{c.name}</td>
+                    <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
+                    <td>{c.club}</td>
+                    <td>{c.selected_date?.slice(0, 10) || 'Không chọn ngày'}</td>
+                    <td>{statusText(c.status)}</td>
+                  </tr>
+                );
+              });
+            });
+
+            return rows;
+          })()}
         </tbody>
       </table>
     </div>
