@@ -914,6 +914,7 @@ const TournamentRegistration = () => {
             <button
               type="button"
               onClick={handleRegisterSubmit}
+              className={competitors.length > 0 ? 'blink-button' : ''}
               style={{
                 marginTop: '30px',
                 padding: '14px 24px',
