@@ -16,7 +16,8 @@ const AdminRegistrationList = () => {
     tournament: defaultTournament,
     phone: '',
     user_name: '',
-    club: ''
+    club: '',
+    athlete_name: ''
   });
 
   const fetchData = async () => {
@@ -112,6 +113,12 @@ const AdminRegistrationList = () => {
         <input name="phone" placeholder="SĐT đăng ký" onChange={handleChange} value={filters.phone} />
         <input name="user_name" placeholder="Người đăng ký" onChange={handleChange} value={filters.user_name} />
         <input name="club" placeholder="Tên câu lạc bộ" onChange={handleChange} value={filters.club} />
+        <input
+          name="athlete_name"
+          placeholder="Tên vận động viên"
+          onChange={handleChange}
+          value={filters.athlete_name}
+        />
         <button onClick={handleSearch}>Tìm kiếm</button>
       </div>
 
