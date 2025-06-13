@@ -382,7 +382,7 @@ const TournamentList = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cơ cấu giải</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Đăng ký</th>
+                                    {/*<th style={{ border: '1px solid #ddd', padding: '8px' }}>Đăng ký</th>*/}
                                     {user?.user_type === 2 && (
                                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
                                     )}
@@ -432,7 +432,7 @@ const TournamentList = () => {
                                             }}>
                                                 {tour.prize}
                                             </td>
-                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                            {/*<td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                                 <button
                                                     style={{
                                                         padding: '5px 10px',
@@ -446,24 +446,54 @@ const TournamentList = () => {
                                                 >
                                                     Đăng ký
                                                 </button>
+                                            </td>*/}
+                                            <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                <button
+                                                    style={{
+                                                        padding: '5px 10px',
+                                                        backgroundColor: '#28a745',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '5px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => navigate(`/tournament/${tour.id}/register`)}
+                                                >
+                                                    Đăng ký
+                                                </button>
+
+                                                {user?.user_type === 2 && (
+                                                    <>
+                                                        <button
+                                                            style={{
+                                                                padding: '5px 10px',
+                                                                backgroundColor: '#17a2b8',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                borderRadius: '5px',
+                                                                cursor: 'pointer'
+                                                            }}
+                                                            onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}
+                                                        >
+                                                            Phê duyệt
+                                                        </button>
+
+                                                        <button
+                                                            style={{
+                                                                padding: '5px 10px',
+                                                                backgroundColor: '#dc3545',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                borderRadius: '5px',
+                                                                cursor: 'pointer'
+                                                            }}
+                                                            onClick={() => handleDelete(tour.id)}
+                                                        >
+                                                            Xóa
+                                                        </button>
+                                                    </>
+                                                )}
                                             </td>
-                                            {user?.user_type === 2 && (
-                                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                                    <button
-                                                        style={{
-                                                            padding: '5px 10px',
-                                                            backgroundColor: '#dc3545',
-                                                            color: 'white',
-                                                            border: 'none',
-                                                            borderRadius: '5px',
-                                                            cursor: 'pointer'
-                                                        }}
-                                                        onClick={() => handleDelete(tour.id)}
-                                                    >
-                                                        Xóa
-                                                    </button>
-                                                </td>
-                                            )}
                                         </tr>
                                     );
                                 })}
