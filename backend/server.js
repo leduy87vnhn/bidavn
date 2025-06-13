@@ -27,7 +27,7 @@ const corsOptions = {
 // Serve React frontend from backend
 const path = require('path');
 app.use(cors(corsOptions));
-app.options('*', cors());
+app.options('*', cors(corsOptions));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', authRoutes);

@@ -234,6 +234,19 @@ const TournamentList = () => {
                             />
                         )}
                         <h2>Danh sách giải đấu</h2>
+                        <div style={{ marginTop: '8px' }}>
+                        <Link
+                            to="/players"
+                            style={{
+                            color: '#007bff',
+                            textDecoration: 'underline',
+                            fontWeight: 'bold',
+                            fontSize: '16px'
+                            }}
+                        >
+                            Bản Xếp Hạng Vận Động Viên
+                        </Link>
+                        </div>
                         {user?.user_type === 2 && (
                             <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <button
