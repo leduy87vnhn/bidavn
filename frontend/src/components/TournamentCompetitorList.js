@@ -161,6 +161,14 @@ const TournamentCompetitorList = () => {
       };
     });
 
+    // Đếm thêm VĐV không chọn ngày thi đấu nhưng vẫn còn trong danh sách
+    const noDateCompetitors = allData.filter(c => !c.selected_date && String(c.status) !== '2');
+    const noDateApproved = noDateCompetitors.filter(c => String(c.status) === '1').length;
+    const noDatePending = noDateCompetitors.filter(c => String(c.status) === '0').length;
+
+    totalApproved += noDateApproved;
+    totalPending += noDatePending;
+
     const totalMax = tournament.maximum_competitors && tournament.maximum_competitors > 0
       ? tournament.maximum_competitors
       : null;
