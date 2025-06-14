@@ -293,8 +293,27 @@ const TournamentList = () => {
                         )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        {user && <span>Xin chào, <strong>{user.name}</strong></span>}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            {user && <span>Xin chào, <strong>{user.name}</strong></span>}
+                            <button
+                                onClick={() => {
+                                    localStorage.removeItem('token');
+                                    localStorage.removeItem('user_info');
+                                    navigate('/login');
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    backgroundColor: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Đăng xuất
+                            </button>
+                        </div>
 
                         <Link
                             to="/players"
@@ -307,24 +326,6 @@ const TournamentList = () => {
                         >
                             Bảng xếp hạng Carom - Pool HBSF
                         </Link>
-
-                        <button
-                            onClick={() => {
-                                localStorage.removeItem('token');
-                                localStorage.removeItem('user_info');
-                                navigate('/login');
-                            }}
-                            style={{
-                                padding: '6px 12px',
-                                backgroundColor: '#dc3545',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Đăng xuất
-                        </button>
                     </div>
                 </div>
 
