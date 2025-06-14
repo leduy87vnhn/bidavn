@@ -310,8 +310,8 @@ const TournamentDetail = () => {
                     <p><strong>Điều kiện thi đấu:</strong><br />{getInput('conditions', true, 5, true)}</p>
                     <p><strong>Quy định:</strong><br />{getInput('rules', true, 5, true)}</p>
                     {user?.user_type === 2 && (
-                        <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                            <label>
+                        <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'row', gap: '40px', alignItems: 'center' }}>
+                            <label style={{ display: 'flex', alignItems: 'center' }}>
                                 <input
                                     type="checkbox"
                                     checked={formData?.nickname_enabled || false}
@@ -321,7 +321,7 @@ const TournamentDetail = () => {
                                 />
                                 Cho phép đăng ký nickname
                             </label>
-                            <label>
+                            <label style={{ display: 'flex', alignItems: 'center' }}>
                                 <input
                                     type="checkbox"
                                     checked={formData?.uniform_enabled || false}
@@ -330,6 +330,16 @@ const TournamentDetail = () => {
                                     style={{ marginRight: '8px' }}
                                 />
                                 Cho phép chọn cỡ đồng phục
+                            </label>
+                            <label style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData?.cue_reg_enabled || false}
+                                    onChange={e => setFormData({ ...formData, cue_reg_enabled: e.target.checked })}
+                                    disabled={!isEditing}
+                                    style={{ marginRight: '8px' }}
+                                />
+                                Cho phép đăng ký cơ
                             </label>
                         </div>
                     )}

@@ -179,7 +179,8 @@ router.put('/:id', async (req, res) => {
         uniform,
         registration_deadline,
         nickname_enabled,
-        uniform_enabled
+        uniform_enabled,
+        cue_reg_enabled
       } = req.body;
 
     try {
@@ -207,15 +208,16 @@ router.put('/:id', async (req, res) => {
                 uniform = $20, 
                 registration_deadline = $21,
                 nickname_enabled = $22,
-                uniform_enabled = $23
-            WHERE id = $24
+                uniform_enabled = $23,
+                cue_reg_enabled = $24,
+            WHERE id = $25
         `;
         await client.query(query, [
             name, code, attendance_price, start_date, end_date,
             location, content, prize, registerable_date_start,
             registerable_date_end, description, competitors_per_day, maximum_competitors,
             bank_name, bank_number, bank_acc_name, conditions, registration_method, rules, uniform,
-            registration_deadline, nickname_enabled, uniform_enabled,
+            registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
             id
         ]);
         res.json({ message: 'Cập nhật thành công.' });
