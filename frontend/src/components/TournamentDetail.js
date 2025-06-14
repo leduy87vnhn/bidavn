@@ -298,12 +298,41 @@ const TournamentDetail = () => {
                         <div style={{ flex: 1 }}>
                             <p><strong>Ngày chọn thi đấu đến:</strong><br />{getInput('registerable_date_end')}</p>
                         </div>
+                        {user?.user_type === 2 && (
+                            <div style={{ flex: 1 }}>
+                                <p><strong>Hạn đăng ký:</strong><br />{getInput('registration_deadline')}</p>
+                            </div>
+                        )}
                     </div>
 
                     <p><strong>Số vận động viên thi mỗi ngày:</strong><br />{getInput('competitors_per_day')}</p>
                     <p><strong>Số lượng VĐV tối đa:</strong><br />{getInput('maximum_competitors')}</p>
                     <p><strong>Điều kiện thi đấu:</strong><br />{getInput('conditions', true, 5, true)}</p>
                     <p><strong>Quy định:</strong><br />{getInput('rules', true, 5, true)}</p>
+                    {user?.user_type === 2 && (
+                        <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={formData?.nickname_enabled || false}
+                                    onChange={e => setFormData({ ...formData, nickname_enabled: e.target.checked })}
+                                    disabled={!isEditing}
+                                    style={{ marginRight: '8px' }}
+                                />
+                                Cho phép đăng ký nickname
+                            </label>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={formData?.uniform_enabled || false}
+                                    onChange={e => setFormData({ ...formData, uniform_enabled: e.target.checked })}
+                                    disabled={!isEditing}
+                                    style={{ marginRight: '8px' }}
+                                />
+                                Cho phép chọn cỡ đồng phục
+                            </label>
+                        </div>
+                    )}
                     <p><strong>Trang phục và thiết bị thi đấu:</strong><br />{getInput('uniform', true, 5, true)}</p>
                     <p><strong>Mô tả:</strong><br />{getInput('description', true, 10, true)}</p>
 
