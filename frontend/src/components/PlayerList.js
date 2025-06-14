@@ -20,7 +20,7 @@ const PlayerList = () => {
     const [showForm, setShowForm] = useState(false);
     const [page, setPage] = useState(1);
     const [limit] = useState(50);
-    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({ key: 'ranking', direction: 'asc' });
     const buttonStyle = {
         padding: '6px 14px',
         fontSize: '14px',
@@ -201,12 +201,20 @@ const PlayerList = () => {
 
     const sortedPlayers = [...filteredPlayers].sort((a, b) => {
         const { key, direction } = sortConfig;
-
+    
+        const compareValues = (valA, valB) => {
+            const isEmpty = (v) => v === null || v === '' || typeof v === 'undefined';
+            if (isEmpty(valA) && !isEmpty(valB)) return 1;
+            if (!isEmpty(valA) && isEmpty(valB)) return -1;
+            if (valA < valB) return -1;
+            if (valA > valB) return 1;
+            return 0;
+        };
+    
         let valA = a[key];
         let valB = b[key];
-
+    
         const numericFields = ['ranking', 'points', 'pool_ranking', 'pool_points'];
-
         if (numericFields.includes(key)) {
             valA = valA === null || valA === undefined ? null : Number(valA);
             valB = valB === null || valB === undefined ? null : Number(valB);
@@ -214,14 +222,19 @@ const PlayerList = () => {
             valA = (valA ?? '').toString().trim().toLowerCase();
             valB = (valB ?? '').toString().trim().toLowerCase();
         }
-
-        const isEmpty = (v) => v === null || v === '' || typeof v === 'undefined';
-
-        if (isEmpty(valA) && !isEmpty(valB)) return 1;   // valA empty -> xuống cuối
-        if (!isEmpty(valA) && isEmpty(valB)) return -1;  // valB empty -> xuống cuối
-
-        if (valA < valB) return direction === 'asc' ? -1 : 1;
-        if (valA > valB) return direction === 'asc' ? 1 : -1;
+    
+        let primary = compareValues(valA, valB);
+        if (primary !== 0) return direction === 'asc' ? primary : -primary;
+    
+        // Nếu bằng nhau → fallback sort theo hạng Pool
+        if (key === 'ranking') {
+            let fallbackA = a.pool_ranking ?? null;
+            let fallbackB = b.pool_ranking ?? null;
+            fallbackA = fallbackA === null ? 9999 : Number(fallbackA);
+            fallbackB = fallbackB === null ? 9999 : Number(fallbackB);
+            return direction === 'asc' ? fallbackA - fallbackB : fallbackB - fallbackA;
+        }
+    
         return 0;
     });
 
@@ -237,7 +250,7 @@ const PlayerList = () => {
 
     return (
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
-            <h2>Danh sách VĐV</h2>
+            <h2>Bảng xếp hạng Carom - Pool HBSF</h2>
 
             <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
                 <input placeholder="ID" name="id" value={filter.id} onChange={handleInput} style={{ flex: 1, padding: 8, borderRadius: 5, border: '1px solid #ccc' }} />
@@ -368,15 +381,59 @@ const PlayerList = () => {
                             </td>
                             <td>
                                 {editingId === p.id ? (
-                                    <>
-                                        <button onClick={() => handleUpdate(p.id)} style={{ backgroundColor: '#007bff', color: 'white', padding: '4px 10px', marginRight: 5, border: 'none', borderRadius: 5 }}>Lưu</button>
-                                        <button onClick={() => setEditingId(null)} style={{ padding: '4px 10px' }}>Huỷ</button>
-                                    </>
+                                    <div style={{ display: 'flex', gap: 8 }}>
+                                        <button
+                                            onClick={() => handleUpdate(p.id)}
+                                            style={{
+                                                backgroundColor: '#007bff',
+                                                color: 'white',
+                                                padding: '4px 10px',
+                                                border: 'none',
+                                                borderRadius: 5
+                                            }}
+                                        >
+                                            Lưu
+                                        </button>
+                                        <button
+                                            onClick={() => setEditingId(null)}
+                                            style={{
+                                                padding: '4px 10px',
+                                                backgroundColor: '#6c757d',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: 5
+                                            }}
+                                        >
+                                            Huỷ
+                                        </button>
+                                    </div>
                                 ) : (
-                                    <>
-                                        <button onClick={() => setEditingId(p.id)} style={{ backgroundColor: '#007bff', color: 'white', padding: '4px 10px', marginRight: 5, border: 'none', borderRadius: 5 }}>Sửa</button>
-                                        <button onClick={() => handleDelete(p.id)} style={{ backgroundColor: '#dc3545', color: 'white', padding: '4px 10px', border: 'none', borderRadius: 5 }}>Xoá</button>
-                                    </>
+                                    <div style={{ display: 'flex', gap: 8 }}>
+                                        <button
+                                            onClick={() => setEditingId(p.id)}
+                                            style={{
+                                                backgroundColor: '#007bff',
+                                                color: 'white',
+                                                padding: '4px 10px',
+                                                border: 'none',
+                                                borderRadius: 5
+                                            }}
+                                        >
+                                            Sửa
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(p.id)}
+                                            style={{
+                                                backgroundColor: '#dc3545',
+                                                color: 'white',
+                                                padding: '4px 10px',
+                                                border: 'none',
+                                                borderRadius: 5
+                                            }}
+                                        >
+                                            Xoá
+                                        </button>
+                                    </div>
                                 )}
                             </td>
                         </tr>

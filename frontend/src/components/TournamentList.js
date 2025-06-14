@@ -234,19 +234,6 @@ const TournamentList = () => {
                             />
                         )}
                         <h2>Danh sách giải đấu</h2>
-                        <div style={{ marginTop: '8px' }}>
-                        <Link
-                            to="/players"
-                            style={{
-                            color: '#007bff',
-                            textDecoration: 'underline',
-                            fontWeight: 'bold',
-                            fontSize: '16px'
-                            }}
-                        >
-                            Bản Xếp Hạng Vận Động Viên
-                        </Link>
-                        </div>
                         {user?.user_type === 2 && (
                             <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <button
@@ -308,6 +295,19 @@ const TournamentList = () => {
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         {user && <span>Xin chào, <strong>{user.name}</strong></span>}
+
+                        <Link
+                            to="/players"
+                            style={{
+                                color: '#007bff',
+                                textDecoration: 'underline',
+                                fontWeight: 'bold',
+                                fontSize: '16px'
+                            }}
+                        >
+                            Bảng xếp hạng Carom - Pool HBSF
+                        </Link>
+
                         <button
                             onClick={() => {
                                 localStorage.removeItem('token');
