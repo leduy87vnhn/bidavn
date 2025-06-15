@@ -379,7 +379,8 @@ const TournamentList = () => {
                     <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                         <option value="upcoming">Mở đăng ký</option>
                         <option value="ongoing">Đang diễn ra</option>
-                        <option value="ended">Đã kết thúc</option>
+                        <option value="ended">Đã kết thúc</option>                    
+                        <option value="not_ended">Chưa kết thúc</option> {/* 👈 thêm dòng này */}
                         <option value="all">Toàn bộ</option>
                     </select>
                 </div>

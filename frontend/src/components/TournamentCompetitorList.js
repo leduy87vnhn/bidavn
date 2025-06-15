@@ -14,6 +14,10 @@ const TournamentCompetitorList = () => {
   const isAdmin = user?.user_type === 2;
   const [allData, setAllData] = useState([]);
   const [slots, setSlots] = useState([]);
+  const [searchName, setSearchName] = useState('');
+  const [searchPhone, setSearchPhone] = useState('');
+  const [searchClub, setSearchClub] = useState('');
+  const [selectedDateFilter, setSelectedDateFilter] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -238,6 +242,26 @@ const TournamentCompetitorList = () => {
           <option value="0">Chờ duyệt</option>
           <option value="2">Đã huỷ</option>
         </select>
+        <div style={{ marginTop: 10, marginBottom: 10, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            placeholder="Tìm theo tên"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Tìm theo SĐT"
+            value={searchPhone}
+            onChange={(e) => setSearchPhone(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Tìm theo đơn vị"
+            value={searchClub}
+            onChange={(e) => setSearchClub(e.target.value)}
+          />
+        </div>
       </div>
 
       <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
@@ -255,14 +279,31 @@ const TournamentCompetitorList = () => {
               </tr>
             </thead>
             <tbody>
-              {getDailyCounts().map((s, idx) => (
-                <tr key={idx} style={s.date === 'Tổng cộng (gồm cả không chọn ngày)' ? { fontWeight: 'bold', backgroundColor: '#f9f9f9' } : {}}>
-                  <td>{s.date}</td>
-                  <td>{s.approved} / {s.max}</td>
-                  <td>{s.pending} / {s.max}</td>
-                  <td>{s.remaining}</td>
-                </tr>
-              ))}
+              {getDailyCounts().map((s, idx) => {
+                const isTotalRow = s.date === 'Tổng cộng (gồm cả không chọn ngày)';
+                const slotValue = isTotalRow
+                  ? null
+                  : slots.find(sl => sl.display === s.date)?.value || 'nodate';
+
+                return (
+                  <tr
+                    key={idx}
+                    style={isTotalRow ? { fontWeight: 'bold', backgroundColor: '#f9f9f9' } : {}}
+                  >
+                    <td>
+                      <span
+                        onClick={() => setSelectedDateFilter(slotValue)}
+                        style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
+                      >
+                        {s.date}
+                      </span>
+                    </td>
+                    <td>{s.approved} / {s.max}</td>
+                    <td>{s.pending} / {s.max}</td>
+                    <td>{s.remaining}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -289,7 +330,18 @@ const TournamentCompetitorList = () => {
             const grouped = {};
 
             // Gom nhóm theo ngày thi đấu + trạng thái
-            data.forEach(c => {
+            data 
+            .filter(c =>
+              c.name.toLowerCase().includes(searchName.toLowerCase()) &&
+              c.phone.includes(searchPhone) &&
+              c.club.toLowerCase().includes(searchClub.toLowerCase()) &&
+              (
+                selectedDateFilter === null ||
+                (selectedDateFilter === 'nodate' && !c.selected_date) ||
+                c.selected_date?.slice(0, 10) === selectedDateFilter
+              )
+            )
+            .forEach(c => {
               const dateKey = c.selected_date?.slice(0, 10) || 'Không chọn ngày';
               const statusKey = statusText(c.status);
               const groupKey = `${dateKey}-${statusKey}`;

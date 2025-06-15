@@ -92,6 +92,8 @@ router.get('/', async (req, res) => {
         condition = `WHERE start_date <= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh') AND end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     } else if (status === 'ended') {
         condition = `WHERE end_date < (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
+    } else if (status === 'not_ended') {
+        condition = `WHERE end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     }
 
     const dataQuery = `
