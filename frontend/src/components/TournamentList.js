@@ -13,7 +13,7 @@ const TournamentList = () => {
     const [message, setMessage] = useState('');
     const [uploading, setUploading] = useState(false);
     const [listBackground, setListBackground] = useState(null);
-    const [statusFilter, setStatusFilter] = useState('upcoming'); // 'open', 'ongoing', 'ended', 'all'
+    const [statusFilter, setStatusFilter] = useState('not_ended'); // 'open', 'ongoing', 'ended', 'all'
     const [logoFile, setLogoFile] = useState(null);
 
 

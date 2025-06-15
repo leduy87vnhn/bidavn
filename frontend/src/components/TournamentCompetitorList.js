@@ -23,23 +23,15 @@ const TournamentCompetitorList = () => {
     const fetchData = async () => {
       try {
         const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
-        const tournament = tourRes.data;
-        setTournament(tournament);
+        setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
         const rawData = compRes.data;
         setAllData(rawData);
 
-        // ✅ Nếu giải chưa kết thúc thì hiển thị, nếu đã kết thúc thì không hiển thị
-        const now = new Date();
-        const endDate = new Date(tournament.end_date);
-        const isNotEnded = endDate >= now;
+        const filtered = isAdmin ? rawData : rawData.filter(c => String(c.status) === '1');
 
-        let filtered = isNotEnded
-          ? (isAdmin ? rawData : rawData.filter(c => String(c.status) === '1'))
-          : [];
-
-        // Sắp xếp theo trạng thái
+        // Sort theo trạng thái mặc định
         filtered.sort((a, b) => {
           const order = { '1': 0, '0': 1, '2': 2 };
           return order[String(a.status)] - order[String(b.status)];
