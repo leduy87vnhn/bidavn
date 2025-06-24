@@ -211,7 +211,7 @@ router.put('/:id', async (req, res) => {
                 registration_deadline = $21,
                 nickname_enabled = $22,
                 uniform_enabled = $23,
-                cue_reg_enabled = $24,
+                cue_reg_enabled = $24
             WHERE id = $25
         `;
         await client.query(query, [
