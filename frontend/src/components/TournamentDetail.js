@@ -182,7 +182,7 @@ const TournamentDetail = () => {
                     type={(key.includes('date') || key === 'registration_deadline') ? 'date' : key.includes('price') || key.includes('per_day') ? 'number' : 'text'}
                     style={inputStyle}
                     value={
-                        key.includes('date') 
+                        (key.includes('date') || key.includes('deadline')) 
                             ? (formData[key]?.slice?.(0, 10) || '') 
                             : (formData[key] || '')
                     }
