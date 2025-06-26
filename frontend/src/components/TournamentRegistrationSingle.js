@@ -20,6 +20,7 @@ const TournamentRegistrationSingle = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalInfo, setModalInfo] = useState({});
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [status, setStatus] = useState(0);
 
   const [competitor, setCompetitor] = useState({
     name: '',
@@ -30,12 +31,20 @@ const TournamentRegistrationSingle = () => {
     uniform_size: 'L'
   });
 
-    useEffect(() => {
-        if (!user) {
-            alert('Bạn cần đăng nhập để tiếp tục.');
-            navigate('/login');
-        }
-    }, []);
+  const getStatusStyle = () => {
+    switch (status) {
+      case 1: return { backgroundColor: '#d0ecff', color: '#0056b3', padding: '6px 12px', borderRadius: '6px' };
+      case 2: return { backgroundColor: '#ccc', color: '#000', padding: '6px 12px', borderRadius: '6px' };
+      default: return { backgroundColor: '#ffe0b3', color: '#cc7000', padding: '6px 12px', borderRadius: '6px' };
+    }
+  };
+
+  useEffect(() => {
+    if (!user) {
+      alert('Bạn cần đăng nhập để tiếp tục.');
+      navigate('/login');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchTournament = async () => {
@@ -125,6 +134,8 @@ const TournamentRegistrationSingle = () => {
         selected_date: competitor.selected_date || null
       });
 
+      setStatus(0); // Chưa phê duyệt
+
       const totalFee = parseInt(tournament.attendance_price || 0);
       setModalInfo({
         tournamentName: tournament.name,
@@ -150,25 +161,76 @@ const TournamentRegistrationSingle = () => {
       padding: 40
     }}>
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
-        <h2>Đăng ký thi đấu cá nhân</h2>
+        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+          <button
+            onClick={() => navigate(`/tournaments/${tournamentId}`)}
+            style={{ backgroundColor: '#6c757d', color: 'white', padding: '8px 14px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          >⬅️ Quay Lại Chi Tiết Giải Đấu</button>
+        </div>
+
+        <h2 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          Đăng ký thi đấu cá nhân
+          <span style={getStatusStyle()}>
+            {status === 1 ? 'Đã Phê Duyệt' : status === 2 ? 'Đã Hủy' : 'Chưa Phê Duyệt'}
+          </span>
+        </h2>
+
+        {tournament && (
+          <div className="tournament-info">
+            <p><strong>Tên giải:</strong> {tournament.name}</p>
+            <p><strong>Thời gian:</strong> {tournament.start_date?.slice(0, 10)} → {tournament.end_date?.slice(0, 10)}</p>
+            <p><strong>Địa điểm:</strong> {tournament.location}</p>
+            <p><strong>Nội dung:</strong> {tournament.content}</p>
+          </div>
+        )}
+
+        <div style={{ margin: '40px 0 20px', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '22px', color: '#333' }}>📝 Điền Thông Tin Vận Động Viên</h3>
+        </div>
+
         <form onSubmit={handleSubmit}>
+          <input placeholder="SĐT Người đăng ký" value={user?.phone_number || ''} disabled />
+
+          <input placeholder="ID VĐV (gợi ý)" value={playerSearchText}
+            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
+
+          {playerSearchText && playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map((p) => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                  #{p.id} - {p.name} ({p.phone})
+                </li>
+              ))}
+            </ul>
+          )}
+
           <input placeholder="Tên VĐV" value={competitor.name}
             onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
+
           <input placeholder="SĐT VĐV" value={competitor.phone}
             onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
+
           <input placeholder="Nickname" value={competitor.nickname}
             onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
+
           <input placeholder="Đơn vị" value={competitor.club}
             onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
 
-          {availableDates.length > 0 && (
-            <select value={competitor.selected_date}
-              onChange={(e) => setCompetitor({ ...competitor, selected_date: e.target.value })}>
-              <option value="">-- Không chọn ngày --</option>
-              {availableDates.map((d) => (
-                <option key={d.value} value={d.value}>{d.display} (còn lại: {d.remaining})</option>
-              ))}
-            </select>
+          {availableDates.length > 0 ? (
+            <div style={{ marginBottom: '10px' }}>
+              <label><strong>Chọn 1 ngày thi đấu (nếu đã hết suất, chọn "Không chọn ngày"):</strong></label>
+              <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
+                <label><input type="radio" name="selected_date" value="" checked={competitor.selected_date === ''} onChange={() => setCompetitor({ ...competitor, selected_date: '' })} /> Không chọn ngày</label>
+                {availableDates.map(({ value, display, remaining }) => (
+                  <label key={value}>
+                    <input type="radio" name="selected_date" value={value} checked={competitor.selected_date === value} onChange={(e) => setCompetitor({ ...competitor, selected_date: e.target.value })} />
+                    {display} (còn lại: {remaining})
+                  </label>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div><strong>Không có ngày thi đấu cụ thể — sẽ để trống ngày thi đấu.</strong></div>
           )}
 
           <button type="submit">📤 Gửi đăng ký</button>
