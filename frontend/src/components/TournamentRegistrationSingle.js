@@ -12,7 +12,6 @@ const TournamentRegistrationSingle = () => {
   const [tournament, setTournament] = useState(null);
   const [availableDates, setAvailableDates] = useState([]);
   const [playerSuggestions, setPlayerSuggestions] = useState([]);
-  const [clubSuggestions, setClubSuggestions] = useState([]);
   const [playerSearchText, setPlayerSearchText] = useState('');
   const [backgroundImage, setBackgroundImage] = useState('');
   const [resolvedPlayerId, setResolvedPlayerId] = useState('');
@@ -28,7 +27,8 @@ const TournamentRegistrationSingle = () => {
     nickname: '',
     club: '',
     selected_date: '',
-    uniform_size: 'L'
+    uniform_size: 'L',
+    registered_phone: user?.phone_number || ''
   });
 
   const getStatusStyle = () => {
@@ -57,27 +57,42 @@ const TournamentRegistrationSingle = () => {
     fetchTournament();
   }, [tournamentId]);
 
-  useEffect(() => {
-    const fetchClubs = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/clubs`);
-      setClubSuggestions(res.data);
-    };
-    fetchClubs();
-  }, []);
-
+  // 👇 Autocomplete: gợi ý theo ID
   useEffect(() => {
     const timeout = setTimeout(async () => {
-      const query = competitor.name || competitor.phone || playerSearchText;
-      if (query.length >= 2) {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${query}`);
+      if (playerSearchText && !competitor.name && !competitor.phone && playerSearchText.length >= 2) {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${playerSearchText}`);
         setPlayerSuggestions(res.data.slice(0, 5));
       }
     }, 300);
     return () => clearTimeout(timeout);
-  }, [competitor.name, competitor.phone, playerSearchText]);
+  }, [playerSearchText]);
+
+  // 👇 Gợi ý theo Tên
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      if (competitor.name && !competitor.phone && !playerSearchText && competitor.name.length >= 2) {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
+        setPlayerSuggestions(res.data.slice(0, 5));
+      }
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [competitor.name]);
+
+  // 👇 Gợi ý theo SĐT
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      if (competitor.phone && !competitor.name && !playerSearchText && competitor.phone.length >= 3) {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.phone}`);
+        setPlayerSuggestions(res.data.slice(0, 5));
+      }
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [competitor.phone]);
 
   const handleSelectSuggestion = (player) => {
     setCompetitor({
+      ...competitor,
       name: player.name,
       phone: player.phone,
       nickname: player.nickname || '',
@@ -85,14 +100,13 @@ const TournamentRegistrationSingle = () => {
       selected_date: '',
       uniform_size: 'L'
     });
-    setPlayerSearchText(player.id);
+    setPlayerSearchText(player.id.toString());
     setResolvedPlayerId(player.id);
     setPlayerSuggestions([]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!competitor.name || !competitor.phone) {
       setMessage('❌ Thiếu tên hoặc SĐT vận động viên.');
       return;
@@ -120,7 +134,7 @@ const TournamentRegistrationSingle = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournamentId,
-        registered_phone: competitor.registered_phone || user?.phone_number,
+        registered_phone: competitor.registered_phone,
         user_id: user?.id
       });
 
@@ -183,12 +197,9 @@ const TournamentRegistrationSingle = () => {
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
             <p>
-            👉 <a
-                href={`/tournament/${tournament.id}/competitors`}
-                style={{ color: '#007bff', textDecoration: 'underline' }}
-            >
+              👉 <a href={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
                 Xem danh sách VĐV đã đăng ký
-            </a>
+              </a>
             </p>
           </div>
         )}
@@ -199,19 +210,11 @@ const TournamentRegistrationSingle = () => {
 
         <form onSubmit={handleSubmit}>
           <label>SĐT Người đăng ký</label>
-          <input
-            placeholder="SĐT Người đăng ký (*)"
-            value={competitor.registered_phone || user?.phone_number || ''}
-            onChange={(e) =>
-                setCompetitor((prev) => ({ ...prev, registered_phone: e.target.value }))
-            }
-          />
+          <input value={competitor.registered_phone} onChange={(e) => setCompetitor({ ...competitor, registered_phone: e.target.value })} />
 
           <label>ID VĐV (gợi ý)</label>
-          <input placeholder="ID VĐV (gợi ý) (*)" value={playerSearchText}
-            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
-
-          {playerSearchText && playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
+          <input value={playerSearchText} onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
+          {playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
             <ul className="autocomplete-list">
               {playerSuggestions.map((p) => (
                 <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
@@ -222,25 +225,21 @@ const TournamentRegistrationSingle = () => {
           )}
 
           <label>Tên VĐV</label>
-          <input placeholder="Tên VĐV (*)" value={competitor.name}
-            onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
+          <input value={competitor.name} onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
 
           <label>SĐT VĐV</label>
-          <input placeholder="SĐT VĐV (*)" value={competitor.phone}
-            onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
+          <input value={competitor.phone} onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
 
           <label>Nickname</label>
-          <input placeholder="Nickname" value={competitor.nickname}
-            onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
+          <input value={competitor.nickname} onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
 
           <label>Đơn vị</label>
-          <input placeholder="Đơn vị (*)" value={competitor.club}
-            onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
+          <input value={competitor.club} onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
 
-          {availableDates.length > 0 ? (
+          {availableDates.length > 0 && (
             <div style={{ marginBottom: '10px' }}>
-              <label><strong>Chọn 1 ngày thi đấu (nếu đã hết suất, chọn "Không chọn ngày"):</strong></label>
-              <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
+              <label><strong>Chọn ngày thi đấu:</strong></label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 <label><input type="radio" name="selected_date" value="" checked={competitor.selected_date === ''} onChange={() => setCompetitor({ ...competitor, selected_date: '' })} /> Không chọn ngày</label>
                 {availableDates.map(({ value, display, remaining }) => (
                   <label key={value}>
@@ -250,8 +249,6 @@ const TournamentRegistrationSingle = () => {
                 ))}
               </div>
             </div>
-          ) : (
-            <div><strong>Không có ngày thi đấu cụ thể — sẽ để trống ngày thi đấu.</strong></div>
           )}
 
           <button type="submit">📤 Gửi đăng ký</button>
