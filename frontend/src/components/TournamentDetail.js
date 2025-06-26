@@ -300,7 +300,7 @@ const TournamentDetail = () => {
                         </div>
                         {user?.user_type === 2 && (
                             <div style={{ flex: 1 }}>
-                                <p><strong>Hạn đăng ký:</strong><br />{getInput('registration_deadline')}</p>
+                                <p><strong>Hạn đăng ký:</strong><br />{getInput('registration_deadline').slice(0, 10)}</p>
                             </div>
                         )}
                     </div>
