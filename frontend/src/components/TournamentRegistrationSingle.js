@@ -57,38 +57,60 @@ const TournamentRegistrationSingle = () => {
     fetchTournament();
   }, [tournamentId]);
 
-  // 👇 Autocomplete: gợi ý theo ID
-  useEffect(() => {
-    const timeout = setTimeout(async () => {
-      if (playerSearchText && !competitor.name && !competitor.phone && playerSearchText.length >= 2) {
+    // Gợi ý theo ID (playerSearchText)
+    useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+        if (playerSearchText.length < 2) {
+        setPlayerSuggestions([]);
+        return;
+        }
+        try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${playerSearchText}`);
-        setPlayerSuggestions(res.data.slice(0, 5));
-      }
+        setPlayerSuggestions(res.data);
+        } catch (err) {
+        console.error('Lỗi tìm kiếm VĐV:', err);
+        }
     }, 300);
-    return () => clearTimeout(timeout);
-  }, [playerSearchText]);
+    return () => clearTimeout(delayDebounce);
+    }, [playerSearchText]);
 
-  // 👇 Gợi ý theo Tên
-  useEffect(() => {
-    const timeout = setTimeout(async () => {
-      if (competitor.name && !competitor.phone && !playerSearchText && competitor.name.length >= 2) {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
-        setPlayerSuggestions(res.data.slice(0, 5));
-      }
+    // Gợi ý theo SĐT nếu chưa có tên và chưa gõ ID
+    useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+        if (
+        competitor.name === '' &&
+        playerSearchText === '' &&
+        competitor.phone?.length >= 4
+        ) {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.phone}`);
+            setPlayerSuggestions(res.data.slice(0, 5));
+        } catch (err) {
+            console.error('Lỗi tìm VĐV theo phone:', err);
+        }
+        }
     }, 300);
-    return () => clearTimeout(timeout);
-  }, [competitor.name]);
+    return () => clearTimeout(delayDebounce);
+    }, [competitor.phone]);
 
-  // 👇 Gợi ý theo SĐT
-  useEffect(() => {
-    const timeout = setTimeout(async () => {
-      if (competitor.phone && !competitor.name && !playerSearchText && competitor.phone.length >= 3) {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.phone}`);
-        setPlayerSuggestions(res.data.slice(0, 5));
-      }
+    // Gợi ý theo Tên nếu chưa có SĐT và chưa gõ ID
+    useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+        if (
+        playerSearchText === '' &&
+        competitor.phone === '' &&
+        competitor.name?.length >= 2
+        ) {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
+            setPlayerSuggestions(res.data.slice(0, 5));
+        } catch (err) {
+            console.error('Lỗi tìm VĐV theo tên:', err);
+        }
+        }
     }, 300);
-    return () => clearTimeout(timeout);
-  }, [competitor.phone]);
+    return () => clearTimeout(delayDebounce);
+    }, [competitor.name]);
 
   const handleSelectSuggestion = (player) => {
     setCompetitor({
@@ -225,7 +247,7 @@ const TournamentRegistrationSingle = () => {
           )}
 
           <label>Tên VĐV</label>
-          <input value={competitor.name} onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
+          <input value={competitor.name} onChange={(e) => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })} />
 
           <label>SĐT VĐV</label>
           <input value={competitor.phone} onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
