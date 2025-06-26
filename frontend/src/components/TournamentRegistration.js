@@ -630,6 +630,14 @@ const TournamentRegistration = () => {
             <p><strong>Thời gian:</strong> {new Date(tournament.start_date).toLocaleDateString('vi-VN')} → {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</p>
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
+            <p>
+              👉 <a
+                href={`/tournament/${tournament.id}/competitors`}
+                style={{ color: '#007bff', textDecoration: 'underline' }}
+              >
+                Xem danh sách VĐV đã đăng ký
+              </a>
+            </p>
           </div>
         )}
 
