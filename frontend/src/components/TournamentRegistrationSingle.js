@@ -21,7 +21,6 @@ const TournamentRegistrationSingle = () => {
   const [modalInfo, setModalInfo] = useState({});
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [status, setStatus] = useState(0);
-  const [registeredPhone, setRegisteredPhone] = useState(user?.phone_number || '');
 
   const [competitor, setCompetitor] = useState({
     name: '',
@@ -31,12 +30,6 @@ const TournamentRegistrationSingle = () => {
     selected_date: '',
     uniform_size: 'L'
   });
-
-  const formatDateVN = (dateStr) => {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
-  };
 
   const getStatusStyle = () => {
     switch (status) {
@@ -127,7 +120,7 @@ const TournamentRegistrationSingle = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournamentId,
-        registered_phone: registeredPhone,
+        registered_phone: user?.phone_number,
         user_id: user?.id
       });
 
@@ -142,7 +135,7 @@ const TournamentRegistrationSingle = () => {
         selected_date: competitor.selected_date || null
       });
 
-      setStatus(0); // Chưa phê duyệt
+      setStatus(0);
 
       const totalFee = parseInt(tournament.attendance_price || 0);
       setModalInfo({
@@ -186,7 +179,7 @@ const TournamentRegistrationSingle = () => {
         {tournament && (
           <div className="tournament-info">
             <p><strong>Tên giải:</strong> {tournament.name}</p>
-            <p><strong>Thời gian:</strong> {formatDateVN(tournament.start_date)} → {formatDateVN(tournament.end_date)}</p>
+            <p><strong>Thời gian:</strong> {new Date(tournament.start_date).toLocaleDateString('vi-VN')} → {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</p>
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
           </div>
@@ -197,15 +190,12 @@ const TournamentRegistrationSingle = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
-            <input type="text" value={registeredPhone} onChange={(e) => setRegisteredPhone(e.target.value)} style={{ flex: 1, padding: '6px 10px' }} />
-          </div>
+          <label>SĐT Người đăng ký</label>
+          <input placeholder="SĐT Người đăng ký" value={user?.phone_number || ''} disabled />
 
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>ID VĐV (gợi ý):</label>
-            <input type="text" value={playerSearchText} onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} style={{ flex: 1, padding: '6px 10px' }} />
-          </div>
+          <label>ID VĐV (gợi ý)</label>
+          <input placeholder="ID VĐV (gợi ý)" value={playerSearchText}
+            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
 
           {playerSearchText && playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
             <ul className="autocomplete-list">
@@ -217,12 +207,21 @@ const TournamentRegistrationSingle = () => {
             </ul>
           )}
 
-          {/* Các trường thông tin vận động viên tương tự TournamentRegistration nếu cần thêm label */}
+          <label>Tên VĐV</label>
+          <input placeholder="Tên VĐV" value={competitor.name}
+            onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
 
-          <input placeholder="Tên VĐV" value={competitor.name} onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
-          <input placeholder="SĐT VĐV" value={competitor.phone} onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
-          <input placeholder="Nickname" value={competitor.nickname} onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
-          <input placeholder="Đơn vị" value={competitor.club} onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
+          <label>SĐT VĐV</label>
+          <input placeholder="SĐT VĐV" value={competitor.phone}
+            onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
+
+          <label>Nickname</label>
+          <input placeholder="Nickname" value={competitor.nickname}
+            onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
+
+          <label>Đơn vị</label>
+          <input placeholder="Đơn vị" value={competitor.club}
+            onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
 
           {availableDates.length > 0 ? (
             <div style={{ marginBottom: '10px' }}>
