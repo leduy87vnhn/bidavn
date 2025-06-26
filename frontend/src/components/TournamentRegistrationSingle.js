@@ -231,32 +231,56 @@ const TournamentRegistrationSingle = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label>SĐT Người đăng ký</label>
-          <input value={competitor.registered_phone} onChange={(e) => setCompetitor({ ...competitor, registered_phone: e.target.value })} />
+            <label>SĐT Người đăng ký</label>
+            <input
+            placeholder="SĐT Người đăng ký (*)"
+            value={competitor.registered_phone}
+            onChange={(e) => setCompetitor({ ...competitor, registered_phone: e.target.value })}
+            />
 
-          <label>ID VĐV (gợi ý)</label>
-          <input value={playerSearchText} onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
-          {playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
+            <label>ID VĐV (gợi ý)</label>
+            <input
+            placeholder="ID VĐV (gợi ý) (*)"
+            value={playerSearchText}
+            onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
+            />
+            {playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
             <ul className="autocomplete-list">
-              {playerSuggestions.map((p) => (
+                {playerSuggestions.map((p) => (
                 <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                  #{p.id} - {p.name} ({p.phone})
+                    #{p.id} - {p.name} ({p.phone})
                 </li>
-              ))}
+                ))}
             </ul>
-          )}
+            )}
 
-          <label>Tên VĐV</label>
-          <input value={competitor.name} onChange={(e) => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })} />
+            <label>Tên VĐV</label>
+            <input
+            placeholder="Tên VĐV (*)"
+            value={competitor.name}
+            onChange={(e) => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
+            />
 
-          <label>SĐT VĐV</label>
-          <input value={competitor.phone} onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
+            <label>SĐT VĐV</label>
+            <input
+            placeholder="SĐT VĐV (*)"
+            value={competitor.phone}
+            onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })}
+            />
 
-          <label>Nickname</label>
-          <input value={competitor.nickname} onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
+            <label>Nickname</label>
+            <input
+            placeholder="Nickname"
+            value={competitor.nickname}
+            onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })}
+            />
 
-          <label>Đơn vị</label>
-          <input value={competitor.club} onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
+            <label>Đơn vị</label>
+            <input
+            placeholder="Đơn vị (*)"
+            value={competitor.club}
+            onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })}
+            />
 
           {availableDates.length > 0 && (
             <div style={{ marginBottom: '10px' }}>
