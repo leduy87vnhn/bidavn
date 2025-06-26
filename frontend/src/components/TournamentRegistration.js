@@ -621,10 +621,13 @@ const TournamentRegistration = () => {
         {tournament && (
           <div className="tournament-info">
             <p><strong>Tên giải:</strong> {tournament.name}</p>
+            {/*
             <p>
               <strong>Thời gian:</strong>{' '}
               {tournament.start_date?.slice(0, 10)} → {tournament.end_date?.slice(0, 10)}
             </p>
+            */}
+            <p><strong>Thời gian:</strong> {new Date(tournament.start_date).toLocaleDateString('vi-VN')} → {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</p>
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
           </div>

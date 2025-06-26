@@ -120,7 +120,7 @@ const TournamentRegistrationSingle = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournamentId,
-        registered_phone: user?.phone_number,
+        registered_phone: competitor.registered_phone || user?.phone_number,
         user_id: user?.id
       });
 
@@ -191,10 +191,16 @@ const TournamentRegistrationSingle = () => {
 
         <form onSubmit={handleSubmit}>
           <label>SĐT Người đăng ký</label>
-          <input placeholder="SĐT Người đăng ký" value={user?.phone_number || ''} disabled />
+          <input
+            placeholder="SĐT Người đăng ký (*)"
+            value={competitor.registered_phone || user?.phone_number || ''}
+            onChange={(e) =>
+                setCompetitor((prev) => ({ ...prev, registered_phone: e.target.value }))
+            }
+          />
 
           <label>ID VĐV (gợi ý)</label>
-          <input placeholder="ID VĐV (gợi ý)" value={playerSearchText}
+          <input placeholder="ID VĐV (gợi ý) (*)" value={playerSearchText}
             onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())} />
 
           {playerSearchText && playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
@@ -208,11 +214,11 @@ const TournamentRegistrationSingle = () => {
           )}
 
           <label>Tên VĐV</label>
-          <input placeholder="Tên VĐV" value={competitor.name}
+          <input placeholder="Tên VĐV (*)" value={competitor.name}
             onChange={(e) => setCompetitor({ ...competitor, name: e.target.value })} />
 
           <label>SĐT VĐV</label>
-          <input placeholder="SĐT VĐV" value={competitor.phone}
+          <input placeholder="SĐT VĐV (*)" value={competitor.phone}
             onChange={(e) => setCompetitor({ ...competitor, phone: e.target.value })} />
 
           <label>Nickname</label>
@@ -220,7 +226,7 @@ const TournamentRegistrationSingle = () => {
             onChange={(e) => setCompetitor({ ...competitor, nickname: e.target.value })} />
 
           <label>Đơn vị</label>
-          <input placeholder="Đơn vị" value={competitor.club}
+          <input placeholder="Đơn vị (*)" value={competitor.club}
             onChange={(e) => setCompetitor({ ...competitor, club: e.target.value })} />
 
           {availableDates.length > 0 ? (
