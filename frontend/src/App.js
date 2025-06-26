@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlayerList from './components/PlayerList';
 import TournamentRegistration from './components/TournamentRegistration'; // đường dẫn tới file bạn đã tạo
+import TournamentRegistrationSingle from './components/TournamentRegistrationSingle';
 import AdminRegistrationList from './components/AdminRegistrationList';
 import RegistrationDetail from './components/RegistrationDetail';
 import TournamentCompetitorList from './components/TournamentCompetitorList';
@@ -18,6 +19,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/tournament/:id/register-single" element={<TournamentRegistrationSingle />} />
         <Route path="/tournaments/:id" element={<TournamentDetail />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

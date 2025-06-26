@@ -474,7 +474,21 @@ const TournamentList = () => {
                                                     }}
                                                     onClick={() => navigate(`/tournament/${tour.id}/register`)}
                                                 >
-                                                    Đăng ký
+                                                    Đăng ký nhóm
+                                                </button>
+
+                                                <button
+                                                    style={{
+                                                        padding: '5px 10px',
+                                                        backgroundColor: '#6f42c1',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '5px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => navigate(`/tournament/${tour.id}/register-single`)}
+                                                >
+                                                    Đăng ký lẻ
                                                 </button>
 
                                                 {user?.user_type === 2 && (
