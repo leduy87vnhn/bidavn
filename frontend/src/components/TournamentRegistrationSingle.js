@@ -244,14 +244,17 @@ const TournamentRegistrationSingle = () => {
             value={playerSearchText}
             onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
             />
-            {playerSuggestions.length > 0 && competitor.name === '' && competitor.phone === '' && (
-            <ul className="autocomplete-list">
+            {competitor.phone &&
+            !competitor.name &&
+            !playerSearchText &&
+            playerSuggestions.length > 0 && (
+              <ul className="autocomplete-list">
                 {playerSuggestions.map((p) => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
                     #{p.id} - {p.name} ({p.phone})
-                </li>
+                  </li>
                 ))}
-            </ul>
+              </ul>
             )}
 
             <label>Tên VĐV</label>
