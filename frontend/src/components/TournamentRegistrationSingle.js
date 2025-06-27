@@ -61,8 +61,8 @@ const TournamentRegistrationSingle = () => {
     useEffect(() => {
     const delayDebounce = setTimeout(async () => {
         if (playerSearchText.length < 2) {
-        setPlayerSuggestions([]);
-        return;
+          setPlayerSuggestions([]);
+          return;
         }
         try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${playerSearchText}`);
@@ -78,16 +78,16 @@ const TournamentRegistrationSingle = () => {
     useEffect(() => {
     const delayDebounce = setTimeout(async () => {
         if (
-        competitor.name === '' &&
-        playerSearchText === '' &&
-        competitor.phone?.length >= 4
+          competitor.name === '' &&
+          playerSearchText === '' &&
+          competitor.phone?.length >= 4
         ) {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.phone}`);
-            setPlayerSuggestions(res.data.slice(0, 5));
-        } catch (err) {
-            console.error('Lỗi tìm VĐV theo phone:', err);
-        }
+          try {
+              const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.phone}`);
+              setPlayerSuggestions(res.data.slice(0, 5));
+          } catch (err) {
+              console.error('Lỗi tìm VĐV theo phone:', err);
+          }
         }
     }, 300);
     return () => clearTimeout(delayDebounce);
@@ -97,9 +97,9 @@ const TournamentRegistrationSingle = () => {
     useEffect(() => {
     const delayDebounce = setTimeout(async () => {
         if (
-        playerSearchText === '' &&
-        competitor.phone === '' &&
-        competitor.name?.length >= 2
+          playerSearchText === '' &&
+          competitor.phone === '' &&
+          competitor.name?.length >= 2
         ) {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
