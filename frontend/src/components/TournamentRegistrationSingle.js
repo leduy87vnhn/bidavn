@@ -88,6 +88,8 @@ const TournamentRegistrationSingle = () => {
           } catch (err) {
               console.error('Lỗi tìm VĐV theo phone:', err);
           }
+        } else {
+          setPlayerSuggestions([]); // ⚠️ thêm dòng này để xóa gợi ý khi không hợp lệ
         }
     }, 300);
     return () => clearTimeout(delayDebounce);
@@ -101,12 +103,14 @@ const TournamentRegistrationSingle = () => {
           competitor.phone === '' &&
           competitor.name?.length >= 2
         ) {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
-            setPlayerSuggestions(res.data.slice(0, 5));
-        } catch (err) {
-            console.error('Lỗi tìm VĐV theo tên:', err);
-        }
+          try {
+              const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/search?query=${competitor.name}`);
+              setPlayerSuggestions(res.data.slice(0, 5));
+          } catch (err) {
+              console.error('Lỗi tìm VĐV theo tên:', err);
+          }
+        } else {
+          setPlayerSuggestions([]); // ⚠️ thêm dòng này để xóa gợi ý khi không hợp lệ
         }
     }, 300);
     return () => clearTimeout(delayDebounce);
