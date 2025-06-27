@@ -156,8 +156,6 @@ const TournamentRegistration = () => {
         } catch (err) {
           console.error('Lỗi tìm VĐV theo phone:', err);
         }
-      }else {
-        setPlayerSuggestions([]); // ⚠️ thêm dòng này để xóa gợi ý khi không hợp lệ
       }
     }, 300);
     return () => clearTimeout(delayDebounce);
@@ -176,8 +174,6 @@ const TournamentRegistration = () => {
         } catch (err) {
           console.error('Lỗi tìm VĐV theo tên:', err);
         }
-      } else {
-        setPlayerSuggestions([]); // ⚠️ thêm dòng này để xóa gợi ý khi không hợp lệ
       }
     }, 300);
     return () => clearTimeout(delayDebounce);
