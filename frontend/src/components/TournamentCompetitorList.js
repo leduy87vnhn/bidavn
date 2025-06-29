@@ -193,6 +193,12 @@ const TournamentCompetitorList = () => {
     return daily;
   };
 
+  const formatDate = (isoDate) => {
+    if (!isoDate) return 'Không chọn ngày';
+    const [y, m, d] = isoDate.split('-');
+    return `${d}-${m}-${y}`;
+  };
+
   return (
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
@@ -297,7 +303,7 @@ const TournamentCompetitorList = () => {
                         onClick={() => setSelectedDateFilter(slotValue)}
                         style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
                       >
-                        {s.date}
+                        {s.date} <span style={{ fontSize: '13px', fontStyle: 'italic' }}>(Click để xem danh sách)</span>
                       </span>
                     </td>
                     <td>{s.approved} / {s.max}</td>
@@ -366,7 +372,7 @@ const TournamentCompetitorList = () => {
                     <td>{c.name}</td>
                     <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
                     <td>{c.club}</td>
-                    <td>{c.selected_date?.slice(0, 10) || 'Không chọn ngày'}</td>
+                    <td>{formatDate(c.selected_date?.slice(0, 10))}</td>
                     <td>{statusText(c.status)}</td>
                   </tr>
                 );
