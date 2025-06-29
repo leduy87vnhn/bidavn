@@ -254,59 +254,91 @@ const TournamentRegistrationSingle = () => {
           <label>SĐT Người đăng ký</label>
           <input value={registeredPhone} onChange={e => setRegisteredPhone(e.target.value)} />
 
-          <label>ID VĐV (gợi ý)</label>
-          <input value={playerSearchText} onChange={e => setPlayerSearchText(e.target.value.toUpperCase())} />
-          {playerSearchText && playerSuggestions.length > 0 && !competitor.name && !competitor.phone && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map(p => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-              ))}
-            </ul>
-          )}
+          <div style={{ position: 'relative', marginBottom: '12px' }}>
+            <label>ID VĐV (gợi ý)</label>
+            <input
+              value={playerSearchText}
+              onChange={e => setPlayerSearchText(e.target.value.toUpperCase())}
+            />
+            {playerSearchText && playerSuggestions.length > 0 && !competitor.name && !competitor.phone && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map(p => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-          <label>Tên VĐV</label>
-          <input value={competitor.name} onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })} />
-          {/* Gợi ý theo Tên VĐV */}
-          {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map(p => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-              ))}
-            </ul>
-          )}
+          <div style={{ position: 'relative', marginBottom: '12px' }}>
+            <label>Tên VĐV</label>
+            <input
+              value={competitor.name}
+              onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
+            />
+            {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map(p => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-          <label>SĐT VĐV</label>
-          <input value={competitor.phone} onChange={e => setCompetitor({ ...competitor, phone: e.target.value })} />
-          {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map(p => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-              ))}
-            </ul>
-          )}
+          <div style={{ position: 'relative', marginBottom: '12px' }}>
+            <label>SĐT VĐV</label>
+            <input
+              value={competitor.phone}
+              onChange={e => setCompetitor({ ...competitor, phone: e.target.value })}
+            />
+            {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map(p => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                ))}
+              </ul>
+            )}
+          </div>
 
           <label>Nickname</label>
           <input value={competitor.nickname} onChange={e => setCompetitor({ ...competitor, nickname: e.target.value })} />
 
-          <label>Đơn vị</label>
-          <input value={competitor.club} onChange={e => setCompetitor({ ...competitor, club: e.target.value })} />
-          {getFilteredClubs().length > 0 && (
-            <ul className="autocomplete-list">
-              {getFilteredClubs().map((club, i) => (
-                <li key={i} onClick={() => setCompetitor({ ...competitor, club })}>{club}</li>
-              ))}
-            </ul>
-          )}
+          <div style={{ position: 'relative', marginBottom: '12px' }}>
+            <label>Đơn vị</label>
+            <input
+              value={competitor.club}
+              onChange={e => setCompetitor({ ...competitor, club: e.target.value })}
+            />
+            {getFilteredClubs().length > 0 && (
+              <ul className="autocomplete-list">
+                {getFilteredClubs().map((club, i) => (
+                  <li key={i} onClick={() => setCompetitor({ ...competitor, club })}>{club}</li>
+                ))}
+              </ul>
+            )}
+          </div>
 
           {availableDates.length > 0 && (
             <div>
               <label>Chọn ngày thi đấu:</label>
               <div>
-                <label><input type="radio" name="date" value="" checked={competitor.selected_date === ''} onChange={() => setCompetitor({ ...competitor, selected_date: '' })} /> Không chọn ngày</label>
+                <label>
+                  <input
+                    type="radio"
+                    name="date"
+                    value=""
+                    checked={competitor.selected_date === ''}
+                    onChange={() => setCompetitor({ ...competitor, selected_date: '' })}
+                  /> Không chọn ngày
+                </label>
                 {availableDates.map(d => (
                   <label key={d.value}>
-                    <input type="radio" name="date" value={d.value} checked={competitor.selected_date === d.value} onChange={e => setCompetitor({ ...competitor, selected_date: e.target.value })} />
-                    {d.display} (còn lại: {d.remaining})
+                    <input
+                      type="radio"
+                      name="date"
+                      value={d.value}
+                      checked={competitor.selected_date === d.value}
+                      onChange={e => setCompetitor({ ...competitor, selected_date: e.target.value })}
+                    /> {d.display} (còn lại: {d.remaining})
                   </label>
                 ))}
               </div>

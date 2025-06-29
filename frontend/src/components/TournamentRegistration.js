@@ -659,110 +659,79 @@ const TournamentRegistration = () => {
           </div>
 
           {/* ✅ ID VĐV */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>ID VĐV:</label>
+          <div style={{ position: 'relative', marginBottom: '10px' }}>
+            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>ID VĐV:</label>
             <input
               type="text"
               placeholder="Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234"
               value={playerSearchText}
               onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
+            {playerSearchText && playerSuggestions.length > 0 && newCompetitor.name === '' && newCompetitor.phone === '' && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map((p) => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                    #{p.id} - {p.name} ({p.phone})
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {/* Gợi ý theo ID nhập ở playerSearchText */}
-          {playerSearchText &&
-          playerSuggestions.length > 0 &&
-          newCompetitor.name === '' &&
-          newCompetitor.phone === '' && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map((p) => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                  #{p.id} - {p.name} ({p.phone})
-                </li>
-              ))}
-            </ul>
-          )}
-{/*
-          {playerSuggestions.length > 0 && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map((p) => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                  #{p.id} - {p.name} ({p.phone})
-                </li>
-              ))}
-            </ul>
-          )}
-        */}
+
           {/* ✅ Tên VĐV */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Tên VĐV:</label>
+          <div style={{ position: 'relative', marginBottom: '10px' }}>
+            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>Tên VĐV:</label>
             <input
               type="text"
               placeholder="Tên VĐV có dấu (*)"
               value={newCompetitor.name}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
+            {newCompetitor.name && !newCompetitor.phone && !playerSearchText && playerSuggestions.length > 0 && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map((p) => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                    #{p.id} - {p.name} ({p.phone})
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {/* Gợi ý khi nhập tên mà chưa nhập ID hoặc SĐT */}
-          {newCompetitor.name &&
-          !newCompetitor.phone &&
-          !playerSearchText &&
-          playerSuggestions.length > 0 && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map((p) => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                  #{p.id} - {p.name} ({p.phone})
-                </li>
-              ))}
-            </ul>
-          )}
 
           {/* ✅ SĐT VĐV */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT VĐV:</label>
+          <div style={{ position: 'relative', marginBottom: '10px' }}>
+            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>SĐT VĐV:</label>
             <input
               type="text"
               placeholder="SĐT VĐV (*)"
               value={newCompetitor.phone}
-              onChange={(e) =>
-                setNewCompetitor({ ...newCompetitor, phone: e.target.value })
-              }
+              onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
               onClick={() => {
                 if (newCompetitor.phone.trim().toLowerCase() === 'unknown') {
-                  // Clear value AND reset màu đen
                   setNewCompetitor({ ...newCompetitor, phone: '' });
                 }
               }}
               style={{
-                flex: 1,
+                width: '100%',
                 padding: '6px 10px',
                 borderRadius: '4px',
                 border: '1px solid #ccc',
-                color:
-                  newCompetitor.phone.trim().toLowerCase() === 'unknown'
-                    ? 'red'
-                    : 'black',
-                fontWeight:
-                  newCompetitor.phone.trim().toLowerCase() === 'unknown'
-                    ? 'bold'
-                    : 'normal'
+                color: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'red' : 'black',
+                fontWeight: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'bold' : 'normal'
               }}
             />
+            {newCompetitor.phone && !newCompetitor.name && !playerSearchText && playerSuggestions.length > 0 && (
+              <ul className="autocomplete-list">
+                {playerSuggestions.map((p) => (
+                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                    #{p.id} - {p.name} ({p.phone})
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {/* Gợi ý khi nhập SĐT mà chưa có name/ID */}
-          {newCompetitor.phone &&
-          !newCompetitor.name &&
-          !playerSearchText &&
-          playerSuggestions.length > 0 && (
-            <ul className="autocomplete-list">
-              {playerSuggestions.map((p) => (
-                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                  #{p.id} - {p.name} ({p.phone})
-                </li>
-              ))}
-            </ul>
-          )}
 
           {/* ✅ Nickname */}
           <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
@@ -777,39 +746,25 @@ const TournamentRegistration = () => {
           </div>
 
           {/* ✅ Đơn vị */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Đơn vị:</label>
+          <div style={{ position: 'relative', marginBottom: '10px' }}>
+            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>Đơn vị:</label>
             <input
               type="text"
               placeholder="Tên CLB hoặc nơi sinh hoạt (*)"
               value={newCompetitor.club}
               onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
+            {getFilteredClubs().length > 0 && (
+              <ul className="autocomplete-list">
+                {getFilteredClubs().map((club, idx) => (
+                  <li key={idx} onClick={() => setNewCompetitor({ ...newCompetitor, club })}>
+                    {club}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-
-          {getFilteredClubs().length > 0 && (
-            <ul className="autocomplete-list">
-              {getFilteredClubs().map((club, idx) => (
-                <li key={idx} onClick={() => setNewCompetitor({ ...newCompetitor, club })}>
-                  {club}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {/*<select
-            value={newCompetitor.uniform_size}
-            onChange={(e) => setNewCompetitor({ ...newCompetitor, uniform_size: e.target.value })}
-            required
-          >
-            <option value="">-- Chọn size đồng phục --</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-          </select>*/}
 
           {/* ✅ Chọn ngày thi đấu */}
           {availableDates.length > 0 ? (
@@ -826,7 +781,6 @@ const TournamentRegistration = () => {
                   />
                   <span>Không chọn ngày</span>
                 </label>
-
                 {availableDates.map(({ value, display, remaining }) => (
                   <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <input
