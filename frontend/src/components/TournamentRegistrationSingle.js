@@ -266,9 +266,24 @@ const TournamentRegistrationSingle = () => {
 
           <label>Tên VĐV</label>
           <input value={competitor.name} onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })} />
+          {/* Gợi ý theo Tên VĐV */}
+          {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map(p => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+              ))}
+            </ul>
+          )}
 
           <label>SĐT VĐV</label>
           <input value={competitor.phone} onChange={e => setCompetitor({ ...competitor, phone: e.target.value })} />
+          {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
+            <ul className="autocomplete-list">
+              {playerSuggestions.map(p => (
+                <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+              ))}
+            </ul>
+          )}
 
           <label>Nickname</label>
           <input value={competitor.nickname} onChange={e => setCompetitor({ ...competitor, nickname: e.target.value })} />
