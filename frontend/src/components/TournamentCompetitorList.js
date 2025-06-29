@@ -264,7 +264,9 @@ const TournamentCompetitorList = () => {
         </div>
       </div>
 
-      <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
+      {isAdmin && (
+        <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
+      )}
 
       {tournament && (
         <div style={{ marginTop: 20, marginBottom: 30 }}>

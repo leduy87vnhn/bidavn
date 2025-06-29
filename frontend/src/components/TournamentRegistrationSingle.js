@@ -325,7 +325,22 @@ const TournamentRegistrationSingle = () => {
         <p>👤 Chủ TK: {modalInfo.bankAccName}</p>
         <p>🏦 Ngân hàng: {modalInfo.bankName}</p>
         {modalInfo.bankQr && <img src={`${process.env.REACT_APP_API_BASE_URL}/uploads/qr/${modalInfo.bankQr}`} alt="QR" style={{ width: 200 }} />}
-        <button onClick={() => setShowSuccessModal(false)}>Đóng</button>
+        <button
+          onClick={() => {
+            setShowSuccessModal(false);
+            navigate(`/tournament/${tournamentId}/competitors`);
+          }}
+          style={{
+            padding: '8px 16px',
+            borderRadius: '6px',
+            background: '#28a745',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 'bold'
+          }}
+        >
+          Đóng
+        </button>
       </ReactModal>
 
       <ReactModal isOpen={showConflictModal} onRequestClose={() => setShowConflictModal(false)} ariaHideApp={false}>

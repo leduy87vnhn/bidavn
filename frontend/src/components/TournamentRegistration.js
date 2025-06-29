@@ -999,7 +999,10 @@ const TournamentRegistration = () => {
 
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <button
-              onClick={() => setShowSuccessModal(false)}
+              onClick={() => {
+                setShowSuccessModal(false);
+                navigate(`/tournament/${tournamentId}/competitors`);
+              }}
               style={{
                 padding: '8px 16px',
                 borderRadius: '6px',
