@@ -420,7 +420,7 @@ const TournamentList = () => {
                                             </Link>
 
                                             {/* Hiển thị số VĐV đã duyệt nếu có dữ liệu */}
-                                            {typeof tour.approved_competitors_count === 'number' && (
+                                            {typeof tour.approved_competitors_count != null && (
                                                 <div
                                                 style={{
                                                     marginTop: '6px',

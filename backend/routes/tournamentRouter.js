@@ -100,7 +100,7 @@ router.get('/', async (req, res) => {
       SELECT t.*, (
         SELECT COUNT(*)
         FROM registration_form rf
-        JOIN competitors c ON c.registration_form_id = rf.id
+        LEFT JOIN competitors c ON c.registration_form_id = rf.id
         WHERE rf.tournament_id = t.id AND rf.status = '1'
       ) AS approved_competitors_count
       FROM tournaments t
@@ -121,7 +121,7 @@ router.get('/', async (req, res) => {
               SELECT t.*, (
                 SELECT COUNT(*)
                 FROM registration_form rf
-                JOIN competitors c ON c.registration_form_id = rf.id
+                LEFT JOIN competitors c ON c.registration_form_id = rf.id
                 WHERE rf.tournament_id = t.id AND rf.status = '1'
               ) AS approved_competitors_count
               FROM tournaments t
