@@ -97,10 +97,16 @@ router.get('/', async (req, res) => {
     }
 
     const dataQuery = `
-        SELECT * FROM tournaments
-        ${condition}
-        ORDER BY start_date ASC
-        LIMIT $1 OFFSET $2
+      SELECT t.*, (
+        SELECT COUNT(*)
+        FROM registration_form rf
+        JOIN competitors c ON c.registration_id = rf.id
+        WHERE rf.tournament_id = t.id AND rf.status = '1'
+      ) AS approved_competitors_count
+      FROM tournaments t
+      ${condition}
+      ORDER BY start_date ASC
+      LIMIT $1 OFFSET $2
     `;
     const countQuery = `
         SELECT COUNT(*) FROM tournaments
@@ -111,10 +117,17 @@ router.get('/', async (req, res) => {
         let dataResult, countResult;
 
         if (status === 'all') {
-            dataResult = await client.query(
-                'SELECT * FROM tournaments ORDER BY start_date ASC LIMIT $1 OFFSET $2',
-                [limit, offset]
-            );
+            dataResult = await client.query(`
+              SELECT t.*, (
+                SELECT COUNT(*)
+                FROM registration_form rf
+                JOIN competitors c ON c.registration_id = rf.id
+                WHERE rf.tournament_id = t.id AND rf.status = '1'
+              ) AS approved_competitors_count
+              FROM tournaments t
+              ORDER BY start_date ASC
+              LIMIT $1 OFFSET $2
+            `, [limit, offset]);
             countResult = await client.query('SELECT COUNT(*) FROM tournaments');
         } else {
             dataResult = await client.query(dataQuery, [limit, offset]);

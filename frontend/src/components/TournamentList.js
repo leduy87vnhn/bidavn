@@ -415,9 +415,26 @@ const TournamentList = () => {
                                     return (
                                         <tr key={tour.id} style={{ backgroundColor: bgColor }}>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                                <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>
-                                                    {tour.name}
-                                                </Link>
+                                            <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>
+                                                {tour.name}
+                                            </Link>
+
+                                            {/* Hiển thị số VĐV đã duyệt nếu có dữ liệu */}
+                                            {typeof tour.approved_competitors_count === 'number' && (
+                                                <div
+                                                style={{
+                                                    marginTop: '6px',
+                                                    display: 'inline-block',
+                                                    backgroundColor: '#28a745',
+                                                    color: 'white',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '5px',
+                                                    fontSize: '13px'
+                                                }}
+                                                >
+                                                🎱{tour.approved_competitors_count} VĐV tham gia
+                                                </div>
+                                            )}
                                             </td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
