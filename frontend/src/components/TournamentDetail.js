@@ -193,7 +193,10 @@ const TournamentDetail = () => {
             <div style={scrollable ? scrollableStyle : readOnlyStyle}>
                 {key === 'attendance_price'
                     ? formatCurrency(tournament[key])
-                    : key.includes('date') ? formatDate(tournament[key]) : (tournament[key] || '')}
+                    : (key.includes('date') || key === 'registration_deadline')
+                        ? formatDate(tournament[key])
+                        : (tournament[key] || '')
+                }
             </div>
         )
     );
