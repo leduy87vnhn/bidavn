@@ -26,6 +26,7 @@ npm install react-icons
 npm install xlsx
 npm install react-modal
 npm install xlsx file-saver
+npm install react-image-crop
 
 
 Start backend:
