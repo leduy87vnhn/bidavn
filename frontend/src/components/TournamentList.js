@@ -432,7 +432,7 @@ const TournamentList = () => {
                                                     fontSize: '13px'
                                                 }}
                                                 >
-                                                🎱{tour.approved_competitors_count} VĐV tham gia
+                                                🧑‍🎱{tour.approved_competitors_count} VĐV
                                                 </div>
                                             )}
                                             </td>
