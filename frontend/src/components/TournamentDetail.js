@@ -431,32 +431,30 @@ const TournamentDetail = () => {
 
                             {/* Nút upload QR code có crop ảnh */}
                             {user?.user_type === 2 && (
-                            <>
-                                {qrCropSrc ? (
+                            qrCropSrc ? (
                                 <div style={{ marginTop: '20px' }}>
-                                    <ReactCrop
+                                <ReactCrop
                                     src={qrCropSrc}
                                     crop={qrCrop}
                                     onImageLoaded={img => setQrImageRef(img)}
                                     onChange={newCrop => setQrCrop(newCrop)}
-                                    />
-                                    <div style={{ marginTop: '12px' }}>
+                                />
+                                <div style={{ marginTop: '12px' }}>
                                     <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>Lưu QR đã cắt</button>
                                     <button style={secondaryButtonStyle} onClick={() => setQrCropSrc(null)}>Hủy</button>
-                                    </div>
                                 </div>
-                                ) : (
+                                </div>
+                            ) : (
                                 <label style={{ ...primaryButtonStyle, display: 'inline-block', cursor: 'pointer' }}>
-                                    <FaCamera /> QR ngân hàng
-                                    <input
+                                <FaCamera /> QR ngân hàng
+                                <input
                                     type="file"
                                     accept="image/*"
                                     onChange={handleBankQrSelect}
                                     style={{ display: 'none' }}
-                                    />
+                                />
                                 </label>
-                                )}
-                            </>
+                            )
                             )}
 
                             {/* Nút upload QR code */}
