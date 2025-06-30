@@ -422,6 +422,7 @@ const TournamentList = () => {
                                             {/* Hiển thị số VĐV đã duyệt nếu có dữ liệu */}
                                             {typeof tour.approved_competitors_count != null && (
                                                 <div
+                                                onClick={() => navigate(`/tournament/${tour.id}/competitors`)}
                                                 style={{
                                                     marginTop: '6px',
                                                     display: 'inline-block',
