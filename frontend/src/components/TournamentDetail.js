@@ -969,33 +969,61 @@ const TournamentDetail = () => {
 
             {/* Modal crop QR ngân hàng */}
             {showQrCropModal && (
+            <div style={{
+                position: 'fixed',
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                display: 'flex', justifyContent: 'center', alignItems: 'center',
+                zIndex: 9999
+            }}>
                 <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.6)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    zIndex: 9999
+                backgroundColor: 'white',
+                padding: 20,
+                borderRadius: 10,
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                overflow: 'auto'
                 }}>
-                    <div style={{
-                        backgroundColor: 'white',
-                        padding: 20,
-                        borderRadius: 10,
-                        maxWidth: '90vw',
-                        maxHeight: '90vh',
-                        overflow: 'auto'
-                    }}>
-                        <h3>Cắt ảnh QR ngân hàng</h3>
-                        <ReactCrop
-                            src={qrCropSrc}
-                            crop={qrCrop}
-                            onImageLoaded={(img) => setQrImageRef(img)}
-                            onChange={(newCrop) => setQrCrop(newCrop)}
-                        />
-                        <div style={{ marginTop: 20, textAlign: 'right' }}>
-                            <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>✅ Lưu QR đã cắt</button>
-                            <button style={{ ...secondaryButtonStyle, marginLeft: 10 }} onClick={() => setShowQrCropModal(false)}>❌ Huỷ</button>
-                        </div>
-                    </div>
+                <h3 style={{ marginBottom: 16 }}>Cắt ảnh QR ngân hàng</h3>
+
+                {/* ✅ FIXED: thêm style và kiểm tra src hợp lệ */}
+                {qrCropSrc && (
+                    <ReactCrop
+                    crop={qrCrop}
+                    onChange={(newCrop) => setQrCrop(newCrop)}
+                    onComplete={(c) => setQrCrop(c)} // đảm bảo có giá trị width, height
+                    onImageLoaded={(img) => {
+                        setQrImageRef(img);
+
+                        // Nếu crop chưa có giá trị, set crop mặc định
+                        if (!qrCrop.width || !qrCrop.height) {
+                        const defaultCrop = {
+                            unit: '%',
+                            x: 25,
+                            y: 25,
+                            width: 50,
+                            height: 50,
+                            aspect: 1,
+                        };
+                        setQrCrop(defaultCrop);
+                        }
+                    }}
+                    aspect={1}
+                    src={qrCropSrc}
+                    style={{ maxWidth: '100%', maxHeight: '60vh' }}
+                    />
+                )}
+
+                <div style={{ marginTop: 20, textAlign: 'right' }}>
+                    <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>
+                    ✅ Lưu QR đã cắt
+                    </button>
+                    <button style={{ ...secondaryButtonStyle, marginLeft: 10 }} onClick={() => setShowQrCropModal(false)}>
+                    ❌ Hủy
+                    </button>
                 </div>
+                </div>
+            </div>
             )}
         </MainLayout>
     );
