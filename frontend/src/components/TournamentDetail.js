@@ -973,57 +973,49 @@ const TournamentDetail = () => {
             {/* Modal crop QR ngân hàng */}
             {showQrCropModal && (
             <div style={{
-                position: 'fixed',
-                top: 0, left: 0, right: 0, bottom: 0,
+                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                 backgroundColor: 'rgba(0,0,0,0.6)',
-                display: 'flex', justifyContent: 'center', alignItems: 'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 zIndex: 9999
             }}>
                 <div style={{
-                    backgroundColor: 'white',
-                    padding: 20,
-                    borderRadius: 10,
-                    maxWidth: '90vw',
-                    maxHeight: '90vh',
-                    overflow: 'auto'
+                backgroundColor: 'white',
+                padding: 20,
+                borderRadius: 10,
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                overflow: 'auto'
                 }}>
-                <h3 style={{ marginBottom: 16 }}>Cắt ảnh QR ngân hàng</h3>
-
-                {/* ✅ FIXED: thêm style và kiểm tra src hợp lệ */}
+                <h3>Cắt ảnh QR ngân hàng</h3>
                 {qrCropSrc && (
-                <ReactCrop
-                    src={qrCropSrc}
+                    <ReactCrop
                     crop={qrCrop}
-                    onImageLoaded={(img) => {
-                    console.log('✅ Ảnh đã load:', img);
-                    console.log('✅ img.width =', img.width, 'img.height =', img.height);
-                    setQrImageRef(img);
-
-                    if (!qrCrop.width || !qrCrop.height) {
-                        const defaultCrop = {
-                        unit: '%',
-                        x: 25,
-                        y: 25,
-                        width: 50,
-                        aspect: 1,
-                        };
-                        console.log('Set default crop:', defaultCrop);
-                        setQrCrop(defaultCrop);
-                    } else {
-                        console.log('📌 Crop hiện tại:', qrCrop);
-                    }
-                    }}
+                    aspect={1}
                     onChange={(newCrop) => setQrCrop(newCrop)}
-                />
-                )}
+                    onImageLoaded={(img) => {
+                        console.log('✅ Ảnh đã load:', img);
+                        console.log('✅ img.width =', img.width, 'img.height =', img.height);
+                        setQrImageRef(img);
 
+                        if (!qrCrop.width || !qrCrop.height) {
+                        const defaultCrop = {
+                            unit: 'px',
+                            x: 50,
+                            y: 50,
+                            width: Math.min(img.width, img.height) / 2,
+                            height: Math.min(img.width, img.height) / 2,
+                            aspect: 1,
+                        };
+                        console.log('⚙️ Set default crop (px):', defaultCrop);
+                        setQrCrop(defaultCrop);
+                        }
+                    }}
+                    src={qrCropSrc}
+                    />
+                )}
                 <div style={{ marginTop: 20, textAlign: 'right' }}>
-                    <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>
-                    ✅ Lưu QR đã cắt
-                    </button>
-                    <button style={{ ...secondaryButtonStyle, marginLeft: 10 }} onClick={() => setShowQrCropModal(false)}>
-                    ❌ Hủy
-                    </button>
+                    <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>✅ Lưu QR đã cắt</button>
+                    <button style={{ ...secondaryButtonStyle, marginLeft: 10 }} onClick={() => setShowQrCropModal(false)}>❌ Huỷ</button>
                 </div>
                 </div>
             </div>
