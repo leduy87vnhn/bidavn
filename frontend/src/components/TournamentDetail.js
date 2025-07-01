@@ -597,8 +597,8 @@ const TournamentDetail = () => {
         unit: '%',
         x: 25,
         y: 25,
-        width: 50,
-        height: 50,
+        width: 500,
+        height: 500,
         aspect: 1,
     });
     const [qrImageRef, setQrImageRef] = useState(null);
@@ -662,8 +662,8 @@ const TournamentDetail = () => {
             unit: '%',
             x: 25,
             y: 25,
-            width: 50,
-            height: 50,
+            width: 500,
+            height: 500,
             aspect: 1,
             });
             setTimeout(() => setShowQrCropModal(true), 100);
