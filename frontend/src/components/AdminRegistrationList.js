@@ -17,7 +17,8 @@ const AdminRegistrationList = () => {
     phone: '',
     user_name: '',
     club: '',
-    athlete_name: ''
+    athlete_name: '',
+    status: isAdmin ? '' : '1' // nếu không phải admin thì mặc định là đã duyệt
   });
 
   const fetchData = async () => {
@@ -25,7 +26,7 @@ const AdminRegistrationList = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registrations`, {
         params: {
           ...filters,
-          status: isAdmin ? null : 1 // không phải admin chỉ xem đơn đã duyệt
+          status: isAdmin ? filters.status : 1
         }
       });
       setData(res.data);
@@ -119,6 +120,17 @@ const AdminRegistrationList = () => {
           onChange={handleChange}
           value={filters.athlete_name}
         />
+        <select
+          name="status"
+          onChange={handleChange}
+          value={filters.status}
+          style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="0">Chờ duyệt</option>
+          <option value="1">Đã duyệt</option>
+          <option value="2">Đã huỷ</option>
+        </select>
         <button onClick={handleSearch}>Tìm kiếm</button>
       </div>
 
