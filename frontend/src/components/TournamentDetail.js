@@ -573,7 +573,7 @@
 
 // File: TournamentDetail.js
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { FaEdit, FaCamera, FaArrowLeft } from 'react-icons/fa';
 import { useParams, useNavigate, Link } from 'react-router-dom';
