@@ -593,14 +593,7 @@ const TournamentDetail = () => {
     const [logoFile, setLogoFile] = useState(null);
 
     const [qrCropSrc, setQrCropSrc] = useState(null);
-    const [qrCrop, setQrCrop] = useState({
-        unit: '%',
-        x: 25,
-        y: 25,
-        width: 500,
-        height: 500,
-        aspect: 1,
-    });
+    const [qrCrop, setQrCrop] = useState({ unit: '%', width: 50, aspect: 1 });
     const [qrImageRef, setQrImageRef] = useState(null);
     const [showQrCropModal, setShowQrCropModal] = useState(false);
 
@@ -1000,6 +993,7 @@ const TournamentDetail = () => {
                         }}
                         onImageLoaded={(img) => {
                             console.log('✅ Ảnh đã load:', img);
+                            console.log('✅ img.width =', img.width, 'img.height =', img.height);
                             setQrImageRef(img);
 
                             // Nếu crop chưa có giá trị, set crop mặc định
