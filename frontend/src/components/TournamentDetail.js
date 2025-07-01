@@ -593,7 +593,14 @@ const TournamentDetail = () => {
     const [logoFile, setLogoFile] = useState(null);
 
     const [qrCropSrc, setQrCropSrc] = useState(null);
-    const [qrCrop, setQrCrop] = useState({ unit: '%', width: 50, aspect: 1 });
+    const [qrCrop, setQrCrop] = useState({
+        unit: '%',
+        width: 50,
+        height: 50,
+        x: 25,
+        y: 25,
+        aspect: 1
+    });
     const [qrImageRef, setQrImageRef] = useState(null);
     const [showQrCropModal, setShowQrCropModal] = useState(false);
 
