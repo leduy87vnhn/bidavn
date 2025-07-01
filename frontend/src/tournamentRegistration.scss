@@ -192,3 +192,30 @@
 .blink-button {
   animation: pulse-glow 1.5s infinite;
 }
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+
+  label {
+    width: 160px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .input-wrapper {
+    flex: 1;
+    position: relative;
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+  }
+}

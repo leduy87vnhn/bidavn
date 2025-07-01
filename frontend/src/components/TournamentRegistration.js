@@ -647,131 +647,134 @@ const TournamentRegistration = () => {
 
         <form onSubmit={handleAddCompetitor}>
           {/* ✅ SĐT Người đăng ký */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
-            <input
-              type="text"
-              placeholder="Số điện thoại người đăng ký (*)"
-              value={registeredPhone}
-              onChange={(e) => setRegisteredPhone(e.target.value)}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
+          <div className="form-row">
+            <label>SĐT Người đăng ký:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="Số điện thoại người đăng ký (*)"
+                value={registeredPhone}
+                onChange={(e) => setRegisteredPhone(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* ✅ ID VĐV */}
-          <div style={{ position: 'relative', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>ID VĐV:</label>
-            <input
-              type="text"
-              placeholder="Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234"
-              value={playerSearchText}
-              onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
-              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {playerSearchText && playerSuggestions.length > 0 && newCompetitor.name === '' && newCompetitor.phone === '' && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map((p) => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                    #{p.id} - {p.name} ({p.phone})
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className="form-row">
+            <label>ID VĐV:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234"
+                value={playerSearchText}
+                onChange={(e) => setPlayerSearchText(e.target.value.toUpperCase())}
+              />
+              {playerSearchText && playerSuggestions.length > 0 && newCompetitor.name === '' && newCompetitor.phone === '' && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map((p) => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                      #{p.id} - {p.name} ({p.phone})
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {/* ✅ Tên VĐV */}
-          <div style={{ position: 'relative', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>Tên VĐV:</label>
-            <input
-              type="text"
-              placeholder="Tên VĐV có dấu (*)"
-              value={newCompetitor.name}
-              onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })}
-              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {newCompetitor.name && !newCompetitor.phone && !playerSearchText && playerSuggestions.length > 0 && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map((p) => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                    #{p.id} - {p.name} ({p.phone})
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className="form-row">
+            <label>Tên VĐV:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="Tên VĐV có dấu (*)"
+                value={newCompetitor.name}
+                onChange={(e) => setNewCompetitor({ ...newCompetitor, name: e.target.value.toUpperCase() })}
+              />
+              {newCompetitor.name && !newCompetitor.phone && !playerSearchText && playerSuggestions.length > 0 && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map((p) => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                      #{p.id} - {p.name} ({p.phone})
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {/* ✅ SĐT VĐV */}
-          <div style={{ position: 'relative', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>SĐT VĐV:</label>
-            <input
-              type="text"
-              placeholder="SĐT VĐV (*)"
-              value={newCompetitor.phone}
-              onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
-              onClick={() => {
-                if (newCompetitor.phone.trim().toLowerCase() === 'unknown') {
-                  setNewCompetitor({ ...newCompetitor, phone: '' });
-                }
-              }}
-              style={{
-                width: '100%',
-                padding: '6px 10px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                color: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'red' : 'black',
-                fontWeight: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'bold' : 'normal'
-              }}
-            />
-            {newCompetitor.phone && !newCompetitor.name && !playerSearchText && playerSuggestions.length > 0 && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map((p) => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
-                    #{p.id} - {p.name} ({p.phone})
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className="form-row">
+            <label>SĐT VĐV:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="SĐT VĐV (*)"
+                value={newCompetitor.phone}
+                onChange={(e) => setNewCompetitor({ ...newCompetitor, phone: e.target.value })}
+                onClick={() => {
+                  if (newCompetitor.phone.trim().toLowerCase() === 'unknown') {
+                    setNewCompetitor({ ...newCompetitor, phone: '' });
+                  }
+                }}
+                style={{
+                  color: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'red' : 'black',
+                  fontWeight: newCompetitor.phone.trim().toLowerCase() === 'unknown' ? 'bold' : 'normal'
+                }}
+              />
+              {newCompetitor.phone && !newCompetitor.name && !playerSearchText && playerSuggestions.length > 0 && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map((p) => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>
+                      #{p.id} - {p.name} ({p.phone})
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {/* ✅ Nickname */}
-          <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
-            <input
-              type="text"
-              placeholder="Tên thường gọi (cho phép bỏ trống)"
-              value={newCompetitor.nickname}
-              onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
+          <div className="form-row">
+            <label>Nickname:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="Tên thường gọi (cho phép bỏ trống)"
+                value={newCompetitor.nickname}
+                onChange={(e) => setNewCompetitor({ ...newCompetitor, nickname: e.target.value })}
+              />
+            </div>
           </div>
 
           {/* ✅ Đơn vị */}
-          <div style={{ position: 'relative', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold', display: 'inline-block' }}>Đơn vị:</label>
-            <input
-              type="text"
-              placeholder="Tên CLB hoặc nơi sinh hoạt (*)"
-              value={newCompetitor.club}
-              onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
-              style={{ width: '100%', padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {getFilteredClubs().length > 0 && (
-              <ul className="autocomplete-list">
-                {getFilteredClubs().map((club, idx) => (
-                  <li key={idx} onClick={() => setNewCompetitor({ ...newCompetitor, club })}>
-                    {club}
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className="form-row">
+            <label>Đơn vị:</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="Tên CLB hoặc nơi sinh hoạt (*)"
+                value={newCompetitor.club}
+                onChange={(e) => setNewCompetitor({ ...newCompetitor, club: e.target.value })}
+              />
+              {getFilteredClubs().length > 0 && (
+                <ul className="autocomplete-list">
+                  {getFilteredClubs().map((club, idx) => (
+                    <li key={idx} onClick={() => setNewCompetitor({ ...newCompetitor, club })}>
+                      {club}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {/* ✅ Chọn ngày thi đấu */}
           {availableDates.length > 0 ? (
-            <div style={{ marginBottom: '10px' }}>
-              <label><strong>Chọn 1 ngày thi đấu (nếu đã hết suất, chọn "Không chọn ngày"):</strong></label>
-              <div className="date-radio-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div className="form-row" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+              <label><strong>Chọn 1 ngày thi đấu:</strong></label>
+              <div className="date-radio-group">
+                <label>
                   <input
                     type="radio"
                     name="selected_date"
@@ -782,7 +785,7 @@ const TournamentRegistration = () => {
                   <span>Không chọn ngày</span>
                 </label>
                 {availableDates.map(({ value, display, remaining }) => (
-                  <label key={value} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <label key={value}>
                     <input
                       type="radio"
                       name="selected_date"
@@ -796,7 +799,7 @@ const TournamentRegistration = () => {
               </div>
             </div>
           ) : (
-            <div style={{ marginBottom: '10px' }}>
+            <div className="form-row">
               <strong>Không có ngày thi đấu cụ thể — sẽ để trống ngày thi đấu.</strong>
             </div>
           )}
