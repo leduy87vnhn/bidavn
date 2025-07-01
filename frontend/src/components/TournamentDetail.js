@@ -989,34 +989,35 @@ const TournamentDetail = () => {
                 {/* ✅ FIXED: thêm style và kiểm tra src hợp lệ */}
                 {qrCropSrc && (
                     <ReactCrop
-                    crop={qrCrop}
-                    onChange={(newCrop) => setQrCrop(newCrop)}
-                    onComplete={(c) => {
-                        setQrCrop(c);
-                        console.log('Crop complete:', c); // 👈 log F12
-                    }}
-                    onImageLoaded={(img) => {
-                        setQrImageRef(img);
+                        crop={qrCrop}
+                        onChange={(newCrop) => setQrCrop(newCrop)}
+                        onComplete={(c) => {
+                            setQrCrop(c);
+                            console.log('Crop complete:', c); // 👈 log F12
+                        }}
+                        onImageLoaded={(img) => {
+                            console.log('✅ Ảnh đã load:', img);
+                            setQrImageRef(img);
 
-                        // Nếu crop chưa có giá trị, set crop mặc định
-                        if (!qrCrop.width || !qrCrop.height) {
-                            const defaultCrop = {
-                                unit: '%',
-                                x: 25,
-                                y: 25,
-                                width: 50,
-                                height: 50,
-                                aspect: 1,
-                            };
-                            console.log('Set default crop:', defaultCrop);
-                            setQrCrop(defaultCrop);
-                        } else {
-                            console.log('📌 Crop hiện tại:', qrCrop); // Nếu đã có sẵn thì cũng log ra
-                        }
-                    }}
-                    aspect={1}
-                    src={qrCropSrc}
-                    style={{ maxWidth: '100%', maxHeight: '60vh' }}
+                            // Nếu crop chưa có giá trị, set crop mặc định
+                            if (!qrCrop.width || !qrCrop.height) {
+                                const defaultCrop = {
+                                    unit: '%',
+                                    x: 25,
+                                    y: 25,
+                                    width: 50,
+                                    height: 50,
+                                    aspect: 1,
+                                };
+                                console.log('Set default crop:', defaultCrop);
+                                setQrCrop(defaultCrop);
+                            } else {
+                                console.log('📌 Crop hiện tại:', qrCrop); // Nếu đã có sẵn thì cũng log ra
+                            }
+                        }}
+                        aspect={1}
+                        src={qrCropSrc}
+                        style={{ maxWidth: '100%', maxHeight: '60vh' }}
                     />
                 )}
 
