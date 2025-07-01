@@ -646,15 +646,29 @@ const TournamentDetail = () => {
     };
 
     const handleBankQrSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+        const file = e.target.files[0];
+        if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-        setQrCropSrc(reader.result);
-        setShowQrCropModal(true);
-    };
-    reader.readAsDataURL(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            console.log('📌 selected image');
+            console.log('📌 reader.result:', reader.result);
+
+            setQrCropSrc(reader.result);
+            
+            // 👇 Set crop mặc định để tránh lỗi "undefined%"
+            setQrCrop({
+            unit: '%',
+            x: 25,
+            y: 25,
+            width: 50,
+            height: 50,
+            aspect: 1,
+            });
+
+            setShowQrCropModal(true);
+        };
+        reader.readAsDataURL(file);
     };
 
     const getCroppedImage = async (image, crop) => {
