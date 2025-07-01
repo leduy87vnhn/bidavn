@@ -101,48 +101,52 @@ router.get('/', async (req, res) => {
         SELECT COUNT(*)
         FROM registration_form rf
         LEFT JOIN competitors c ON c.registration_form_id = rf.id
-        WHERE rf.tournament_id = t.id AND rf.status = '1'
+        LEFT JOIN players p ON c.player_id = p.id
+        WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
       ) AS approved_competitors_count
       FROM tournaments t
       ${condition}
       ORDER BY start_date ASC
       LIMIT $1 OFFSET $2
     `;
+
     const countQuery = `
-        SELECT COUNT(*) FROM tournaments
-        ${condition}
+      SELECT COUNT(*) FROM tournaments
+      ${condition}
     `;
 
     try {
-        let dataResult, countResult;
+      let dataResult, countResult;
 
-        if (status === 'all') {
-            dataResult = await client.query(`
-              SELECT t.*, (
-                SELECT COUNT(*)
-                FROM registration_form rf
-                LEFT JOIN competitors c ON c.registration_form_id = rf.id
-                WHERE rf.tournament_id = t.id AND rf.status = '1'
-              ) AS approved_competitors_count
-              FROM tournaments t
-              ORDER BY start_date ASC
-              LIMIT $1 OFFSET $2
-            `, [limit, offset]);
-            countResult = await client.query('SELECT COUNT(*) FROM tournaments');
-        } else {
-            dataResult = await client.query(dataQuery, [limit, offset]);
-            countResult = await client.query(countQuery);
-        }
+      if (status === 'all') {
+        dataResult = await client.query(`
+          SELECT t.*, (
+            SELECT COUNT(*)
+            FROM registration_form rf
+            LEFT JOIN competitors c ON c.registration_form_id = rf.id
+            LEFT JOIN players p ON c.player_id = p.id
+            WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
+          ) AS approved_competitors_count
+          FROM tournaments t
+          ORDER BY start_date ASC
+          LIMIT $1 OFFSET $2
+        `, [limit, offset]);
 
-        res.json({
-            data: dataResult.rows,
-            total: parseInt(countResult.rows[0].count),
-            page,
-            limit
-        });
+        countResult = await client.query('SELECT COUNT(*) FROM tournaments');
+      } else {
+        dataResult = await client.query(dataQuery, [limit, offset]);
+        countResult = await client.query(countQuery);
+      }
+
+      res.json({
+        data: dataResult.rows,
+        total: parseInt(countResult.rows[0].count),
+        page,
+        limit
+      });
     } catch (error) {
-        console.error('Error fetching tournaments:', error);
-        res.status(500).json({ message: 'Lỗi server khi lấy danh sách giải đấu.' });
+      console.error('Error fetching tournaments:', error);
+      res.status(500).json({ message: 'Lỗi server khi lấy danh sách giải đấu.' });
     }
 });
 
