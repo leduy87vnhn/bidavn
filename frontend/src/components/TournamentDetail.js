@@ -656,15 +656,18 @@ const TournamentDetail = () => {
         if (!file) return;
 
         const reader = new FileReader();
+        console.log('📌 selected image')
         reader.onloadend = () => {
+            console.log('📌 reader.result:', reader.result);   // ✅ cần in ra
+            console.log('📌 default qrCrop:', qrCrop);          // ✅ cần in ra
             setQrCropSrc(reader.result);
             setQrCrop({
-            unit: '%',
-            x: 25,
-            y: 25,
-            width: 500,
-            height: 500,
-            aspect: 1,
+                unit: '%',
+                x: 25,
+                y: 25,
+                width: 500,
+                height: 500,
+                aspect: 1,
             });
             setTimeout(() => setShowQrCropModal(true), 100);
         };
@@ -977,12 +980,12 @@ const TournamentDetail = () => {
                 zIndex: 9999
             }}>
                 <div style={{
-                backgroundColor: 'white',
-                padding: 20,
-                borderRadius: 10,
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                overflow: 'auto'
+                    backgroundColor: 'white',
+                    padding: 20,
+                    borderRadius: 10,
+                    maxWidth: '90vw',
+                    maxHeight: '90vh',
+                    overflow: 'auto'
                 }}>
                 <h3 style={{ marginBottom: 16 }}>Cắt ảnh QR ngân hàng</h3>
 
