@@ -987,32 +987,31 @@ const TournamentDetail = () => {
                 overflow: 'auto'
                 }}>
                 <h3>Cắt ảnh QR ngân hàng</h3>
+
                 {qrCropSrc && (
                     <ReactCrop
+                    src={qrCropSrc}
                     crop={qrCrop}
-                    aspect={1}
-                    onChange={(newCrop) => setQrCrop(newCrop)}
+                    onChange={setQrCrop}
                     onImageLoaded={(img) => {
                         console.log('✅ Ảnh đã load:', img);
                         console.log('✅ img.width =', img.width, 'img.height =', img.height);
                         setQrImageRef(img);
 
-                        if (!qrCrop.width || !qrCrop.height) {
-                        const defaultCrop = {
-                            unit: 'px',
-                            x: 50,
-                            y: 50,
-                            width: Math.min(img.width, img.height) / 2,
-                            height: Math.min(img.width, img.height) / 2,
-                            aspect: 1,
+                        const initialCrop = {
+                        unit: 'px',
+                        width: img.width * 0.5,
+                        height: img.width * 0.5,
+                        x: img.width * 0.25,
+                        y: img.height * 0.25,
+                        aspect: 1,
                         };
-                        console.log('⚙️ Set default crop (px):', defaultCrop);
-                        setQrCrop(defaultCrop);
-                        }
+                        console.log('✅ Set crop:', initialCrop);
+                        setQrCrop(initialCrop);
                     }}
-                    src={qrCropSrc}
                     />
                 )}
+
                 <div style={{ marginTop: 20, textAlign: 'right' }}>
                     <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>✅ Lưu QR đã cắt</button>
                     <button style={{ ...secondaryButtonStyle, marginLeft: 10 }} onClick={() => setShowQrCropModal(false)}>❌ Huỷ</button>
