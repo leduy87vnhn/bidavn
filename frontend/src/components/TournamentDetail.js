@@ -991,21 +991,27 @@ const TournamentDetail = () => {
                     <ReactCrop
                     crop={qrCrop}
                     onChange={(newCrop) => setQrCrop(newCrop)}
-                    onComplete={(c) => setQrCrop(c)} // đảm bảo có giá trị width, height
+                    onComplete={(c) => {
+                        setQrCrop(c);
+                        console.log('Crop complete:', c); // 👈 log F12
+                    }}
                     onImageLoaded={(img) => {
                         setQrImageRef(img);
 
                         // Nếu crop chưa có giá trị, set crop mặc định
                         if (!qrCrop.width || !qrCrop.height) {
-                        const defaultCrop = {
-                            unit: '%',
-                            x: 25,
-                            y: 25,
-                            width: 50,
-                            height: 50,
-                            aspect: 1,
-                        };
-                        setQrCrop(defaultCrop);
+                            const defaultCrop = {
+                                unit: '%',
+                                x: 25,
+                                y: 25,
+                                width: 50,
+                                height: 50,
+                                aspect: 1,
+                            };
+                            console.log('Set default crop:', defaultCrop);
+                            setQrCrop(defaultCrop);
+                        } else {
+                            console.log('📌 Crop hiện tại:', qrCrop); // Nếu đã có sẵn thì cũng log ra
                         }
                     }}
                     aspect={1}
