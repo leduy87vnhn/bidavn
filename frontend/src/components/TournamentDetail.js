@@ -593,16 +593,10 @@ const TournamentDetail = () => {
     const [logoFile, setLogoFile] = useState(null);
 
     const [qrCropSrc, setQrCropSrc] = useState(null);
-    const [qrCrop, setQrCrop] = useState({
-        unit: '%',
-        width: 50,
-        height: 50,
-        x: 25,
-        y: 25,
-        aspect: 1
-    });
-    const [qrImageRef, setQrImageRef] = useState(null);
+    const [qrCrop, setQrCrop] = useState({ unit: '%', width: 50, x: 25, y: 25 });
+    const [completedCrop, setCompletedCrop] = useState(null);
     const [showQrCropModal, setShowQrCropModal] = useState(false);
+    const qrImageRef = useRef(null);
 
     const user = JSON.parse(localStorage.getItem('user_info'));
 
@@ -652,26 +646,15 @@ const TournamentDetail = () => {
     };
 
     const handleBankQrSelect = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const reader = new FileReader();
-        console.log('📌 selected image')
-        reader.onloadend = () => {
-            console.log('📌 reader.result:', reader.result);   // ✅ cần in ra
-            console.log('📌 default qrCrop:', qrCrop);          // ✅ cần in ra
-            setQrCropSrc(reader.result);
-            setQrCrop({
-                unit: '%',
-                x: 25,
-                y: 25,
-                width: 500,
-                height: 500,
-                aspect: 1,
-            });
-            setTimeout(() => setShowQrCropModal(true), 100);
-        };
-        reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        setQrCropSrc(reader.result);
+        setShowQrCropModal(true);
+    };
+    reader.readAsDataURL(file);
     };
 
     const getCroppedImage = async (image, crop) => {
@@ -699,29 +682,59 @@ const TournamentDetail = () => {
         });
     };
 
+    const getCroppedImageBlob = (image, crop) => {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width,
+        crop.height
+        );
+
+        canvas.toBlob((blob) => {
+        resolve(blob);
+        }, 'image/jpeg');
+    });
+    };
+
     const handleBankQrCropUpload = async () => {
-        if (!qrImageRef || !qrCrop.width || !qrCrop.height) return;
+    if (!qrImageRef.current || !completedCrop?.width || !completedCrop?.height) {
+        alert('Ảnh hoặc vùng crop không hợp lệ');
+        return;
+    }
 
-        const croppedBlob = await getCroppedImage(qrImageRef, qrCrop);
-        const form = new FormData();
-        form.append('bank_qr', croppedBlob, 'qr.jpg');
-        setUploading(true);
+    const croppedBlob = await getCroppedImageBlob(qrImageRef.current, completedCrop);
+    const form = new FormData();
+    form.append('bank_qr', croppedBlob, 'qr.jpg');
+    setUploading(true);
 
-        try {
-            await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
-                form,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
-            );
-            alert('✅ Cập nhật QR ngân hàng thành công');
-            setShowQrCropModal(false);
-            setQrCropSrc(null);
-            await loadTournament();
-        } catch (err) {
-            alert('❌ Lỗi khi cập nhật QR ngân hàng');
-        } finally {
-            setUploading(false);
-        }
+    try {
+        await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+        form,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        alert('✅ Cập nhật QR ngân hàng thành công');
+        setShowQrCropModal(false);
+        setQrCropSrc(null);
+        await loadTournament();
+    } catch (err) {
+        alert('❌ Lỗi khi cập nhật QR ngân hàng');
+    } finally {
+        setUploading(false);
+    }
     };
 
     const fetchLogo = async () => {
@@ -914,8 +927,13 @@ const TournamentDetail = () => {
                             </label>
 
                             <label style={{ ...primaryButtonStyle, display: 'inline-block', cursor: 'pointer' }}>
-                                <FaCamera /> QR ngân hàng
-                                <input type="file" accept="image/*" onChange={handleBankQrSelect} style={{ display: 'none' }} />
+                            <FaCamera /> QR ngân hàng
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleBankQrSelect}
+                                style={{ display: 'none' }}
+                            />
                             </label>
 
                             {uploading && <p>Đang tải lên...</p>}
@@ -987,30 +1005,20 @@ const TournamentDetail = () => {
                 overflow: 'auto'
                 }}>
                 <h3>Cắt ảnh QR ngân hàng</h3>
-
-                {qrCropSrc && (
-                    <ReactCrop
-                    src={qrCropSrc}
+                <ReactCrop
                     crop={qrCrop}
-                    onChange={setQrCrop}
-                    onImageLoaded={(img) => {
-                        console.log('✅ Ảnh đã load:', img);
-                        console.log('✅ img.width =', img.width, 'img.height =', img.height);
-                        setQrImageRef(img);
-
-                        const initialCrop = {
-                        unit: 'px',
-                        width: img.width * 0.5,
-                        height: img.width * 0.5,
-                        x: img.width * 0.25,
-                        y: img.height * 0.25,
-                        aspect: 1,
-                        };
-                        console.log('✅ Set crop:', initialCrop);
-                        setQrCrop(initialCrop);
-                    }}
+                    onChange={(newCrop) => setQrCrop(newCrop)}
+                    onComplete={(c) => setCompletedCrop(c)}
+                    aspect={1}
+                >
+                    <img
+                    ref={qrImageRef}
+                    src={qrCropSrc}
+                    alt="Crop me"
+                    style={{ maxHeight: '400px' }}
+                    onLoad={() => console.log('✅ Image loaded')}
                     />
-                )}
+                </ReactCrop>
 
                 <div style={{ marginTop: 20, textAlign: 'right' }}>
                     <button style={primaryButtonStyle} onClick={handleBankQrCropUpload}>✅ Lưu QR đã cắt</button>
