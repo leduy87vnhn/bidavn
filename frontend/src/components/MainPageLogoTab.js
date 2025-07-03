@@ -31,7 +31,7 @@ const MainPageLogoTab = () => {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const res = await axios.post('/api/mainpage/upload-logo', formData);
+      const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-logo', formData);
       const updated = [...logos];
       updated[idx].settings_value = res.data.filePath;
       setLogos(updated);
@@ -43,7 +43,7 @@ const MainPageLogoTab = () => {
   const handleSave = async () => {
     try {
       for (const logo of logos) {
-        await axios.post('/api/mainpage/update-logo', logo);
+        await axios.post('http://18.143.246.46:5000/api/mainpage/update-logo', logo);
       }
       fetchLogos();
     } catch (err) {
@@ -53,7 +53,7 @@ const MainPageLogoTab = () => {
 
   const handleAdd = async () => {
     try {
-      await axios.post('/api/mainpage/create-logo', newItem);
+      await axios.post('http://18.143.246.46:5000/api/mainpage/create-logo', newItem);
       setNewItem({ settings_item: '', settings_value: '' });
       fetchLogos();
     } catch (err) {
@@ -63,7 +63,7 @@ const MainPageLogoTab = () => {
 
   const handleDelete = async (settings_item) => {
     try {
-      await axios.delete('/api/mainpage/delete-logo/' + settings_item);
+      await axios.delete('http://18.143.246.46:5000/api/mainpage/delete-logo/' + settings_item);
       fetchLogos();
     } catch (err) {
       console.error('Lỗi khi xoá logo:', err);
@@ -115,7 +115,7 @@ const MainPageLogoTab = () => {
                 const formData = new FormData();
                 formData.append('image', file);
                 try {
-                  const res = await axios.post('/api/mainpage/upload-logo', formData);
+                  const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-logo', formData);
                   setNewItem({ ...newItem, settings_value: res.data.filePath });
                 } catch (err) {
                   console.error('Upload thất bại:', err);

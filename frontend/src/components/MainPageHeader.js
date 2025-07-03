@@ -5,7 +5,7 @@ const MainPageHeader = () => {
   const [logos, setLogos] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/mainpage/logos').then((res) => {
+    axios.get('http://18.143.246.46:5000/api/mainpage/logos').then((res) => {
       const valid = res.data?.filter(logo => logo.settings_value);
       setLogos(valid);
     });

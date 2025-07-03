@@ -5,7 +5,7 @@ const MainPageVideoSection = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/mainpage/videos').then((res) => {
+    axios.get('http://18.143.246.46:5000/api/mainpage/videos').then((res) => {
       const filtered = res.data.filter(e => e.event_video);
       setVideos(filtered);
     });

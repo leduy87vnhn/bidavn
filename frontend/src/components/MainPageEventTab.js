@@ -8,7 +8,7 @@ const MainPageEventTab = () => {
   });
 
   const fetchEvents = async () => {
-    const res = await axios.get('/api/mainpage/events-full');
+    const res = await axios.get('http://18.143.246.46:5000/api/mainpage/events-full');
     setEvents(res.data);
   };
 
@@ -19,7 +19,7 @@ const MainPageEventTab = () => {
   const handleUpload = async (e, idx) => {
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
-    const res = await axios.post('/api/mainpage/upload-event', formData);
+    const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-event', formData);
     const updated = [...events];
     updated[idx].event_photo = res.data.filePath;
     setEvents(updated);
@@ -27,19 +27,19 @@ const MainPageEventTab = () => {
 
   const handleSave = async () => {
     for (const ev of events) {
-      await axios.post('/api/mainpage/update-event', ev);
+      await axios.post('http://18.143.246.46:5000/api/mainpage/update-event', ev);
     }
     fetchEvents();
   };
 
   const handleAdd = async () => {
-    await axios.post('/api/mainpage/create-event', newEvent);
+    await axios.post('http://18.143.246.46:5000/api/mainpage/create-event', newEvent);
     setNewEvent({ id: '', event_name: '', event_photo: '', event_video: '', event_content: '', event_date: '' });
     fetchEvents();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete('/api/mainpage/delete-event/' + id);
+    await axios.delete('http://18.143.246.46:5000/api/mainpage/delete-event/' + id);
     fetchEvents();
   };
 
@@ -72,7 +72,7 @@ const MainPageEventTab = () => {
             <td><input type="file" onChange={async (e) => {
               const formData = new FormData();
               formData.append('image', e.target.files[0]);
-              const res = await axios.post('/api/mainpage/upload-event', formData);
+              const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-event', formData);
               setNewEvent({ ...newEvent, event_photo: res.data.filePath });
             }} /></td>
             <td><input value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
