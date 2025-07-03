@@ -7,7 +7,7 @@ const MainPageLogoTab = () => {
 
   const fetchLogos = async () => {
     try {
-      const res = await axios.get('/api/mainpage/logos');
+      const res = await axios.get('http://18.143.246.46:5000/api/mainpage/logos');
       const data = res.data;
       if (Array.isArray(data)) {
         setLogos(data);
