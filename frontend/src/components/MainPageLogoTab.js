@@ -6,8 +6,19 @@ const MainPageLogoTab = () => {
   const [newItem, setNewItem] = useState({ settings_item: '', settings_value: '' });
 
   const fetchLogos = async () => {
-    const res = await axios.get('/api/mainpage/logos');
-    setLogos(res.data);
+    try {
+      const res = await axios.get('/api/mainpage/logos');
+      const data = res.data;
+      if (Array.isArray(data)) {
+        setLogos(data);
+      } else {
+        console.error('API không trả về mảng:', data);
+        setLogos([]);
+      }
+    } catch (err) {
+      console.error('Lỗi fetch logos:', err);
+      setLogos([]);
+    }
   };
 
   useEffect(() => {
@@ -15,30 +26,48 @@ const MainPageLogoTab = () => {
   }, []);
 
   const handleUpload = async (e, idx) => {
+    const file = e.target.files[0];
+    if (!file) return;
     const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-    const res = await axios.post('/api/mainpage/upload-logo', formData);
-    const updated = [...logos];
-    updated[idx].settings_value = res.data.filePath;
-    setLogos(updated);
+    formData.append('image', file);
+    try {
+      const res = await axios.post('/api/mainpage/upload-logo', formData);
+      const updated = [...logos];
+      updated[idx].settings_value = res.data.filePath;
+      setLogos(updated);
+    } catch (err) {
+      console.error('Upload thất bại:', err);
+    }
   };
 
   const handleSave = async () => {
-    for (const logo of logos) {
-      await axios.post('/api/mainpage/update-logo', logo);
+    try {
+      for (const logo of logos) {
+        await axios.post('/api/mainpage/update-logo', logo);
+      }
+      fetchLogos();
+    } catch (err) {
+      console.error('Lỗi khi lưu logo:', err);
     }
-    fetchLogos();
   };
 
   const handleAdd = async () => {
-    await axios.post('/api/mainpage/create-logo', newItem);
-    setNewItem({ settings_item: '', settings_value: '' });
-    fetchLogos();
+    try {
+      await axios.post('/api/mainpage/create-logo', newItem);
+      setNewItem({ settings_item: '', settings_value: '' });
+      fetchLogos();
+    } catch (err) {
+      console.error('Lỗi khi thêm logo mới:', err);
+    }
   };
 
   const handleDelete = async (settings_item) => {
-    await axios.delete('/api/mainpage/delete-logo/' + settings_item);
-    fetchLogos();
+    try {
+      await axios.delete('/api/mainpage/delete-logo/' + settings_item);
+      fetchLogos();
+    } catch (err) {
+      console.error('Lỗi khi xoá logo:', err);
+    }
   };
 
   return (
@@ -54,24 +83,48 @@ const MainPageLogoTab = () => {
           </tr>
         </thead>
         <tbody>
-          {logos.map((item, idx) => (
+          {Array.isArray(logos) ? logos.map((item, idx) => (
             <tr key={item.settings_item}>
               <td>{item.settings_item}</td>
               <td>{item.settings_value}</td>
-              <td><input type="file" onChange={(e) => handleUpload(e, idx)} /></td>
-              <td><button onClick={() => handleDelete(item.settings_item)}>Xoá</button></td>
+              <td>
+                <input type="file" onChange={(e) => handleUpload(e, idx)} />
+              </td>
+              <td>
+                <button onClick={() => handleDelete(item.settings_item)}>Xoá</button>
+              </td>
             </tr>
-          ))}
+          )) : (
+            <tr>
+              <td colSpan="4">Không có dữ liệu logo hoặc lỗi tải</td>
+            </tr>
+          )}
           <tr>
-            <td><input value={newItem.settings_item} onChange={e => setNewItem({ ...newItem, settings_item: e.target.value })} /></td>
-            <td></td>
-            <td><input type="file" onChange={async (e) => {
-              const formData = new FormData();
-              formData.append('image', e.target.files[0]);
-              const res = await axios.post('/api/mainpage/upload-logo', formData);
-              setNewItem({ ...newItem, settings_value: res.data.filePath });
-            }} /></td>
-            <td><button onClick={handleAdd}>Thêm</button></td>
+            <td>
+              <input
+                value={newItem.settings_item}
+                onChange={(e) => setNewItem({ ...newItem, settings_item: e.target.value })}
+                placeholder="Mã logo"
+              />
+            </td>
+            <td>{newItem.settings_value}</td>
+            <td>
+              <input type="file" onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const formData = new FormData();
+                formData.append('image', file);
+                try {
+                  const res = await axios.post('/api/mainpage/upload-logo', formData);
+                  setNewItem({ ...newItem, settings_value: res.data.filePath });
+                } catch (err) {
+                  console.error('Upload thất bại:', err);
+                }
+              }} />
+            </td>
+            <td>
+              <button onClick={handleAdd}>Thêm</button>
+            </td>
           </tr>
         </tbody>
       </table>
