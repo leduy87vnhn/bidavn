@@ -12,6 +12,7 @@ import AdminRegistrationList from './components/AdminRegistrationList';
 import RegistrationDetail from './components/RegistrationDetail';
 import TournamentCompetitorList from './components/TournamentCompetitorList';
 import ReactModal from 'react-modal';
+import MainPage from './screens/MainPage';
 
 ReactModal.setAppElement('#root');
 
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/registrations" element={<AdminRegistrationList />} />
         <Route path="/registration/:id/detail" element={<RegistrationDetail />} />
         <Route path="/tournament/:id/competitors" element={<TournamentCompetitorList />} />
+        <Route path="/" element={<MainPage />} />
 
 
         {/* Route bảo vệ: chỉ vào nếu đã login */}
