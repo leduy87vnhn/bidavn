@@ -6,12 +6,15 @@ const MainPageVideoSection = () => {
 
   useEffect(() => {
     axios.get('/api/mainpage/videos').then((res) => {
-      setVideos(res.data);
+      const filtered = res.data.filter(e => e.event_video);
+      setVideos(filtered);
     });
   }, []);
 
+  if (!videos.length) return null;
+
   return (
-    <div className="video-section">
+    <div className="mainpage-video-section">
       {videos.map((item, idx) => (
         <div key={idx} className="video-item">
           <iframe

@@ -1,16 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MainPageMenuBar = () => {
   const user = JSON.parse(localStorage.getItem('user_info'));
+  const navigate = useNavigate();
 
   return (
-    <div className="menu-bar">
+    <div className="mainpage-menu-bar">
       <div className="menu-left">
-        <span className="menu-item">Menu1</span>
-        <span className="menu-item">Menu2</span>
-        <span className="menu-item">Menu3</span>
-        <span className="menu-item">Menu4</span>
-        <span className="menu-item">Menu5</span>
+        <span className="menu-item">Thông tin chung</span>
+        <span className="menu-item" onClick={() => navigate('/tournaments')}>Giải đấu</span>
+        <span className="menu-item">Bảng xếp hạng</span>
+        <span className="menu-item">Nhà tài trợ</span>
+        <span className="menu-item">Liên hệ</span>
+        <span className="menu-item" onClick={() => navigate('/settings')}>Thiết lập</span>
       </div>
       <div className="menu-right">
         {user ? (
@@ -22,7 +25,7 @@ const MainPageMenuBar = () => {
             }}>Logout</button>
           </>
         ) : (
-          <button onClick={() => window.location.href = '/login'}>Login</button>
+          <button onClick={() => navigate('/login')}>Login</button>
         )}
       </div>
     </div>

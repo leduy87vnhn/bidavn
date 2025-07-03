@@ -1,19 +1,19 @@
 import React from 'react';
-import Header from '../components/MainPageHeader';
-import MenuBar from '../components/MainPageMenuBar';
-import EventSlider from '../components/MainPageEventSlider';
-import NewsList from '../components/MainPageNewsList';
-import VideoSection from '../components/MainPageVideoSection';
+import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageEventSlider from '../components/MainPageEventSlider';
+import MainPageNewsList from '../components/MainPageNewsList';
+import MainPageVideoSection from '../components/MainPageVideoSection';
 import '../css/mainpage.css';
 
 const MainPage = () => {
   return (
     <div className="main-container">
-      <Header />
-      <MenuBar />
-      <EventSlider />
-      <NewsList />
-      <VideoSection />
+      <MainPageHeader />
+      <MainPageMenuBar />
+      <MainPageEventSlider />
+      <MainPageNewsList />
+      <MainPageVideoSection />
     </div>
   );
 };

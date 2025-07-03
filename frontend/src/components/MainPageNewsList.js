@@ -6,12 +6,15 @@ const MainPageNewsList = () => {
 
   useEffect(() => {
     axios.get('/api/mainpage/news').then((res) => {
-      setNews(res.data);
+      const filtered = res.data.filter(e => e.event_photo);
+      setNews(filtered);
     });
   }, []);
 
+  if (!news.length) return null;
+
   return (
-    <div className="news-list">
+    <div className="mainpage-news-list">
       {news.map((item, idx) => (
         <div key={idx} className="news-item">
           <img src={item.event_photo.replace('~', '')} alt="news" />

@@ -7,7 +7,8 @@ const MainPageEventSlider = () => {
 
   useEffect(() => {
     axios.get('/api/mainpage/events').then((res) => {
-      setEvents(res.data);
+      const filtered = res.data.filter(e => e.event_photo);
+      setEvents(filtered);
     });
   }, []);
 
@@ -21,7 +22,7 @@ const MainPageEventSlider = () => {
   if (!events.length) return null;
 
   return (
-    <div className="event-slider">
+    <div className="mainpage-event-slider">
       <img src={events[index].event_photo.replace('~', '')} alt="event" />
       <div className="event-content">{events[index].event_content}</div>
     </div>

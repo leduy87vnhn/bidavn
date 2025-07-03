@@ -6,12 +6,15 @@ const MainPageHeader = () => {
 
   useEffect(() => {
     axios.get('/api/mainpage/logos').then((res) => {
-      setLogos(res.data);
+      const valid = res.data?.filter(logo => logo.settings_value);
+      setLogos(valid);
     });
   }, []);
 
+  if (!logos || logos.length === 0) return null;
+
   return (
-    <div className="mainpageheader">
+    <div className="mainpage-header">
       {logos.map((logo) => (
         <img
           key={logo.settings_item}
