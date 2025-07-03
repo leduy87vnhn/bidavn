@@ -37,11 +37,11 @@ router.delete('/delete-event/:id', controller.deleteEvent);
 
 // Upload endpoints
 router.post('/upload-logo', uploadLogo.single('image'), (req, res) => {
-  res.json({ filePath: '/uploads/logos/' + req.file.filename });
+  res.json({ filePath: '~/billard/bidavn/backend/uploads/logos/' + req.file.filename });
 });
 
 router.post('/upload-event', uploadEvent.single('image'), (req, res) => {
-  res.json({ filePath: '/uploads/events/' + req.file.filename });
+  res.json({ filePath: '~/billard/bidavn/backend/uploads/events/' + req.file.filename });
 });
 
 module.exports = router;
