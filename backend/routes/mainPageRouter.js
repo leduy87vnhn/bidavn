@@ -4,6 +4,7 @@ const controller = require('../controllers/mainPageController');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const db = require('../config/db');
 
 // Create upload directories if not exist
 const logoDir = path.join(__dirname, '../uploads/logos');
