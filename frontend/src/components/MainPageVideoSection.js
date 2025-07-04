@@ -11,6 +11,24 @@ const MainPageVideoSection = () => {
     });
   }, []);
 
+  const convertToEmbedUrl = (url) => {
+    if (!url) return null;
+    try {
+      const u = new URL(url);
+      if (u.hostname.includes('youtube.com')) {
+        if (u.pathname.startsWith('/watch')) {
+          return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+        } else if (u.pathname.startsWith('/shorts/')) {
+          const videoId = u.pathname.split('/')[2];
+          return `https://www.youtube.com/embed/${videoId}`;
+        }
+      }
+      return url;
+    } catch (e) {
+      return url;
+    }
+  };
+
   if (!videos.length) return null;
 
   return (
@@ -20,9 +38,10 @@ const MainPageVideoSection = () => {
           <iframe
             width="360"
             height="215"
-            src={item.event_video.replace('watch?v=', 'embed/')}
-            title={item.event_name}
+            src={convertToEmbedUrl(item.event_video)}
+            title={item.event_name || `video-${idx}`}
             frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
         </div>
