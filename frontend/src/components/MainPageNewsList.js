@@ -16,6 +16,14 @@ const MainPageNewsList = () => {
     return `http://18.143.246.46:5000${cleanPath}`;
   };
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  };
+
   if (!news.length) return null;
 
   return (
@@ -25,7 +33,7 @@ const MainPageNewsList = () => {
           <img src={getEventPhotoUrl(item.event_photo)} alt="news" />
           <div className="news-text">
             <div className="news-title">{item.event_name}</div>
-            <div className="news-date">{item.event_date}</div>
+            <div className="news-date">{formatDate(item.event_date)}</div>
           </div>
         </div>
       ))}
