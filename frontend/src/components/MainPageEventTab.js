@@ -85,7 +85,7 @@ const MainPageEventTab = () => {
           <thead style={{ background: '#2a5d9f', color: 'white' }}>
             <tr>
               <th style={{ ...th, width: '80px' }}>ID</th>
-              <th style={{ ...th, width: '80px' }}>Tên sự kiện</th>
+              <th style={{ ...th, width: '300px' }}>Tên sự kiện</th>
               <th style={{ ...th, width: '120px' }}>Ảnh</th>
               <th style={{ ...th, width: '120px' }}>Upload</th>
               <th style={{ ...th, width: '240px' }}>Video</th>
