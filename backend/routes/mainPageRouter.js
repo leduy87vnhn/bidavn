@@ -66,12 +66,13 @@ router.get('/videos', async (req, res) => {
   try {
     const result = await db.query(`
       SELECT * FROM mainpage_event_settings 
-      WHERE event_video IS NOT NULL AND event_video <> '' 
+      WHERE TRIM(COALESCE(event_video, '')) <> ''
       ORDER BY event_date DESC
     `);
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch videos' });
+    console.error('Video fetch error:', err); // ← in chi tiết
+    res.status(500).json({ error: err.message });
   }
 });
 
