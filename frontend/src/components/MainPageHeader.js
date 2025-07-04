@@ -18,7 +18,7 @@ const MainPageHeader = () => {
       {logos.map((logo) => (
         <img
           key={logo.settings_item}
-          src={logo.settings_value.replace('~', '')}
+          src={`http://18.143.246.46:5000${logo.settings_value.replace('~', '')}`}
           alt={logo.settings_item}
           className={logo.settings_item === 'hbsf_logo' ? 'logo hbsf' : 'logo sponsor'}
         />
