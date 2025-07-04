@@ -19,11 +19,16 @@ const MainPageEventSlider = () => {
     return () => clearInterval(interval);
   }, [events]);
 
+  const getEventPhotoUrl = (value) => {
+    const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
+    return `http://18.143.246.46:5000${cleanPath}`;
+  };
+
   if (!events.length) return null;
 
   return (
     <div className="mainpage-event-slider">
-      <img src={events[index].event_photo.replace('~', '')} alt="event" />
+      <img src={getEventPhotoUrl(events[index].event_photo)} alt="event" />
       <div className="event-content">{events[index].event_content}</div>
     </div>
   );
