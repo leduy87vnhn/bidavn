@@ -85,12 +85,12 @@ const MainPageEventTab = () => {
           <thead style={{ background: '#2a5d9f', color: 'white' }}>
             <tr>
               <th style={{ ...th, width: '80px' }}>ID</th>
-              <th style={{ ...th, width: '220px' }}>Tên</th>
-              <th style={th}>Ảnh</th>
-              <th style={th}>Upload</th>
-              <th style={th}>Video</th>
-              <th style={th}>Ngày</th>
-              <th style={th}>Xoá</th>
+              <th style={th}>Tên</th>
+              <th style={{ ...th, width: '120px' }}>Ảnh</th>
+              <th style={{ ...th, width: '120px' }}>Upload</th>
+              <th style={{ ...th, width: '240px' }}>Video</th>
+              <th style={{ ...th, width: '140px' }}>Ngày</th>
+              <th style={{ ...th, width: '80px' }}>Xoá</th>
             </tr>
           </thead>
           <tbody>
@@ -108,9 +108,9 @@ const MainPageEventTab = () => {
                     textOverflow: 'ellipsis'
                   }}>{e.id}</td>
 
-                  <td style={{ ...td, maxWidth: '220px' }}>
+                  <td style={{ ...td }}>
                     <input
-                      style={{ ...input, width: '100%' }}
+                      style={{ ...input, width: '100%', fontWeight: 'bold' }}
                       value={e.event_name}
                       onChange={ev => updateField(ev, idx, 'event_name')}
                     />
@@ -144,7 +144,7 @@ const MainPageEventTab = () => {
 
                   <td style={td}>
                     <input
-                      style={{ ...input, width: '200px' }}
+                      style={{ ...input, width: '100%' }}
                       value={e.event_video}
                       onChange={ev => updateField(ev, idx, 'event_video')}
                     />
@@ -183,9 +183,21 @@ const MainPageEventTab = () => {
 
             {/* Dòng thêm mới */}
             <tr style={{ background: '#e0efff' }}>
-              <td style={td}><input style={input} value={newEvent.id} onChange={e => setNewEvent({ ...newEvent, id: e.target.value })} /></td>
+              <td style={td}>
+                <input
+                  style={input}
+                  value={newEvent.id}
+                  onChange={e => setNewEvent({ ...newEvent, id: e.target.value })}
+                />
+              </td>
 
-              <td style={td}><input style={{ ...input, width: '100%' }} value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
+              <td style={td}>
+                <input
+                  style={{ ...input, width: '100%', fontWeight: 'bold' }}
+                  value={newEvent.event_name}
+                  onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })}
+                />
+              </td>
 
               <td style={td}>
                 {newEvent.event_photo && (
@@ -213,13 +225,25 @@ const MainPageEventTab = () => {
                 </div>
               </td>
 
-              <td style={td}><input style={input} value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
-
               <td style={td}>
-                <input type="date" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} />
+                <input
+                  style={{ ...input, width: '100%' }}
+                  value={newEvent.event_video}
+                  onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })}
+                />
               </td>
 
-              <td style={td}><button style={btnPrimary} onClick={handleAdd}>Thêm</button></td>
+              <td style={td}>
+                <input
+                  type="date"
+                  value={newEvent.event_date}
+                  onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })}
+                />
+              </td>
+
+              <td style={td}>
+                <button style={btnPrimary} onClick={handleAdd}>Thêm</button>
+              </td>
             </tr>
 
             <tr>
