@@ -89,59 +89,75 @@ const MainPageEventTab = () => {
               <th style={th}>Ảnh</th>
               <th style={th}>Upload</th>
               <th style={th}>Video</th>
-              <th style={th}>Nội dung</th>
               <th style={th}>Ngày</th>
               <th style={th}>Xoá</th>
             </tr>
           </thead>
           <tbody>
             {events.map((e, idx) => (
-              <tr key={e.id} style={idx % 2 === 0 ? trEven : trOdd}>
-                <td style={td}>{e.id}</td>
-                <td style={td}><input style={input} value={e.event_name} onChange={ev => updateField(ev, idx, 'event_name')} /></td>
-                <td style={td}>
-                  {e.event_photo && (
-                    <div className="thumbnail-container">
-                      <img
-                        src={getImageUrl(e.event_photo)}
-                        alt="event"
-                        style={thumbnailStyle}
-                        className="thumbnail-image"
-                      />
-                      <div className="preview-popup">
-                        <img src={getImageUrl(e.event_photo)} alt="preview" />
+              <React.Fragment key={e.id}>
+                <tr style={idx % 2 === 0 ? trEven : trOdd}>
+                  <td style={td}>{e.id}</td>
+                  <td style={td}>
+                    <input style={input} value={e.event_name} onChange={ev => updateField(ev, idx, 'event_name')} />
+                  </td>
+                  <td style={td}>
+                    {e.event_photo && (
+                      <div className="thumbnail-container">
+                        <img
+                          src={getImageUrl(e.event_photo)}
+                          alt="event"
+                          style={thumbnailStyle}
+                          className="thumbnail-image"
+                        />
+                        <div className="preview-popup">
+                          <img src={getImageUrl(e.event_photo)} alt="preview" />
+                        </div>
                       </div>
+                    )}
+                  </td>
+                  <td style={td}>
+                    <div
+                      onDrop={(ev) => handleDrop(ev, idx)}
+                      onDragOver={(ev) => ev.preventDefault()}
+                      style={dropZone}
+                    >
+                      Kéo & thả ảnh
                     </div>
-                  )}
-                </td>
-                <td style={td}>
-                  <div
-                    onDrop={(ev) => handleDrop(ev, idx)}
-                    onDragOver={(ev) => ev.preventDefault()}
-                    style={dropZone}
-                  >
-                    Kéo & thả ảnh
-                  </div>
-                </td>
-                <td style={td}><input style={{ ...input, width: '200px' }} value={e.event_video} onChange={ev => updateField(ev, idx, 'event_video')} /></td>
-                <td style={td}>
-                  <MdEditor
-                    value={e.event_content}
-                    style={{ height: '150px' }}
-                    renderHTML={(text) => mdParser.render(text)}
-                    onChange={({ text }) => updateField({ target: { value: text } }, idx, 'event_content')}
-                  />
-                </td>
-                <td style={td}>
-                  <input
-                    type="date"
-                    value={e.event_date?.substring(0, 10)}
-                    onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
-                  />
-                </td>
-                <td style={td}><button style={btnDanger} onClick={() => handleDelete(e.id)}>Xoá</button></td>
-              </tr>
+                  </td>
+                  <td style={td}>
+                    <input
+                      style={{ ...input, width: '200px' }}
+                      value={e.event_video}
+                      onChange={ev => updateField(ev, idx, 'event_video')}
+                    />
+                  </td>
+                  <td style={td}>
+                    <input
+                      type="date"
+                      value={e.event_date?.substring(0, 10)}
+                      onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
+                    />
+                  </td>
+                  <td style={td}>
+                    <button style={btnDanger} onClick={() => handleDelete(e.id)}>Xoá</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="7" style={{ background: '#f7faff', padding: '10px 20px' }}>
+                    <b>Nội dung:</b>
+                    <MdEditor
+                      value={e.event_content}
+                      style={{ height: '200px', marginTop: '10px' }}
+                      renderHTML={(text) => mdParser.render(text)}
+                      onChange={({ text }) => updateField({ target: { value: text } }, idx, 'event_content')}
+                    />
+                  </td>
+                </tr>
+              </React.Fragment>
             ))}
+
+            {/* Dòng thêm mới */}
             <tr style={{ background: '#e0efff' }}>
               <td style={td}><input style={input} value={newEvent.id} onChange={e => setNewEvent({ ...newEvent, id: e.target.value })} /></td>
               <td style={td}><input style={input} value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
@@ -171,17 +187,20 @@ const MainPageEventTab = () => {
               </td>
               <td style={td}><input style={input} value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
               <td style={td}>
+                <input type="date" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} />
+              </td>
+              <td style={td}><button style={btnPrimary} onClick={handleAdd}>Thêm</button></td>
+            </tr>
+            <tr>
+              <td colSpan="7" style={{ background: '#eef7ff', padding: '10px 20px' }}>
+                <b>Nội dung:</b>
                 <MdEditor
                   value={newEvent.event_content}
-                  style={{ height: '150px' }}
+                  style={{ height: '200px', marginTop: '10px' }}
                   renderHTML={(text) => mdParser.render(text)}
                   onChange={({ text }) => setNewEvent({ ...newEvent, event_content: text })}
                 />
               </td>
-              <td style={td}>
-                <input type="date" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} />
-              </td>
-              <td style={td}><button style={btnPrimary} onClick={handleAdd}>Thêm</button></td>
             </tr>
           </tbody>
         </table>
