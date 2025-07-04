@@ -13,12 +13,17 @@ const MainPageHeader = () => {
 
   if (!logos || logos.length === 0) return null;
 
+  const getLogoUrl = (value) => {
+    const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
+    return `http://18.143.246.46:5000${cleanPath}`;
+  };
+
   return (
     <div className="mainpage-header">
       {logos.map((logo) => (
         <img
           key={logo.settings_item}
-          src={`http://18.143.246.46:5000${logo.settings_value.replace('~', '')}`}
+          src={getLogoUrl(logo.settings_value)}
           alt={logo.settings_item}
           className={logo.settings_item === 'hbsf_logo' ? 'logo hbsf' : 'logo sponsor'}
         />
