@@ -11,13 +11,18 @@ const MainPageNewsList = () => {
     });
   }, []);
 
+  const getEventPhotoUrl = (value) => {
+    const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
+    return `http://18.143.246.46:5000${cleanPath}`;
+  };
+
   if (!news.length) return null;
 
   return (
     <div className="mainpage-news-list">
       {news.map((item, idx) => (
         <div key={idx} className="news-item">
-          <img src={item.event_photo.replace('~', '')} alt="news" />
+          <img src={getEventPhotoUrl(item.event_photo)} alt="news" />
           <div className="news-text">
             <div className="news-title">{item.event_name}</div>
             <div className="news-date">{item.event_date}</div>
