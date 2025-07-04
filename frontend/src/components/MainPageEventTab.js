@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import MdEditor from 'react-markdown-editor-lite';
+import MarkdownIt from 'markdown-it';
+import 'react-markdown-editor-lite/lib/index.css';
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const mdParser = new MarkdownIt();
 
 const MainPageEventTab = () => {
   const [events, setEvents] = useState([]);
@@ -8,7 +14,7 @@ const MainPageEventTab = () => {
   });
 
   const fetchEvents = async () => {
-    const res = await axios.get('http://18.143.246.46:5000/api/mainpage/events-full');
+    const res = await axios.get(`${API_BASE}/api/mainpage/events-full`);
     setEvents(res.data);
   };
 
@@ -16,75 +22,249 @@ const MainPageEventTab = () => {
     fetchEvents();
   }, []);
 
-  const handleUpload = async (e, idx) => {
+  const handleDrop = async (e, idx, isNew = false) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
     const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-    const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-event', formData);
-    const updated = [...events];
-    updated[idx].event_photo = res.data.filePath;
-    setEvents(updated);
+    formData.append('image', file);
+    const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, formData);
+    if (isNew) {
+      setNewEvent({ ...newEvent, event_photo: res.data.filePath });
+    } else {
+      const updated = [...events];
+      updated[idx].event_photo = res.data.filePath;
+      setEvents(updated);
+    }
   };
 
   const handleSave = async () => {
     for (const ev of events) {
-      await axios.post('http://18.143.246.46:5000/api/mainpage/update-event', ev);
+      await axios.post(`${API_BASE}/api/mainpage/update-event`, ev);
     }
     fetchEvents();
   };
 
   const handleAdd = async () => {
-    await axios.post('http://18.143.246.46:5000/api/mainpage/create-event', newEvent);
+    await axios.post(`${API_BASE}/api/mainpage/create-event`, newEvent);
     setNewEvent({ id: '', event_name: '', event_photo: '', event_video: '', event_content: '', event_date: '' });
     fetchEvents();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete('http://18.143.246.46:5000/api/mainpage/delete-event/' + id);
+    await axios.delete(`${API_BASE}/api/mainpage/delete-event/${id}`);
     fetchEvents();
   };
 
+  const getImageUrl = (val) => {
+    if (!val) return '';
+    return `${API_BASE}${val.replace(/^~\/billard\/bidavn\/backend/, '')}`;
+  };
+
   return (
-    <div>
-      <h3>Danh sách Sự kiện</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th><th>Tên</th><th>Ảnh</th><th>Upload</th><th>Video</th><th>Nội dung</th><th>Ngày</th><th>Xoá</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map((e, idx) => (
-            <tr key={e.id}>
-              <td>{e.id}</td>
-              <td>{e.event_name}</td>
-              <td>{e.event_photo}</td>
-              <td><input type="file" onChange={(ev) => handleUpload(ev, idx)} /></td>
-              <td>{e.event_video}</td>
-              <td>{e.event_content}</td>
-              <td>{e.event_date}</td>
-              <td><button onClick={() => handleDelete(e.id)}>Xoá</button></td>
+    <div style={{ padding: '20px', background: '#f2f8f9', minHeight: '100vh' }}>
+      <h2 style={{
+        color: '#2a5d9f',
+        textAlign: 'center',
+        marginBottom: '24px',
+        borderBottom: '2px solid #ccc',
+        paddingBottom: '10px'
+      }}>
+        Cấu hình Sự kiện
+      </h2>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{
+          borderCollapse: 'collapse',
+          width: '100%',
+          background: '#fff',
+          boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+          borderRadius: '8px',
+          overflow: 'hidden'
+        }}>
+          <thead style={{ background: '#2a5d9f', color: 'white' }}>
+            <tr>
+              <th style={th}>ID</th>
+              <th style={th}>Tên</th>
+              <th style={th}>Ảnh</th>
+              <th style={th}>Upload</th>
+              <th style={th}>Video</th>
+              <th style={th}>Nội dung</th>
+              <th style={th}>Ngày</th>
+              <th style={th}>Xoá</th>
             </tr>
-          ))}
-          <tr>
-            <td><input value={newEvent.id} onChange={e => setNewEvent({ ...newEvent, id: e.target.value })} /></td>
-            <td><input value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
-            <td></td>
-            <td><input type="file" onChange={async (e) => {
-              const formData = new FormData();
-              formData.append('image', e.target.files[0]);
-              const res = await axios.post('http://18.143.246.46:5000/api/mainpage/upload-event', formData);
-              setNewEvent({ ...newEvent, event_photo: res.data.filePath });
-            }} /></td>
-            <td><input value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
-            <td><input value={newEvent.event_content} onChange={e => setNewEvent({ ...newEvent, event_content: e.target.value })} /></td>
-            <td><input value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} /></td>
-            <td><button onClick={handleAdd}>Thêm</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button onClick={handleSave}>Lưu tất cả</button>
+          </thead>
+          <tbody>
+            {events.map((e, idx) => (
+              <tr key={e.id} style={idx % 2 === 0 ? trEven : trOdd}>
+                <td style={td}>{e.id}</td>
+                <td style={td}><input style={input} value={e.event_name} onChange={ev => updateField(ev, idx, 'event_name')} /></td>
+                <td style={td}>
+                  {e.event_photo && (
+                    <div className="thumbnail-container">
+                      <img
+                        src={getImageUrl(e.event_photo)}
+                        alt="event"
+                        style={thumbnailStyle}
+                        className="thumbnail-image"
+                      />
+                      <div className="preview-popup">
+                        <img src={getImageUrl(e.event_photo)} alt="preview" />
+                      </div>
+                    </div>
+                  )}
+                </td>
+                <td style={td}>
+                  <div
+                    onDrop={(ev) => handleDrop(ev, idx)}
+                    onDragOver={(ev) => ev.preventDefault()}
+                    style={dropZone}
+                  >
+                    Kéo & thả ảnh
+                  </div>
+                </td>
+                <td style={td}><input style={{ ...input, width: '200px' }} value={e.event_video} onChange={ev => updateField(ev, idx, 'event_video')} /></td>
+                <td style={td}>
+                  <MdEditor
+                    value={e.event_content}
+                    style={{ height: '150px' }}
+                    renderHTML={(text) => mdParser.render(text)}
+                    onChange={({ text }) => updateField({ target: { value: text } }, idx, 'event_content')}
+                  />
+                </td>
+                <td style={td}>
+                  <input
+                    type="date"
+                    value={e.event_date?.substring(0, 10)}
+                    onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
+                  />
+                </td>
+                <td style={td}><button style={btnDanger} onClick={() => handleDelete(e.id)}>Xoá</button></td>
+              </tr>
+            ))}
+            <tr style={{ background: '#e0efff' }}>
+              <td style={td}><input style={input} value={newEvent.id} onChange={e => setNewEvent({ ...newEvent, id: e.target.value })} /></td>
+              <td style={td}><input style={input} value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
+              <td style={td}>
+                {newEvent.event_photo && (
+                  <div className="thumbnail-container">
+                    <img
+                      src={getImageUrl(newEvent.event_photo)}
+                      alt="new"
+                      style={thumbnailStyle}
+                      className="thumbnail-image"
+                    />
+                    <div className="preview-popup">
+                      <img src={getImageUrl(newEvent.event_photo)} alt="preview" />
+                    </div>
+                  </div>
+                )}
+              </td>
+              <td style={td}>
+                <div
+                  onDrop={(e) => handleDrop(e, null, true)}
+                  onDragOver={(e) => e.preventDefault()}
+                  style={dropZone}
+                >
+                  Kéo & thả ảnh mới
+                </div>
+              </td>
+              <td style={td}><input style={input} value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
+              <td style={td}>
+                <MdEditor
+                  value={newEvent.event_content}
+                  style={{ height: '150px' }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={({ text }) => setNewEvent({ ...newEvent, event_content: text })}
+                />
+              </td>
+              <td style={td}>
+                <input type="date" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} />
+              </td>
+              <td style={td}><button style={btnPrimary} onClick={handleAdd}>Thêm</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ marginTop: '20px', textAlign: 'right' }}>
+        <button style={btnPrimary} onClick={handleSave}>💾 Lưu tất cả</button>
+      </div>
+
+      <style>{`
+        .thumbnail-container {
+          position: relative;
+          display: inline-block;
+        }
+        .thumbnail-image {
+          width: 60px;
+          height: auto;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .preview-popup {
+          display: none;
+          position: absolute;
+          top: 0;
+          left: 70px;
+          z-index: 10;
+          background: white;
+          border: 1px solid #ccc;
+          padding: 4px;
+          border-radius: 6px;
+          box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        }
+        .thumbnail-container:hover .preview-popup {
+          display: block;
+        }
+        .preview-popup img {
+          max-width: 200px;
+          height: auto;
+        }
+      `}</style>
     </div>
   );
+
+  function updateField(ev, idx, field, customVal) {
+    const updated = [...events];
+    updated[idx][field] = customVal ?? ev.target.value;
+    setEvents(updated);
+  }
+};
+
+// Styles
+const th = { padding: '10px', textAlign: 'left', borderBottom: '1px solid #ccc' };
+const td = { padding: '8px', borderBottom: '1px solid #eee', verticalAlign: 'top' };
+const input = { padding: '5px', borderRadius: '4px', border: '1px solid #ccc' };
+const btnPrimary = {
+  padding: '6px 12px',
+  background: '#2a5d9f',
+  color: 'white',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer'
+};
+const btnDanger = {
+  ...btnPrimary,
+  background: '#d9534f'
+};
+const trEven = { background: '#ffffff' };
+const trOdd = { background: '#f9f9f9' };
+const thumbnailStyle = {
+  maxWidth: '60px',
+  maxHeight: '40px',
+  objectFit: 'contain',
+  margin: '2px'
+};
+const dropZone = {
+  padding: '12px',
+  border: '2px dashed #bbb',
+  borderRadius: '6px',
+  textAlign: 'center',
+  color: '#666',
+  cursor: 'pointer',
+  backgroundColor: '#fdfdfd'
 };
 
 export default MainPageEventTab;
