@@ -84,8 +84,8 @@ const MainPageEventTab = () => {
         }}>
           <thead style={{ background: '#2a5d9f', color: 'white' }}>
             <tr>
-              <th style={th}>ID</th>
-              <th style={th}>Tên</th>
+              <th style={{ ...th, width: '80px' }}>ID</th>
+              <th style={{ ...th, width: '220px' }}>Tên</th>
               <th style={th}>Ảnh</th>
               <th style={th}>Upload</th>
               <th style={th}>Video</th>
@@ -96,11 +96,26 @@ const MainPageEventTab = () => {
           <tbody>
             {events.map((e, idx) => (
               <React.Fragment key={e.id}>
-                <tr style={idx % 2 === 0 ? trEven : trOdd}>
-                  <td style={td}>{e.id}</td>
-                  <td style={td}>
-                    <input style={input} value={e.event_name} onChange={ev => updateField(ev, idx, 'event_name')} />
+                <tr style={{
+                  ...((idx % 2 === 0) ? trEven : trOdd),
+                  borderBottom: '2px solid #ccc'
+                }}>
+                  <td style={{
+                    ...td,
+                    maxWidth: '80px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>{e.id}</td>
+
+                  <td style={{ ...td, maxWidth: '220px' }}>
+                    <input
+                      style={{ ...input, width: '100%' }}
+                      value={e.event_name}
+                      onChange={ev => updateField(ev, idx, 'event_name')}
+                    />
                   </td>
+
                   <td style={td}>
                     {e.event_photo && (
                       <div className="thumbnail-container">
@@ -116,6 +131,7 @@ const MainPageEventTab = () => {
                       </div>
                     )}
                   </td>
+
                   <td style={td}>
                     <div
                       onDrop={(ev) => handleDrop(ev, idx)}
@@ -125,6 +141,7 @@ const MainPageEventTab = () => {
                       Kéo & thả ảnh
                     </div>
                   </td>
+
                   <td style={td}>
                     <input
                       style={{ ...input, width: '200px' }}
@@ -132,6 +149,7 @@ const MainPageEventTab = () => {
                       onChange={ev => updateField(ev, idx, 'event_video')}
                     />
                   </td>
+
                   <td style={td}>
                     <input
                       type="date"
@@ -139,12 +157,18 @@ const MainPageEventTab = () => {
                       onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
                     />
                   </td>
+
                   <td style={td}>
                     <button style={btnDanger} onClick={() => handleDelete(e.id)}>Xoá</button>
                   </td>
                 </tr>
+
                 <tr>
-                  <td colSpan="7" style={{ background: '#f7faff', padding: '10px 20px' }}>
+                  <td colSpan="7" style={{
+                    background: '#f7faff',
+                    padding: '15px 20px',
+                    borderBottom: '2px solid #ccc'
+                  }}>
                     <b>Nội dung:</b>
                     <MdEditor
                       value={e.event_content}
@@ -160,7 +184,9 @@ const MainPageEventTab = () => {
             {/* Dòng thêm mới */}
             <tr style={{ background: '#e0efff' }}>
               <td style={td}><input style={input} value={newEvent.id} onChange={e => setNewEvent({ ...newEvent, id: e.target.value })} /></td>
-              <td style={td}><input style={input} value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
+
+              <td style={td}><input style={{ ...input, width: '100%' }} value={newEvent.event_name} onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })} /></td>
+
               <td style={td}>
                 {newEvent.event_photo && (
                   <div className="thumbnail-container">
@@ -176,6 +202,7 @@ const MainPageEventTab = () => {
                   </div>
                 )}
               </td>
+
               <td style={td}>
                 <div
                   onDrop={(e) => handleDrop(e, null, true)}
@@ -185,14 +212,22 @@ const MainPageEventTab = () => {
                   Kéo & thả ảnh mới
                 </div>
               </td>
+
               <td style={td}><input style={input} value={newEvent.event_video} onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })} /></td>
+
               <td style={td}>
                 <input type="date" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} />
               </td>
+
               <td style={td}><button style={btnPrimary} onClick={handleAdd}>Thêm</button></td>
             </tr>
+
             <tr>
-              <td colSpan="7" style={{ background: '#eef7ff', padding: '10px 20px' }}>
+              <td colSpan="7" style={{
+                background: '#eef7ff',
+                padding: '15px 20px',
+                borderBottom: '2px solid #ccc'
+              }}>
                 <b>Nội dung:</b>
                 <MdEditor
                   value={newEvent.event_content}
