@@ -100,13 +100,7 @@ const MainPageEventTab = () => {
                   ...((idx % 2 === 0) ? trEven : trOdd),
                   borderBottom: '2px solid #ccc'
                 }}>
-                  <td style={{
-                    ...td,
-                    maxWidth: '80px',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}>{e.id}</td>
+                  <td style={{ ...td }}>{e.id}</td>
 
                   <td style={{ ...td }}>
                     <input
