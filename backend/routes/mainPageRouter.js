@@ -44,4 +44,35 @@ router.post('/upload-event', uploadEvent.single('image'), (req, res) => {
   res.json({ filePath: '~/billard/bidavn/backend/uploads/events/' + req.file.filename });
 });
 
+router.get('/events', async (req, res) => {
+  try {
+    const result = await controller.getEventsInternal(); // tái sử dụng logic
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch events' });
+  }
+});
+
+router.get('/news', async (req, res) => {
+  try {
+    const result = await controller.getEventsInternal(); // internal helper
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
+
+router.get('/videos', async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT * FROM mainpage_event_settings 
+      WHERE event_video IS NOT NULL AND event_video <> '' 
+      ORDER BY event_date DESC
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch videos' });
+  }
+});
+
 module.exports = router;

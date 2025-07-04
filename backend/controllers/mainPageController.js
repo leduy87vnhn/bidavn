@@ -85,3 +85,8 @@ exports.deleteEvent = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete event' });
   }
 };
+
+exports.getEventsInternal = async () => {
+  const result = await db.query('SELECT * FROM mainpage_event_settings ORDER BY event_date DESC');
+  return result.rows;
+};
