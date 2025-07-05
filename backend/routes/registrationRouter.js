@@ -294,7 +294,7 @@ router.get('/count', async (req, res) => {
 router.get('/clubs', async (req, res) => {
   try {
     const result = await client.query(`
-      SELECT DISTINCT LOWER(TRIM(club)) as club
+      SELECT DISTINCT TRIM(club) as club
       FROM competitors
       WHERE club IS NOT NULL AND TRIM(club) <> ''
     `);
