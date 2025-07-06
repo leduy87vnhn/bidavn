@@ -16,6 +16,7 @@ sudo npm install -g serve
 npm install express pg cors dotenv jsonwebtoken nodemailer
 sudo apt install build-essential
 sudo apt install nginx
+sudo apt install certbot python3-certbot-nginx -y
 sudo ufw allow OpenSSH
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
@@ -49,3 +50,16 @@ Show log:
 sudo pm2 logs backend-server
 sudo pm2 logs billard-frontend
 sudo pm2 flush
+
+
+
+
+
+Install https:
+sudo nano /etc/nginx/sites-available/hbsf
+sudo ln -s /etc/nginx/sites-available/hbsf /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+sudo certbot --nginx -d hbsf.com.vn -d www.hbsf.com.vn
+
+REACT_APP_API_BASE_URL=https://hbsf.com.vn/api
