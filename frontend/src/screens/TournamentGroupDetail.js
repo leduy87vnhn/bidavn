@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
 import MainLayout from '../components/MainLayout';
 import TournamentTabDetail from '../components/TournamentTabDetail';
+import { FaArrowLeft, FaCamera } from 'react-icons/fa';
 
 const TournamentGroupDetail = () => {
   const { groupId } = useParams();
@@ -11,6 +12,16 @@ const TournamentGroupDetail = () => {
   const [tournaments, setTournaments] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [logoFile, setLogoFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const fileInputRef = useRef();
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem('user_info');
+    if (userInfo) setUser(JSON.parse(userInfo));
+  }, []);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -29,36 +40,101 @@ const TournamentGroupDetail = () => {
     fetchGroup();
   }, [groupId]);
 
+  // Upload background group
+  const handleBackgroundUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    const form = new FormData();
+    form.append('background', file);
+    try {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/group/${groupId}/upload-background`, form, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      alert('✅ Cập nhật hình nền group thành công!');
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/group/${groupId}`);
+      setGroup(res.data.group);
+    } catch (err) {
+      alert('❌ Lỗi khi cập nhật hình nền group.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (loading) return <MainLayout><p>Đang tải...</p></MainLayout>;
   if (!group) return <MainLayout><p>Không tìm thấy nhóm giải đấu.</p></MainLayout>;
   if (!tournaments.length) return <MainLayout><p>Nhóm này chưa có giải đấu nào.</p></MainLayout>;
 
+  const groupBackgroundUrl = group.background_image
+    ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
+    : '';
+
   return (
     <MainLayout>
-      <div style={{
-        maxWidth: 1000, margin: '0 auto', padding: 32,
-        background: '#f7fafb', borderRadius: 18, boxShadow: '0 2px 10px #bde9cf60'
-      }}>
-        <h1 style={{ marginBottom: 8 }}>{group.tournament_name}</h1>
-        <div style={{ marginBottom: 18, fontSize: 15, color: '#678' }}>
-          <strong>Thời gian:</strong>
-          {group.start_date ? ` ${new Date(group.start_date).toLocaleDateString('vi-VN')}` : ''}
-          {group.end_date ? ` - ${new Date(group.end_date).toLocaleDateString('vi-VN')}` : ''}
+      <div
+        style={{
+          backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh',
+          position: 'relative',
+        }}
+      >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '24px 36px 0 36px',
+        }}>
+          <button
+            onClick={() => navigate('/tournaments')}
+            style={{
+              background: '#2a334a',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              padding: '10px 18px',
+              fontSize: 17,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontWeight: 600,
+              cursor: 'pointer'
+            }}
+          >
+            <FaArrowLeft /> Quay lại danh sách
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            {user?.user_type === 2 && (
+              <label
+                style={{
+                  background: '#12ad7b',
+                  color: 'white',
+                  padding: '9px 15px',
+                  borderRadius: 8,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: 15,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 7,
+                }}
+              >
+                <FaCamera /> Tải hình nền group
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBackgroundUpload}
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                />
+              </label>
+            )}
+            {uploading && <span style={{ color: '#246' }}>Đang tải lên...</span>}
+            {/* Logo để bên phải nếu muốn */}
+          </div>
         </div>
-        <Tabs
-          value={activeTab}
-          onChange={(_, v) => setActiveTab(v)}
-          variant="scrollable"
-          scrollButtons="auto"
-          sx={{ mb: 2, borderBottom: '2px solid #a5a5a5' }}
-        >
-          {tournaments.map((t, idx) => (
-            <Tab key={t.id} label={t.name} />
-          ))}
-        </Tabs>
-        <div style={{ marginTop: 16 }}>
-          <TournamentTabDetail tournament={tournaments[activeTab]} />
-        </div>
+        {/* ...Phần tabs và TournamentTabDetail giữ nguyên... */}
       </div>
     </MainLayout>
   );

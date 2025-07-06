@@ -340,6 +340,34 @@ router.get('/group/:groupId', async (req, res) => {
   }
 });
 
+// Multer config cho background group
+const groupBackgroundStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/backgrounds/groups');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const uploadGroupBackground = multer({ storage: groupBackgroundStorage });
+
+// API upload background cho group
+router.post('/group/:groupId/upload-background', uploadGroupBackground.single('background'), async (req, res) => {
+  const { groupId } = req.params;
+  const file = req.file;
+  if (!file) return res.status(400).json({ message: 'Không có file nào được tải lên.' });
+  try {
+    await client.query(
+      'UPDATE tournament_group SET background_image = $1 WHERE id = $2',
+      [file.filename, groupId]
+    );
+    res.json({ message: 'Cập nhật hình nền group thành công', filename: file.filename });
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi cập nhật background group' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {

@@ -215,14 +215,15 @@ const TournamentTabDetail = ({ tournament: tournamentProp }) => {
   return (
     <div
       style={{
-        backgroundImage: tournament.background_image
+        background: transparentBackground ? 'rgba(255,255,255,0.82)' : tournament.background_image
           ? `url(${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${tournament.background_image})`
           : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: '80vh',
         padding: '30px 0',
-        backdropFilter: 'blur(3px)'
+        borderRadius: 16,
+        backdropFilter: 'blur(3px)',
       }}
     >
       <div
@@ -234,7 +235,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp }) => {
           borderRadius: '16px',
         }}
       >
-        {logoFile && (
+        {/* {logoFile && (
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
             <img
               src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
@@ -242,7 +243,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp }) => {
               style={{ height: 60, objectFit: 'contain' }}
             />
           </div>
-        )}
+        )} */}
         <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
 
         <div style={{ marginBottom: '10px' }}>
