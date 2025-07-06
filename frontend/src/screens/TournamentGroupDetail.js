@@ -40,6 +40,19 @@ const TournamentGroupDetail = () => {
     fetchGroup();
   }, [groupId]);
 
+
+    useEffect(() => {
+    const fetchLogo = async () => {
+        try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+        setLogoFile(res.data.filename);
+        } catch (err) {
+        setLogoFile(null);
+        }
+    };
+    fetchLogo();
+    }, []);
+
   // Upload background group
   const handleBackgroundUpload = async (e) => {
     const file = e.target.files[0];
@@ -69,6 +82,13 @@ const TournamentGroupDetail = () => {
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
     : '';
 
+    const formatDate = (isoStr) => {
+    if (!isoStr) return '';
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return '';
+    return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
+    };
+
     return (
     <MainLayout>
         <div
@@ -80,6 +100,28 @@ const TournamentGroupDetail = () => {
             position: 'relative',
         }}
         >
+        {/* Logo HBSF góc trên phải */}
+        {logoFile && (
+            <div
+            style={{
+                position: 'absolute',
+                top: 24,
+                right: 36,
+                zIndex: 10,
+                background: '#fff9',
+                borderRadius: 12,
+                padding: 5,
+                boxShadow: '0 2px 12px #0002'
+            }}
+            >
+            <img
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
+                alt="Logo HBSF"
+                style={{ height: 58, objectFit: 'contain', display: 'block' }}
+            />
+            </div>
+        )}
+
         <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -134,14 +176,30 @@ const TournamentGroupDetail = () => {
             </div>
         </div>
         {/* Tên nhóm và thời gian */}
-        <div style={{ padding: '24px 36px 0 36px' }}>
-            <h2 style={{ color: '#1d5ae4', margin: 0 }}>{group.tournament_name}</h2>
-            {(group.start_date || group.end_date) && (
-            <div style={{ color: '#444', marginBottom: 12 }}>
-                {group.start_date && `Từ ${group.start_date}`}{" "}
-                {group.end_date && `đến ${group.end_date}`}
+        <div style={{ padding: '32px 36px 0 36px' }}>
+        <h1 style={{
+            color: '#1558d6',
+            margin: 0,
+            fontWeight: 800,
+            fontSize: '2.3rem',
+            lineHeight: 1.2
+        }}>
+            {group.tournament_name}
+        </h1>
+        {(group.start_date || group.end_date) && (
+            <div style={{
+            color: '#232323',
+            marginTop: 8,
+            fontSize: '1.15rem',
+            fontWeight: 500,
+            letterSpacing: 0.5
+            }}>
+            {group.start_date &&
+                `Từ ${formatDate(group.start_date)}`}
+            {group.end_date &&
+                ` đến ${formatDate(group.end_date)}`}
             </div>
-            )}
+        )}
         </div>
         {/* Tabs và nội dung từng giải */}
         <div style={{
