@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-const TournamentTabDetail = ({ tournament: tournamentProp }) => {
+const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground = false }) => {
   const [tournament, setTournament] = useState(tournamentProp);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(tournamentProp);

@@ -186,10 +186,7 @@ const TournamentGroupDetail = () => {
             </Tabs>
             <div style={{ marginTop: 20 }}>
             {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
-                <TournamentTabDetail
-                tournament={tournaments[activeTab]}
-                transparentBackground
-                />
+                <TournamentTabDetail tournament={tournament} transparentBackground={true} />
             ) : (
                 <p>Nhóm này chưa có giải đấu nào.</p>
             )}
