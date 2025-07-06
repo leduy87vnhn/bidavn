@@ -314,6 +314,32 @@ router.get('/groups', async (req, res) => {
   }
 });
 
+// GET group info và list tournaments theo group_id
+router.get('/group/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+  try {
+    // Lấy group info
+    const groupResult = await client.query(
+      `SELECT * FROM tournament_group WHERE id = $1`, [groupId]
+    );
+    if (groupResult.rows.length === 0)
+      return res.status(404).json({ message: 'Không tìm thấy group' });
+
+    // Lấy danh sách tournament con
+    const tournamentResult = await client.query(
+      `SELECT * FROM tournaments WHERE group_id = $1 ORDER BY start_date ASC`, [groupId]
+    );
+
+    res.json({
+      group: groupResult.rows[0],
+      tournaments: tournamentResult.rows
+    });
+  } catch (error) {
+    console.error('Lỗi lấy group:', error);
+    res.status(500).json({ message: 'Lỗi server khi lấy group' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {

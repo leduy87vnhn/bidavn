@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import '../tournament.scss';
 
 const TournamentList = () => {
     const navigate = useNavigate();
@@ -478,16 +479,32 @@ const TournamentList = () => {
                         {Object.values(groupedTournaments).map(group => (
                             <React.Fragment key={group.group_id || 'ungrouped'}>
                             <tr>
-                                <td colSpan={user?.user_type === 2 ? 8 : 7} style={{
+                            <td colSpan={user?.user_type === 2 ? 8 : 7} style={{
                                 backgroundColor: '#dbeafe',
                                 fontWeight: 'bold',
                                 padding: '10px',
                                 border: '1px solid #ccc',
                                 whiteSpace: 'pre-line'
-                                }}>
-                                Giải đấu: {group.group_name}{"\n"}
+                            }}>
+                                {/* Tên group là Link nếu group_id có */}
+                                Giải đấu: {group.group_id ? (
+                                <Link
+                                    to={`/tournament-group/${group.group_id}`}
+                                    style={{
+                                    color: '#007bff',
+                                    textDecoration: 'underline',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer'
+                                    }}
+                                >
+                                    {group.group_name}
+                                </Link>
+                                ) : (
+                                group.group_name
+                                )}
+                                {"\n"}
                                 Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
-                                </td>
+                            </td>
                             </tr>
                             {group.tournaments.map(tour => {
                                 const status = getTournamentStatus(tour.start_date, tour.end_date);

@@ -52,3 +52,44 @@
 .tournament-list-container .grey {
     background-color: #6c757d;
 }
+
+/* Button "Thêm nội dung" màu teal */
+.tournament-list-container .teal {
+    background-color: #17a2b8;
+}
+
+/* Styles cho React Modal */
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.ReactModal__Content {
+    width: 500px;
+    margin: auto;
+    border-radius: 10px !important;
+    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Modal nội dung */
+.modal-title {
+    text-align: center;
+}
+
+.modal-textarea {
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px;
+    resize: vertical;
+    border: 1px solid #ccc;
+}
+
+.modal-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

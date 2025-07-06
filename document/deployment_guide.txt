@@ -25,7 +25,7 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx
 npm install react-icons
 npm install xlsx
-npm install react-modal
+npm install react-modal --legacy-peer-deps
 npm install xlsx file-saver
 npm install react-image-crop
 npm install react-markdown-editor-lite react-markdown --legacy-peer-deps

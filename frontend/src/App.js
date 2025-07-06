@@ -14,6 +14,7 @@ import TournamentCompetitorList from './components/TournamentCompetitorList';
 import ReactModal from 'react-modal';
 import MainPage from './screens/MainPage';
 import MainPageSettings from './screens/MainPageSettings';
+import TournamentGroupDetail from './screens/TournamentGroupDetail';
 
 ReactModal.setAppElement('#root');
 
@@ -33,7 +34,7 @@ export default function App() {
         <Route path="/registration/:id/detail" element={<RegistrationDetail />} />
         <Route path="/tournament/:id/competitors" element={<TournamentCompetitorList />} />
         <Route path="/settings" element={<MainPageSettings />} />
-
+        <Route path="/tournament-group/:groupId" element={<TournamentGroupDetail />} />
 
         {/* Route bảo vệ: chỉ vào nếu đã login */}
         <Route
