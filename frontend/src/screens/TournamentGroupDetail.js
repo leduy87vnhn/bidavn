@@ -69,74 +69,134 @@ const TournamentGroupDetail = () => {
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
     : '';
 
-  return (
+    return (
     <MainLayout>
-      <div
+        <div
         style={{
-          backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: '100vh',
-          position: 'relative',
+            backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            minHeight: '100vh',
+            position: 'relative',
         }}
-      >
+        >
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '24px 36px 0 36px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '24px 36px 0 36px',
         }}>
-          <button
+            <button
             onClick={() => navigate('/tournaments')}
             style={{
-              background: '#2a334a',
-              color: 'white',
-              border: 'none',
-              borderRadius: 8,
-              padding: '10px 18px',
-              fontSize: 17,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontWeight: 600,
-              cursor: 'pointer'
+                background: '#2a334a',
+                color: 'white',
+                border: 'none',
+                borderRadius: 8,
+                padding: '10px 18px',
+                fontSize: 17,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                fontWeight: 600,
+                cursor: 'pointer'
             }}
-          >
+            >
             <FaArrowLeft /> Quay lại danh sách
-          </button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             {user?.user_type === 2 && (
-              <label
+                <label
                 style={{
-                  background: '#12ad7b',
-                  color: 'white',
-                  padding: '9px 15px',
-                  borderRadius: 8,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: 15,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 7,
+                    background: '#12ad7b',
+                    color: 'white',
+                    padding: '9px 15px',
+                    borderRadius: 8,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontSize: 15,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 7,
                 }}
-              >
+                >
                 <FaCamera /> Tải hình nền group
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBackgroundUpload}
-                  style={{ display: 'none' }}
-                  ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBackgroundUpload}
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
                 />
-              </label>
+                </label>
             )}
             {uploading && <span style={{ color: '#246' }}>Đang tải lên...</span>}
-            {/* Logo để bên phải nếu muốn */}
-          </div>
+            </div>
         </div>
-        {/* ...Phần tabs và TournamentTabDetail giữ nguyên... */}
-      </div>
+        {/* Tên nhóm và thời gian */}
+        <div style={{ padding: '24px 36px 0 36px' }}>
+            <h2 style={{ color: '#1d5ae4', margin: 0 }}>{group.tournament_name}</h2>
+            {(group.start_date || group.end_date) && (
+            <div style={{ color: '#444', marginBottom: 12 }}>
+                {group.start_date && `Từ ${group.start_date}`}{" "}
+                {group.end_date && `đến ${group.end_date}`}
+            </div>
+            )}
+        </div>
+        {/* Tabs và nội dung từng giải */}
+        <div style={{
+            background: 'rgba(255,255,255,0.82)',
+            margin: 36,
+            padding: 28,
+            borderRadius: 20,
+            boxShadow: '0 2px 18px 2px #0001',
+            minHeight: 320
+        }}>
+            <Tabs
+            value={activeTab}
+            onChange={(_, v) => setActiveTab(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+                marginBottom: 2,
+                '.MuiTab-root': {
+                fontWeight: 600,
+                color: '#1976d2'
+                },
+                '.Mui-selected': {
+                color: '#fff',
+                backgroundColor: '#1976d2',
+                borderRadius: '8px 8px 0 0'
+                }
+            }}
+            >
+            {Array.isArray(tournaments) && tournaments.length > 0
+                ? tournaments.map((t, idx) => (
+                    <Tab
+                    key={t.id}
+                    label={t.name}
+                    sx={{
+                        background: '#e3edfa',
+                        marginRight: 2,
+                        minWidth: 140,
+                    }}
+                    />
+                ))
+                : <Tab label="Không có giải đấu" disabled />}
+            </Tabs>
+            <div style={{ marginTop: 20 }}>
+            {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
+                <TournamentTabDetail
+                tournament={tournaments[activeTab]}
+                transparentBackground
+                />
+            ) : (
+                <p>Nhóm này chưa có giải đấu nào.</p>
+            )}
+            </div>
+        </div>
+        </div>
     </MainLayout>
-  );
+    );
 };
 export default TournamentGroupDetail;
