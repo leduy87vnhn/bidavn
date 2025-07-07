@@ -282,67 +282,25 @@ const TournamentList = () => {
                         )}
                         <h2>Danh sách giải đấu</h2>
                         {user?.user_type === 2 && (
-                            <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <button
-                                    className="teal"
-                                    style={{ marginRight: '10px' }}
-                                    onClick={() => setShowGroupPopup(true)}
-                                >
-                                    Thêm Giải Đấu
-                                </button>
-                                <button
-                                    style={{
-                                        padding: '6px 12px',
-                                        backgroundColor: '#007bff',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                    }}
-                                    onClick={() => {
-                                        setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
-                                        setShowForm(true);
-                                    }}
-                                >
-                                    Thêm Nội Dung
-                                </button>
-                                <label
-                                    style={{
-                                        padding: '6px 12px',
-                                        backgroundColor: '#28a745',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    Tải hình nền
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleListBackgroundUpload}
-                                        style={{ display: 'none' }}
-                                    />
-                                </label>
-                                <label
-                                    style={{
-                                        padding: '6px 12px',
-                                        backgroundColor: '#ffc107',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    Tải Logo
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleLogoUpload}
-                                        style={{ display: 'none' }}
-                                    />
-                                </label>
-                                {uploading && <span>Đang tải lên...</span>}
+                            <div className="top-action-group">
+                            <button className="top-action-button teal" onClick={() => setShowGroupPopup(true)}>
+                                Thêm Giải Đấu
+                            </button>
+                            <button className="top-action-button primary" onClick={() => {
+                                setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
+                                setShowForm(true);
+                            }}>
+                                Thêm Nội Dung
+                            </button>
+                            <label className="top-action-button success" style={{ cursor: 'pointer' }}>
+                                Tải hình nền
+                                <input type="file" accept="image/*" onChange={handleListBackgroundUpload} style={{ display: 'none' }} />
+                            </label>
+                            <label className="top-action-button warning" style={{ cursor: 'pointer' }}>
+                                Tải Logo
+                                <input type="file" accept="image/*" onChange={handleLogoUpload} style={{ display: 'none' }} />
+                            </label>
+                            {uploading && <span style={{ marginLeft: 10 }}>Đang tải lên...</span>}
                             </div>
                         )}
                     </div>
