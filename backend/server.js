@@ -14,7 +14,12 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-const whitelist = ['http://localhost:3000', 'http://18.143.246.46:3000', 'https://hbsf.com.vn'];
+const whitelist = [
+  'http://localhost:3000',
+  'http://18.143.246.46:3000',
+  'https://hbsf.com.vn',
+  'https://www.hbsf.com.vn'
+];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.includes(origin)) {
