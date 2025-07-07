@@ -13,6 +13,8 @@ const AddTournamentGroupModal = ({
     const [description, setDescription] = useState('');
     const [msg, setMsg] = useState('');
     const [loading, setLoading] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const handleCreateGroup = async () => {
         if (!groupName.trim()) {
