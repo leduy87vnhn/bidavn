@@ -354,14 +354,15 @@ const uploadGroupBackground = multer({ storage: groupBackgroundStorage });
 
 // API tạo nhóm giải (tournament_group)
 router.post('/tournament-group', async (req, res) => {
-  const { tournament_name, description } = req.body;
+  const { tournament_name, description, start_date, end_date } = req.body;
   if (!tournament_name) {
     return res.status(400).json({ message: 'Tên nhóm không được để trống' });
   }
   try {
     const result = await client.query(
-      `INSERT INTO tournament_group (tournament_name, description) VALUES ($1, $2) RETURNING *`,
-      [tournament_name, description || null]
+      `INSERT INTO tournament_group (tournament_name, description, start_date, end_date, created_date, modified_date)
+       VALUES ($1, $2, $3, $4, NOW(), NOW()) RETURNING *`,
+      [tournament_name, description || null, start_date || null, end_date || null]
     );
     res.json(result.rows[0]);
   } catch (error) {

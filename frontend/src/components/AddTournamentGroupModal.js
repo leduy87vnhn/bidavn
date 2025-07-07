@@ -64,6 +64,28 @@ const AddTournamentGroupModal = ({
                 placeholder="Tên nhóm giải (bắt buộc)"
                 style={{ padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
             />
+
+            {/* -------- Thêm 2 trường ngày -------- */}
+            <label htmlFor="startDate" style={{ fontWeight: 600 }}>Ngày bắt đầu *</label>
+            <input
+                id="startDate"
+                type="date"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+                style={{ padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
+                required
+            />
+            <label htmlFor="endDate" style={{ fontWeight: 600 }}>Ngày kết thúc *</label>
+            <input
+                id="endDate"
+                type="date"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+                style={{ padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
+                required
+            />
+            {/* -------- Kết thúc -------- */}
+
             <label htmlFor="desc">Mô tả (tuỳ chọn)</label>
             <textarea
                 id="desc"
