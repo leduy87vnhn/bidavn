@@ -199,22 +199,38 @@ button.grey:hover:not(:disabled) {
   margin-top: 12px;
 }
 
+.top-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Áp dụng cho cả button và label */
 .top-action-button {
-  width: 150px;              /* 👈 ép bằng nhau */
-  height: 40px;
-  padding: 8px 14px;
+  width: 150px;
+  height: 42px;
+  padding: 8px 12px;
   border: none;
   border-radius: 6px;
-  color: white;
-  font-weight: 600;
   font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
+  color: white;
+  box-sizing: border-box;
 }
 
+/* Fix input bị lộ */
+.top-action-button input[type="file"] {
+  display: none;
+}
+
+/* Màu sắc */
 .top-action-button.teal {
   background-color: #17a2b8;
 }
