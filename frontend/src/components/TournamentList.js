@@ -460,13 +460,14 @@ const TournamentList = () => {
                         >
                             Lưu
                         </button>
-                        <AddTournamentGroupModal
-                            isOpen={showGroupPopup}
-                            onClose={() => setShowGroupPopup(false)}
-                            onGroupCreated={handleGroupCreated}
-                        />
                     </div>
                 )}
+
+                <AddTournamentGroupModal
+                    isOpen={showGroupPopup}
+                    onClose={() => setShowGroupPopup(false)}
+                    onGroupCreated={handleGroupCreated}
+                />
 
                 {/* Bộ lọc trạng thái giải đấu */}
                 <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
