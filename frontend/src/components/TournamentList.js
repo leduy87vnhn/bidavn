@@ -498,22 +498,25 @@ const TournamentList = () => {
                                 return (
                                 <tr key={tour.id} style={{ backgroundColor: bgColor }}>
                                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                    <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>
-                                        {tour.name}
-                                    </Link>
-                                    {typeof tour.approved_competitors_count !== 'undefined' && (
-                                        <div onClick={() => navigate(`/tournament/${tour.id}/competitors`)} style={{
-                                        marginTop: '6px',
-                                        display: 'inline-block',
-                                        backgroundColor: '#28a745',
-                                        color: 'white',
-                                        padding: '4px 8px',
-                                        borderRadius: '5px',
-                                        fontSize: '13px'
-                                        }}>
-                                        🧑‍🎱{tour.approved_competitors_count} VĐV
+                                        <div>
+                                            <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}>
+                                            {tour.name}
+                                            </Link>
                                         </div>
-                                    )}
+                                        {typeof tour.approved_competitors_count !== 'undefined' && (
+                                            <div onClick={() => navigate(`/tournament/${tour.id}/competitors`)} style={{
+                                            marginTop: '4px',
+                                            display: 'inline-block',
+                                            backgroundColor: '#28a745',
+                                            color: 'white',
+                                            padding: '4px 8px',
+                                            borderRadius: '5px',
+                                            fontSize: '13px',
+                                            cursor: 'pointer'
+                                            }}>
+                                            🧑‍🎱 {tour.approved_competitors_count} VĐV
+                                            </div>
+                                        )}
                                     </td>
                                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
                                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>

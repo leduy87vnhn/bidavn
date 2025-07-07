@@ -56,14 +56,14 @@ const AddTournamentGroupModal = ({
             overlayClassName="ReactModal__Overlay"
             shouldCloseOnOverlayClick
         >
-            <h3 className="modal-title">Thêm Nhóm Giải</h3>
-            <label htmlFor="groupName" style={{ fontWeight: 600 }}>Tên nhóm *</label>
+            <h3 className="modal-title">Thêm Giải Đấu</h3>
+            <label htmlFor="groupName" style={{ fontWeight: 600 }}>Tên giải *</label>
             <input
                 id="groupName"
                 type="text"
                 value={groupName}
                 onChange={e => setGroupName(e.target.value)}
-                placeholder="Tên nhóm giải (bắt buộc)"
+                placeholder="Tên giải đấu (bắt buộc)"
                 style={{ padding: 8, borderRadius: 5, border: '1px solid #ccc' }}
             />
 
