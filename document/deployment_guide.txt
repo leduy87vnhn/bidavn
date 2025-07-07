@@ -56,8 +56,8 @@ sudo pm2 flush
 
 
 Install https:
-sudo nano /etc/nginx/sites-available/hbsf
-sudo ln -s /etc/nginx/sites-available/hbsf /etc/nginx/sites-enabled/
+sudo nano /etc/nginx/sites-available/hbsf.conf
+sudo ln -s /etc/nginx/sites-available/hbsf.conf /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 sudo certbot --nginx -d hbsf.com.vn -d www.hbsf.com.vn

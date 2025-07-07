@@ -6,7 +6,7 @@ const MainPageEventSlider = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    axios.get('http://18.143.246.46:5000/api/mainpage/events').then((res) => {
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/events`).then((res) => {
       const filtered = res.data.filter(e => e.event_photo);
       setEvents(filtered);
     });
@@ -21,7 +21,7 @@ const MainPageEventSlider = () => {
 
   const getEventPhotoUrl = (value) => {
     const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
-    return `http://18.143.246.46:5000${cleanPath}`;
+    return `${process.env.REACT_APP_API_BASE_URL}${cleanPath}`;
   };
 
   if (!events.length) return null;

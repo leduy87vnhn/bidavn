@@ -5,7 +5,7 @@ const MainPageHeader = () => {
   const [logos, setLogos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://18.143.246.46:5000/api/mainpage/logos').then((res) => {
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/logos`).then((res) => {
       const valid = res.data?.filter(logo => logo.settings_value);
       setLogos(valid);
     });
@@ -15,7 +15,7 @@ const MainPageHeader = () => {
 
   const getLogoUrl = (value) => {
     const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
-    return `http://18.143.246.46:5000${cleanPath}`;
+    return `${process.env.REACT_APP_API_BASE_URL}${cleanPath}`;
   };
 
   return (

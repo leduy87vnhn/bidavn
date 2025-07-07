@@ -5,7 +5,7 @@ const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    axios.get('http://18.143.246.46:5000/api/mainpage/news').then((res) => {
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/news`).then((res) => {
       const filtered = res.data.filter(e => e.event_photo);
       setNews(filtered);
     });
@@ -13,7 +13,7 @@ const MainPageNewsList = () => {
 
   const getEventPhotoUrl = (value) => {
     const cleanPath = value.replace(/^~\/billard\/bidavn\/backend/, '');
-    return `http://18.143.246.46:5000${cleanPath}`;
+    return `${process.env.REACT_APP_API_BASE_URL}${cleanPath}`;
   };
 
   const formatDate = (dateStr) => {
