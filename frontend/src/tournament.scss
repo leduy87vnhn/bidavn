@@ -200,18 +200,19 @@ button.grey:hover:not(:disabled) {
 }
 
 .top-action-button {
-  min-width: 140px;
+  width: 150px;              /* 👈 ép bằng nhau */
   height: 40px;
   padding: 8px 14px;
   border: none;
   border-radius: 6px;
   color: white;
   font-weight: 600;
-  text-align: center;
   font-size: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  cursor: pointer;
 }
 
 .top-action-button.teal {
