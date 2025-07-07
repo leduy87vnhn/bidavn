@@ -283,24 +283,26 @@ const TournamentList = () => {
                         <h2>Danh sách giải đấu</h2>
                         {user?.user_type === 2 && (
                             <div className="top-action-group">
-                            <button className="top-action-button teal" onClick={() => setShowGroupPopup(true)}>
-                                Thêm Giải Đấu
-                            </button>
-                            <button className="top-action-button primary" onClick={() => {
-                                setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
-                                setShowForm(true);
-                            }}>
-                                Thêm Nội Dung
-                            </button>
-                            <label className="top-action-button success" style={{ cursor: 'pointer' }}>
-                                Tải hình nền
-                                <input type="file" accept="image/*" onChange={handleListBackgroundUpload} style={{ display: 'none' }} />
-                            </label>
-                            <label className="top-action-button warning" style={{ cursor: 'pointer' }}>
-                                Tải Logo
-                                <input type="file" accept="image/*" onChange={handleLogoUpload} style={{ display: 'none' }} />
-                            </label>
-                            {uploading && <span style={{ marginLeft: 10 }}>Đang tải lên...</span>}
+                                <button className="top-action-button teal" onClick={() => setShowGroupPopup(true)}>
+                                    Thêm Giải Đấu
+                                </button>
+
+                                <button className="top-action-button primary" onClick={() => {
+                                    setNewTournament({ id: null, name: '', code: '', start_date: '', end_date: '' });
+                                    setShowForm(true);
+                                }}>
+                                    Thêm Nội Dung
+                                </button>
+
+                                <label className="top-action-button success" style={{ position: 'relative' }}>
+                                    <span>Tải hình nền</span>
+                                    <input type="file" accept="image/*" onChange={handleListBackgroundUpload} />
+                                </label>
+
+                                <label className="top-action-button warning" style={{ position: 'relative' }}>
+                                    <span>Tải Logo</span>
+                                    <input type="file" accept="image/*" onChange={handleLogoUpload} />
+                                </label>
                             </div>
                         )}
                     </div>
