@@ -2,23 +2,23 @@
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
-  }
-  
-  .header {
+}
+
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .tournament-card {
+}
+
+.tournament-card {
     padding: 15px;
     margin-top: 20px;
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-  }
-  
-  .admin-buttons button {
+}
+
+.admin-buttons button {
     margin-right: 10px;
     padding: 6px 12px;
     background-color: #007bff;
@@ -26,9 +26,9 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
 
-  .tournament-list-container button {
+.tournament-list-container button {
     padding: 6px 12px;
     border: none;
     border-radius: 5px;
@@ -58,50 +58,16 @@
     background-color: #17a2b8;
 }
 
-/* Styles cho React Modal */
+/* ========== ReactModal Styles ========== */
 .ReactModal__Overlay {
-    background-color: rgba(0, 0, 0, 0.5) !important;
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-}
-
-.ReactModal__Content {
-    width: 500px;
-    margin: auto;
-    border-radius: 10px !important;
-    padding: 20px !important;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Modal nội dung */
-.modal-title {
-    text-align: center;
-}
-
-.modal-textarea {
-    width: 100%;
-    border-radius: 5px;
-    padding: 10px;
-    resize: vertical;
-    border: 1px solid #ccc;
-}
-
-.modal-action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.ReactModal__Overlay {
-    background-color: rgba(0, 0, 0, 0.5) !important;
-    backdrop-filter: blur(4px);
-    z-index: 2000 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Thêm animation fade-in nếu thích */
+    background-color: rgba(0, 0, 0, 0.38) !important;
+    backdrop-filter: blur(2px);
+    z-index: 2500 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    min-height: 100vh;
+    padding-top: 6vw; /* Đẩy modal xuống một chút, responsive theo màn nhỏ */
     animation: modalFadeIn 0.18s;
 }
 
@@ -111,13 +77,13 @@
 }
 
 .ReactModal__Content {
-    width: 96vw;
-    max-width: 430px;
-    margin: auto;
+    width: 95vw;
+    max-width: 420px;
+    margin: 0;
     background: #fff;
-    border-radius: 14px !important;
-    padding: 34px 28px 20px 28px !important;
-    box-shadow: 0 4px 28px 0 rgba(0,0,0,0.18);
+    border-radius: 18px !important;
+    padding: 22px 14px 20px 14px !important;
+    box-shadow: 0 8px 40px 0 rgba(0,0,0,0.18);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -125,67 +91,97 @@
     outline: none;
     border: none;
     animation: popupIn .18s cubic-bezier(.5,1.65,.38,.87);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes popupIn {
-    from { transform: translateY(24px) scale(.95); opacity: 0; }
+    from { transform: translateY(36px) scale(.94); opacity: 0; }
     to   { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-button.teal {
-    background: #17a2b8;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
-    padding: 8px 18px;
-    transition: background 0.18s;
+/* Responsive cho mobile */
+@media (max-width: 600px) {
+  .ReactModal__Content {
+    width: 99vw;
+    max-width: 99vw;
+    min-width: 0;
+    padding: 14px 3vw 14px 3vw !important;
+    font-size: 16px;
+  }
 }
 
-button.teal:hover:not(:disabled) {
-    background: #138496;
-}
-
-button.grey {
-    background: #adb5bd;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
-    padding: 8px 18px;
-    transition: background 0.14s;
-}
-
-button.grey:hover:not(:disabled) {
-    background: #6c757d;
-}
-
-.modal-title {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 18px;
-}
-
+/* Style cho các thành phần bên trong modal */
 .ReactModal__Content label {
     margin-bottom: 5px;
     display: block;
     font-weight: 600;
+    font-size: 15px;
 }
 
 .ReactModal__Content input[type="text"],
+.ReactModal__Content input[type="date"],
 .ReactModal__Content textarea {
     width: 100%;
     padding: 10px 12px;
-    border-radius: 5px;
+    border-radius: 6px;
     border: 1px solid #ccc;
     margin-bottom: 8px;
     font-size: 16px;
 }
 
+.ReactModal__Content input[type="file"] {
+    margin-bottom: 8px;
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
 .modal-action-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 13px;
     margin-top: 18px;
+}
+
+/* Nút modal */
+button.teal {
+    background: #17a2b8;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 10px 22px;
+    transition: background 0.18s;
+    font-size: 16px;
+}
+button.teal:hover:not(:disabled) {
+    background: #138496;
+}
+button.grey {
+    background: #adb5bd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 10px 22px;
+    transition: background 0.14s;
+    font-size: 16px;
+}
+button.grey:hover:not(:disabled) {
+    background: #6c757d;
+}
+
+/* Thông báo lỗi/thành công trong modal */
+.ReactModal__Content .success {
+    color: #198754;
+    font-weight: 500;
+}
+.ReactModal__Content .error {
+    color: #d8000c;
+    font-weight: 500;
 }
