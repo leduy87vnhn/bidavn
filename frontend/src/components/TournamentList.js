@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import AddTournamentGroupModal from '../components/AddTournamentGroupModal';
 import '../tournament.scss';
 
 const TournamentList = () => {
@@ -18,6 +19,7 @@ const TournamentList = () => {
     const [logoFile, setLogoFile] = useState(null);
     const [groupSuggestions, setGroupSuggestions] = useState([]);
     const [groupNameInput, setGroupNameInput] = useState('');
+    const [showGroupPopup, setShowGroupPopup] = useState(false);
 
 
     const [newTournament, setNewTournament] = useState({
@@ -201,6 +203,14 @@ const TournamentList = () => {
         }
     };
 
+    const handleGroupCreated = (group) => {
+        // Tự động gán tên vào input, gọi lại fetchGroupSuggestions nếu cần
+        if (group && group.tournament_name) {
+            setGroupNameInput(group.tournament_name);
+            fetchGroupSuggestions(group.tournament_name);
+        }
+    };
+
     const fetchGroupSuggestions = async (text) => {
         if (text.length < 3) {
             setGroupSuggestions([]);
@@ -274,6 +284,13 @@ const TournamentList = () => {
                         {user?.user_type === 2 && (
                             <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <button
+                                    className="teal"
+                                    style={{ marginRight: '10px' }}
+                                    onClick={() => setShowGroupPopup(true)}
+                                >
+                                    Thêm Giải Đấu
+                                </button>
+                                <button
                                     style={{
                                         padding: '6px 12px',
                                         backgroundColor: '#007bff',
@@ -287,7 +304,7 @@ const TournamentList = () => {
                                         setShowForm(true);
                                     }}
                                 >
-                                    Thêm Giải Đấu
+                                    Thêm Nội Dung
                                 </button>
                                 <label
                                     style={{
@@ -443,6 +460,11 @@ const TournamentList = () => {
                         >
                             Lưu
                         </button>
+                        <AddTournamentGroupModal
+                            isOpen={showGroupPopup}
+                            onClose={() => setShowGroupPopup(false)}
+                            onGroupCreated={handleGroupCreated}
+                        />
                     </div>
                 )}
 

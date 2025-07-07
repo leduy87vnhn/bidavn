@@ -352,6 +352,24 @@ const groupBackgroundStorage = multer.diskStorage({
 });
 const uploadGroupBackground = multer({ storage: groupBackgroundStorage });
 
+// API tạo nhóm giải (tournament_group)
+router.post('/tournament-group', async (req, res) => {
+  const { tournament_name, description } = req.body;
+  if (!tournament_name) {
+    return res.status(400).json({ message: 'Tên nhóm không được để trống' });
+  }
+  try {
+    const result = await client.query(
+      `INSERT INTO tournament_group (tournament_name, description) VALUES ($1, $2) RETURNING *`,
+      [tournament_name, description || null]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error creating group:', error);
+    res.status(500).json({ message: 'Lỗi khi tạo nhóm giải' });
+  }
+});
+
 // API upload background cho group
 router.post('/group/:groupId/upload-background', uploadGroupBackground.single('background'), async (req, res) => {
   const { groupId } = req.params;
