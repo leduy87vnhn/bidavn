@@ -248,3 +248,10 @@ button.grey:hover:not(:disabled) {
 .tournament-list-container .edit {
   background-color: #fd7e14; // cam nổi bật
 }
+
+.tournament-group-header {
+  background: rgba(255, 230, 160, 0.5); // vàng nhạt trong suốt
+  padding: 24px 36px;
+  margin-top: 20px;
+  border-radius: 12px;
+}

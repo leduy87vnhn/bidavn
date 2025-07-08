@@ -122,7 +122,7 @@ const TournamentGroupDetail = () => {
             </div>
         )}
 
-        <div style={{
+        {/* <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -174,32 +174,53 @@ const TournamentGroupDetail = () => {
             )}
             {uploading && <span style={{ color: '#246' }}>Đang tải lên...</span>}
             </div>
+        </div> */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 16,
+            padding: '24px 36px 0 36px',
+            flexWrap: 'wrap'
+          }}
+        >
+          <button
+            onClick={() => navigate('/tournaments')}
+            className="top-action-button primary"
+            style={{ height: 42, fontSize: 15 }}
+          >
+            <FaArrowLeft /> Quay lại danh sách
+          </button>
+
+          {user?.user_type === 2 && (
+            <label className="top-action-button teal" style={{ height: 42, fontSize: 15 }}>
+              <FaCamera /> Tải hình nền group
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBackgroundUpload}
+                ref={fileInputRef}
+              />
+            </label>
+          )}
+
+          {uploading && (
+            <span style={{ color: '#246', fontWeight: 500 }}>
+              Đang tải lên...
+            </span>
+          )}
         </div>
         {/* Tên nhóm và thời gian */}
-        <div style={{ padding: '32px 36px 0 36px' }}>
-        <h1 style={{
-            color: '#1558d6',
-            margin: 0,
-            fontWeight: 800,
-            fontSize: '2.3rem',
-            lineHeight: 1.2
-        }}>
+        <div className="tournament-group-header">
+          <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem' }}>
             {group.tournament_name}
-        </h1>
-        {(group.start_date || group.end_date) && (
-            <div style={{
-            color: '#232323',
-            marginTop: 8,
-            fontSize: '1.15rem',
-            fontWeight: 500,
-            letterSpacing: 0.5
-            }}>
-            {group.start_date &&
-                `Từ ${formatDate(group.start_date)}`}
-            {group.end_date &&
-                ` đến ${formatDate(group.end_date)}`}
+          </h1>
+          {(group.start_date || group.end_date) && (
+            <div style={{ color: '#232323', marginTop: 8, fontSize: '1.15rem', fontWeight: 500 }}>
+              {group.start_date && `Từ ${formatDate(group.start_date)}`}
+              {group.end_date && ` đến ${formatDate(group.end_date)}`}
             </div>
-        )}
+          )}
         </div>
         {/* Tabs và nội dung từng giải */}
         <div style={{
