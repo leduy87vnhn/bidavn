@@ -210,71 +210,72 @@ const TournamentGroupDetail = () => {
             </span>
           )}
         </div>
-        {/* Tên nhóm và thời gian */}
-        <div className="tournament-group-header">
-          <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem', position: 'relative', zIndex: 10 }}>
-            {group.tournament_name}
-          </h1>
-          {(group.start_date || group.end_date) && (
-            <div style={{ color: '#232323', marginTop: 8, fontSize: '1.15rem', fontWeight: 500 }}>
-              {group.start_date && `Từ ${formatDate(group.start_date)}`}
-              {group.end_date && ` đến ${formatDate(group.end_date)}`}
-            </div>
-          )}
-        </div>
-        {/* Tabs và nội dung từng giải */}
-        <div style={{
-            //background: 'rgba(255,255,255,0.82)',
+        {/* Container chung để xử lý zIndex */}
+        <div style={{ position: 'relative', zIndex: 5, margin: '36px' }}>
+          <div className="tournament-group-header" style={{ marginBottom: 16 }}>
+            <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem', position: 'relative', zIndex: 10 }}>
+              {group.tournament_name}
+            </h1>
+            {(group.start_date || group.end_date) && (
+              <div style={{ color: '#232323', marginTop: 8, fontSize: '1.15rem', fontWeight: 500 }}>
+                {group.start_date && `Từ ${formatDate(group.start_date)}`}
+                {group.end_date && ` đến ${formatDate(group.end_date)}`}
+              </div>
+            )}
+          </div>
+
+          {/* Tabs và nội dung từng giải */}
+          <div style={{
             background: 'transparent',
-            margin: 36,
             padding: 28,
             borderRadius: 20,
-            //boxShadow: '0 2px 18px 2px #0001',
             boxShadow: 'none',
             minHeight: 320
-        }}>
+          }}>
             <Tabs
-            value={activeTab}
-            onChange={(_, v) => setActiveTab(v)}
-            variant="scrollable"
-            scrollButtons="auto"
-            sx={{
+              value={activeTab}
+              onChange={(_, v) => setActiveTab(v)}
+              variant="scrollable"
+              scrollButtons="auto"
+              sx={{
                 position: 'relative',
                 zIndex: 1,
                 marginBottom: 2,
                 '.MuiTab-root': {
-                fontWeight: 600,
-                color: '#1976d2',
-                backgroundColor: 'transparent'
+                  fontWeight: 600,
+                  color: '#1976d2',
+                  backgroundColor: 'transparent'
                 },
                 '.Mui-selected': {
-                color: '#fff',
-                backgroundColor: '#1976d2',
-                borderRadius: '8px 8px 0 0'
+                  color: '#fff',
+                  backgroundColor: '#1976d2',
+                  borderRadius: '8px 8px 0 0'
                 }
-            }}
+              }}
             >
-            {Array.isArray(tournaments) && tournaments.length > 0
+              {Array.isArray(tournaments) && tournaments.length > 0
                 ? tournaments.map((t, idx) => (
-                    <Tab
+                  <Tab
                     key={t.id}
                     label={t.name}
                     sx={{
-                        background: '#e3edfa',
-                        marginRight: 2,
-                        minWidth: 140,
+                      background: '#e3edfa',
+                      marginRight: 2,
+                      minWidth: 140,
                     }}
-                    />
+                  />
                 ))
                 : <Tab label="Không có giải đấu" disabled />}
             </Tabs>
+
             <div style={{ marginTop: 20 }}>
-            {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
+              {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
                 <TournamentTabDetail tournament={tournaments[activeTab]} transparentBackground={true} />
-            ) : (
+              ) : (
                 <p>Nhóm này chưa có giải đấu nào.</p>
-            )}
+              )}
             </div>
+          </div>
         </div>
         </div>
     </MainLayout>
