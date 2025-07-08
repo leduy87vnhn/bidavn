@@ -511,6 +511,7 @@ const TournamentList = () => {
                                         {user?.user_type === 2 && group.group_id && (
                                         <div style={{ display: 'flex', gap: '10px' }}>
                                             <button
+                                            className="edit"
                                             onClick={() => {
                                                 setEditingGroup({
                                                 id: group.group_id,
