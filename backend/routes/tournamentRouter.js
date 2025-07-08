@@ -387,6 +387,47 @@ router.post('/group/:groupId/upload-background', uploadGroupBackground.single('b
   }
 });
 
+router.delete('/tournament-group/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+  try {
+    // Kiểm tra tồn tại
+    const check = await client.query('SELECT id FROM tournament_group WHERE id = $1', [groupId]);
+    if (check.rows.length === 0) {
+      return res.status(404).json({ message: 'Nhóm không tồn tại' });
+    }
+
+    // Xóa
+    await client.query('DELETE FROM tournament_group WHERE id = $1', [groupId]);
+    res.json({ message: 'Đã xoá nhóm giải.' });
+  } catch (err) {
+    console.error('Lỗi xoá nhóm:', err);
+    res.status(500).json({ message: 'Lỗi server khi xoá nhóm' });
+  }
+});
+
+router.put('/tournament-group/:id', async (req, res) => {
+  const { id } = req.params;
+  const { tournament_name, description, start_date, end_date } = req.body;
+  if (!tournament_name) return res.status(400).json({ message: 'Tên nhóm không được để trống' });
+
+  try {
+    await client.query(
+      `UPDATE tournament_group
+       SET tournament_name = $1,
+           description = $2,
+           start_date = $3,
+           end_date = $4,
+           modified_date = NOW()
+       WHERE id = $5`,
+      [tournament_name, description || null, start_date || null, end_date || null, id]
+    );
+    res.json({ message: 'Đã cập nhật nhóm giải.' });
+  } catch (error) {
+    console.error('Error updating group:', error);
+    res.status(500).json({ message: 'Lỗi cập nhật nhóm giải' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {

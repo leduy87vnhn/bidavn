@@ -7,7 +7,8 @@ Modal.setAppElement('#root');
 const AddTournamentGroupModal = ({
     isOpen,
     onClose,
-    onGroupCreated
+    onGroupCreated,
+    initialData // 👈 thêm props này (null hoặc group object)
 }) => {
     const [groupName, setGroupName] = useState('');
     const [description, setDescription] = useState('');
@@ -16,33 +17,67 @@ const AddTournamentGroupModal = ({
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    const handleCreateGroup = async () => {
+    useEffect(() => {
+        if (initialData) {
+            setGroupName(initialData.tournament_name || '');
+            setDescription(initialData.description || '');
+            setStartDate(initialData.start_date?.substring(0, 10) || '');
+            setEndDate(initialData.end_date?.substring(0, 10) || '');
+        } else {
+            setGroupName('');
+            setDescription('');
+            setStartDate('');
+            setEndDate('');
+        }
+        setMsg('');
+    }, [initialData, isOpen]);
+
+    const handleSaveGroup = async () => {
         if (!groupName.trim()) {
             setMsg('Tên nhóm không được để trống!');
             return;
         }
         setLoading(true);
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    tournament_name: groupName,
-                    description
-                })
-            });
+            let res;
+            if (initialData) {
+                // UPDATE
+                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group/${initialData.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tournament_name: groupName,
+                        description,
+                        start_date,
+                        end_date
+                    })
+                });
+            } else {
+                // CREATE
+                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tournament_name: groupName,
+                        description,
+                        start_date,
+                        end_date
+                    })
+                });
+            }
+
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Lỗi khi tạo nhóm');
-            setMsg('✅ Đã thêm nhóm mới!');
-            onGroupCreated && onGroupCreated(data); // callback cho parent reload gợi ý group
+            if (!res.ok) throw new Error(data.message || 'Lỗi khi lưu nhóm');
+
+            setMsg('✅ Đã lưu nhóm thành công!');
+            onGroupCreated && onGroupCreated(data);
+
             setTimeout(() => {
                 setMsg('');
-                setGroupName('');
-                setDescription('');
                 onClose();
-            }, 900);
+            }, 800);
         } catch (err) {
-            setMsg('❌ ' + (err.message || 'Lỗi khi tạo nhóm'));
+            setMsg('❌ ' + (err.message || 'Lỗi khi lưu nhóm'));
         } finally {
             setLoading(false);
         }
@@ -110,10 +145,10 @@ const AddTournamentGroupModal = ({
                 >Huỷ</button>
                 <button
                     className="teal"
-                    onClick={handleCreateGroup}
+                    onClick={handleSaveGroup}
                     disabled={loading}
                 >
-                    {loading ? "Đang lưu..." : "Lưu Nhóm"}
+                    {loading ? "Đang lưu..." : (initialData ? "Cập nhật" : "Lưu Nhóm")}
                 </button>
             </div>
         </Modal>

@@ -20,6 +20,7 @@ const TournamentList = () => {
     const [groupSuggestions, setGroupSuggestions] = useState([]);
     const [groupNameInput, setGroupNameInput] = useState('');
     const [showGroupPopup, setShowGroupPopup] = useState(false);
+    const [editingGroup, setEditingGroup] = useState(null);
 
 
     const [newTournament, setNewTournament] = useState({
@@ -208,6 +209,19 @@ const TournamentList = () => {
         if (group && group.tournament_name) {
             setGroupNameInput(group.tournament_name);
             fetchGroupSuggestions(group.tournament_name);
+        }
+    };
+
+    const handleDeleteGroup = async (groupId) => {
+        if (window.confirm('Bạn có chắc muốn xóa nhóm giải này?')) {
+            try {
+                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group/${groupId}`);
+                alert('✅ Đã xoá nhóm giải.');
+                fetchTournaments();
+            } catch (err) {
+                console.error(err);
+                alert('❌ Lỗi khi xóa nhóm giải.');
+            }
         }
     };
 
@@ -425,8 +439,12 @@ const TournamentList = () => {
 
                 <AddTournamentGroupModal
                     isOpen={showGroupPopup}
-                    onClose={() => setShowGroupPopup(false)}
+                    onClose={() => {
+                        setShowGroupPopup(false);
+                        setEditingGroup(null); // reset
+                    }}
                     onGroupCreated={handleGroupCreated}
+                    initialData={editingGroup}
                 />
 
                 {/* Bộ lọc trạng thái giải đấu */}
@@ -487,6 +505,54 @@ const TournamentList = () => {
                                 )}
                                 {"\n"}
                                 Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div>
+                                        {/* Link như cũ */}
+                                        Giải đấu: {group.group_id ? (
+                                            <Link
+                                                to={`/tournament-group/${group.group_id}`}
+                                                style={{ color: '#007bff', textDecoration: 'underline', fontWeight: 'bold' }}
+                                            >
+                                                {group.group_name}
+                                            </Link>
+                                        ) : (
+                                            group.group_name
+                                        )}
+                                        {"\n"}
+                                        Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                                    </div>
+
+                                    {user?.user_type === 2 && group.group_id && (
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <button
+                                                onClick={() => {
+                                                    setEditingGroup({
+                                                        id: group.group_id,
+                                                        tournament_name: group.group_name,
+                                                        start_date: group.group_start_date,
+                                                        end_date: group.group_end_date
+                                                    });
+                                                    setShowGroupPopup(true);
+                                                }}
+                                            >
+                                                ✏️ Sửa
+                                            </button>
+                                            <button
+                                                style={{
+                                                    backgroundColor: '#dc3545',
+                                                    color: '#fff',
+                                                    border: 'none',
+                                                    padding: '5px 10px',
+                                                    borderRadius: '5px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                onClick={() => handleDeleteGroup(group.group_id)}
+                                            >
+                                                🗑 Xóa
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </td>
                             </tr>
                             {group.tournaments.map(tour => {
