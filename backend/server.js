@@ -6,7 +6,7 @@ const tournamentRouter = require('./routes/tournamentRouter');
 const cors = require('cors');
 const playerRouter = require('./routes/playerRouter');
 const registrationRouter = require('./routes/registrationRouter');
-const mainpageRouter = require('./routes/mainPageRouter');
+const mainPageRouter = require('./routes/mainPageRouter');
 
 
 dotenv.config();
