@@ -476,94 +476,81 @@ const TournamentList = () => {
                                     )}
                                 </tr>
                             </thead>
-                        <tbody>
-                        {Object.values(groupedTournaments).map(group => (
-                            <React.Fragment key={group.group_id || 'ungrouped'}>
-                            <tr>
-                            <td colSpan={user?.user_type === 2 ? 8 : 7} style={{
-                                backgroundColor: '#dbeafe',
-                                fontWeight: 'bold',
-                                padding: '10px',
-                                border: '1px solid #ccc',
-                                whiteSpace: 'pre-line'
-                            }}>
-                                {/* Tên group là Link nếu group_id có */}
-                                Giải đấu: {group.group_id ? (
-                                <Link
-                                    to={`/tournament-group/${group.group_id}`}
-                                    style={{
-                                    color: '#007bff',
-                                    textDecoration: 'underline',
+                            <tbody>
+                            {Object.values(groupedTournaments).map(group => (
+                                <React.Fragment key={group.group_id || 'ungrouped'}>
+                                <tr>
+                                    <td colSpan={user?.user_type === 2 ? 8 : 7} style={{
+                                    backgroundColor: '#dbeafe',
                                     fontWeight: 'bold',
-                                    cursor: 'pointer'
-                                    }}
-                                >
-                                    {group.group_name}
-                                </Link>
-                                ) : (
-                                group.group_name
-                                )}
-                                {"\n"}
-                                Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div>
-                                        {/* Link như cũ */}
+                                    padding: '10px',
+                                    border: '1px solid #ccc',
+                                    whiteSpace: 'pre-line'
+                                    }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
                                         Giải đấu: {group.group_id ? (
                                             <Link
-                                                to={`/tournament-group/${group.group_id}`}
-                                                style={{ color: '#007bff', textDecoration: 'underline', fontWeight: 'bold' }}
+                                            to={`/tournament-group/${group.group_id}`}
+                                            style={{
+                                                color: '#007bff',
+                                                textDecoration: 'underline',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer'
+                                            }}
                                             >
-                                                {group.group_name}
+                                            {group.group_name}
                                             </Link>
                                         ) : (
                                             group.group_name
                                         )}
                                         {"\n"}
                                         Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
-                                    </div>
+                                        </div>
 
-                                    {user?.user_type === 2 && group.group_id && (
+                                        {user?.user_type === 2 && group.group_id && (
                                         <div style={{ display: 'flex', gap: '10px' }}>
                                             <button
-                                                onClick={() => {
-                                                    setEditingGroup({
-                                                        id: group.group_id,
-                                                        tournament_name: group.group_name,
-                                                        start_date: group.group_start_date,
-                                                        end_date: group.group_end_date
-                                                    });
-                                                    setShowGroupPopup(true);
-                                                }}
+                                            onClick={() => {
+                                                setEditingGroup({
+                                                id: group.group_id,
+                                                tournament_name: group.group_name,
+                                                start_date: group.group_start_date,
+                                                end_date: group.group_end_date
+                                                });
+                                                setShowGroupPopup(true);
+                                            }}
                                             >
-                                                ✏️ Sửa
+                                            ✏️ Sửa
                                             </button>
                                             <button
-                                                style={{
-                                                    backgroundColor: '#dc3545',
-                                                    color: '#fff',
-                                                    border: 'none',
-                                                    padding: '5px 10px',
-                                                    borderRadius: '5px',
-                                                    cursor: 'pointer'
-                                                }}
-                                                onClick={() => handleDeleteGroup(group.group_id)}
+                                            style={{
+                                                backgroundColor: '#dc3545',
+                                                color: '#fff',
+                                                border: 'none',
+                                                padding: '5px 10px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer'
+                                            }}
+                                            onClick={() => handleDeleteGroup(group.group_id)}
                                             >
-                                                🗑 Xóa
+                                            🗑 Xóa
                                             </button>
                                         </div>
-                                    )}
-                                </div>
-                            </td>
-                            </tr>
-                            {group.tournaments.map(tour => {
-                                const status = getTournamentStatus(tour.start_date, tour.end_date);
-                                let bgColor = 'white';
-                                if (status === 'ongoing') bgColor = '#d0ebff';
-                                else if (status === 'ended') bgColor = '#f0f0f0';
+                                        )}
+                                    </div>
+                                    </td>
+                                </tr>
 
-                                return (
-                                <tr key={tour.id} style={{ backgroundColor: bgColor }}>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                {group.tournaments.map(tour => {
+                                    const status = getTournamentStatus(tour.start_date, tour.end_date);
+                                    let bgColor = 'white';
+                                    if (status === 'ongoing') bgColor = '#d0ebff';
+                                    else if (status === 'ended') bgColor = '#f0f0f0';
+
+                                    return (
+                                    <tr key={tour.id} style={{ backgroundColor: bgColor }}>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                         <div>
                                             <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}>
                                             {tour.name}
@@ -583,81 +570,88 @@ const TournamentList = () => {
                                             🧑‍🎱 {tour.approved_competitors_count} VĐV
                                             </div>
                                         )}
-                                    </td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                    {tour.attendance_price != null
-                                        ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
-                                        : ''}
-                                    </td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
-                                    <td style={{
-                                    border: '1px solid #ddd',
-                                    padding: '8px',
-                                    maxHeight: '100px',
-                                    overflowY: 'auto',
-                                    whiteSpace: 'pre-wrap',
-                                    wordBreak: 'break-word'
-                                    }}>{tour.location}</td>
-                                    <td style={{
-                                    border: '1px solid #ddd',
-                                    padding: '8px',
-                                    maxHeight: '100px',
-                                    overflowY: 'auto',
-                                    whiteSpace: 'pre-wrap',
-                                    wordBreak: 'break-word'
-                                    }}>{tour.prize}</td>
-                                    {user?.user_type === 2 && (
-                                    <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                        <button style={{
-                                        padding: '5px 10px',
-                                        backgroundColor: '#28a745',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                        }} onClick={() => navigate(`/tournament/${tour.id}/register`)}>
-                                        Đăng ký nhóm
-                                        </button>
-                                        <button style={{
-                                        padding: '5px 10px',
-                                        backgroundColor: '#6f42c1',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                        }} onClick={() => navigate(`/tournament/${tour.id}/register-single`)}>
-                                        Đăng ký lẻ
-                                        </button>
-                                        <button style={{
-                                        padding: '5px 10px',
-                                        backgroundColor: '#17a2b8',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                        }} onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}>
-                                        Phê duyệt
-                                        </button>
-                                        <button style={{
-                                        padding: '5px 10px',
-                                        backgroundColor: '#dc3545',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                        }} onClick={() => handleDelete(tour.id)}>
-                                        Xóa
-                                        </button>
-                                    </td>
-                                    )}
-                                </tr>
-                                );
-                            })}
-                            </React.Fragment>
-                        ))}
-                        </tbody>
+                                        </td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                        {tour.attendance_price != null
+                                            ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
+                                            : ''}
+                                        </td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
+                                        <td style={{
+                                        border: '1px solid #ddd',
+                                        padding: '8px',
+                                        maxHeight: '100px',
+                                        overflowY: 'auto',
+                                        whiteSpace: 'pre-wrap',
+                                        wordBreak: 'break-word'
+                                        }}>{tour.location}</td>
+                                        <td style={{
+                                        border: '1px solid #ddd',
+                                        padding: '8px',
+                                        maxHeight: '100px',
+                                        overflowY: 'auto',
+                                        whiteSpace: 'pre-wrap',
+                                        wordBreak: 'break-word'
+                                        }}>{tour.prize}</td>
+
+                                        {user?.user_type === 2 && (
+                                        <td style={{
+                                            border: '1px solid #ddd',
+                                            padding: '8px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '6px'
+                                        }}>
+                                            <button style={{
+                                            padding: '5px 10px',
+                                            backgroundColor: '#28a745',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer'
+                                            }} onClick={() => navigate(`/tournament/${tour.id}/register`)}>
+                                            Đăng ký nhóm
+                                            </button>
+                                            <button style={{
+                                            padding: '5px 10px',
+                                            backgroundColor: '#6f42c1',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer'
+                                            }} onClick={() => navigate(`/tournament/${tour.id}/register-single`)}>
+                                            Đăng ký lẻ
+                                            </button>
+                                            <button style={{
+                                            padding: '5px 10px',
+                                            backgroundColor: '#17a2b8',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer'
+                                            }} onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}>
+                                            Phê duyệt
+                                            </button>
+                                            <button style={{
+                                            padding: '5px 10px',
+                                            backgroundColor: '#dc3545',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer'
+                                            }} onClick={() => handleDelete(tour.id)}>
+                                            Xóa
+                                            </button>
+                                        </td>
+                                        )}
+                                    </tr>
+                                    );
+                                })}
+                                </React.Fragment>
+                            ))}
+                            </tbody>
                         </table>
                     </div>
                 ) : (
