@@ -255,3 +255,9 @@ button.grey:hover:not(:disabled) {
   margin-top: 20px;
   border-radius: 12px;
 }
+
+.tournament-title {
+  position: relative;
+  z-index: 10;
+  color: #0044cc;
+}

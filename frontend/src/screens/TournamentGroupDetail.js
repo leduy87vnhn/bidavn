@@ -212,7 +212,7 @@ const TournamentGroupDetail = () => {
         </div>
         {/* Tên nhóm và thời gian */}
         <div className="tournament-group-header">
-          <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem' }}>
+          <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem', position: 'relative', zIndex: 10 }}>
             {group.tournament_name}
           </h1>
           {(group.start_date || group.end_date) && (
@@ -224,11 +224,13 @@ const TournamentGroupDetail = () => {
         </div>
         {/* Tabs và nội dung từng giải */}
         <div style={{
-            background: 'rgba(255,255,255,0.82)',
+            //background: 'rgba(255,255,255,0.82)',
+            background: 'transparent',
             margin: 36,
             padding: 28,
             borderRadius: 20,
-            boxShadow: '0 2px 18px 2px #0001',
+            //boxShadow: '0 2px 18px 2px #0001',
+            boxShadow: 'none',
             minHeight: 320
         }}>
             <Tabs
@@ -237,6 +239,8 @@ const TournamentGroupDetail = () => {
             variant="scrollable"
             scrollButtons="auto"
             sx={{
+                position: 'relative',
+                zIndex: 1,
                 marginBottom: 2,
                 '.MuiTab-root': {
                 fontWeight: 600,
