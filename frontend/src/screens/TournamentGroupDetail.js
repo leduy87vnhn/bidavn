@@ -240,7 +240,8 @@ const TournamentGroupDetail = () => {
                 marginBottom: 2,
                 '.MuiTab-root': {
                 fontWeight: 600,
-                color: '#1976d2'
+                color: '#1976d2',
+                backgroundColor: 'transparent'
                 },
                 '.Mui-selected': {
                 color: '#fff',

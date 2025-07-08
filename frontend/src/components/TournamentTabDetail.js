@@ -231,7 +231,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
           maxWidth: 800,
           margin: '0 auto',
           padding: '30px',
-          backgroundColor: 'rgba(200, 255, 200, 0.85)',
+          backgroundColor: transparentBackground ? 'transparent' : 'rgba(200, 255, 200, 0.85)',
           borderRadius: '16px',
         }}
       >
