@@ -210,21 +210,10 @@ const TournamentGroupDetail = () => {
             </span>
           )}
         </div>
-        {/* Container chung */}
-        <div style={{ margin: '36px' }}>
-          <div style={{
-            background: 'rgba(255,255,255,0.82)',
-            padding: '20px 32px',
-            borderRadius: 16,
-            boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
-            marginBottom: 24
-          }}>
-            <h1 style={{
-              color: '#1558d6',
-              margin: 0,
-              fontWeight: 800,
-              fontSize: '2.3rem'
-            }}>
+        {/* Container chung để xử lý zIndex */}
+        <div style={{ position: 'relative', zIndex: 5, margin: '36px' }}>
+          <div className="tournament-group-header" style={{ marginBottom: 16 }}>
+            <h1 style={{ color: '#1558d6', margin: 0, fontWeight: 800, fontSize: '2.3rem', position: 'relative', zIndex: 10 }}>
               {group.tournament_name}
             </h1>
             {(group.start_date || group.end_date) && (
@@ -249,6 +238,8 @@ const TournamentGroupDetail = () => {
               variant="scrollable"
               scrollButtons="auto"
               sx={{
+                position: 'relative',
+                zIndex: 1,
                 marginBottom: 2,
                 '.MuiTab-root': {
                   fontWeight: 600,
