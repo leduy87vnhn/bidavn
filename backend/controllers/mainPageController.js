@@ -87,6 +87,11 @@ exports.deleteEvent = async (req, res) => {
 };
 
 exports.getEventsInternal = async () => {
-  const result = await db.query('SELECT * FROM mainpage_event_settings ORDER BY event_date DESC');
-  return result.rows;
+  try {
+    const result = await db.query('SELECT * FROM mainpage_event_settings ORDER BY event_date DESC');
+    return result.rows;
+  } catch (err) {
+    console.error('getEventsInternal error:', err);
+    return [];
+  }
 };
