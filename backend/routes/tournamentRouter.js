@@ -100,6 +100,8 @@ router.get('/', async (req, res) => {
       SELECT 
         t.*, 
         tg.tournament_name AS group_name,
+        tg.start_date AS group_start_date,
+        tg.end_date AS group_end_date,
         (
           SELECT COUNT(*)
           FROM registration_form rf
@@ -123,22 +125,24 @@ router.get('/', async (req, res) => {
         let dataResult, countResult;
 
         if (status === 'all') {
-            dataResult = await client.query(`
-              SELECT 
-                t.*, 
-                tg.tournament_name AS group_name,
-                (
-                  SELECT COUNT(*)
-                  FROM registration_form rf
-                  LEFT JOIN competitors c ON c.registration_form_id = rf.id
-                  LEFT JOIN players p ON c.player_id = p.id
-                  WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
-                ) AS approved_competitors_count
-              FROM tournaments t
-              LEFT JOIN tournament_group tg ON t.group_id = tg.id
-              ORDER BY t.start_date ASC
-              LIMIT $1 OFFSET $2
-            `, [limit, offset]);
+          dataResult = await client.query(`
+            SELECT 
+              t.*, 
+              tg.tournament_name AS group_name,
+              tg.start_date AS group_start_date,
+              tg.end_date AS group_end_date,
+              (
+                SELECT COUNT(*)
+                FROM registration_form rf
+                LEFT JOIN competitors c ON c.registration_form_id = rf.id
+                LEFT JOIN players p ON c.player_id = p.id
+                WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
+              ) AS approved_competitors_count
+            FROM tournaments t
+            LEFT JOIN tournament_group tg ON t.group_id = tg.id
+            ORDER BY t.start_date ASC
+            LIMIT $1 OFFSET $2
+          `, [limit, offset]);
 
             countResult = await client.query('SELECT COUNT(*) FROM tournaments');
         } else {

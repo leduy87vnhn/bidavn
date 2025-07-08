@@ -244,8 +244,8 @@ const TournamentList = () => {
             groups[gid] = {
                 group_id: tour.group_id,
                 group_name: tour.group_name || 'Không thuộc nhóm',
-                group_start_date: tour.start_date,
-                group_end_date: tour.end_date,
+                group_start_date: tour.group_start_date,
+                group_end_date: tour.group_end_date,
                 tournaments: []
             };
         }
