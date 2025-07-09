@@ -48,8 +48,8 @@ const AddTournamentGroupModal = ({
                     body: JSON.stringify({
                         tournament_name: groupName,
                         description,
-                        start_date,
-                        end_date
+                        start_date: startDate,
+                        end_date: endDate
                     })
                 });
             } else {
@@ -60,8 +60,8 @@ const AddTournamentGroupModal = ({
                     body: JSON.stringify({
                         tournament_name: groupName,
                         description,
-                        start_date,
-                        end_date
+                        start_date: startDate,
+                        end_date: endDate
                     })
                 });
             }
