@@ -6,6 +6,8 @@ const API_BASE = process.env.REACT_APP_API_BASE_URL;
 const MainPageLogoTab = () => {
   const [logos, setLogos] = useState([]);
   const [newItem, setNewItem] = useState({ settings_item: '', settings_value: '' });
+  const fileInputRefs = useRef({});
+  const newFileInputRef = useRef(null);
 
   const fetchLogos = async () => {
     try {
@@ -29,6 +31,25 @@ const MainPageLogoTab = () => {
   const handleDrop = async (e, idx, isNew = false) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      const res = await axios.post(`${API_BASE}/api/mainpage/upload-logo`, formData);
+      if (isNew) {
+        setNewItem({ ...newItem, settings_value: res.data.filePath });
+      } else {
+        const updated = [...logos];
+        updated[idx].settings_value = res.data.filePath;
+        setLogos(updated);
+      }
+    } catch (err) {
+      console.error('Upload lỗi:', err);
+    }
+  };
+
+  const handleFileSelect = async (e, idx, isNew = false) => {
+    const file = e.target.files[0];
     if (!file) return;
     const formData = new FormData();
     formData.append('image', file);
@@ -135,9 +156,17 @@ const MainPageLogoTab = () => {
                   <div
                     onDrop={(e) => handleDrop(e, idx)}
                     onDragOver={(e) => e.preventDefault()}
+                    onClick={() => fileInputRefs.current[idx]?.click()}
                     style={dropZone}
                   >
-                    Kéo & thả ảnh vào đây
+                    Kéo & thả ảnh vào đây<br />hoặc click để chọn
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      ref={(el) => (fileInputRefs.current[idx] = el)}
+                      onChange={(e) => handleFileSelect(e, idx)}
+                    />
                   </div>
                 </td>
                 <td style={td}>
@@ -176,9 +205,17 @@ const MainPageLogoTab = () => {
                 <div
                   onDrop={(e) => handleDrop(e, null, true)}
                   onDragOver={(e) => e.preventDefault()}
+                  onClick={() => newFileInputRef.current?.click()}
                   style={dropZone}
                 >
-                  Kéo & thả ảnh mới
+                  Kéo & thả ảnh mới<br />hoặc click để chọn
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={newFileInputRef}
+                    onChange={(e) => handleFileSelect(e, null, true)}
+                  />
                 </div>
               </td>
               <td style={td}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
+import React, { useEffect, useState, useRef } from 'react';
 import 'react-markdown-editor-lite/lib/index.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
@@ -13,6 +14,9 @@ const MainPageEventTab = () => {
     id: '', event_name: '', event_photo: '', event_video: '', event_content: '', event_date: ''
   });
 
+  const fileInputRefs = useRef({});
+  const newFileInputRef = useRef(null);
+
   const fetchEvents = async () => {
     const res = await axios.get(`${API_BASE}/api/mainpage/events-full`);
     setEvents(res.data);
@@ -21,6 +25,21 @@ const MainPageEventTab = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  const handleFileSelect = async (e, idx, isNew = false) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, formData);
+    if (isNew) {
+      setNewEvent({ ...newEvent, event_photo: res.data.filePath });
+    } else {
+      const updated = [...events];
+      updated[idx].event_photo = res.data.filePath;
+      setEvents(updated);
+    }
+  };
 
   const handleDrop = async (e, idx, isNew = false) => {
     e.preventDefault();
@@ -130,9 +149,17 @@ const MainPageEventTab = () => {
                     <div
                       onDrop={(ev) => handleDrop(ev, idx)}
                       onDragOver={(ev) => ev.preventDefault()}
+                      onClick={() => fileInputRefs.current[idx]?.click()}
                       style={dropZone}
                     >
-                      Kéo & thả ảnh
+                      Kéo & thả ảnh<br />hoặc click để chọn
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        ref={(el) => (fileInputRefs.current[idx] = el)}
+                        onChange={(e) => handleFileSelect(e, idx)}
+                      />
                     </div>
                   </td>
 
@@ -213,9 +240,17 @@ const MainPageEventTab = () => {
                 <div
                   onDrop={(e) => handleDrop(e, null, true)}
                   onDragOver={(e) => e.preventDefault()}
+                  onClick={() => newFileInputRef.current?.click()}
                   style={dropZone}
                 >
-                  Kéo & thả ảnh mới
+                  Kéo & thả ảnh mới<br />hoặc click để chọn
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={newFileInputRef}
+                    onChange={(e) => handleFileSelect(e, null, true)}
+                  />
                 </div>
               </td>
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Typography, Paper } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainPageLogoTab from '../components/MainPageLogoTab';
 import MainPageEventTab from '../components/MainPageEventTab';
 
@@ -18,6 +20,14 @@ function TabPanel(props) {
 
 const MainPageSettings = () => {
   const [tab, setTab] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user_info'));
+    if (!user || user.user_type !== 1) {
+      window.location.href = 'https://hbsf.com.vn/login';
+    }
+  }, []);
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
