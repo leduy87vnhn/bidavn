@@ -99,7 +99,7 @@ exports.getEventsInternal = async () => {
 exports.getTournamentGroupByName = async (req, res) => {
   const { name } = req.query;
   try {
-    const result = await db.query('SELECT id FROM tournament_group WHERE tournament_name = $1', [name]);
+    const result = await db.query('SELECT id FROM tournament_group WHERE TRIM(tournament_name) ILIKE TRIM($1)', [name]);
     if (result.rows.length) {
       res.json({ group_id: result.rows[0].id });
     } else {
