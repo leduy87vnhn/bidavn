@@ -23,7 +23,7 @@ const MainPageSettings = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_info'));
-    if (!user || user.user_type !== 1) {
+    if (!user || user.user_type !== 2) {
       window.location.href = 'https://hbsf.com.vn/login';
     }
   }, []);
