@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
-import React, { useEffect, useState, useRef } from 'react';
 import 'react-markdown-editor-lite/lib/index.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
