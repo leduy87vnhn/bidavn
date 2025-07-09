@@ -1,5 +1,5 @@
-import { Tabs, Tab, Box, Typography, Paper } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { Tabs, Tab, Box, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MainPageLogoTab from '../components/MainPageLogoTab';
 import MainPageEventTab from '../components/MainPageEventTab';
