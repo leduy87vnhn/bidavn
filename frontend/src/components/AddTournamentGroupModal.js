@@ -42,7 +42,7 @@ const AddTournamentGroupModal = ({
             let res;
             if (initialData) {
                 // UPDATE
-                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group/${initialData.id}`, {
+                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/tournament-group/${initialData.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -54,7 +54,7 @@ const AddTournamentGroupModal = ({
                 });
             } else {
                 // CREATE
-                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group`, {
+                res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/tournament-group`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

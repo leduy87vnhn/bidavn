@@ -272,7 +272,7 @@ const TournamentGroupDetail = () => {
               {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
                 <TournamentTabDetail tournament={tournaments[activeTab]} transparentBackground={true} />
               ) : (
-                <p>Nhóm này chưa có giải đấu nào.</p>
+                <p>Giải này chưa đăng ký nội dung.</p>
               )}
             </div>
           </div>
