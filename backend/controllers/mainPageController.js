@@ -95,3 +95,17 @@ exports.getEventsInternal = async () => {
     return [];
   }
 };
+
+exports.getTournamentGroupByName = async (req, res) => {
+  const { name } = req.query;
+  try {
+    const result = await db.query('SELECT id FROM tournament_group WHERE tournament_name = $1', [name]);
+    if (result.rows.length) {
+      res.json({ group_id: result.rows[0].id });
+    } else {
+      res.json({ group_id: null });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch group ID' });
+  }
+};

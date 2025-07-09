@@ -77,4 +77,7 @@ router.get('/videos', async (req, res) => {
   }
 });
 
+router.get('/tournament-group-by-name', controller.getTournamentGroupByName);
+
+
 module.exports = router;
