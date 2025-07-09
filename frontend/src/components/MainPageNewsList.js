@@ -33,7 +33,7 @@ const MainPageNewsList = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/tournament-group-by-name?name=${encodeURIComponent(eventName)}`);
       const groupId = res.data.group_id;
       if (groupId) {
-        navigate(`/tournaments?group=${groupId}`);
+        navigate(`/tournament-group/${groupId}`);
       } else {
         // Nếu không có group trùng, có thể làm gì đó khác (mở modal chi tiết, hoặc không phản hồi)
         console.log('No matching tournament group');
