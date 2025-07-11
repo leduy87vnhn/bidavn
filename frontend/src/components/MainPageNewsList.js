@@ -79,33 +79,27 @@ const MainPageNewsList = () => {
 
   return (
     <div className="mainpage-news-list">
-      {news.map((item, idx) => (
-        <div
-          key={idx}
-          className="news-item"
-          onClick={() => handleNewsClick(item.event_name)}
-        >
-          <img src={getEventPhotoUrl(item.event_photo)} alt="news" />
-          <div className="news-overlay">
-            <div className="news-title">{item.event_name}</div>
-            {groupInfoMap[item.event_name?.trim()] ? (
-              <>
-                <div className="news-date">
-                  {formatDateRange(
-                    groupInfoMap[item.event_name.trim()].start,
-                    groupInfoMap[item.event_name.trim()].end
-                  )}
-                </div>
-                <div className="news-location">
-                  Địa điểm: {groupInfoMap[item.event_name.trim()].location}
-                </div>
-              </>
-            ) : (
-              <div className="news-date">{formatDate(item.event_date)}</div>
-            )}
+      {news.map((item, idx) => {
+        const group = groupInfoMap[item.event_name?.trim()];
+        return (
+          <div key={idx} className="news-item" onClick={() => handleNewsClick(item.event_name)}>
+            <div className="news-text">
+              <div className="news-title">{item.event_name}</div>
+              {group ? (
+                <>
+                  <div className="news-date">
+                    {formatDateRange(group.start, group.end)}
+                  </div>
+                  <div className="news-location">Địa điểm: {group.location}</div>
+                </>
+              ) : (
+                <div className="news-date">{formatDate(item.event_date)}</div>
+              )}
+            </div>
+            <img src={getEventPhotoUrl(item.event_photo)} alt="news" />
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
