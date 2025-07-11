@@ -83,7 +83,7 @@ const MainPageNewsList = () => {
         const group = groupInfoMap[item.event_name?.trim()];
         return (
           <div key={idx} className="news-item" onClick={() => handleNewsClick(item.event_name)}>
-            <div className="news-text">
+            <div className="news-text-block">
               <div className="news-title">{item.event_name}</div>
               {group ? (
                 <>
