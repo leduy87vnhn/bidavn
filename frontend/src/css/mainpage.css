@@ -17,20 +17,43 @@
 .mainpage-menu-bar {
   display: flex;
   justify-content: space-between;
-  background-color: #333;
+  background-color: #1a2b4c; /* xanh đậm */
   color: white;
-  padding: 8px 16px;
-}
+  padding: 10px 24px;
 
-.menu-left .menu-item {
-  margin-right: 20px;
-  cursor: pointer;
-}
+  .menu-left, .menu-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 
-.menu-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  .menu-item {
+    margin-right: 20px;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .user-name {
+    font-weight: bold;
+  }
+
+  button {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
 }
 
 .mainpage-event-slider {
@@ -60,28 +83,43 @@
 .mainpage-news-list {
   display: flex;
   flex-wrap: wrap;
+  gap: 24px;
   padding: 20px;
+  justify-content: center;
 }
 
 .news-item {
-  width: 50%;
-  display: flex;
-  margin-bottom: 20px;
+  position: relative;
+  width: 600px; /* gấp 3 lần ảnh cũ ~ 120px * 3 = 360px, bạn có thể tăng thêm */
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .news-item img {
-  width: 120px;
-  height: 80px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  margin-right: 12px;
+}
+
+.news-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 .news-title {
+  font-size: 24px; /* to gấp rưỡi bình thường */
   font-weight: bold;
 }
 
 .news-date {
-  font-size: 12px;
+  font-size: 16px;
   color: gray;
 }
 

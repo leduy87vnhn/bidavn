@@ -109,3 +109,20 @@ exports.getTournamentGroupByName = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch group ID' });
   }
 };
+
+exports.getTournamentGroupsWithInfo = async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT g.id, g.tournament_name,
+             MIN(t.start_date) AS start_date,
+             MAX(t.end_date) AS end_date,
+             (SELECT location FROM tournaments WHERE group_id = g.id ORDER BY start_date ASC LIMIT 1) AS location
+      FROM tournament_group g
+      JOIN tournaments t ON t.group_id = g.id
+      GROUP BY g.id, g.tournament_name
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch tournament group info' });
+  }
+};

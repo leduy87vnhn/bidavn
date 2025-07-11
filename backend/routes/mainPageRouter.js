@@ -35,6 +35,7 @@ router.get('/events-full', controller.getEvents);
 router.post('/create-event', controller.createEvent);
 router.post('/update-event', controller.updateEvent);
 router.delete('/delete-event/:id', controller.deleteEvent);
+router.get('/tournament-groups-info', controller.getTournamentGroupsWithInfo);
 
 // Upload endpoints
 router.post('/upload-logo', uploadLogo.single('image'), (req, res) => {
