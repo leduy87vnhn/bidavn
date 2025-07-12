@@ -584,14 +584,14 @@ const TournamentList = () => {
                                             whiteSpace: 'pre-wrap',
                                             wordBreak: 'break-word'
                                         }}>{tour.location}</td>
-                                        <td style={{
+                                        {/* <td style={{
                                             border: '1px solid #ddd',
                                             padding: '8px',
                                             maxHeight: '100px',
                                             overflowY: 'auto',
                                             whiteSpace: 'pre-wrap',
                                             wordBreak: 'break-word'
-                                        }}>{tour.prize}</td>
+                                        }}>{tour.prize}</td> */}
 
                                         <td style={{
                                             border: '1px solid #ddd',
