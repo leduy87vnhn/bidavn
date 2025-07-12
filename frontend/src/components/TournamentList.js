@@ -27,7 +27,7 @@ const TournamentList = () => {
         id: null,
         name: '',
         code: '',
-        attendance_price: '',
+        attendance_fee_common: '',
         start_date: '',
         end_date: ''
     });
@@ -180,7 +180,7 @@ const TournamentList = () => {
             }
 
             setShowForm(false);
-            setNewTournament({ id: null, name: '', code: '', attendance_price: '', start_date: '', end_date: '', group_id: null });
+            setNewTournament({ id: null, name: '', code: '', attendance_fee_common: '', start_date: '', end_date: '', group_id: null });
             setGroupNameInput('');
             fetchTournaments();
         } catch (error) {
@@ -256,7 +256,7 @@ const TournamentList = () => {
     const isFormValid =
         newTournament.name &&
         newTournament.code &&
-        newTournament.attendance_price &&
+        newTournament.attendance_fee_common &&
         newTournament.start_date &&
         newTournament.end_date &&
         new Date(newTournament.end_date) >= new Date(newTournament.start_date);
@@ -413,8 +413,8 @@ const TournamentList = () => {
                             onChange={(e) => setNewTournament({ ...newTournament, name: e.target.value })} />
                         <input type="text" placeholder="Mã giải" value={newTournament.code}
                             onChange={(e) => setNewTournament({ ...newTournament, code: e.target.value })} />
-                        <input type="number" placeholder="Lệ phí (VNĐ)" value={newTournament.attendance_price}
-                            onChange={(e) => setNewTournament({ ...newTournament, attendance_price: e.target.value })} />
+                        <input type="number" placeholder="Lệ phí (VNĐ)" value={newTournament.attendance_fee_common}
+                            onChange={(e) => setNewTournament({ ...newTournament, attendance_fee_common: e.target.value })} />
                         <input type="date" value={newTournament.start_date}
                             onChange={(e) => setNewTournament({ ...newTournament, start_date: e.target.value })} />
                         <input type="date" value={newTournament.end_date}
@@ -463,18 +463,14 @@ const TournamentList = () => {
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
                             <thead>
-                                <tr style={{ backgroundColor: '#f8f9fa' }}>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thể loại</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày bắt đầu</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ngày kết thúc</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cơ cấu giải</th>
-                                    {user?.user_type === 2 && (
-                                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
-                                    )}
-                                </tr>
+                            <tr style={{ backgroundColor: '#f8f9fa' }}>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
+                                {user?.user_type === 2 && (
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
+                                )}
+                            </tr>
                             </thead>
                             <tbody>
                             {Object.values(groupedTournaments).map(group => (
@@ -572,15 +568,15 @@ const TournamentList = () => {
                                             </div>
                                         )}
                                         </td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td>
+                                        {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td> */}
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                         {tour.attendance_price != null
                                             ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
                                             : ''}
                                         </td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td>
-                                        <td style={{
+                                        {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td> */}
+                                        {/* <td style={{
                                         border: '1px solid #ddd',
                                         padding: '8px',
                                         maxHeight: '100px',
@@ -595,9 +591,8 @@ const TournamentList = () => {
                                         overflowY: 'auto',
                                         whiteSpace: 'pre-wrap',
                                         wordBreak: 'break-word'
-                                        }}>{tour.prize}</td>
+                                        }}>{tour.prize}</td> */}
 
-                                        {user?.user_type === 2 && (
                                         <td style={{
                                             border: '1px solid #ddd',
                                             padding: '8px',
@@ -605,48 +600,42 @@ const TournamentList = () => {
                                             flexDirection: 'column',
                                             gap: '6px'
                                         }}>
-                                            <button style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#28a745',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '5px',
-                                            cursor: 'pointer'
-                                            }} onClick={() => navigate(`/tournament/${tour.id}/register`)}>
-                                            Đăng ký nhóm
-                                            </button>
-                                            <button style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#6f42c1',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '5px',
-                                            cursor: 'pointer'
-                                            }} onClick={() => navigate(`/tournament/${tour.id}/register-single`)}>
+                                        {/* Đăng ký lẻ: ai cũng thấy */}
+                                        <button
+                                            className="teal"
+                                            onClick={() => navigate(`/tournament/${tour.id}/register-single`)}
+                                        >
                                             Đăng ký lẻ
-                                            </button>
-                                            <button style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#17a2b8',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '5px',
-                                            cursor: 'pointer'
-                                            }} onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}>
+                                        </button>
+
+                                        {/* Danh sách VĐV: ai cũng thấy */}
+                                        <button
+                                            className="primary"
+                                            onClick={() => navigate(`/tournament/${tour.id}/competitors`)}
+                                        >
+                                            Danh sách VĐV
+                                        </button>
+
+                                        {/* Phê duyệt: chỉ Admin */}
+                                        {user?.user_type === 2 && (
+                                            <button
+                                            className="primary"
+                                            onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}
+                                            >
                                             Phê duyệt
                                             </button>
-                                            <button style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#dc3545',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '5px',
-                                            cursor: 'pointer'
-                                            }} onClick={() => handleDelete(tour.id)}>
+                                        )}
+
+                                        {/* Xóa: chỉ Admin */}
+                                        {user?.user_type === 2 && (
+                                            <button
+                                            className="danger"
+                                            onClick={() => handleDelete(tour.id)}
+                                            >
                                             Xóa
                                             </button>
-                                        </td>
                                         )}
+                                        </td>
                                     </tr>
                                     );
                                 })}

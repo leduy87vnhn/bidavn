@@ -195,13 +195,13 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
           style={inputStyle}
           value={(key.includes('date') || key.includes('deadline'))
             ? (formData[key]?.slice?.(0, 10) || '')
-            : (formData[key] || '')}
+            : key.includes('attendance_fee') ? formatCurrency(tournament[key]) : (tournament[key] || '')}
           onChange={e => setFormData({ ...formData, [key]: e.target.value })}
         />
       )
     ) : (
       <div style={scrollable ? scrollableStyle : readOnlyStyle}>
-        {key === 'attendance_price'
+        {key === 'attendance_fee_common'
           ? formatCurrency(tournament[key])
           : (key.includes('date') || key === 'registration_deadline')
             ? formatDate(tournament[key])
@@ -262,15 +262,28 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
         </div>
 
         {/* Các trường hiển thị, copy từ TournamentDetail.js */}
-        <p><strong>Tên giải:</strong><br />{getInput('name')}</p>
-        <p><strong>Mã giải:</strong><br />{getInput('code')}</p>
+        <p><strong>Tên nội dung thi đấu:</strong><br />{getInput('name')}</p>
+        <p><strong>Giải đấu:</strong><br />{getInput('group_id')}</p>
+        <p><strong>Mã nội dung:</strong><br />{getInput('code')}</p>
         <div style={{ display: 'flex', gap: '20px' }}>
           <div style={{ flex: 1 }}><p><strong>Ngày bắt đầu:</strong><br />{getInput('start_date')}</p></div>
           <div style={{ flex: 1 }}><p><strong>Ngày kết thúc:</strong><br />{getInput('end_date')}</p></div>
         </div>
         <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
         <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
-        <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+        <p><strong>Lệ phí:</strong><br />{getInput('attendance_fee_common')}</p>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          <div style={{ flex: 1 }}>
+            <p><strong>Hạng 1:</strong><br />{getInput('rank1')}</p>
+            <p><strong>Hạng 2:</strong><br />{getInput('rank2')}</p>
+            <p><strong>Hạng 3:</strong><br />{getInput('rank3')}</p>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p><strong>Lệ phí Hạng 1:</strong><br />{getInput('attendance_fee_rank1')}</p>
+            <p><strong>Lệ phí Hạng 2:</strong><br />{getInput('attendance_fee_rank2')}</p>
+            <p><strong>Lệ phí Hạng 3:</strong><br />{getInput('attendance_fee_rank3')}</p>
+          </div>
+        </div>
         <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
         <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
         <p><strong>Tên tài khoản:</strong><br />{getInput('bank_acc_name')}</p>

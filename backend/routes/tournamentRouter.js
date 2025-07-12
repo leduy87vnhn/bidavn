@@ -164,7 +164,7 @@ router.get('/', async (req, res) => {
 
 // Add tournament
 router.post('/', async (req, res) => {
-    const { name, code, attendance_price, start_date, end_date } = req.body;
+    const { name, code, attendance_fee_common, start_date, end_date } = req.body;
 
     if (!name || !code || !start_date || !end_date) {
         return res.status(400).json({ message: 'Thiếu thông tin.' });
@@ -172,11 +172,11 @@ router.post('/', async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO tournaments (name, code, attendance_price, start_date, end_date)
+            INSERT INTO tournaments (name, code, attendance_fee_common, start_date, end_date)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *
         `;
-        const result = await client.query(query, [name, code, attendance_price, start_date, end_date]);
+        const result = await client.query(query, [name, code, attendance_fee_common, start_date, end_date]);
         res.json(result.rows[0]);
     } catch (error) {
         console.error('Error creating tournament:', error);
@@ -188,68 +188,61 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const {
-        name,
-        code,
-        attendance_price,
-        start_date,
-        end_date,
-        location,
-        content,
-        prize,
-        registerable_date_start,
-        registerable_date_end,
-        description,
-        competitors_per_day,
-        maximum_competitors,
-        bank_name,
-        bank_number,
-        bank_acc_name,
-        conditions,
-        registration_method,
-        rules,
-        uniform,
-        registration_deadline,
-        nickname_enabled,
-        uniform_enabled,
-        cue_reg_enabled
-      } = req.body;
+      name, code, attendance_fee_common, start_date, end_date,
+      location, content, prize, registerable_date_start,
+      registerable_date_end, description, competitors_per_day, maximum_competitors,
+      bank_name, bank_number, bank_acc_name, conditions, registration_method,
+      rules, uniform, registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
+      group_id, // ✅ Thêm dòng này
+      rank1, rank2, rank3,
+      attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3
+    } = req.body;
 
     try {
         const query = `
-            UPDATE tournaments
-            SET name = $1,
-                code = $2,
-                attendance_price = $3,
-                start_date = $4,
-                end_date = $5,
-                location = $6,
-                content = $7,
-                prize = $8,
-                registerable_date_start = $9,
-                registerable_date_end = $10,
-                description = $11,
-                competitors_per_day = $12,
-                maximum_competitors=$13,
-                bank_name = $14,
-                bank_number = $15,
-                bank_acc_name = $16,
-                conditions = $17,
-                registration_method = $18,
-                rules = $19,
-                uniform = $20, 
-                registration_deadline = $21,
-                nickname_enabled = $22,
-                uniform_enabled = $23,
-                cue_reg_enabled = $24
-            WHERE id = $25
+          UPDATE tournaments
+          SET name = $1,
+              code = $2,
+              attendance_fee_common = $3,
+              start_date = $4,
+              end_date = $5,
+              location = $6,
+              content = $7,
+              prize = $8,
+              registerable_date_start = $9,
+              registerable_date_end = $10,
+              description = $11,
+              competitors_per_day = $12,
+              maximum_competitors = $13,
+              bank_name = $14,
+              bank_number = $15,
+              bank_acc_name = $16,
+              conditions = $17,
+              registration_method = $18,
+              rules = $19,
+              uniform = $20,
+              registration_deadline = $21,
+              nickname_enabled = $22,
+              uniform_enabled = $23,
+              cue_reg_enabled = $24,
+              group_id = $25,
+              rank1 = $26,
+              rank2 = $27,
+              rank3 = $28,
+              attendance_fee_rank1 = $29,
+              attendance_fee_rank2 = $30,
+              attendance_fee_rank3 = $31
+          WHERE id = $32
         `;
         await client.query(query, [
-            name, code, attendance_price, start_date, end_date,
-            location, content, prize, registerable_date_start,
-            registerable_date_end, description, competitors_per_day, maximum_competitors,
-            bank_name, bank_number, bank_acc_name, conditions, registration_method, rules, uniform,
-            registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
-            id
+          name, code, attendance_fee_common, start_date, end_date,
+          location, content, prize, registerable_date_start,
+          registerable_date_end, description, competitors_per_day, maximum_competitors,
+          bank_name, bank_number, bank_acc_name, conditions, registration_method, rules, uniform,
+          registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
+          group_id, rank1, rank2, rank3,
+          attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
+          id
         ]);
         res.json({ message: 'Cập nhật thành công.' });
     } catch (error) {
