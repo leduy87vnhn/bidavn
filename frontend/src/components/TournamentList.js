@@ -476,7 +476,7 @@ const TournamentList = () => {
                             {Object.values(groupedTournaments).map(group => (
                                 <React.Fragment key={group.group_id || 'ungrouped'}>
                                 <tr>
-                                    <td colSpan={user?.user_type === 2 ? 8 : 7} style={{
+                                    <td colSpan={user?.user_type === 2 ? 4 : 3} style={{
                                     backgroundColor: '#dbeafe',
                                     fontWeight: 'bold',
                                     padding: '10px',
@@ -570,8 +570,8 @@ const TournamentList = () => {
                                         </td>
                                         {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td> */}
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                        {tour.attendance_price != null
-                                            ? `${parseInt(tour.attendance_price).toLocaleString('vi-VN')} VNĐ`
+                                        {tour.attendance_fee_common != null
+                                            ? `${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ`
                                             : ''}
                                         </td>
                                         {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
