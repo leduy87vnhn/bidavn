@@ -49,16 +49,25 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, user_type, birthday, phone_number, email, enable } = req.body;
+    const { name, user_type, birthday, phone_number, email, enable, password } = req.body;
     const modified_date = new Date();
 
-    const result = await client.query(
-      `UPDATE users
-       SET name = $1, user_type = $2, birthday = $3, phone_number = $4, email = $5, enable = $6, modified_date = $7
-       WHERE id = $8 RETURNING *`,
-      [name, user_type, birthday, phone_number, email, enable, modified_date, id]
-    );
+    let query = `
+      UPDATE users
+      SET name = $1, user_type = $2, birthday = $3, phone_number = $4,
+          email = $5, enable = $6, modified_date = $7`;
+    const values = [name, user_type, birthday, phone_number, email, enable, modified_date];
 
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      query += `, password = $8 WHERE id = $9 RETURNING *`;
+      values.push(hashedPassword, id);
+    } else {
+      query += ` WHERE id = $8 RETURNING *`;
+      values.push(id);
+    }
+
+    const result = await client.query(query, values);
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error updating user:', err);
