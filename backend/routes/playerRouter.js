@@ -174,7 +174,7 @@ router.get('/by-phone', async (req, res) => {
   }
 });
 
-router.get('/players/:id/ranking', async (req, res) => {
+router.get('/:id/ranking', async (req, res) => {
   const { id } = req.params;
   const { tournament_id } = req.query;
 
@@ -188,8 +188,8 @@ router.get('/players/:id/ranking', async (req, res) => {
     }
 
     const player = result.rows[0];
-    const tourRes = await client.query(`SELECT content FROM tournaments WHERE id = $1`, [req.query.tournament_id]);
-    console.log('📘 Tournament content result:', tourRes.rows);
+    const tourRes = await client.query(`SELECT name FROM tournaments WHERE id = $1`, [tournament_id]);
+    console.log('📘 Tournament name result:', tourRes.rows);
     const tournament = tourRes.rows[0];
     const name = tournament?.name?.toLowerCase() || '';
 
