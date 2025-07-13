@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import MainPageHeader from '../components/MainPageHeader';
 
 const TournamentCompetitorList = () => {
   const { id: tournamentId } = useParams(); // tournament id
@@ -200,6 +201,7 @@ const TournamentCompetitorList = () => {
     return `${d}-${m}-${y}`;
   };
 
+  <MainPageHeader />
   return (
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
@@ -235,9 +237,9 @@ const TournamentCompetitorList = () => {
             borderRadius: '6px',
             cursor: 'pointer'
           }}
-          onClick={() => navigate(`/tournaments/${tournamentId}`)}
+          onClick={() => window.location.href = 'https://hbsf.com.vn/tournaments'}
         >
-          ⬅️ Quay Lại Chi Tiết Giải Đấu
+          ⬅️ Quay Lại Danh Sách Giải Đấu
         </button>
       </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../tournamentRegistration.scss';
+import MainPageHeader from '../components/MainPageHeader';
 import ReactModal from 'react-modal';
 
 const TournamentRegistrationSingle = () => {
@@ -244,6 +245,7 @@ const TournamentRegistrationSingle = () => {
     }
   };
 
+  <MainPageHeader />
   return (
     <div className="tournament-registration" style={{
       backgroundImage: backgroundImage ? `url(${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${backgroundImage})` : 'none',
