@@ -15,7 +15,7 @@ import ReactModal from 'react-modal';
 import MainPage from './screens/MainPage';
 import MainPageSettings from './screens/MainPageSettings';
 import TournamentGroupDetail from './screens/TournamentGroupDetail';
-import UserManagementScreen from './screens/UserManagementScreen';
+import UserManagement from './screens/UserManagement';
 
 ReactModal.setAppElement('#root');
 
