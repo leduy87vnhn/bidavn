@@ -244,7 +244,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
             />
           </div>
         )} */}
-        <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
+        <h2 style={{ marginBottom: 10 }}>📋 Thông tin chung</h2>
 
         <div style={{ marginBottom: '10px' }}>
           <button style={primaryButtonStyle} onClick={() => navigate(`/tournament/${tournament.id}/register`)}>
