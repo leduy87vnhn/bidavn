@@ -40,7 +40,7 @@ export default function App() {
           path="/users"
           element={
             <PrivateRoute>
-              <UserManagementScreen />
+              <UserManagement />
             </PrivateRoute>
           }
         />
