@@ -181,7 +181,7 @@ const TournamentRegistrationSingle = () => {
 
       const formRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournament.id,
-        registered_phone: registeredPhone,
+        registered_phone: competitor.phone,
         user_id: user?.id
       });
 
@@ -238,9 +238,23 @@ const TournamentRegistrationSingle = () => {
       minHeight: '100vh',
       padding: 40
     }}>
+      {tournament && (
+        <>
+          {/* Banner trên */}
+          <div style={{ backgroundColor: '#f0fff0', textAlign: 'center', padding: '10px 20px', fontWeight: 'bold', fontSize: '18px', borderRadius: '10px 10px 0 0' }}>
+            <div>{tournament.group_name}</div>
+            <div>{new Date(tournament.start_date).toLocaleDateString('vi-VN')} - {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</div>
+          </div>
+
+          {/* Banner dưới */}
+          <div style={{ backgroundColor: '#d1ecf1', textAlign: 'center', padding: '12px', fontWeight: 'bold', fontSize: '20px', borderRadius: '0 0 10px 10px', marginBottom: '20px' }}>
+            {tournament.name}
+          </div>
+        </>
+      )}
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
-        <button onClick={() => navigate(`/tournaments/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button>
-        <h2>Đăng ký thi đấu cá nhân <span style={{ backgroundColor: '#ffe0b3', padding: '4px 8px', borderRadius: 6 }}>Chưa Phê Duyệt</span></h2>
+        {/* <button onClick={() => navigate(`/tournaments/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button> */}
+        {/* <h2>Đăng ký thi đấu cá nhân <span style={{ backgroundColor: '#ffe0b3', padding: '4px 8px', borderRadius: 6 }}>Chưa Phê Duyệt</span></h2> */}
 
         {tournament && (
           <div>
@@ -253,7 +267,7 @@ const TournamentRegistrationSingle = () => {
 
         <form onSubmit={handleSubmit}>
           {/* ✅ SĐT Người đăng ký */}
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
             <input
               type="text"
@@ -262,7 +276,7 @@ const TournamentRegistrationSingle = () => {
               onChange={e => setRegisteredPhone(e.target.value)}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
-          </div>
+          </div> */}
 
           {/* ✅ ID VĐV */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
@@ -343,13 +357,19 @@ const TournamentRegistrationSingle = () => {
               onChange={e => setCompetitor({ ...competitor, club: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
-            {getFilteredClubs().length > 0 && (
-              <ul className="autocomplete-list">
-                {getFilteredClubs().map((club, i) => (
-                  <li key={i} onClick={() => setCompetitor({ ...competitor, club })}>{club}</li>
-                ))}
-              </ul>
-            )}
+          {getFilteredClubs().length > 0 && (
+            <ul className="autocomplete-list">
+              {getFilteredClubs().map((club, i) => (
+                <li key={i}
+                    onMouseDown={() => {
+                      setCompetitor({ ...competitor, club });
+                      setClubSuggestions([]); // 👈 ẩn gợi ý sau khi chọn
+                    }}>
+                  {club}
+                </li>
+              ))}
+            </ul>
+          )}
           </div>
 
           {/* ✅ Ngày thi đấu */}
@@ -384,6 +404,35 @@ const TournamentRegistrationSingle = () => {
           )}
 
           <button type="submit">📤 Gửi Đăng Ký</button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
+            <button
+              onClick={() => navigate('/tournaments')}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '6px',
+                background: '#888',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold'
+              }}
+            >
+              Quay Lại Danh Sách Giải Đấu
+            </button>
+
+            <button
+              onClick={() => navigate(`/tournament/${tournamentId}/competitors`)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '6px',
+                background: '#0066cc',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold'
+              }}
+            >
+              Danh sách vận động viên đã đăng ký
+            </button>
+          </div>
 
           {message && <p style={{ marginTop: '10px', color: message.includes('❌') ? 'red' : 'green', fontWeight: 'bold' }}>{message}</p>}
         </form>
