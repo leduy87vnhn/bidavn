@@ -191,12 +191,12 @@ router.get('/:id/ranking', async (req, res) => {
     const tourRes = await client.query(`SELECT name FROM tournaments WHERE id = $1`, [tournament_id]);
     console.log('📘 Tournament name result:', tourRes.rows);
     const tournament = tourRes.rows[0];
-    const name = tournament?.name?.toLowerCase() || '';
+    const content = tournament?.content?.toLowerCase() || '';
 
     let ranking = null;
-    if (name.includes('carom')) {
+    if (content.includes('carom')) {
       ranking = player.ranking;
-    } else if (name.includes('pool')) {
+    } else if (content.includes('pool')) {
       ranking = player.pool_ranking;
     }
 
