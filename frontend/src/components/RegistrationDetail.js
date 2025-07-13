@@ -40,7 +40,8 @@ const RegistrationDetail = () => {
         nick_name: c.nick_name,
         club: c.club,
         selected_date: c.selected_date?.slice(0, 10) || '',
-        uniform_size: c.uniform_size || 'L' // 👈 mặc định nếu thiếu
+        uniform_size: c.uniform_size || 'L', // 👈 mặc định nếu thiếu,        
+        attendance_fee: c.attendance_fee ?? 0, // 👈 thêm dòng này
       }));
       setCompetitors(formatted);
       setOriginalData(formatted);
@@ -149,6 +150,7 @@ const RegistrationDetail = () => {
             <th>Tên</th>
             <th>Nickname</th>
             <th>SĐT</th>
+            <th>Lệ phí</th> {/* 👈 thêm dòng này */}
             <th>Size</th>
             <th>Ngày thi đấu</th>
             <th>CLB</th>
@@ -166,6 +168,7 @@ const RegistrationDetail = () => {
                 ) : c.nick_name}
               </td>
               <td>{c.phone}</td>
+              <td>{c.attendance_fee?.toLocaleString() || 0}</td> {/* 👈 thêm dòng này */}
               <td>
                 {user?.user_type === 2 && isEditing ? (
                   <select

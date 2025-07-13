@@ -24,21 +24,91 @@ router.post('/', async (req, res) => {
 
 // 2. Thêm competitor vào bản đăng ký, với player_id đã được xác định trước
 router.post('/competitors', async (req, res) => {
-  const { registration_form_id, player_id, nick_name, club, selected_date , uniform_size } = req.body;
+  const { registration_form_id, player_id, nick_name, club, selected_date, uniform_size } = req.body;
 
   if (!registration_form_id || !player_id) {
     return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
   }
 
   try {
-    await client.query(
-      `INSERT INTO competitors (registration_form_id, player_id, nick_name, club, selected_date, uniform_size)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [registration_form_id, player_id, nick_name || '', club || '', selected_date || null, uniform_size || 'L']
+    // Lấy tournament_id từ registration_form
+    const formRes = await client.query(
+      `SELECT tournament_id FROM registration_form WHERE id = $1`,
+      [registration_form_id]
     );
-    res.json({ message: 'Success' });
+    if (formRes.rows.length === 0) {
+      return res.status(400).json({ message: 'Không tìm thấy bản đăng ký' });
+    }
+    const tournament_id = formRes.rows[0].tournament_id;
+
+    // Lấy thông tin giải đấu
+    const tourRes = await client.query(
+      `SELECT content, attendance_fee_common, attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
+              rank1, rank2, rank3
+       FROM tournaments
+       WHERE id = $1`,
+      [tournament_id]
+    );
+    if (tourRes.rows.length === 0) {
+      return res.status(400).json({ message: 'Không tìm thấy giải đấu' });
+    }
+    const tournament = tourRes.rows[0];
+
+    // Lấy thông tin player
+    const playerRes = await client.query(
+      `SELECT ranking, pool_ranking FROM players WHERE id = $1`,
+      [player_id]
+    );
+
+    let attendance_fee = tournament.attendance_fee_common;
+
+    const isCarom = (tournament.content || '').toLowerCase().includes('carom');
+    const isPool = (tournament.content || '').toLowerCase().includes('poo');
+
+    const player = playerRes.rows[0] || {};
+    const r = isCarom ? player.ranking : player.pool_ranking;
+    const r1 = tournament.rank1;
+    const r2 = tournament.rank2;
+    const r3 = tournament.rank3;
+
+    const fee1 = tournament.attendance_fee_rank1;
+    const fee2 = tournament.attendance_fee_rank2;
+    const fee3 = tournament.attendance_fee_rank3;
+
+    const hasRanking = r !== null && r !== 0;
+
+    if (!hasRanking || !r1 || !fee1) {
+      attendance_fee = tournament.attendance_fee_common;
+    } else {
+      if (r >= r1) {
+        attendance_fee = fee1;
+      } else if (r2 && fee2 && r >= r2) {
+        attendance_fee = fee2;
+      } else if (r3 && fee3 && r >= r3) {
+        attendance_fee = fee3;
+      } else {
+        attendance_fee = tournament.attendance_fee_common;
+      }
+    }
+
+    await client.query(
+      `INSERT INTO competitors
+        (registration_form_id, player_id, nick_name, club, selected_date, uniform_size, attendance_fee)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        registration_form_id,
+        player_id,
+        nick_name || '',
+        club || '',
+        selected_date || null,
+        uniform_size || 'L',
+        attendance_fee
+      ]
+    );
+
+    res.json({ message: 'Success', attendance_fee });
   } catch (err) {
-    console.error('❌ Lỗi khi thêm competitor:', err.message);
+    console.error('❌ Lỗi khi thêm competitor:', err.stack || err);
     res.status(500).json({ message: 'Server error', detail: err.message });
   }
 });

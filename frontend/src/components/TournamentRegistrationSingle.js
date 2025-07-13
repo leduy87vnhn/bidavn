@@ -196,7 +196,8 @@ const TournamentRegistrationSingle = () => {
         selected_date: competitor.selected_date || null
       });
 
-      const totalFee = parseInt(tournament.attendance_price || 0);
+      const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/${registration_form_id}/competitors`);
+      const totalFee = compRes.data.reduce((sum, c) => sum + (parseFloat(c.attendance_fee) || 0), 0);
       setModalInfo({
         tournamentName: tournament.name,
         totalFee,

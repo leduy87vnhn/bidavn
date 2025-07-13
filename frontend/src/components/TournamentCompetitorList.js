@@ -77,6 +77,7 @@ const TournamentCompetitorList = () => {
       "ID": c.player_id,
       "Tên": c.name,
       "SĐT": isAdmin ? c.phone : maskPhone(c.phone),
+      "Lệ phí": c.attendance_fee ?? 0, // 👈 thêm dòng này
       "Đơn vị": c.club,
       "Size trang phục": c.uniform_size,
       "Ngày thi đấu": c.selected_date?.slice(0, 10),
@@ -324,6 +325,7 @@ const TournamentCompetitorList = () => {
             <th>ID</th>
             <th>Tên</th>
             <th>SĐT</th>
+            <th>Lệ phí</th> {/* 👈 thêm dòng này */}
             <th onClick={() => handleSort('club')} style={{ cursor: 'pointer' }}>
               Đơn vị {sortConfig.key === 'club' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
             </th>
@@ -371,6 +373,7 @@ const TournamentCompetitorList = () => {
                     <td>{c.player_id}</td>
                     <td>{c.name}</td>
                     <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
+                    <td>{(c.attendance_fee ?? 0).toLocaleString()}</td> {/* 👈 thêm dòng này */}
                     <td>{c.club}</td>
                     <td>{formatDate(c.selected_date?.slice(0, 10))}</td>
                     <td>{statusText(c.status)}</td>
