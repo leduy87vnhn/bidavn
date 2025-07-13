@@ -426,18 +426,24 @@ router.put('/tournament-group/:id', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-      const result = await client.query('SELECT * FROM tournaments WHERE id = $1', [id]);
-      if (result.rows.length > 0) {
-        res.json(result.rows[0]);
-      } else {
-        res.status(404).json({ message: 'Không tìm thấy giải đấu' });
-      }
-    } catch (error) {
-      console.error('Error fetching tournament:', error);
-      res.status(500).json({ message: 'Lỗi server' });
+  const { id } = req.params;
+  try {
+    const result = await client.query(`
+      SELECT t.*, g.tournament_name AS group_name
+      FROM tournaments t
+      LEFT JOIN tournament_group g ON t.group_id = g.id
+      WHERE t.id = $1
+    `, [id]);
+
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: 'Không tìm thấy giải đấu' });
     }
+  } catch (error) {
+    console.error('Error fetching tournament:', error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
 });
 
 module.exports = router;
