@@ -5,8 +5,31 @@
 .mainpage-header {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background: #f8f8f8;
+  padding: 16px 24px;
+  background: #1a2b4c; /* xanh đậm */
+  color: white;
+}
+
+.mainpage-header .logo {
+  height: 80px;
+  margin-right: 20px;
+}
+
+.mainpage-header .header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mainpage-header .line1 {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.mainpage-header .line2 {
+  font-size: 18px;
+  line-height: 1.4;
 }
 
 .logo {
