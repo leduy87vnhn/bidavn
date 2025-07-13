@@ -196,8 +196,13 @@ router.get('/:id/ranking', async (req, res) => {
     let ranking = null;
     if (content.includes('carom')) {
       ranking = player.ranking;
+      console.log('🎯 Chọn ranking theo CAROM:', ranking);
     } else if (content.includes('pool')) {
       ranking = player.pool_ranking;
+      console.log('🎯 Chọn ranking theo POOL:', ranking);
+    } else {
+      ranking = player.ranking || player.pool_ranking || null;
+      console.log('⚙️ Không xác định loại giải. Dùng fallback ranking:', ranking);
     }
 
     res.json({ ranking });
