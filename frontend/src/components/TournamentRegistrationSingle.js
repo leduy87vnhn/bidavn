@@ -130,14 +130,16 @@ const TournamentRegistrationSingle = () => {
     });
     setPlayerSearchText(player.id.toString());
     setPlayerSuggestions([]);
+
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/${player.id}/ranking`);
-      setPlayerRanking(res.data.ranking);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/players/${player.id}/ranking?tournament_id=${tournamentId}`
+      );
+      setPlayerRanking(res.data.ranking ?? 'Chưa có');
     } catch (err) {
       console.warn('Không lấy được ranking:', err);
-      setPlayerRanking(null);
+      setPlayerRanking('Chưa xác định');
     }
-
   };
 
   const handleSubmit = async (e) => {
