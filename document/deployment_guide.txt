@@ -30,6 +30,7 @@ npm install xlsx file-saver
 npm install react-image-crop
 npm install react-markdown-editor-lite react-markdown --legacy-peer-deps
 npm install markdown-it --legacy-peer-deps
+npm install @mui/x-data-grid --legacy-peer-deps
 
 
 Start backend:

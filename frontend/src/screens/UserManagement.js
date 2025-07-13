@@ -93,20 +93,31 @@ const UserManagement = () => {
   };
 
   const columns = [
-    { field: 'user_name', headerName: 'Tên đăng nhập', flex: 1, editable: true },
+    { field: 'user_name', headerName: 'Tên đăng nhập', flex: 1, editable: false },
     { field: 'password', headerName: 'Mật khẩu', flex: 1, editable: true },
     { field: 'name', headerName: 'Họ tên', flex: 1, editable: true },
     { field: 'email', headerName: 'Email', flex: 1, editable: true },
     { field: 'phone_number', headerName: 'SĐT', flex: 1, editable: true },
-    { field: 'birthday', headerName: 'Ngày sinh', flex: 1, editable: true },
+    {
+        field: 'birthday',
+        headerName: 'Ngày sinh',
+        width: 130,
+        valueFormatter: (params) => {
+            if (!params.value) return '';
+            const date = new Date(params.value);
+            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+        },
+        editable: true
+    },
     {
       field: 'user_type',
-      headerName: 'Loại',
+      headerName: 'Loại user',
       flex: 1,
       type: 'singleSelect',
       editable: true,
       valueOptions: [
-        { value: 1, label: 'Sales' },
+        { value: 0, label: 'Vận động viên' },
+        { value: 1, label: 'Trọng tài' },
         { value: 2, label: 'Admin' },
       ]
     },
@@ -118,14 +129,16 @@ const UserManagement = () => {
       editable: true
     },
     {
-      field: 'actions',
-      headerName: 'Thao tác',
-      renderCell: (params) => (
-        <Button color="error" onClick={() => handleDelete(params.id)}>Xóa</Button>
-      ),
-      sortable: false,
-      filterable: false,
-      width: 100,
+        field: 'actions',
+        headerName: 'Thao tác',
+        width: 150,
+        renderCell: (params) => (
+            <>
+            <Button variant="contained" color="error" size="small" onClick={() => handleDelete(params.id)}>
+                Xóa
+            </Button>
+            </>
+        ),
     }
   ];
 
