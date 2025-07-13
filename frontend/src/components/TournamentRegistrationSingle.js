@@ -25,6 +25,7 @@ const TournamentRegistrationSingle = () => {
   const [clubSuggestions, setClubSuggestions] = useState([]);
   const [showConflictModal, setShowConflictModal] = useState(false);
   const [conflictInfo, setConflictInfo] = useState({ id: '', name: '', phone: '' });
+  const [playerRanking, setPlayerRanking] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -119,7 +120,7 @@ const TournamentRegistrationSingle = () => {
     return clubSuggestions.filter(c => c.toLowerCase().includes(competitor.club.toLowerCase())).slice(0, 5);
   };
 
-  const handleSelectSuggestion = (player) => {
+  const handleSelectSuggestion = async (player) => {
     setCompetitor({
       name: player.name,
       phone: player.phone,
@@ -129,12 +130,21 @@ const TournamentRegistrationSingle = () => {
     });
     setPlayerSearchText(player.id.toString());
     setPlayerSuggestions([]);
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/${player.id}/ranking`);
+      setPlayerRanking(res.data.ranking);
+    } catch (err) {
+      console.warn('Không lấy được ranking:', err);
+      setPlayerRanking(null);
+    }
+
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!competitor.name || !competitor.phone || !registeredPhone) {
+    //if (!competitor.name || !competitor.phone || !registeredPhone) {
+    if (!competitor.name || !competitor.phone) {
       setMessage('❌ Vui lòng điền đầy đủ thông tin bắt buộc.');
       return;
     }
@@ -315,6 +325,14 @@ const TournamentRegistrationSingle = () => {
               )}
             </td>
           </tr>
+          {playerRanking !== null && (
+            <tr>
+              <td className="table-cell"><strong>Ranking:</strong></td>
+              <td className="table-cell">
+                <span style={{ fontWeight: 'bold', color: '#0066cc' }}>{playerRanking}</span>
+              </td>
+            </tr>
+          )}
           <tr>
             <td className="table-cell"><strong>ĐƠN VỊ (TỈNH/THÀNH):</strong></td>
             <td className="table-cell">
@@ -355,116 +373,10 @@ const TournamentRegistrationSingle = () => {
           </div>
         )} */}
 
+        {/* ✅ Phần chọn ngày thi đấu */}
         <form onSubmit={handleSubmit}>
-          {/* ✅ SĐT Người đăng ký */}
-          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT Người đăng ký:</label>
-            <input
-              type="text"
-              placeholder="Số điện thoại người đăng ký (*)"
-              value={registeredPhone}
-              onChange={e => setRegisteredPhone(e.target.value)}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-          </div> */}
-
-          {/* ✅ ID VĐV */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>ID VĐV:</label>
-            <input
-              type="text"
-              placeholder="Gõ vài ký tự đầu để được gợi ý. ID có dạng H01234"
-              value={playerSearchText}
-              onChange={e => setPlayerSearchText(e.target.value.toUpperCase())}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {playerSearchText && playerSuggestions.length > 0 && !competitor.name && !competitor.phone && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map(p => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* ✅ Tên VĐV */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Tên VĐV:</label>
-            <input
-              type="text"
-              placeholder="Tên VĐV có dấu (*)"
-              value={competitor.name}
-              onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map(p => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* ✅ SĐT VĐV */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>SĐT VĐV:</label>
-            <input
-              type="text"
-              placeholder="SĐT VĐV (*)"
-              value={competitor.phone}
-              onChange={e => setCompetitor({ ...competitor, phone: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
-              <ul className="autocomplete-list">
-                {playerSuggestions.map(p => (
-                  <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* ✅ Nickname */}
-          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
-            <input
-              type="text"
-              placeholder="Tên thường gọi (có thể bỏ trống)"
-              value={competitor.nickname}
-              onChange={e => setCompetitor({ ...competitor, nickname: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-          </div> */}
-
-          {/* ✅ Đơn vị */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ width: '160px', fontWeight: 'bold' }}>Đơn vị:</label>
-            <input
-              type="text"
-              placeholder="Tên CLB hoặc nơi sinh hoạt (*)"
-              value={competitor.club}
-              onChange={e => setCompetitor({ ...competitor, club: e.target.value })}
-              style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-          {getFilteredClubs().length > 0 && (
-            <ul className="autocomplete-list">
-              {getFilteredClubs().map((club, i) => (
-                <li key={i}
-                    onMouseDown={() => {
-                      setCompetitor({ ...competitor, club });
-                      setClubSuggestions([]); // 👈 ẩn gợi ý sau khi chọn
-                    }}>
-                  {club}
-                </li>
-              ))}
-            </ul>
-          )}
-          </div>
-
-          {/* ✅ Ngày thi đấu */}
           {availableDates.length > 0 && (
-            <div style={{ marginBottom: '10px' }}>
+            <div style={{ margin: '20px 0' }}>
               <label style={{ fontWeight: 'bold' }}>Chọn ngày thi đấu:</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '5px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -493,9 +405,22 @@ const TournamentRegistrationSingle = () => {
             </div>
           )}
 
-          <button type="submit">📤 Gửi Đăng Ký</button>
+          {/* ✅ Nút Gửi đăng ký */}
+          <button type="submit" style={{
+            padding: '10px 20px',
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontWeight: 'bold'
+          }}>
+            📤 Gửi Đăng Ký
+          </button>
+
+          {/* ✅ Nút điều hướng */}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
             <button
+              type="button"
               onClick={() => navigate('/tournaments')}
               style={{
                 padding: '8px 16px',
@@ -510,6 +435,7 @@ const TournamentRegistrationSingle = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => navigate(`/tournament/${tournamentId}/competitors`)}
               style={{
                 padding: '8px 16px',
@@ -524,7 +450,16 @@ const TournamentRegistrationSingle = () => {
             </button>
           </div>
 
-          {message && <p style={{ marginTop: '10px', color: message.includes('❌') ? 'red' : 'green', fontWeight: 'bold' }}>{message}</p>}
+          {/* ✅ Thông báo lỗi/thành công */}
+          {message && (
+            <p style={{
+              marginTop: '10px',
+              color: message.includes('❌') ? 'red' : 'green',
+              fontWeight: 'bold'
+            }}>
+              {message}
+            </p>
+          )}
         </form>
       </div>
 

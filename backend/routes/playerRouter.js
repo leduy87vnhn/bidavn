@@ -174,4 +174,32 @@ router.get('/by-phone', async (req, res) => {
   }
 });
 
+router.get('/players/:id/ranking', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await client.query(`SELECT ranking, pool_ranking FROM players WHERE id = $1`, [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy VĐV' });
+    }
+
+    const player = result.rows[0];
+    const tourRes = await client.query(`SELECT content FROM tournaments WHERE id = $1`, [req.query.tournament_id]);
+    const tournament = tourRes.rows[0];
+    const content = tournament?.content?.toLowerCase() || '';
+
+    let ranking = null;
+    if (content.includes('carom')) {
+      ranking = player.ranking;
+    } else if (content.includes('pool')) {
+      ranking = player.pool_ranking;
+    }
+
+    res.json({ ranking });
+  } catch (err) {
+    console.error('Lỗi khi lấy ranking:', err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 module.exports = router;
