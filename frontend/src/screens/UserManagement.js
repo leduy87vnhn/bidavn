@@ -23,16 +23,26 @@ const UserManagement = () => {
     fetchUsers();
   }, []);
 
-  const handleEditCellChange = (params) => {
+    const handleEditCellChange = (params) => {
     const { id, field, value } = params;
+    let formattedValue = value;
+
+    // Nếu field là birthday và nhập dạng dd/mm/yyyy, chuyển về yyyy-mm-dd
+    if (field === 'birthday' && value?.includes('/')) {
+        const [dd, mm, yyyy] = value.split('/');
+        if (dd && mm && yyyy) {
+        formattedValue = `${yyyy}-${mm.padStart(2, '0')}-${dd.padStart(2, '0')}`;
+        }
+    }
+
     setEditedRows(prev => ({
-      ...prev,
-      [id]: {
+        ...prev,
+        [id]: {
         ...prev[id],
-        [field]: value
-      }
+        [field]: formattedValue
+        }
     }));
-  };
+    };
 
   const handleAddUser = () => {
     const newId = rowIdCounter.toString();
