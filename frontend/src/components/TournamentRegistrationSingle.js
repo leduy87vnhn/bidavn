@@ -9,7 +9,9 @@ const TournamentRegistrationSingle = () => {
   const navigate = useNavigate();
   const [tournament, setTournament] = useState(null);
   const [registeredPhone, setRegisteredPhone] = useState('');
-  const [competitor, setCompetitor] = useState({ name: '', phone: '', nickname: '', club: '', selected_date: '', uniform_size: 'L' });
+  const [competitor, setCompetitor] = useState({
+    name: '', phone: '', club: '', selected_date: '', uniform_size: 'L'
+  });
   const [playerSuggestions, setPlayerSuggestions] = useState([]);
   const [playerSearchText, setPlayerSearchText] = useState('');
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -121,7 +123,6 @@ const TournamentRegistrationSingle = () => {
     setCompetitor({
       name: player.name,
       phone: player.phone,
-      nickname: player.nickname || '',
       club: player.club || '',
       selected_date: '',
       uniform_size: 'L'
@@ -240,30 +241,119 @@ const TournamentRegistrationSingle = () => {
     }}>
       {tournament && (
         <>
-          {/* Banner trên */}
-          <div style={{ backgroundColor: '#f0fff0', textAlign: 'center', padding: '10px 20px', fontWeight: 'bold', fontSize: '18px', borderRadius: '10px 10px 0 0' }}>
+          {/* Banner 1 - Group name */}
+          <div style={{ width: '100%', backgroundColor: '#005f73', color: 'white', padding: '12px 0', textAlign: 'center', fontWeight: 'bold', fontSize: '20px' }}>
             <div>{tournament.group_name}</div>
             <div>{new Date(tournament.start_date).toLocaleDateString('vi-VN')} - {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</div>
           </div>
 
-          {/* Banner dưới */}
-          <div style={{ backgroundColor: '#d1ecf1', textAlign: 'center', padding: '12px', fontWeight: 'bold', fontSize: '20px', borderRadius: '0 0 10px 10px', marginBottom: '20px' }}>
+          {/* Khoảng trắng */}
+          <div style={{ height: '10px', backgroundColor: 'white' }} />
+
+          {/* Banner 2 - Tournament name */}
+          <div style={{ width: '100%', backgroundColor: '#d8f3dc', color: '#014421', padding: '12px 0', textAlign: 'center', fontWeight: 'bold', fontSize: '20px' }}>
             {tournament.name}
           </div>
         </>
       )}
+      <table style={{ width: '100%', borderCollapse: 'collapse', margin: '20px 0' }}>
+        <tbody>
+          <tr>
+            <td className="table-cell"><strong>ID VĐV:</strong></td>
+            <td className="table-cell">
+              <input
+                type="text"
+                value={playerSearchText}
+                onChange={e => setPlayerSearchText(e.target.value.toUpperCase())}
+                placeholder="Nhập ID (VD: H01234)"
+                className="table-input"
+              />
+              {playerSearchText && playerSuggestions.length > 0 && !competitor.name && !competitor.phone && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map(p => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                  ))}
+                </ul>
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td className="table-cell"><strong>TÊN VĐV:</strong></td>
+            <td className="table-cell">
+              <input
+                type="text"
+                value={competitor.name}
+                onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
+                placeholder="Nhập tên VĐV"
+                className="table-input"
+              />
+              {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map(p => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                  ))}
+                </ul>
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td className="table-cell"><strong>ĐIỆN THOẠI LIÊN HỆ:</strong></td>
+            <td className="table-cell">
+              <input
+                type="text"
+                value={competitor.phone}
+                onChange={e => setCompetitor({ ...competitor, phone: e.target.value })}
+                placeholder="Nhập số điện thoại"
+                className="table-input"
+              />
+              {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map(p => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                  ))}
+                </ul>
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td className="table-cell"><strong>ĐƠN VỊ (TỈNH/THÀNH):</strong></td>
+            <td className="table-cell">
+              <input
+                type="text"
+                value={competitor.club}
+                onChange={e => setCompetitor({ ...competitor, club: e.target.value })}
+                placeholder="Nhập tên CLB"
+                className="table-input"
+              />
+              {getFilteredClubs().length > 0 && (
+                <ul className="autocomplete-list">
+                  {getFilteredClubs().map((club, i) => (
+                    <li key={i}
+                        onMouseDown={() => {
+                          setCompetitor({ ...competitor, club });
+                          setClubSuggestions([]);
+                        }}>
+                      {club}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
         {/* <button onClick={() => navigate(`/tournaments/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button> */}
         {/* <h2>Đăng ký thi đấu cá nhân <span style={{ backgroundColor: '#ffe0b3', padding: '4px 8px', borderRadius: 6 }}>Chưa Phê Duyệt</span></h2> */}
 
-        {tournament && (
+        {/* {tournament && (
           <div>
             <p><strong>Tên giải:</strong> {tournament.name}</p>
             <p><strong>Thời gian:</strong> {new Date(tournament.start_date).toLocaleDateString('vi-VN')} → {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</p>
             <p><strong>Địa điểm:</strong> {tournament.location}</p>
             <p><strong>Nội dung:</strong> {tournament.content}</p>
           </div>
-        )}
+        )} */}
 
         <form onSubmit={handleSubmit}>
           {/* ✅ SĐT Người đăng ký */}
@@ -336,7 +426,7 @@ const TournamentRegistrationSingle = () => {
           </div>
 
           {/* ✅ Nickname */}
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <label style={{ width: '160px', fontWeight: 'bold' }}>Nickname:</label>
             <input
               type="text"
@@ -345,7 +435,7 @@ const TournamentRegistrationSingle = () => {
               onChange={e => setCompetitor({ ...competitor, nickname: e.target.value })}
               style={{ flex: 1, padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc' }}
             />
-          </div>
+          </div> */}
 
           {/* ✅ Đơn vị */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>

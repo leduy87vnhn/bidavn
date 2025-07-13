@@ -219,3 +219,30 @@
     }
   }
 }
+
+.registration-container {
+  margin-top: 20px; // Để background bắt đầu sau banner
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px;
+  backdrop-filter: brightness(1); // Không làm mờ banner
+}
+
+.table-cell {
+  border: 1px solid #2c3e50;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  vertical-align: middle;
+}
+
+.table-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
