@@ -22,13 +22,13 @@
 }
 
 .mainpage-header .line1 {
-  font-size: 20px;
+  font-size: 40px; /* trước là 20px */
   font-weight: bold;
   line-height: 1.4;
 }
 
 .mainpage-header .line2 {
-  font-size: 18px;
+  font-size: 36px; /* trước là 18px */
   line-height: 1.4;
 }
 
