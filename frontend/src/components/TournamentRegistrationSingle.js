@@ -327,7 +327,7 @@ const TournamentRegistrationSingle = () => {
           </tr>
           {playerRanking !== null && (
             <tr>
-              <td className="table-cell"><strong>Ranking:</strong></td>
+              <td className="table-cell"><strong>RANKING:</strong></td>
               <td className="table-cell">
                 <span style={{ fontWeight: 'bold', color: '#0066cc' }}>{playerRanking}</span>
               </td>
