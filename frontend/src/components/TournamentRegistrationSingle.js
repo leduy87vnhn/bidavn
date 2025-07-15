@@ -247,6 +247,8 @@ const TournamentRegistrationSingle = () => {
 
   <MainPageHeader />
   return (
+    <>
+    <MainPageHeader />
     <div className="tournament-registration" style={{
       backgroundImage: backgroundImage ? `url(${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${backgroundImage})` : 'none',
       backgroundSize: 'cover',
@@ -501,6 +503,7 @@ const TournamentRegistrationSingle = () => {
         <button onClick={() => setShowConflictModal(false)}>Đóng</button>
       </ReactModal>
     </div>
+  </>
   );
 };
 
