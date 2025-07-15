@@ -176,7 +176,11 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
   const getInput = (key, multiline = false, rows = 1, scrollable = false) => (
     isEditing ? (
       key === 'content' ? (
-        <select style={inputStyle} value={formData[key] || ''} onChange={e => setFormData({ ...formData, [key]: e.target.value })}>
+        <select
+          style={inputStyle}
+          value={formData[key] || ''}
+          onChange={e => setFormData({ ...formData, [key]: e.target.value })}
+        >
           <option value="">-- Chọn nội dung --</option>
           {contentOptions.map((opt, idx) => (
             <option key={idx} value={opt}>{opt}</option>
@@ -191,17 +195,20 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
         />
       ) : (
         <input
-          type={(key.includes('date') || key === 'registration_deadline') ? 'date' : key.includes('price') || key.includes('per_day') ? 'number' : 'text'}
+          type={
+            (key.includes('date') || key === 'registration_deadline') ? 'date'
+              : (key.includes('fee') || key.includes('rank') || key.includes('per_day') || key.includes('maximum'))
+                ? 'number'
+                : 'text'
+          }
           style={inputStyle}
-          value={(key.includes('date') || key.includes('deadline'))
-            ? (formData[key]?.slice?.(0, 10) || '')
-            : key.includes('attendance_fee') ? formatCurrency(tournament[key]) : (tournament[key] || '')}
+          value={formData[key] || ''}
           onChange={e => setFormData({ ...formData, [key]: e.target.value })}
         />
       )
     ) : (
       <div style={scrollable ? scrollableStyle : readOnlyStyle}>
-        {key === 'attendance_fee_common'
+        {key.includes('attendance_fee')
           ? formatCurrency(tournament[key])
           : (key.includes('date') || key === 'registration_deadline')
             ? formatDate(tournament[key])

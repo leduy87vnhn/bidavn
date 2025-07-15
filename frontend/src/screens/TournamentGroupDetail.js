@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
-import MainLayout from '../components/MainLayout';
+//import MainLayout from '../components/MainLayout';
+import MainPageHeader from '../components/MainPageHeader';
 import TournamentTabDetail from '../components/TournamentTabDetail';
 import { FaArrowLeft, FaCamera } from 'react-icons/fa';
 
@@ -74,9 +75,9 @@ const TournamentGroupDetail = () => {
     }
   };
 
-  if (loading) return <MainLayout><p>Đang tải...</p></MainLayout>;
-  if (!group) return <MainLayout><p>Không tìm thấy nhóm giải đấu.</p></MainLayout>;
-  if (!tournaments.length) return <MainLayout><p>Nhóm này chưa có giải đấu nào.</p></MainLayout>;
+  if (loading) return <MainPageHeader ><p>Đang tải...</p></MainPageHeader >;
+  if (!group) return <MainPageHeader ><p>Không tìm thấy nhóm giải đấu.</p></MainPageHeader >;
+  if (!tournaments.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
 
   const groupBackgroundUrl = group.background_image
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
@@ -90,7 +91,7 @@ const TournamentGroupDetail = () => {
     };
 
     return (
-    <MainLayout>
+    <MainPageHeader >
         <div
         style={{
             backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
@@ -101,7 +102,7 @@ const TournamentGroupDetail = () => {
         }}
         >
         {/* Logo HBSF góc trên phải */}
-        {logoFile && (
+        {/* {logoFile && (
             <div
             style={{
                 position: 'absolute',
@@ -120,7 +121,7 @@ const TournamentGroupDetail = () => {
                 style={{ height: 58, objectFit: 'contain', display: 'block' }}
             />
             </div>
-        )}
+        )} */}
 
         {/* <div style={{
             display: 'flex',
@@ -248,7 +249,7 @@ const TournamentGroupDetail = () => {
                 },
                 '.Mui-selected': {
                   color: '#fff',
-                  backgroundColor: '#1976d2',
+                  backgroundColor: 'rgba(25, 118, 210, 0.5)',
                   borderRadius: '8px 8px 0 0'
                 }
               }}
@@ -278,7 +279,7 @@ const TournamentGroupDetail = () => {
           </div>
         </div>
         </div>
-    </MainLayout>
+    </MainPageHeader >
     );
 };
 export default TournamentGroupDetail;

@@ -487,15 +487,16 @@ const TournamentList = () => {
                                         <div>
                                         Giải đấu: {group.group_id ? (
                                             <Link
-                                            to={`/tournament-group/${group.group_id}`}
-                                            style={{
-                                                color: '#007bff',
-                                                textDecoration: 'underline',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer'
-                                            }}
-                                            >
-                                            {group.group_name}
+                                                to={`/tournament-group/${group.group_id}`}
+                                                style={{
+                                                    color: '#007bff',
+                                                    textDecoration: 'underline',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '20px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                >
+                                                {group.group_name}
                                             </Link>
                                         ) : (
                                             group.group_name
@@ -549,9 +550,9 @@ const TournamentList = () => {
                                     <tr key={tour.id} style={{ backgroundColor: bgColor }}>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                         <div>
-                                            <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}>
+                                            {/* <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}> */}
                                             {tour.name}
-                                            </Link>
+                                            {/* </Link> */}
                                         </div>
                                         {typeof tour.approved_competitors_count !== 'undefined' && (
                                             <div onClick={() => navigate(`/tournament/${tour.id}/competitors`)} style={{
