@@ -84,98 +84,101 @@ const TournamentGroupDetail = () => {
     : '';
 
     const formatDate = (isoStr) => {
-    if (!isoStr) return '';
-    const d = new Date(isoStr);
-    if (isNaN(d.getTime())) return '';
-    return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
+      if (!isoStr) return '';
+        const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return '';
+      return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
     };
 
-    return (
-    <MainPageHeader >
-        <div
+  return (
+    <>
+      <MainPageHeader />
+
+      <div
         style={{
-            backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            minHeight: '100vh',
-            position: 'relative',
+          backgroundImage: groupBackgroundUrl ? `url(${groupBackgroundUrl})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh',
+          position: 'relative',
         }}
-        >
+      >
         {/* Logo HBSF góc trên phải */}
         {/* {logoFile && (
-            <div
+          <div
             style={{
-                position: 'absolute',
-                top: 24,
-                right: 36,
-                zIndex: 10,
-                background: '#fff9',
-                borderRadius: 12,
-                padding: 5,
-                boxShadow: '0 2px 12px #0002'
+              position: 'absolute',
+              top: 24,
+              right: 36,
+              zIndex: 10,
+              background: '#fff9',
+              borderRadius: 12,
+              padding: 5,
+              boxShadow: '0 2px 12px #0002'
             }}
-            >
+          >
             <img
-                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
-                alt="Logo HBSF"
-                style={{ height: 58, objectFit: 'contain', display: 'block' }}
+              src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
+              alt="Logo HBSF"
+              style={{ height: 58, objectFit: 'contain', display: 'block' }}
             />
-            </div>
+          </div>
         )} */}
 
         {/* <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '24px 36px 0 36px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '24px 36px 0 36px',
         }}>
-            <button
+          <button
             onClick={() => navigate('/tournaments')}
             style={{
-                background: '#2a334a',
-                color: 'white',
-                border: 'none',
-                borderRadius: 8,
-                padding: '10px 18px',
-                fontSize: 17,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                fontWeight: 600,
-                cursor: 'pointer'
+              background: '#2a334a',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              padding: '10px 18px',
+              fontSize: 17,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontWeight: 600,
+              cursor: 'pointer'
             }}
-            >
+          >
             <FaArrowLeft /> Quay lại danh sách
-            </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             {user?.user_type === 2 && (
-                <label
+              <label
                 style={{
-                    background: '#12ad7b',
-                    color: 'white',
-                    padding: '9px 15px',
-                    borderRadius: 8,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    fontSize: 15,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 7,
+                  background: '#12ad7b',
+                  color: 'white',
+                  padding: '9px 15px',
+                  borderRadius: 8,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: 15,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 7,
                 }}
-                >
+              >
                 <FaCamera /> Tải hình nền group
                 <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleBackgroundUpload}
-                    style={{ display: 'none' }}
-                    ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBackgroundUpload}
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
                 />
-                </label>
+              </label>
             )}
             {uploading && <span style={{ color: '#246' }}>Đang tải lên...</span>}
-            </div>
+          </div>
         </div> */}
+
         <div
           style={{
             display: 'flex',
@@ -211,6 +214,7 @@ const TournamentGroupDetail = () => {
             </span>
           )}
         </div>
+
         {/* Container chung để xử lý zIndex */}
         <div style={{ position: 'relative', zIndex: 5, margin: '36px' }}>
           <div className="tournament-group-header" style={{ marginBottom: 16 }}>
@@ -278,8 +282,8 @@ const TournamentGroupDetail = () => {
             </div>
           </div>
         </div>
-        </div>
-    </MainPageHeader >
-    );
+      </div>
+    </>
+  );
 };
 export default TournamentGroupDetail;
