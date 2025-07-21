@@ -643,7 +643,7 @@ const TournamentList = () => {
                                         {/* Đăng ký lẻ: ai cũng thấy */}
                                         <button
                                             className="teal"
-                                            onClick={() => navigate(`/tournament/${tour.id}/register-single`)}
+                                            onClick={() => navigate(`/tournament_events/${tour.id}/register-single`)}
                                         >
                                             Đăng ký thi đấu
                                         </button>
@@ -651,7 +651,7 @@ const TournamentList = () => {
                                         {/* Danh sách VĐV: ai cũng thấy */}
                                         <button
                                             className="primary"
-                                            onClick={() => navigate(`/tournament/${tour.id}/competitors`)}
+                                            onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}
                                         >
                                             Danh sách VĐV
                                         </button>

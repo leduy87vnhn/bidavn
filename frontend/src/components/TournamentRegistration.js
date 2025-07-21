@@ -632,7 +632,7 @@ const TournamentRegistration = () => {
             <p><strong>Nội dung:</strong> {tournament.content}</p>
             <p>
               👉 <a
-                href={`/tournament/${tournament.id}/competitors`}
+                href={`/tournament_events/${tournament.id}/competitors`}
                 style={{ color: '#007bff', textDecoration: 'underline' }}
               >
                 Xem danh sách VĐV đã đăng ký
@@ -958,7 +958,7 @@ const TournamentRegistration = () => {
             <button
               onClick={() => {
                 setShowSuccessModal(false);
-                navigate(`/tournament/${tournamentId}/competitors`);
+                navigate(`/tournament_events/${tournamentId}/competitors`);
               }}
               style={{
                 padding: '8px 16px',

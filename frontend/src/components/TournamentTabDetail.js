@@ -260,7 +260,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
         </div>
 
         <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+          <Link to={`/tournament_events/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
             Xem danh sách VĐV đã đăng ký
           </Link>
           <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>

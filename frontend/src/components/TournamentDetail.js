@@ -330,7 +330,7 @@
 //                 <div style={{ marginBottom: '10px' }}>
 //                     <button
 //                         style={primaryButtonStyle}
-//                         onClick={() => navigate(`/tournament/${tournament.id}/register`)}
+//                         onClick={() => navigate(`/tournament_events/${tournament.id}/register`)}
 //                     >
 //                         Đăng ký thi đấu
 //                     </button>
@@ -338,7 +338,7 @@
 
 //                 {/* ✅ Các liên kết nằm dưới nút Đăng ký thi đấu */}
 //                 <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-//                     <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+//                     <Link to={`/tournament_events/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
 //                         Xem danh sách VĐV đã đăng ký
 //                     </Link>
 //                     <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>
@@ -888,13 +888,13 @@ const TournamentDetail = () => {
                     <h2 style={{ marginBottom: 10 }}>📋 Chi tiết Giải đấu</h2>
 
                     <div style={{ marginBottom: '10px' }}>
-                        <button style={primaryButtonStyle} onClick={() => navigate(`/tournament/${tournament.id}/register`)}>
+                        <button style={primaryButtonStyle} onClick={() => navigate(`/tournament_events/${tournament.id}/register`)}>
                             Đăng ký thi đấu
                         </button>
                     </div>
 
                     <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                        <Link to={`/tournament/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
+                        <Link to={`/tournament_events/${tournament.id}/competitors`} style={{ color: '#007bff', textDecoration: 'underline' }}>
                             Xem danh sách VĐV đã đăng ký
                         </Link>
                         <Link to="/players" style={{ color: '#007bff', textDecoration: 'underline' }}>

@@ -442,7 +442,7 @@ const TournamentRegistrationSingle = () => {
 
             <button
               type="button"
-              onClick={() => navigate(`/tournament/${tournamentId}/competitors`)}
+              onClick={() => navigate(`/tournament_events/${tournamentId}/competitors`)}
               style={{
                 padding: '8px 16px',
                 borderRadius: '6px',
@@ -479,7 +479,7 @@ const TournamentRegistrationSingle = () => {
         <button
           onClick={() => {
             setShowSuccessModal(false);
-            navigate(`/tournament/${tournamentId}/competitors`);
+            navigate(`/tournament_events/${tournamentId}/competitors`);
           }}
           style={{
             padding: '8px 16px',
