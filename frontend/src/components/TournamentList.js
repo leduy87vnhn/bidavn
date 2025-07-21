@@ -323,8 +323,8 @@ const TournamentList = () => {
                         )}
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                        {/* <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             {user && <span>Xin chào, <strong>{user.name}</strong></span>}
                             <button
                                 onClick={() => {
@@ -343,7 +343,7 @@ const TournamentList = () => {
                             >
                                 Đăng xuất
                             </button>
-                        </div> */}
+                        </div>
 
                         <Link
                             to="/players"
@@ -356,7 +356,7 @@ const TournamentList = () => {
                         >
                             Bảng xếp hạng Carom - Pool HBSF
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
 
                 {message && (
@@ -450,15 +450,37 @@ const TournamentList = () => {
                 />
 
                 {/* Bộ lọc trạng thái giải đấu */}
-                <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{
+                marginTop: '20px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px'
+                }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <label>Lọc theo trạng thái:</label>
                     <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                        <option value="upcoming">Mở đăng ký</option>
-                        <option value="ongoing">Đang diễn ra</option>
-                        <option value="ended">Đã kết thúc</option>                    
-                        <option value="not_ended">Chưa kết thúc</option> {/* 👈 thêm dòng này */}
-                        <option value="all">Toàn bộ</option>
+                    <option value="upcoming">Mở đăng ký</option>
+                    <option value="ongoing">Đang diễn ra</option>
+                    <option value="ended">Đã kết thúc</option>                    
+                    <option value="not_ended">Chưa kết thúc</option>
+                    <option value="all">Toàn bộ</option>
                     </select>
+                </div>
+
+                <Link
+                    to="/players"
+                    style={{
+                    color: '#007bff',
+                    textDecoration: 'underline',
+                    fontWeight: 'bold',
+                    fontSize: '16px',
+                    marginLeft: 'auto'
+                    }}
+                >
+                    Bảng xếp hạng Carom - Pool HBSF
+                </Link>
                 </div>
                 {/* Table danh sách giải */}
                 {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 ? (
