@@ -459,7 +459,7 @@ const TournamentList = () => {
                     </select>
                 </div>
                 {/* Table danh sách giải */}
-                {Array.isArray(tournament_events) && tournament_events.length > 0 ? (
+                {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 ? (
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
                             <thead>
