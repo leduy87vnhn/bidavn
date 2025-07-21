@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import AddTournamentGroupModal from '../components/AddTournamentGroupModal';
 import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
+
 import '../tournament.scss';
 
 const TournamentList = () => {
@@ -266,7 +268,10 @@ const TournamentList = () => {
 
     return (
         <>
-        <MainPageHeader />
+        <div style={{ position: 'relative', zIndex: 1000 }}>
+            <MainPageHeader />
+            <MainPageMenuBar />
+        </div>
         <div
             style={{
                 backgroundImage: listBackground
@@ -299,7 +304,7 @@ const TournamentList = () => {
                             />
                         )} */}
                         
-                        <h2 style={{ textAlign: 'center', marginTop: '20px' }}>Danh sách giải đấu</h2>
+                        {/* <h2 style={{ textAlign: 'center', marginTop: '20px' }}>Danh sách giải đấu</h2> */}
                         {user?.user_type === 2 && (
                             <div className="top-action-group">
                                 <button className="top-action-button teal" onClick={() => setShowGroupPopup(true)}>

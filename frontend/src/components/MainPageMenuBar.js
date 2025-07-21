@@ -17,20 +17,20 @@ const MainPageMenuBar = () => {
           <span className="menu-item" onClick={() => navigate('/settings')}>Thiết lập</span>
         )}
       </div>
-      {/* <div className="menu-right">
+      <div className="menu-right">
         {user ? (
           <>
-            <span className="user-name">{user.user_name}</span>
+            <span className="user-name">{user.name}</span>
             <button onClick={() => {
               localStorage.removeItem('user_info');
               window.location.reload();
-            }}>Logout</button>
+            }}>Đăng Xuất</button>
           </>
         ) : (
-          <button onClick={() => navigate('/login')}>Login</button>
+          <button onClick={() => navigate('/login')}>Đăng Nhập</button>
         )}
-      </div> */}
-      <div className="menu-right">
+      </div>
+      {/* <div className="menu-right">
         {user ? (
           <>
             <span style={{ marginRight: '10px' }}><strong>{user.name}</strong></span>
@@ -67,7 +67,7 @@ const MainPageMenuBar = () => {
             Đăng nhập
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
