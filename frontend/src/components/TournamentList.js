@@ -265,6 +265,8 @@ const TournamentList = () => {
     const totalPages = Math.ceil(total / limit);
 
     return (
+        <>
+        <MainPageHeader />
         <div
             style={{
                 backgroundImage: listBackground
@@ -277,7 +279,7 @@ const TournamentList = () => {
                 backdropFilter: 'blur(3px)'
             }}
         >
-            <MainPageHeader />
+            
             <div className="tournament-list-container"
                 style={{
                     maxWidth: 1000,
@@ -699,6 +701,7 @@ const TournamentList = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

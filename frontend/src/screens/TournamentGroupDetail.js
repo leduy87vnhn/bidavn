@@ -258,7 +258,7 @@ const TournamentGroupDetail = () => {
                 }
               }}
             >
-              {Array.isArray(tournament_events) && tournament_events.length > 0
+              {Array.isArray(tournamentEvents) && tournamentEvents.length > 0
                 ? tournament_events.map((t, idx) => (
                   <Tab
                     key={t.id}
@@ -274,7 +274,7 @@ const TournamentGroupDetail = () => {
             </Tabs>
 
             <div style={{ marginTop: 20 }}>
-              {Array.isArray(tournament_events) && tournament_events.length > 0 && tournament_events[activeTab] ? (
+              {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 && tournamentEvents[activeTab] ? (
                 <TournamentTabDetail tournament={tournament_events[activeTab]} transparentBackground={true} />
               ) : (
                 <p>Giải này chưa đăng ký nội dung.</p>
