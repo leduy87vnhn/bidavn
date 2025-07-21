@@ -17,7 +17,7 @@ const MainPageMenuBar = () => {
           <span className="menu-item" onClick={() => navigate('/settings')}>Thiết lập</span>
         )}
       </div>
-      <div className="menu-right">
+      {/* <div className="menu-right">
         {user ? (
           <>
             <span className="user-name">{user.user_name}</span>
@@ -28,6 +28,44 @@ const MainPageMenuBar = () => {
           </>
         ) : (
           <button onClick={() => navigate('/login')}>Login</button>
+        )}
+      </div> */}
+      <div className="menu-right">
+        {user ? (
+          <>
+            <span style={{ marginRight: '10px' }}>👤 <strong>{user.user_name}</strong></span>
+            <button
+              onClick={() => {
+                localStorage.removeItem('user_info');
+                localStorage.removeItem('token');
+                window.location.reload();
+              }}
+              style={{
+                backgroundColor: '#dc3545',
+                color: 'white',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Đăng xuất
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => navigate('/login')}
+            style={{
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              padding: '6px 12px',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Đăng nhập
+          </button>
         )}
       </div>
     </div>

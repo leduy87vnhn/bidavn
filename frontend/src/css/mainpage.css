@@ -161,3 +161,20 @@
   justify-content: space-around;
   padding: 20px;
 }
+
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .user-name {
+    font-weight: bold;
+  }
+
+  button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+}
