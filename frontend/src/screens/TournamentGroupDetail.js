@@ -77,7 +77,7 @@ const TournamentGroupDetail = () => {
 
   if (loading) return <MainPageHeader ><p>Đang tải...</p></MainPageHeader >;
   if (!group) return <MainPageHeader ><p>Không tìm thấy nhóm giải đấu.</p></MainPageHeader >;
-  if (!tournament_events.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
+  if (!tournamentEvents.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
 
   const groupBackgroundUrl = group.background_image
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
@@ -259,7 +259,7 @@ const TournamentGroupDetail = () => {
               }}
             >
               {Array.isArray(tournamentEvents) && tournamentEvents.length > 0
-                ? tournament_events.map((t, idx) => (
+                ? tournamentEvents.map((t, idx) => (
                   <Tab
                     key={t.id}
                     label={t.name}
@@ -275,7 +275,7 @@ const TournamentGroupDetail = () => {
 
             <div style={{ marginTop: 20 }}>
               {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 && tournamentEvents[activeTab] ? (
-                <TournamentTabDetail tournament={tournament_events[activeTab]} transparentBackground={true} />
+                <TournamentTabDetail tournament={tournamentEvents[activeTab]} transparentBackground={true} />
               ) : (
                 <p>Giải này chưa đăng ký nội dung.</p>
               )}
