@@ -33,7 +33,7 @@ const MainPageMenuBar = () => {
       <div className="menu-right">
         {user ? (
           <>
-            <span style={{ marginRight: '10px' }}>👤 <strong>{user.user_name}</strong></span>
+            <span style={{ marginRight: '10px' }}><strong>{user.name}</strong></span>
             <button
               onClick={() => {
                 localStorage.removeItem('user_info');
