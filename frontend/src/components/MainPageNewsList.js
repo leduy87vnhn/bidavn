@@ -68,7 +68,7 @@ const MainPageNewsList = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/tournament-group-by-name?name=${encodeURIComponent(eventName)}`);
       const groupId = res.data.group_id;
       if (groupId) {
-        window.location.href = 'https://hbsf.com.vn/tournaments';
+        window.location.href = 'https://hbsf.com.vn/tournament_events';
       } else {
         console.log('No matching tournament group');
       }

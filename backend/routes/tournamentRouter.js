@@ -75,7 +75,7 @@ router.get('/logo', async (req, res) => {
   }
 });
 
-// List tournaments (paginated)
+// List tournament_event (paginated)
 router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
@@ -109,7 +109,7 @@ router.get('/', async (req, res) => {
           LEFT JOIN players p ON c.player_id = p.id
           WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
         ) AS approved_competitors_count
-      FROM tournaments t
+      FROM tournament_event t
       LEFT JOIN tournament_group tg ON t.group_id = tg.id
       ${condition}
       ORDER BY t.start_date ASC
@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
     `;
 
     const countQuery = `
-      SELECT COUNT(*) FROM tournaments t
+      SELECT COUNT(*) FROM tournament_event t
       ${condition}
     `;
 
@@ -138,13 +138,13 @@ router.get('/', async (req, res) => {
                 LEFT JOIN players p ON c.player_id = p.id
                 WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
               ) AS approved_competitors_count
-            FROM tournaments t
+            FROM tournament_events t
             LEFT JOIN tournament_group tg ON t.group_id = tg.id
             ORDER BY t.start_date ASC
             LIMIT $1 OFFSET $2
           `, [limit, offset]);
 
-            countResult = await client.query('SELECT COUNT(*) FROM tournaments');
+            countResult = await client.query('SELECT COUNT(*) FROM tournament_events');
         } else {
             dataResult = await client.query(dataQuery, [limit, offset]);
             countResult = await client.query(countQuery);
@@ -157,7 +157,7 @@ router.get('/', async (req, res) => {
             limit
         });
     } catch (error) {
-        console.error('Error fetching tournaments:', error);
+        console.error('Error fetching tournament_events:', error);
         res.status(500).json({ message: 'Lỗi server khi lấy danh sách giải đấu.' });
     }
 });
@@ -172,7 +172,7 @@ router.post('/', async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO tournaments (name, code, attendance_fee_common, start_date, end_date)
+            INSERT INTO tournament_events (name, code, attendance_fee_common, start_date, end_date)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *
         `;
@@ -200,7 +200,7 @@ router.put('/:id', async (req, res) => {
 
     try {
         const query = `
-          UPDATE tournaments
+          UPDATE tournament_events
           SET name = $1,
               code = $2,
               attendance_fee_common = $3,
@@ -256,7 +256,7 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        await client.query('DELETE FROM tournaments WHERE id = $1', [id]);
+        await client.query('DELETE FROM tournament_events WHERE id = $1', [id]);
         res.json({ message: 'Đã xoá giải đấu.' });
     } catch (error) {
         console.error('Delete tournament error:', error);
@@ -311,7 +311,7 @@ router.get('/groups', async (req, res) => {
   }
 });
 
-// GET group info và list tournaments theo group_id
+// GET group info và list tournament_events theo group_id
 router.get('/group/:groupId', async (req, res) => {
   const { groupId } = req.params;
   try {
@@ -324,12 +324,12 @@ router.get('/group/:groupId', async (req, res) => {
 
     // Lấy danh sách tournament con
     const tournamentResult = await client.query(
-      `SELECT * FROM tournaments WHERE group_id = $1 ORDER BY start_date ASC`, [groupId]
+      `SELECT * FROM tournament_events WHERE group_id = $1 ORDER BY start_date ASC`, [groupId]
     );
 
     res.json({
       group: groupResult.rows[0],
-      tournaments: tournamentResult.rows
+      tournament_events: tournamentResult.rows
     });
   } catch (error) {
     console.error('Lỗi lấy group:', error);
@@ -430,7 +430,7 @@ router.get('/:id', async (req, res) => {
   try {
     const result = await client.query(`
       SELECT t.*, g.tournament_name AS group_name
-      FROM tournaments t
+      FROM tournament_events t
       LEFT JOIN tournament_group g ON t.group_id = g.id
       WHERE t.id = $1
     `, [id]);

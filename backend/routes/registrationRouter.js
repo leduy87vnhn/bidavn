@@ -45,7 +45,7 @@ router.post('/competitors', async (req, res) => {
     const tourRes = await client.query(
       `SELECT content, attendance_fee_common, attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
               rank1, rank2, rank3
-       FROM tournaments
+       FROM tournament_event
        WHERE id = $1`,
       [tournament_id]
     );
@@ -168,7 +168,7 @@ router.get('/background/:tournamentId', async (req, res) => {
   const { tournamentId } = req.params;
   try {
     const result = await client.query(
-      'SELECT background_image FROM tournaments WHERE id = $1',
+      'SELECT background_image FROM tournament_events WHERE id = $1',
       [tournamentId]
     );
     if (result.rows.length === 0 || !result.rows[0].background_image) {
@@ -223,7 +223,7 @@ router.get('/', async (req, res) => {
           WHERE c.registration_form_id = rf.id
         ) AS athlete_names
       FROM registration_form rf
-      JOIN tournaments t ON rf.tournament_id = t.id
+      JOIN tournament_event t ON rf.tournament_id = t.id
       JOIN users u ON rf.user_id = u.id
       WHERE
         ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%')) AND
@@ -281,7 +281,7 @@ router.get('/slots', async (req, res) => {
   try {
     // Lấy thông tin giải đấu
     const tourRes = await client.query(
-      'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournaments WHERE id = $1',
+      'SELECT registerable_date_start, registerable_date_end, competitors_per_day FROM tournament_events WHERE id = $1',
       [parseInt(tournament_id)]
     );
 

@@ -23,7 +23,7 @@ const TournamentCompetitorList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
+        const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournamentId}`);
         setTournament(tourRes.data);
 
         const compRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${tournamentId}`);
@@ -237,7 +237,7 @@ const TournamentCompetitorList = () => {
             borderRadius: '6px',
             cursor: 'pointer'
           }}
-          onClick={() => window.location.href = 'https://hbsf.com.vn/tournaments'}
+          onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}
         >
           ⬅️ Quay Lại Danh Sách Giải Đấu
         </button>

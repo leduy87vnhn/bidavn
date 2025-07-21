@@ -116,9 +116,9 @@ exports.getTournamentGroupsWithInfo = async (req, res) => {
       SELECT g.id, g.tournament_name,
              MIN(t.start_date) AS start_date,
              MAX(t.end_date) AS end_date,
-             (SELECT location FROM tournaments WHERE group_id = g.id ORDER BY start_date ASC LIMIT 1) AS location
+             (SELECT location FROM tournament_events WHERE group_id = g.id ORDER BY start_date ASC LIMIT 1) AS location
       FROM tournament_group g
-      JOIN tournaments t ON t.group_id = g.id
+      JOIN tournament_events t ON t.group_id = g.id
       GROUP BY g.id, g.tournament_name
     `);
     res.json(result.rows);

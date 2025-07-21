@@ -38,7 +38,7 @@ app.options('*', cors(corsOptions));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', authRoutes);
-app.use('/api/tournaments', tournamentRouter);
+app.use('/api/tournament_event', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
 app.use('/api/registration_form', registrationRouter);

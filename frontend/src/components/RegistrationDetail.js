@@ -57,7 +57,7 @@ const RegistrationDetail = () => {
 
       // Lấy thông tin giải đấu
       const tournamentId = res.data.tournament_id;
-      const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
+      const tourRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournamentId}`);
       setTournament(tourRes.data);
     } catch (err) {
       console.error('Lỗi khi tải bản đăng ký hoặc giải đấu:', err);

@@ -307,7 +307,7 @@ const PlayerList = () => {
                 )}
 
                 <button
-                    onClick={() => navigate('/tournaments')}
+                    onClick={() => navigate('/tournament_events')}
                     style={{
                         backgroundColor: '#6c757d',
                         color: '#fff',

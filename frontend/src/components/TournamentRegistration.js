@@ -58,7 +58,7 @@ const TournamentRegistration = () => {
 
   const loadTournament = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournamentId}`);
       setTournament(res.data);
       setBackgroundImage(res.data.background_image);
 
@@ -591,7 +591,7 @@ const TournamentRegistration = () => {
       <div style={{ backgroundColor: 'white', maxWidth: 900, margin: '0 auto', padding: 20, borderRadius: 12 }}>
         <div style={{ textAlign: 'right', marginBottom: '10px' }}>
           <button
-            onClick={() => navigate(`/tournaments/${tournamentId}`)}
+            onClick={() => navigate(`/tournament_events/${tournamentId}`)}
             style={{
               backgroundColor: '#6c757d',
               color: 'white',

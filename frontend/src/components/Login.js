@@ -25,11 +25,11 @@ const Login = () => {
         }
     }, []);
 
-    // ✅ Khi login thành công → chuyển sang tournaments
+    // ✅ Khi login thành công → chuyển sang tournament_events
     useEffect(() => {
         if (loginSuccess) {
-            //navigate('/tournaments');
-            window.location.href = '/tournaments';
+            //navigate('/tournament_events');
+            window.location.href = '/tournament_events';
         }
     }, [loginSuccess, navigate]);
 
@@ -47,8 +47,8 @@ const Login = () => {
             localStorage.setItem('user_info', JSON.stringify(response.data.user));
             setMessage('Đăng nhập thành công.');
             setLoginSuccess(true); // ✅ dùng flag để điều hướng
-            window.location.href = '/tournaments';
-            navigate('/tournaments');
+            window.location.href = '/tournament_events';
+            navigate('/tournament_events');
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {

@@ -56,7 +56,7 @@
 
 //     const loadTournament = async () => {
 //         try {
-//             const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+//             const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${id}`);
 //             console.log('✅ Tournament data:', res.data);
 //             setTournament(res.data);
 //         } catch (err) {
@@ -85,7 +85,7 @@
 
 //         try {
 //             await axios.post(
-//                 `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`,
+//                 `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-background`,
 //                 form,
 //                 { headers: { 'Content-Type': 'multipart/form-data' } }
 //             );
@@ -108,7 +108,7 @@
 
 //         try {
 //             await axios.post(
-//                 `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+//                 `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-bankqr`,
 //                 form,
 //                 { headers: { 'Content-Type': 'multipart/form-data' } }
 //             );
@@ -170,7 +170,7 @@
 
 //         try {
 //             await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+//             `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-bankqr`,
 //             form,
 //             { headers: { 'Content-Type': 'multipart/form-data' } }
 //             );
@@ -187,7 +187,7 @@
 
 //     const fetchLogo = async () => {
 //     try {
-//         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+//         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/logo`);
 //         setLogoFile(res.data.filename);
 //     } catch (err) {
 //         console.error('Lỗi khi tải logo:', err);
@@ -265,7 +265,7 @@
 //             )
 //         ) : (
 //             <div style={scrollable ? scrollableStyle : readOnlyStyle}>
-//                 {key === 'attendance_price'
+//                 {key === 'attendance_fee_common'
 //                     ? formatCurrency(tournament[key])
 //                     : (key.includes('date') || key === 'registration_deadline')
 //                         ? formatDate(tournament[key])
@@ -360,7 +360,7 @@
 
 //                     <p><strong>Địa điểm thi đấu:</strong><br />{getInput('location', true, 5, true)}</p>
 //                     <p><strong>Nội dung:</strong><br />{getInput('content', true, 5, true)}</p>
-//                     <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+//                     <p><strong>Lệ phí:</strong><br />{getInput('attendance_fee_common')}</p>
 //                     <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
 //                     <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
 //                     <p><strong>Tên tài khoản:</strong><br />{getInput('bank_acc_name')}</p>
@@ -485,7 +485,7 @@
 //                                 style={primaryButtonStyle}
 //                                 onClick={async () => {
 //                                     try {
-//                                         await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`, formData);
+//                                         await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}`, formData);
 //                                         alert('✅ Cập nhật thành công!');
 //                                         setIsEditing(false);
 //                                         setTournament(formData);
@@ -529,7 +529,7 @@
 
 //                         <button
 //                             style={secondaryButtonStyle}
-//                             onClick={() => navigate('/tournaments')}
+//                             onClick={() => navigate('/tournament_events')}
 //                         >
 //                             <FaArrowLeft /> Quay lại danh sách
 //                         </button>
@@ -609,7 +609,7 @@ const TournamentDetail = () => {
 
     const loadTournament = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${id}`);
             setTournament(res.data);
         } catch (err) {
             setError('Không tải được dữ liệu.');
@@ -632,7 +632,7 @@ const TournamentDetail = () => {
 
         try {
             await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`,
+                `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-background`,
                 form,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
@@ -736,7 +736,7 @@ const TournamentDetail = () => {
 
     try {
         await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-bankqr`,
         form,
         { headers: { 'Content-Type': 'multipart/form-data' } }
         );
@@ -753,7 +753,7 @@ const TournamentDetail = () => {
 
     const fetchLogo = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/logo`);
             setLogoFile(res.data.filename);
         } catch (err) {
             console.error('Lỗi khi tải logo:', err);
@@ -839,7 +839,7 @@ const TournamentDetail = () => {
             )
         ) : (
             <div style={scrollable ? scrollableStyle : readOnlyStyle}>
-                {key === 'attendance_price'
+                {key === 'attendance_fee_common'
                     ? formatCurrency(tournament[key])
                     : (key.includes('date') || key === 'registration_deadline')
                         ? formatDate(tournament[key])
@@ -911,7 +911,7 @@ const TournamentDetail = () => {
 
                     <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
                     <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
-                    <p><strong>Lệ phí:</strong><br />{getInput('attendance_price')}</p>
+                    <p><strong>Lệ phí:</strong><br />{getInput('attendance_fee_common')}</p>
                     <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
                     <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
                     <p><strong>Tên tài khoản:</strong><br />{getInput('bank_acc_name')}</p>
@@ -960,7 +960,7 @@ const TournamentDetail = () => {
                                 style={primaryButtonStyle}
                                 onClick={async () => {
                                     try {
-                                        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`, formData);
+                                        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}`, formData);
                                         alert('✅ Cập nhật thành công!');
                                         setIsEditing(false);
                                         setTournament(formData);
@@ -995,7 +995,7 @@ const TournamentDetail = () => {
                             </button>
                         )}
 
-                        <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}>
+                        <button style={secondaryButtonStyle} onClick={() => navigate('/tournament_events')}>
                             <FaArrowLeft /> Quay lại danh sách
                         </button>
                     </div>

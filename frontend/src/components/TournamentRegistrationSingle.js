@@ -46,7 +46,7 @@ const TournamentRegistrationSingle = () => {
 
   const loadTournament = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournamentId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournamentId}`);
       setTournament(res.data);
       setBackgroundImage(res.data.background_image);
       loadAvailableSlots();
@@ -367,7 +367,7 @@ const TournamentRegistrationSingle = () => {
         </tbody>
       </table>
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
-        {/* <button onClick={() => navigate(`/tournaments/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button> */}
+        {/* <button onClick={() => navigate(`/tournament_events/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button> */}
         {/* <h2>Đăng ký thi đấu cá nhân <span style={{ backgroundColor: '#ffe0b3', padding: '4px 8px', borderRadius: 6 }}>Chưa Phê Duyệt</span></h2> */}
 
         {/* {tournament && (
@@ -427,7 +427,7 @@ const TournamentRegistrationSingle = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
             <button
               type="button"
-              onClick={() => navigate('/tournaments')}
+              onClick={() => navigate('/tournament_events')}
               style={{
                 padding: '8px 16px',
                 borderRadius: '6px',

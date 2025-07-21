@@ -10,7 +10,7 @@ import { FaArrowLeft, FaCamera } from 'react-icons/fa';
 const TournamentGroupDetail = () => {
   const { groupId } = useParams();
   const [group, setGroup] = useState(null);
-  const [tournaments, setTournaments] = useState([]);
+  const [tournamentEvents, setTournamentEvents] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [loading, setLoading] = useState(true);
   const [logoFile, setLogoFile] = useState(null);
@@ -28,12 +28,12 @@ const TournamentGroupDetail = () => {
     const fetchGroup = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/group/${groupId}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`);
         setGroup(res.data.group);
-        setTournaments(res.data.tournaments);
+        setTournamentEvents(res.data.tournament_events);
       } catch {
         setGroup(null);
-        setTournaments([]);
+        setTournamentEvents([]);
       } finally {
         setLoading(false);
       }
@@ -45,7 +45,7 @@ const TournamentGroupDetail = () => {
     useEffect(() => {
     const fetchLogo = async () => {
         try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/logo`);
         setLogoFile(res.data.filename);
         } catch (err) {
         setLogoFile(null);
@@ -62,11 +62,11 @@ const TournamentGroupDetail = () => {
     const form = new FormData();
     form.append('background', file);
     try {
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/group/${groupId}/upload-background`, form, {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}/upload-background`, form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('✅ Cập nhật hình nền group thành công!');
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/group/${groupId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`);
       setGroup(res.data.group);
     } catch (err) {
       alert('❌ Lỗi khi cập nhật hình nền group.');
@@ -77,7 +77,7 @@ const TournamentGroupDetail = () => {
 
   if (loading) return <MainPageHeader ><p>Đang tải...</p></MainPageHeader >;
   if (!group) return <MainPageHeader ><p>Không tìm thấy nhóm giải đấu.</p></MainPageHeader >;
-  if (!tournaments.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
+  if (!tournament_events.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
 
   const groupBackgroundUrl = group.background_image
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
@@ -132,7 +132,7 @@ const TournamentGroupDetail = () => {
           padding: '24px 36px 0 36px',
         }}>
           <button
-            onClick={() => navigate('/tournaments')}
+            onClick={() => navigate('/tournament_events')}
             style={{
               background: '#2a334a',
               color: 'white',
@@ -189,7 +189,7 @@ const TournamentGroupDetail = () => {
           }}
         >
           <button
-            onClick={() => navigate('/tournaments')}
+            onClick={() => navigate('/tournament_events')}
             className="top-action-button primary"
             style={{ height: 42, fontSize: 15 }}
           >
@@ -258,8 +258,8 @@ const TournamentGroupDetail = () => {
                 }
               }}
             >
-              {Array.isArray(tournaments) && tournaments.length > 0
-                ? tournaments.map((t, idx) => (
+              {Array.isArray(tournament_events) && tournament_events.length > 0
+                ? tournament_events.map((t, idx) => (
                   <Tab
                     key={t.id}
                     label={t.name}
@@ -274,8 +274,8 @@ const TournamentGroupDetail = () => {
             </Tabs>
 
             <div style={{ marginTop: 20 }}>
-              {Array.isArray(tournaments) && tournaments.length > 0 && tournaments[activeTab] ? (
-                <TournamentTabDetail tournament={tournaments[activeTab]} transparentBackground={true} />
+              {Array.isArray(tournament_events) && tournament_events.length > 0 && tournament_events[activeTab] ? (
+                <TournamentTabDetail tournament={tournament_events[activeTab]} transparentBackground={true} />
               ) : (
                 <p>Giải này chưa đăng ký nội dung.</p>
               )}

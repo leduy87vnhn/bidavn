@@ -24,16 +24,16 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/tournament/:id/register-single" element={<TournamentRegistrationSingle />} />
-        <Route path="/tournaments/:id" element={<TournamentDetail />} />
+        <Route path="/tournament_events/:id/register-single" element={<TournamentRegistrationSingle />} />
+        <Route path="/tournament_events/:id" element={<TournamentDetail />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/players" element={<PlayerList />} />
-        <Route path="/tournament/:id/register" element={<TournamentRegistration />} />
+        <Route path="/tournament_events/:id/register" element={<TournamentRegistration />} />
         <Route path="/admin/registrations" element={<AdminRegistrationList />} />
         <Route path="/registrations" element={<AdminRegistrationList />} />
         <Route path="/registration/:id/detail" element={<RegistrationDetail />} />
-        <Route path="/tournament/:id/competitors" element={<TournamentCompetitorList />} />
+        <Route path="/tournament_events/:id/competitors" element={<TournamentCompetitorList />} />
         <Route path="/settings" element={<MainPageSettings />} />
         <Route path="/tournament-group/:groupId" element={<TournamentGroupDetail />} />
         <Route
@@ -46,7 +46,7 @@ export default function App() {
         />
         {/* Route bảo vệ: chỉ vào nếu đã login */}
         <Route
-          path="/tournaments"
+          path="/tournament_events"
           element={
             <PrivateRoute>
               <TournamentList />

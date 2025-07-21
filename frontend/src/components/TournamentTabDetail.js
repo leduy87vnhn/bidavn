@@ -31,7 +31,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
 
   const fetchLogo = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/logo`);
       setLogoFile(res.data.filename);
     } catch (err) {
       setLogoFile(null);
@@ -60,7 +60,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
     setUploading(true);
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-background`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-background`,
         form,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -126,7 +126,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
     setUploading(true);
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}/upload-bankqr`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}/upload-bankqr`,
         form,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -332,7 +332,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
               style={primaryButtonStyle}
               onClick={async () => {
                 try {
-                  await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${tournament.id}`, formData);
+                  await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${tournament.id}`, formData);
                   alert('✅ Cập nhật thành công!');
                   setIsEditing(false);
                   setTournament(formData);
@@ -365,7 +365,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
               Xem Đăng Ký
             </button>
           )}
-          <button style={secondaryButtonStyle} onClick={() => navigate('/tournaments')}>
+          <button style={secondaryButtonStyle} onClick={() => navigate('/tournament_events')}>
             <FaArrowLeft /> Quay lại danh sách
           </button>
         </div>

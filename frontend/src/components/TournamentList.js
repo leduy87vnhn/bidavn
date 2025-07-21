@@ -6,7 +6,7 @@ import '../tournament.scss';
 
 const TournamentList = () => {
     const navigate = useNavigate();
-    const [tournaments, setTournaments] = useState([]);
+    const [tournamentEvents, setTournamentEvents] = useState([]);
     const [user, setUser] = useState(null);
     const [page, setPage] = useState(1);
     const [limit] = useState(20);
@@ -45,7 +45,7 @@ const TournamentList = () => {
     }, []);
 
     useEffect(() => {
-        fetchTournaments();
+        fetchTournamentEvents();
         fetchListBackground();
     }, [page, statusFilter]);
 
@@ -55,15 +55,15 @@ const TournamentList = () => {
 
     const fetchLogo = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/logo`);
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/logo`);
             setLogoFile(res.data.filename);
         } catch (error) {
             console.error('Error fetching logo:', error);
         }
     };
 
-    const fetchTournaments = () => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments`, {
+    const fetchTournamentEvents = () => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, {
             params: {
                 page,
                 limit,
@@ -71,17 +71,17 @@ const TournamentList = () => {
             }
         })
         .then(res => {
-            setTournaments(res.data?.data || []);
+            setTournamentEvents(res.data?.data || []);
             setTotal(res.data?.total || 0);
         })
         .catch(err => {
             console.error(err);
-            setTournaments([]);
+            setTournamentEvents([]);
             setTotal(0);
         });
     };
 
-    const getTournamentStatus = (start, end) => {
+    const getTournamentEventStatus = (start, end) => {
         const now = new Date();
         const startDate = new Date(start);
         const endDate = new Date(end);
@@ -94,7 +94,7 @@ const TournamentList = () => {
 
     const fetchListBackground = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/list-background`);
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/list-background`);
             setListBackground(res.data.filename);
         } catch (error) {
             console.error('Error fetching list background:', error);
@@ -110,7 +110,7 @@ const TournamentList = () => {
         setUploading(true);
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/upload-list-background`, form, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/upload-list-background`, form, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             alert('✅ Hình nền danh sách đã được cập nhật!');
@@ -131,7 +131,7 @@ const TournamentList = () => {
         form.append('logo', file);
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/upload-logo`, form, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/upload-logo`, form, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             alert('✅ Logo đã được cập nhật!');
@@ -169,10 +169,10 @@ const TournamentList = () => {
             };
 
             if (newTournament.id) {
-                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${newTournament.id}`, payload);
+                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${newTournament.id}`, payload);
                 setMessage('✅ Cập nhật giải đấu thành công.');
             } else {
-                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments`, payload);
+                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, payload);
                 const totalAfter = total + 1;
                 const newTotalPages = Math.ceil(totalAfter / limit);
                 setPage(newTotalPages);
@@ -182,7 +182,7 @@ const TournamentList = () => {
             setShowForm(false);
             setNewTournament({ id: null, name: '', code: '', attendance_fee_common: '', start_date: '', end_date: '', group_id: null });
             setGroupNameInput('');
-            fetchTournaments();
+            fetchTournamentEvents();
         } catch (error) {
             setMessage('❌ Lỗi khi lưu giải: ' + (error.response?.data?.message || 'Server error'));
         } finally {
@@ -193,8 +193,8 @@ const TournamentList = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc muốn xoá giải đấu này?')) {
             try {
-                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/${id}`);
-                fetchTournaments();
+                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${id}`);
+                fetchTournamentEvents();
                 setMessage('✅ Đã xoá giải đấu.');
             } catch (err) {
                 setMessage('❌ Lỗi khi xoá giải đấu.');
@@ -217,7 +217,7 @@ const TournamentList = () => {
             try {
                 await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tournament-group/${groupId}`);
                 alert('✅ Đã xoá nhóm giải.');
-                fetchTournaments();
+                fetchTournamentEvents();
             } catch (err) {
                 console.error(err);
                 alert('❌ Lỗi khi xóa nhóm giải.');
@@ -231,14 +231,14 @@ const TournamentList = () => {
             return;
         }
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournaments/groups?search=${text}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups?search=${text}`);
             setGroupSuggestions(res.data);
         } catch (error) {
             console.error('Error fetching group suggestions:', error);
         }
     };
 
-    const groupedTournaments = tournaments.reduce((groups, tour) => {
+    const groupedTournamentEvents = tournament_events.reduce((groups, tour) => {
         const gid = tour.group_id || 'ungrouped';
         if (!groups[gid]) {
             groups[gid] = {
@@ -246,10 +246,10 @@ const TournamentList = () => {
                 group_name: tour.group_name || 'Không thuộc nhóm',
                 group_start_date: tour.group_start_date,
                 group_end_date: tour.group_end_date,
-                tournaments: []
+                tournament_events: []
             };
         }
-        groups[gid].tournaments.push(tour);
+        groups[gid].tournament_events.push(tour);
         return groups;
     }, {});
 
@@ -459,7 +459,7 @@ const TournamentList = () => {
                     </select>
                 </div>
                 {/* Table danh sách giải */}
-                {Array.isArray(tournaments) && tournaments.length > 0 ? (
+                {Array.isArray(tournament_events) && tournament_events.length > 0 ? (
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
                             <thead>
@@ -473,7 +473,7 @@ const TournamentList = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {Object.values(groupedTournaments).map(group => (
+                            {Object.values(groupedTournamentEvents).map(group => (
                                 <React.Fragment key={group.group_id || 'ungrouped'}>
                                 <tr>
                                     <td colSpan={user?.user_type === 2 ? 4 : 3} style={{
@@ -540,8 +540,8 @@ const TournamentList = () => {
                                     </td>
                                 </tr>
 
-                                {group.tournaments.map(tour => {
-                                    const status = getTournamentStatus(tour.start_date, tour.end_date);
+                                {group.tournament_events.map(tour => {
+                                    const status = getTournamentEventStatus(tour.start_date, tour.end_date);
                                     let bgColor = 'white';
                                     if (status === 'ongoing') bgColor = '#d0ebff';
                                     else if (status === 'ended') bgColor = '#f0f0f0';
@@ -550,12 +550,12 @@ const TournamentList = () => {
                                     <tr key={tour.id} style={{ backgroundColor: bgColor }}>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                         <div>
-                                            {/* <Link to={`/tournaments/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}> */}
+                                            {/* <Link to={`/tournament_events/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}> */}
                                             {tour.name}
                                             {/* </Link> */}
                                         </div>
                                         {typeof tour.approved_competitors_count !== 'undefined' && (
-                                            <div onClick={() => navigate(`/tournament/${tour.id}/competitors`)} style={{
+                                            <div onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)} style={{
                                             marginTop: '4px',
                                             display: 'inline-block',
                                             backgroundColor: '#28a745',

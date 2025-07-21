@@ -9,7 +9,7 @@ const MainPageMenuBar = () => {
     <div className="mainpage-menu-bar">
       <div className="menu-left">
         <span className="menu-item">Thông tin chung</span>
-        <span className="menu-item" onClick={() => navigate('/tournaments')}>Giải đấu</span>
+        <span className="menu-item" onClick={() => navigate('/tournament_events')}>Giải đấu</span>
         <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/players'}>Bảng xếp hạng</span>
         <span className="menu-item">Nhà tài trợ</span>
         <span className="menu-item">Liên hệ</span>
