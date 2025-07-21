@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import AddTournamentGroupModal from '../components/AddTournamentGroupModal';
+import MainPageHeader from '../components/MainPageHeader';
 import '../tournament.scss';
 
 const TournamentList = () => {
@@ -287,14 +288,15 @@ const TournamentList = () => {
             >
                 <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        {logoFile && (
+                        {/* {logoFile && (
                             <img
                                 src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
                                 alt="Logo"
                                 style={{ height: 60, objectFit: 'contain', marginRight: 20 }}
                             />
-                        )}
-                        <h2>Danh sách giải đấu</h2>
+                        )} */}
+                        <MainPageHeader />
+                        <h2 style={{ textAlign: 'center', marginTop: '20px' }}>Danh sách giải đấu</h2>
                         {user?.user_type === 2 && (
                             <div className="top-action-group">
                                 <button className="top-action-button teal" onClick={() => setShowGroupPopup(true)}>
@@ -322,7 +324,7 @@ const TournamentList = () => {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {/* <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             {user && <span>Xin chào, <strong>{user.name}</strong></span>}
                             <button
                                 onClick={() => {
@@ -341,7 +343,7 @@ const TournamentList = () => {
                             >
                                 Đăng xuất
                             </button>
-                        </div>
+                        </div> */}
 
                         <Link
                             to="/players"
