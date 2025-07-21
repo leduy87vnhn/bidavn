@@ -75,7 +75,7 @@ router.get('/logo', async (req, res) => {
   }
 });
 
-// List tournament_event (paginated)
+// List tournament_events (paginated)
 router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
@@ -107,9 +107,9 @@ router.get('/', async (req, res) => {
           FROM registration_form rf
           LEFT JOIN competitors c ON c.registration_form_id = rf.id
           LEFT JOIN players p ON c.player_id = p.id
-          WHERE rf.tournament_id = t.id AND rf.status = '1' AND p.id IS NOT NULL
+          WHERE rf.tournament_id = t.id AND rf.status = 1 AND p.id IS NOT NULL
         ) AS approved_competitors_count
-      FROM tournament_event t
+      FROM tournament_events t
       LEFT JOIN tournament_group tg ON t.group_id = tg.id
       ${condition}
       ORDER BY t.start_date ASC
@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
     `;
 
     const countQuery = `
-      SELECT COUNT(*) FROM tournament_event t
+      SELECT COUNT(*) FROM tournament_events t
       ${condition}
     `;
 
