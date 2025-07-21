@@ -277,6 +277,7 @@ const TournamentList = () => {
                 backdropFilter: 'blur(3px)'
             }}
         >
+            <MainPageHeader />
             <div className="tournament-list-container"
                 style={{
                     maxWidth: 1000,
@@ -295,7 +296,7 @@ const TournamentList = () => {
                                 style={{ height: 60, objectFit: 'contain', marginRight: 20 }}
                             />
                         )} */}
-                        <MainPageHeader />
+                        
                         <h2 style={{ textAlign: 'center', marginTop: '20px' }}>Danh sách giải đấu</h2>
                         {user?.user_type === 2 && (
                             <div className="top-action-group">
