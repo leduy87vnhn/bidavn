@@ -238,7 +238,7 @@ const TournamentList = () => {
         }
     };
 
-    const groupedTournamentEvents = tournament_events.reduce((groups, tour) => {
+    const groupedTournamentEvents = tournamentEvents.reduce((groups, tour) => {
         const gid = tour.group_id || 'ungrouped';
         if (!groups[gid]) {
             groups[gid] = {
