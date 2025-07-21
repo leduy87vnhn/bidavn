@@ -53,7 +53,7 @@ const MainPageHeader = () => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         {user ? (
           <>
             <span style={{ marginRight: '12px' }}>Xin chào, <strong>{user.name}</strong></span>
@@ -66,7 +66,7 @@ const MainPageHeader = () => {
             Đăng nhập
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
