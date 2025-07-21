@@ -38,7 +38,7 @@ app.options('*', cors(corsOptions));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', authRoutes);
-app.use('/api/tournament_event', tournamentRouter);
+app.use('/api/tournament_events', tournamentRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
 app.use('/api/registration_form', registrationRouter);
@@ -50,14 +50,19 @@ app.use('/api/users', userRouter);
 
 console.log("Server starting...");
 
+app.use(express.static(path.join(__dirname, '../frontend/build'))); // đường dẫn build frontend
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    // Không xử lý frontend nếu là API route
+    return next();
+  } else {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+  }
+});
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${port}`);
 });
 
-
-app.use(express.static(path.join(__dirname, '../frontend/build'))); // đường dẫn build frontend
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-});
 console.log("Server is now listening.");
