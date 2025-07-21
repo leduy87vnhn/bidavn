@@ -92,7 +92,10 @@ const TournamentGroupDetail = () => {
 
   return (
     <>
-      <MainPageHeader />
+      <div style={{ position: 'relative', zIndex: 1000 }}>
+          <MainPageHeader />
+          <MainPageMenuBar />
+      </div>
 
       <div
         style={{

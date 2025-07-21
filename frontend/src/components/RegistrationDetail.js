@@ -124,6 +124,11 @@ const RegistrationDetail = () => {
   };
 
   return (
+    <>
+    <div style={{ position: 'relative', zIndex: 1000 }}>
+        <MainPageHeader />
+        <MainPageMenuBar />
+    </div>
     <div style={{ padding: 30 }}>
     <h2 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
     Chi tiết đơn đăng ký #{id}
@@ -242,6 +247,7 @@ const RegistrationDetail = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
