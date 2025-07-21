@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
 //import MainLayout from '../components/MainLayout';
 import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
 import TournamentTabDetail from '../components/TournamentTabDetail';
 import { FaArrowLeft, FaCamera } from 'react-icons/fa';
 

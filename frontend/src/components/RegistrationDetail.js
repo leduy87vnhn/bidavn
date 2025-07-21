@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageHeader from '../components/MainPageHeader';
 import { useParams } from 'react-router-dom';
 
 const RegistrationDetail = () => {
