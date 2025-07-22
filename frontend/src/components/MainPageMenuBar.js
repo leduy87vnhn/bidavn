@@ -8,11 +8,12 @@ const MainPageMenuBar = () => {
   return (
     <div className="mainpage-menu-bar">
       <div className="menu-left">
-        <span className="menu-item">Thông tin chung</span>
-        <span className="menu-item" onClick={() => navigate('/tournament_events')}>Giải đấu</span>
+        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/'}>Tin Tức Sự Kiện </span>
+        <span className="menu-item" onClick={() => navigate('/tournament_events')}>Giải Thể Thao</span>
+        <span className="menu-item">Liên Đoàn</span>
+        <span className="menu-item">Hội Viên</span>
+        <span className="menu-item">Đăng Ký Thành Viên</span>
         <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/players'}>Bảng xếp hạng</span>
-        <span className="menu-item">Nhà tài trợ</span>
-        <span className="menu-item">Liên hệ</span>
         {user?.user_type === 2 && (
           <span className="menu-item" onClick={() => navigate('/settings')}>Thiết lập</span>
         )}
@@ -30,44 +31,6 @@ const MainPageMenuBar = () => {
           <button onClick={() => navigate('/login')}>Đăng Nhập</button>
         )}
       </div>
-      {/* <div className="menu-right">
-        {user ? (
-          <>
-            <span style={{ marginRight: '10px' }}><strong>{user.name}</strong></span>
-            <button
-              onClick={() => {
-                localStorage.removeItem('user_info');
-                localStorage.removeItem('token');
-                window.location.reload();
-              }}
-              style={{
-                backgroundColor: '#dc3545',
-                color: 'white',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: '5px',
-                cursor: 'pointer'
-              }}
-            >
-              Đăng xuất
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => navigate('/login')}
-            style={{
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              padding: '6px 12px',
-              borderRadius: '5px',
-              cursor: 'pointer'
-            }}
-          >
-            Đăng nhập
-          </button>
-        )}
-      </div> */}
     </div>
   );
 };

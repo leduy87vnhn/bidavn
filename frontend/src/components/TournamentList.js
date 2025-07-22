@@ -459,36 +459,36 @@ const TournamentList = () => {
 
                 {/* Bộ lọc trạng thái giải đấu */}
                 <div style={{
-                marginTop: '20px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '10px'
+                    marginTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '10px'
                 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <label>Lọc theo trạng thái:</label>
-                    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                    <option value="upcoming">Mở đăng ký</option>
-                    <option value="ongoing">Đang diễn ra</option>
-                    <option value="ended">Đã kết thúc</option>                    
-                    <option value="not_ended">Chưa kết thúc</option>
-                    <option value="all">Toàn bộ</option>
-                    </select>
-                </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <label>Lọc theo trạng thái:</label>
+                        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                        <option value="upcoming">Mở đăng ký</option>
+                        <option value="ongoing">Đang diễn ra</option>
+                        <option value="ended">Đã kết thúc</option>                    
+                        <option value="not_ended">Chưa kết thúc</option>
+                        <option value="all">Toàn bộ</option>
+                        </select>
+                    </div>
 
-                <Link
-                    to="/players"
-                    style={{
-                    color: '#007bff',
-                    textDecoration: 'underline',
-                    fontWeight: 'bold',
-                    fontSize: '16px',
-                    marginLeft: 'auto'
-                    }}
-                >
-                    Bảng xếp hạng Carom - Pool HBSF
-                </Link>
+                    {/* <Link
+                        to="/players"
+                        style={{
+                        color: '#007bff',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginLeft: 'auto'
+                        }}
+                    >
+                        Bảng xếp hạng Carom - Pool HBSF
+                    </Link> */}
                 </div>
                 {/* Table danh sách giải */}
                 {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 ? (
