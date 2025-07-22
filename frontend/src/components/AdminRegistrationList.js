@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageHeader from '../components/MainPageHeader';
 
 const AdminRegistrationList = () => {
   const [data, setData] = useState([]);
@@ -94,6 +96,11 @@ const AdminRegistrationList = () => {
   };
 
   return (
+    <>
+      <div style={{ position: 'relative', zIndex: 1000 }}>
+          <MainPageHeader />
+          <MainPageMenuBar />
+      </div>
     <div style={{ padding: 30 }}>
       <h2>Danh sách đơn đăng ký</h2>
       <div style={{ marginBottom: 20, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -188,7 +195,8 @@ const AdminRegistrationList = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </div>    
+    </>
   );
 };
 

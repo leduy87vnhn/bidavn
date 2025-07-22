@@ -3,6 +3,8 @@ import MainLayout from '../components/MainLayout';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
+import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
 
 const UserManagement = () => {
   const [rows, setRows] = useState([]);
@@ -157,7 +159,11 @@ const UserManagement = () => {
   );
 
   return (
-    <MainLayout>
+    <>
+      <div style={{ position: 'relative', zIndex: 1000 }}>
+          <MainPageHeader />
+          <MainPageMenuBar />
+      </div>
       <div style={{ padding: '20px' }}>
         <h2>Quản lý người dùng</h2>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -183,7 +189,7 @@ const UserManagement = () => {
           />
         </div>
       </div>
-    </MainLayout>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
 
 const TournamentCompetitorList = () => {
   const { id: tournamentId } = useParams(); // tournament id
@@ -201,8 +202,12 @@ const TournamentCompetitorList = () => {
     return `${d}-${m}-${y}`;
   };
 
-  <MainPageHeader />
   return (
+    <>
+    <div style={{ position: 'relative', zIndex: 1000 }}>
+        <MainPageHeader />
+        <MainPageMenuBar />
+    </div>
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
 
@@ -389,6 +394,7 @@ const TournamentCompetitorList = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

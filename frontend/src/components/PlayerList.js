@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { useNavigate } from 'react-router-dom';
+import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageHeader from '../components/MainPageHeader';
 
 const PlayerList = () => {
     const navigate = useNavigate();
@@ -249,6 +251,11 @@ const PlayerList = () => {
     };
 
     return (
+        <>
+        <div style={{ position: 'relative', zIndex: 1000 }}>
+            <MainPageHeader />
+            <MainPageMenuBar />
+        </div>
         <div style={{ maxWidth: 900, margin: 'auto', padding: 20 }}>
             <h2>Bảng xếp hạng Carom - Pool HBSF</h2>
 
@@ -498,6 +505,7 @@ const PlayerList = () => {
 
             {message && <p style={{ marginTop: 10 }}>{message}</p>}
         </div>
+        </>
     );
 };
 
