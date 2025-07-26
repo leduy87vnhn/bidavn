@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../css/mainpage.scss';
+import '../css/mainpage.css';
 
 const MainPageHbsfInfo = () => {
   const [info, setInfo] = useState(null);
