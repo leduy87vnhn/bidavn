@@ -259,3 +259,47 @@
   color: #007bff;
   font-weight: bold;
 }
+
+.mainpage-tournament-summary {
+  background-color: #003d6b;
+  color: white;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.summary-header {
+  font-weight: bold;
+  padding: 10px 16px;
+  background-color: #003d6b;
+  font-size: 16px;
+  border-bottom: 1px solid white;
+}
+
+.summary-row {
+  display: flex;
+  background-color: white;
+  color: black;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.summary-row:hover {
+  background-color: #f0f8ff;
+}
+
+.summary-col {
+  flex: 1;
+  padding-right: 12px;
+  font-size: 14px;
+}
+
+.summary-col.date {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.summary-col.address {
+  font-size: 13px;
+  line-height: 1.4;
+}

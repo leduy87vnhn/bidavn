@@ -425,6 +425,30 @@ router.put('/tournament-group/:id', async (req, res) => {
   }
 });
 
+// ✅ Route lấy 3 group sắp tới + địa chỉ event đầu tiên
+router.get('/upcoming-groups', async (req, res) => {
+  try {
+    const result = await client.query(`
+      SELECT g.id, g.tournament_name, g.start_date, g.end_date,
+        (
+          SELECT location
+          FROM tournament_events e
+          WHERE e.group_id = g.id
+          ORDER BY e.start_date ASC
+          LIMIT 1
+        ) AS event_location
+      FROM tournament_group g
+      WHERE g.start_date IS NOT NULL
+      ORDER BY g.start_date ASC
+      LIMIT 3
+    `);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Lỗi khi lấy nhóm giải sắp tới:', error);
+    res.status(500).json({ message: 'Lỗi server khi lấy nhóm giải.' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {

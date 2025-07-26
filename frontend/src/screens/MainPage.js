@@ -5,6 +5,8 @@ import MainPageEventSlider from '../components/MainPageEventSlider';
 import MainPageNewsList from '../components/MainPageNewsList';
 import MainPageVideoSection from '../components/MainPageVideoSection';
 import MainPageHbsfInfo from '../components/MainPageHbsfInfo';
+import MainPageTournamentSummary from '../components/MainPageTournamentSummary';
+
 import '../css/mainpage.css';
 
 const MainPage = () => {
@@ -14,6 +16,7 @@ const MainPage = () => {
       <MainPageMenuBar />
       <MainPageEventSlider />
       <MainPageNewsList />
+      <MainPageTournamentSummary />
       <MainPageVideoSection />
       <MainPageHbsfInfo />
     </div>
