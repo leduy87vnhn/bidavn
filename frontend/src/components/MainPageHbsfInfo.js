@@ -8,7 +8,7 @@ const MainPageHbsfInfo = () => {
   useEffect(() => {
     const fetchInfo = async () => {
       try {
-        const res = await axios.get('/api/hbsf-info');
+        const res = await axios.get('/api/mainpage/hbsf-info');
         setInfo(res.data);
       } catch (err) {
         console.error('Lỗi khi lấy dữ liệu HBSF:', err);
