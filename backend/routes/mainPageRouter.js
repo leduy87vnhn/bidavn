@@ -80,5 +80,15 @@ router.get('/videos', async (req, res) => {
 
 router.get('/tournament-group-by-name', controller.getTournamentGroupByName);
 
+// HBSF Info
+router.get('/hbsf-info', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM hbsf_info WHERE id = 1');
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Lỗi lấy hbsf_info:', err);
+    res.status(500).json({ error: 'Lỗi server' });
+  }
+});
 
 module.exports = router;

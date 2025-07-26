@@ -178,3 +178,30 @@
     cursor: pointer;
   }
 }
+
+.hbsf-info-container {
+  background-color: #ffffff;
+  padding: 20px;
+  font-size: 14px;
+  color: #000;
+  border-top: 1px solid #ccc;
+  text-align: left;
+  line-height: 1.6;
+  margin-top: 40px;
+
+  strong {
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

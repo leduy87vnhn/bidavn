@@ -4,6 +4,7 @@ import MainPageMenuBar from '../components/MainPageMenuBar';
 import MainPageEventSlider from '../components/MainPageEventSlider';
 import MainPageNewsList from '../components/MainPageNewsList';
 import MainPageVideoSection from '../components/MainPageVideoSection';
+import MainPageHbsfInfo from '../components/MainPageHbsfInfo';
 import '../css/mainpage.css';
 
 const MainPage = () => {
@@ -14,6 +15,7 @@ const MainPage = () => {
       <MainPageEventSlider />
       <MainPageNewsList />
       <MainPageVideoSection />
+      <MainPageHbsfInfo />
     </div>
   );
 };
