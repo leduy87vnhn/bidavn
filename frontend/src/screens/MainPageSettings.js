@@ -3,6 +3,8 @@ import { Tabs, Tab, Box, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MainPageLogoTab from '../components/MainPageLogoTab';
 import MainPageEventTab from '../components/MainPageEventTab';
+import MainPageHbsfInfoSettingsTab from '../components/MainPageHbsfInfoSettingsTab';
+
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -41,6 +43,7 @@ const MainPageSettings = () => {
       <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
         <Tab label="Logo" />
         <Tab label="Event" />
+        <Tab label="HBSF Info" />
       </Tabs>
 
       <TabPanel value={tab} index={0}>
@@ -48,6 +51,9 @@ const MainPageSettings = () => {
       </TabPanel>
       <TabPanel value={tab} index={1}>
         <MainPageEventTab />
+      </TabPanel>
+      <TabPanel value={tab} index={2}>
+        <MainPageHbsfInfoSettingsTab />
       </TabPanel>
     </Paper>
   );

@@ -91,4 +91,24 @@ router.get('/hbsf-info', async (req, res) => {
   }
 });
 
+router.post('/update-hbsf-info', async (req, res) => {
+  try {
+    const { hbsf_name, headquarters_address, office_address, website, email } = req.body;
+    await db.query(
+      `UPDATE hbsf_info
+       SET hbsf_name = $1,
+           headquarters_address = $2,
+           office_address = $3,
+           website = $4,
+           email = $5
+       WHERE id = 1`,
+      [hbsf_name, headquarters_address, office_address, website, email]
+    );
+    res.json({ message: 'Updated successfully' });
+  } catch (err) {
+    console.error('Lỗi update hbsf_info:', err);
+    res.status(500).json({ error: 'Lỗi server' });
+  }
+});
+
 module.exports = router;
