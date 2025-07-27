@@ -44,6 +44,8 @@ const PlayerList = () => {
         }
     }, []);
 
+    const isAdmin = user?.user_type === 2;
+
     const fetchPlayers = async () => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
