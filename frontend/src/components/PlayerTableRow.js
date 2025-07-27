@@ -115,8 +115,13 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) =
             </select>
           ) : disciplineLabel}</td>
 
-          <td>{editing ? <input name="ranking" value={form.ranking || form.pool_ranking || ''} onChange={handleChange} /> : form.ranking || form.pool_ranking}</td>
-          <td>{editing ? <input name="points" value={form.points || form.pool_points || ''} onChange={handleChange} /> : form.points || form.pool_points}</td>
+          {/* <td>{editing ? <input name="ranking" value={form.ranking || form.pool_ranking || ''} onChange={handleChange} /> : form.ranking || form.pool_ranking}</td>
+          <td>{editing ? <input name="points" value={form.points || form.pool_points || ''} onChange={handleChange} /> : form.points || form.pool_points}</td> */}
+
+          <td>{form.ranking}</td>
+          <td>{form.points}</td>
+          <td>{form.pool_ranking}</td>
+          <td>{form.pool_points}</td>
 
           <td>
             {editing

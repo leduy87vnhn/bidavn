@@ -371,11 +371,11 @@ const PlayerList = () => {
                     </thead> */}
                     <thead>
                         <tr>
-                            <th style={{ position: 'sticky', left: 0, background: '#fff', zIndex: 1, cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                            <th style={{background: '#fff', zIndex: 1, cursor: 'pointer' }} onClick={() => handleSort('id')}>
                             ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                             </th>
-                            <th style={{ position: 'sticky', left: 100, background: '#fff', zIndex: 1 }}>Tên</th>
-                            <th style={{ position: 'sticky', left: 250, background: '#fff', zIndex: 1 }}>SĐT</th>
+                            <th style={{background: '#fff', zIndex: 1 }}>Tên</th>
+                            <th style={{background: '#fff', zIndex: 1 }}>SĐT</th>
 
                             {isAdmin && (
                             <>
@@ -388,8 +388,18 @@ const PlayerList = () => {
                                 <th>Đơn vị</th>
                                 <th>Ngày tham gia</th>
                                 <th>Nội dung</th>
-                                <th>Thứ hạng</th>
-                                <th>Điểm số</th>
+                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
+                                Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                </th>
+                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
+                                Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                </th>
+                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
+                                Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                </th>
+                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
+                                Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                </th>
                                 <th>Ảnh CCCD trước</th>
                                 <th>Ảnh CCCD sau</th>
                                 <th>Ảnh 4x6</th>
