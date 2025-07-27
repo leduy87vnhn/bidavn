@@ -4,6 +4,9 @@ import * as XLSX from 'xlsx';
 import { useNavigate } from 'react-router-dom';
 import MainPageMenuBar from '../components/MainPageMenuBar';
 import MainPageHeader from '../components/MainPageHeader';
+import AddPlayerModal from '../components/AddPlayerModal';
+import PlayerTableRow from '../components/PlayerTableRow';
+import '../css/playerList.scss';
 
 const PlayerList = () => {
     const navigate = useNavigate();
@@ -177,21 +180,35 @@ const PlayerList = () => {
     //const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
     const exportToExcel = () => {
+        const genderText = (val) => ['Nam', 'Nữ', 'Chưa rõ'][val] || '';
+        const memberStatusText = (val) => ['Tự do', 'Đăng ký', 'Hội viên'][val] || '';
+        const feeText = (val) => ['Chưa đóng', 'Đã đóng'][val] || '';
+        const disciplineText = (val) => ['Carom', 'Pool'][val] || '';
+
         const exportData = [...filteredPlayers]
-            .sort((a, b) => a.id.localeCompare(b.id)) // <-- Sắp xếp theo ID
+            .sort((a, b) => a.id.localeCompare(b.id))
             .map(p => ({
-                ID: p.id,
-                Tên: p.name,
-                'SĐT': p.phone,
-                'Hạng Carom': p.ranking,
-                'Điểm Carom': p.points,
-                'Hạng Pool': p.pool_ranking,
-                'Điểm Pool': p.pool_points
+            'ID': p.id,
+            'Tên': p.name,
+            'SĐT': p.phone,
+            'Giới tính': genderText(p.gender),
+            'Ngày sinh': p.birth_day ? new Date(p.birth_day).toLocaleDateString('vi-VN') : '',
+            'CCCD/Hộ chiếu': p.citizen_id_passport || '',
+            'Hội viên': memberStatusText(p.member_status),
+            'Hội phí': feeText(p.member_fee_status),
+            'Địa chỉ': p.address || '',
+            'Đơn vị thi đấu': p.competition_unit || '',
+            'Ngày tham gia': p.joined_date ? new Date(p.joined_date).toLocaleDateString('vi-VN') : '',
+            'Nội dung thi đấu': disciplineText(p.discipline),
+            'Hạng Carom': p.ranking,
+            'Điểm Carom': p.points,
+            'Hạng Pool': p.pool_ranking,
+            'Điểm Pool': p.pool_points
             }));
 
         const worksheet = XLSX.utils.json_to_sheet(exportData);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "VĐV");
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách VĐV");
 
         XLSX.writeFile(workbook, "Danh_sach_VDV.xlsx");
     };
@@ -326,127 +343,170 @@ const PlayerList = () => {
                     ⬅️ Quay về danh sách giải
                 </button>
             </div>
-
-            <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
-                <thead>
-                    <tr>
-                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>
-                            ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                        </th>
-                        <th>Tên</th>
-                        <th>SĐT</th>
-                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
-                            Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                        </th>
-                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
-                            Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                        </th>
-                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
-                            Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                        </th>
-                        <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
-                            Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                        </th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentPagePlayers.map(p => (
-                        <tr key={p.id}>
-                            <td>{p.id}</td>
-                            <td>
-                                {editingId === p.id ? (
-                                    <input value={p.name} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, name: e.target.value } : x))} />
-                                ) : p.name}
-                            </td>
-                            <td>
-                                {editingId === p.id ? (
-                                    <input value={p.phone} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, phone: e.target.value } : x))} />
-                                ) : (
-                                    user?.user_type === 2 ? p.phone : maskPhone(p.phone)  // 👈 Che số nếu không phải admin
-                                )}
-                            </td>
-                            <td>
-                                {editingId === p.id ? (
-                                    <input value={p.ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, ranking: e.target.value } : x))} />
-                                ) : p.ranking}
-                            </td>
-                            <td>
-                                {editingId === p.id ? (
-                                    <input value={p.points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, points: e.target.value } : x))} />
-                                ) : p.points}
-                            </td>
-                            <td>
-                            {editingId === p.id ? (
-                                <input value={p.pool_ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_ranking: e.target.value } : x))} />
-                            ) : p.pool_ranking}
-                            </td>
-                            <td>
-                            {editingId === p.id ? (
-                                <input value={p.pool_points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_points: e.target.value } : x))} />
-                            ) : p.pool_points}
-                            </td>
-                            <td>
-                                {editingId === p.id ? (
-                                    <div style={{ display: 'flex', gap: 8 }}>
-                                        <button
-                                            onClick={() => handleUpdate(p.id)}
-                                            style={{
-                                                backgroundColor: '#007bff',
-                                                color: 'white',
-                                                padding: '4px 10px',
-                                                border: 'none',
-                                                borderRadius: 5
-                                            }}
-                                        >
-                                            Lưu
-                                        </button>
-                                        <button
-                                            onClick={() => setEditingId(null)}
-                                            style={{
-                                                padding: '4px 10px',
-                                                backgroundColor: '#6c757d',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: 5
-                                            }}
-                                        >
-                                            Huỷ
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div style={{ display: 'flex', gap: 8 }}>
-                                        <button
-                                            onClick={() => setEditingId(p.id)}
-                                            style={{
-                                                backgroundColor: '#007bff',
-                                                color: 'white',
-                                                padding: '4px 10px',
-                                                border: 'none',
-                                                borderRadius: 5
-                                            }}
-                                        >
-                                            Sửa
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(p.id)}
-                                            style={{
-                                                backgroundColor: '#dc3545',
-                                                color: 'white',
-                                                padding: '4px 10px',
-                                                border: 'none',
-                                                borderRadius: 5
-                                            }}
-                                        >
-                                            Xoá
-                                        </button>
-                                    </div>
-                                )}
-                            </td>
+            <div className="table-scroll-wrapper">
+                <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
+                    {/* <thead>
+                        <tr>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                                ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th>Tên</th>
+                            <th>SĐT</th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
+                                Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
+                                Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
+                                Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
+                                Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th>Thao tác</th>
                         </tr>
+                    </thead> */}
+                    <thead>
+                        <tr>
+                            <th style={{ position: 'sticky', left: 0, background: '#fff', zIndex: 1, cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                            ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ position: 'sticky', left: 100, background: '#fff', zIndex: 1 }}>Tên</th>
+                            <th style={{ position: 'sticky', left: 250, background: '#fff', zIndex: 1 }}>SĐT</th>
+
+                            {isAdmin && (
+                            <>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                                <th>CCCD/Hộ chiếu</th>
+                                <th>Thành viên</th>
+                                <th>Hội phí</th>
+                                <th>Địa chỉ</th>
+                                <th>Đơn vị</th>
+                                <th>Ngày tham gia</th>
+                                <th>Nội dung</th>
+                                <th>Thứ hạng</th>
+                                <th>Điểm số</th>
+                                <th>Ảnh CCCD trước</th>
+                                <th>Ảnh CCCD sau</th>
+                                <th>Ảnh 4x6</th>
+                            </>
+                            )}
+
+                            {isAdmin && <th>Thao tác</th>}
+                        </tr>
+                    </thead>
+                    {/* <tbody>
+                        {currentPagePlayers.map(p => (
+                            <tr key={p.id}>
+                                <td>{p.id}</td>
+                                <td>
+                                    {editingId === p.id ? (
+                                        <input value={p.name} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, name: e.target.value } : x))} />
+                                    ) : p.name}
+                                </td>
+                                <td>
+                                    {editingId === p.id ? (
+                                        <input value={p.phone} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, phone: e.target.value } : x))} />
+                                    ) : (
+                                        user?.user_type === 2 ? p.phone : maskPhone(p.phone)  // 👈 Che số nếu không phải admin
+                                    )}
+                                </td>
+                                <td>
+                                    {editingId === p.id ? (
+                                        <input value={p.ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, ranking: e.target.value } : x))} />
+                                    ) : p.ranking}
+                                </td>
+                                <td>
+                                    {editingId === p.id ? (
+                                        <input value={p.points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, points: e.target.value } : x))} />
+                                    ) : p.points}
+                                </td>
+                                <td>
+                                {editingId === p.id ? (
+                                    <input value={p.pool_ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_ranking: e.target.value } : x))} />
+                                ) : p.pool_ranking}
+                                </td>
+                                <td>
+                                {editingId === p.id ? (
+                                    <input value={p.pool_points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_points: e.target.value } : x))} />
+                                ) : p.pool_points}
+                                </td>
+                                <td>
+                                    {editingId === p.id ? (
+                                        <div style={{ display: 'flex', gap: 8 }}>
+                                            <button
+                                                onClick={() => handleUpdate(p.id)}
+                                                style={{
+                                                    backgroundColor: '#007bff',
+                                                    color: 'white',
+                                                    padding: '4px 10px',
+                                                    border: 'none',
+                                                    borderRadius: 5
+                                                }}
+                                            >
+                                                Lưu
+                                            </button>
+                                            <button
+                                                onClick={() => setEditingId(null)}
+                                                style={{
+                                                    padding: '4px 10px',
+                                                    backgroundColor: '#6c757d',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: 5
+                                                }}
+                                            >
+                                                Huỷ
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', gap: 8 }}>
+                                            <button
+                                                onClick={() => setEditingId(p.id)}
+                                                style={{
+                                                    backgroundColor: '#007bff',
+                                                    color: 'white',
+                                                    padding: '4px 10px',
+                                                    border: 'none',
+                                                    borderRadius: 5
+                                                }}
+                                            >
+                                                Sửa
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(p.id)}
+                                                style={{
+                                                    backgroundColor: '#dc3545',
+                                                    color: 'white',
+                                                    padding: '4px 10px',
+                                                    border: 'none',
+                                                    borderRadius: 5
+                                                }}
+                                            >
+                                                Xoá
+                                            </button>
+                                        </div>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody> */}
+                    <tbody>
+                    {currentPagePlayers.map(player => (
+                        <PlayerTableRow
+                        key={player.id}
+                        player={player}
+                        isAdmin={user?.user_type === 2}
+                        onUpdated={fetchPlayers}
+                        onDeleted={handleDelete}
+                        onApproved={fetchPlayers}
+                        />
                     ))}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
             <div style={{ marginTop: 20, textAlign: 'center' }}>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                     <button
@@ -485,7 +545,7 @@ const PlayerList = () => {
             </div>
             )}
 
-            {showForm && (
+            {/* {showForm && (
                 <div style={{ marginTop: 30 }}>
                     <h4>Thêm VĐV mới</h4>
                     <input placeholder="Tên" value={newPlayer.name} onChange={e => setNewPlayer({ ...newPlayer, name: e.target.value })} style={{ marginRight: 10 }} />
@@ -501,7 +561,23 @@ const PlayerList = () => {
                         style={{ backgroundColor: '#6c757d', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 5 }}
                     >Huỷ</button>
                 </div>
-            )}
+            )} */}
+            <AddPlayerModal
+                isOpen={showForm}
+                onClose={() => setShowForm(false)}
+                onConfirm={async (newPlayer) => {
+                    try {
+                    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players`, newPlayer);
+                    setMessage('✅ Đã thêm VĐV');
+                    fetchPlayers();
+                    setShowForm(false);
+                    } catch (err) {
+                    console.error(err);
+                    setMessage('❌ Lỗi khi thêm VĐV');
+                    }
+                }}
+            />
+
 
             {message && <p style={{ marginTop: 10 }}>{message}</p>}
         </div>

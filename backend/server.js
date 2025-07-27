@@ -48,6 +48,7 @@ app.use('/api/mainpage', mainPageRouter);
 //app.use('/api/tournament-group', require('./routes/tournamentGroupRouter'));
 app.use('/api/users', userRouter);
 
+
 console.log("Server starting...");
 
 app.use(express.static(path.join(__dirname, '../frontend/build'))); // đường dẫn build frontend

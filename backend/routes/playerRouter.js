@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../config/db');
+const {
+  uploadSinglePlayerPhoto,
+  handleUploadPlayerPhoto
+} = require('../controllers/playerController');
 
 // Lấy danh sách tất cả players
 router.get('/', async (req, res) => {
@@ -15,18 +19,35 @@ router.get('/', async (req, res) => {
 
 // Thêm 1 player
 router.post('/', async (req, res) => {
-    const { id, name, phone, ranking, points, created_date, modified_date } = req.body;
-    try {
-        await client.query(
-            `INSERT INTO players (id, name, phone, ranking, points, created_date, modified_date)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [id, name, phone || 'unknown', ranking, points, created_date, modified_date]
-        );
-        res.json({ message: 'Đã thêm VĐV' });
-    } catch (err) {
-        console.error('Error adding player:', err);
-        res.status(500).json({ message: 'Lỗi khi thêm VĐV' });
-    }
+  const {
+    id, name, phone, ranking, points, pool_ranking, pool_points,
+    gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+    address, competition_unit, discipline,
+    created_date, modified_date
+  } = req.body;
+
+  try {
+    await client.query(`
+      INSERT INTO players (
+        id, name, phone, ranking, points, pool_ranking, pool_points,
+        gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+        address, competition_unit, discipline, created_date, modified_date
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7,
+        $8, $9, $10, $11, $12,
+        $13, $14, $15, $16, $17
+      )
+    `, [
+      id, name, phone || 'unknown', ranking, points, pool_ranking, pool_points,
+      gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+      address, competition_unit, discipline, created_date, modified_date
+    ]);
+
+    res.json({ message: 'Đã thêm VĐV' });
+  } catch (err) {
+    console.error('Error adding player:', err);
+    res.status(500).json({ message: 'Lỗi khi thêm VĐV' });
+  }
 });
 
 // Xoá 1 player
@@ -132,21 +153,48 @@ router.put('/normalize-names', async (req, res) => {
 
 // Cập nhật thông tin 1 player
 router.put('/:id', async (req, res) => {
-    const { name, phone, ranking, points, pool_ranking, pool_points, modified_date } = req.body;
+  const {
+    name, phone, ranking, points, pool_ranking, pool_points, modified_date,
+    gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+    address, competition_unit, discipline,
+    citizen_id_front_photo, citizen_id_back_photo, face_photo
+  } = req.body;
 
-    try {
-        await client.query(
-            `UPDATE players
-             SET name = $1, phone = $2, ranking = $3, points = $4,
-                 pool_ranking = $5, pool_points = $6, modified_date = $7
-             WHERE id = $8`,
-            [name, phone || 'unknown', ranking, points, pool_ranking, pool_points, modified_date, req.params.id]
-        );
-        res.json({ message: 'Đã cập nhật VĐV' });
-    } catch (err) {
-        console.error('Error updating player:', err);
-        res.status(500).json({ message: 'Lỗi khi cập nhật VĐV' });
-    }
+  try {
+    await client.query(`
+      UPDATE players SET
+        name = $1,
+        phone = $2,
+        ranking = $3,
+        points = $4,
+        pool_ranking = $5,
+        pool_points = $6,
+        modified_date = $7,
+        gender = $8,
+        birth_day = $9,
+        citizen_id_passport = $10,
+        member_status = $11,
+        member_fee_status = $12,
+        address = $13,
+        competition_unit = $14,
+        discipline = $15,
+        citizen_id_front_photo = $16,
+        citizen_id_back_photo = $17,
+        face_photo = $18
+      WHERE id = $19
+    `, [
+      name, phone || 'unknown', ranking, points, pool_ranking, pool_points, modified_date,
+      gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+      address, competition_unit, discipline,
+      citizen_id_front_photo, citizen_id_back_photo, face_photo,
+      req.params.id
+    ]);
+
+    res.json({ message: 'Đã cập nhật VĐV' });
+  } catch (err) {
+    console.error('Error updating player:', err);
+    res.status(500).json({ message: 'Lỗi khi cập nhật VĐV' });
+  }
 });
 
 // ✅ API: Lấy thông tin VĐV theo số điện thoại (để kiểm tra trùng SĐT)
@@ -211,5 +259,7 @@ router.get('/:id/ranking', async (req, res) => {
     res.status(500).json({ message: 'Lỗi server' });
   }
 });
+
+router.post('/upload-photo', uploadSinglePlayerPhoto, handleUploadPlayerPhoto);
 
 module.exports = router;
