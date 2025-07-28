@@ -8,6 +8,8 @@ const playerRouter = require('./routes/playerRouter');
 const registrationRouter = require('./routes/registrationRouter');
 const mainPageRouter = require('./routes/mainPageRouter');
 const userRouter = require('./routes/userRouter');
+const clubMemberRouter = require('./routes/clubMemberRouter');
+const personalMemberRouter = require('./routes/personalMemberRouter');
 
 
 dotenv.config();
@@ -39,7 +41,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/tournament_events', tournamentRouter);
-app.use('/uploads', express.static('uploads'));
+//app.use('/uploads', express.static('uploads'));
 app.use('/api/players', playerRouter);
 app.use('/api/registration_form', registrationRouter);
 app.use('/api/registrations', registrationRouter); // dùng cho màn hình admin xem danh sách đơn đăng ký
@@ -47,6 +49,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/mainpage', mainPageRouter);
 //app.use('/api/tournament-group', require('./routes/tournamentGroupRouter'));
 app.use('/api/users', userRouter);
+app.use('/api/members/clubs', clubMemberRouter);
+app.use('/api/members', personalMemberRouter);
 
 
 console.log("Server starting...");
