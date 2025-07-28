@@ -64,26 +64,25 @@ const PersonalMemberTab = () => {
   };
 
     const handleRegisterConfirm = async () => {
-    if (!player?.phone || !player.name || !player.citizen_id_passport || !player.citizen_id_front_photo || !player.citizen_id_back_photo || !player.face_photo) {
-        alert('Vui lòng nhập đầy đủ thông tin và ảnh trước khi đăng ký!');
-        setShowConfirm(false);
-        return;
-    }
+        if (!player?.phone || !player.name || !player.citizen_id_passport || !player.citizen_id_front_photo || !player.citizen_id_back_photo || !player.face_photo) {
+            alert('Vui lòng nhập đầy đủ thông tin và ảnh trước khi đăng ký!');
+            setShowConfirm(false);
+            return;
+        }
 
-    try {
-        await axios.post('/api/members/register-member', { id: player.id });
-        alert('✅ Đã đăng ký hội viên thành công!');
-        setShowConfirm(false);
-        fetchPlayer(userPhone); // reload lại thông tin mới
-    } catch (err) {
-        console.error('Đăng ký thất bại:', err);
-        alert('❌ Có lỗi khi đăng ký hội viên.');
-    }
-    };
+        try {
+            await axios.post('/api/members/register-member', { id: player.id });
+            alert('✅ Đã đăng ký hội viên thành công!');
+            setShowConfirm(false);
+            fetchPlayer(userPhone); // reload lại thông tin mới
+        } catch (err) {
+            console.error('Đăng ký thất bại:', err);
+            alert('❌ Có lỗi khi đăng ký hội viên.');
+        }
 
-    // TODO: gửi yêu cầu đăng ký hội viên thật sự (API hoặc cập nhật status)
-    alert('✅ Đã gửi yêu cầu đăng ký!');
-    setShowConfirm(false);
+        // TODO: gửi yêu cầu đăng ký hội viên thật sự (API hoặc cập nhật status)
+        alert('✅ Đã gửi yêu cầu đăng ký!');
+        setShowConfirm(false);
     };
 
   if (!player) {
