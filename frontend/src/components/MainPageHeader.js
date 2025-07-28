@@ -48,7 +48,7 @@ const MainPageHeader = () => {
           />
         )}
         <div className="header-text">
-          <div className="line1">LIÊN ĐOÀN BILLARDS & SNOOKER</div>
+          <div className="line1">LIÊN ĐOÀN BILLIARDS & SNOOKER</div>
           <div className="line2">THÀNH PHỐ HỒ CHÍ MINH</div>
         </div>
       </div>
