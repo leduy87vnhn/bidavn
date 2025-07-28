@@ -16,6 +16,7 @@ import MainPage from './screens/MainPage';
 import MainPageSettings from './screens/MainPageSettings';
 import TournamentGroupDetail from './screens/TournamentGroupDetail';
 import UserManagement from './screens/UserManagement';
+import MembersScreen from './screens/MembersScreen';
 
 ReactModal.setAppElement('#root');
 
@@ -44,6 +45,8 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/members" element={<MembersScreen />} />
+
         {/* Route bảo vệ: chỉ vào nếu đã login */}
         <Route
           path="/tournament_events"
@@ -52,6 +55,7 @@ export default function App() {
               <TournamentList />
             </PrivateRoute>
           }
+
         />
       </Routes>
     </BrowserRouter>
