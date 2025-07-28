@@ -51,7 +51,7 @@ const AddPlayerModal = ({ isOpen, onClose, onConfirm }) => {
       <div className="modal-content">
         <h3>Thêm vận động viên mới</h3>
         <div className="modal-grid">
-          <input name="id" value={formData.id} onChange={handleChange} placeholder="Mã VĐV" />
+          {/* <input name="id" value={formData.id} onChange={handleChange} placeholder="Mã VĐV" /> */}
           <input name="name" value={formData.name} onChange={handleChange} placeholder="Họ tên" />
           <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Số điện thoại" />
 

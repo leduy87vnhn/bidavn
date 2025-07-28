@@ -1,3 +1,4 @@
+/* Modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -11,13 +12,16 @@
   z-index: 2000;
 }
 
+/* Modal content */
 .modal-content {
   background: #fff;
   padding: 25px;
   border-radius: 10px;
   width: 900px;
   max-width: 95%;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  max-height: 95vh;
 }
 
 .modal-content h3 {
@@ -27,12 +31,15 @@
   margin-bottom: 20px;
 }
 
+/* Grid layout for inputs */
 .modal-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
+/* Input & select styles */
 .modal-grid input,
 .modal-grid select {
   padding: 10px;
@@ -40,13 +47,16 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   width: 100%;
+  box-sizing: border-box;
 }
 
+/* Buttons */
 .modal-actions {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -56,6 +66,9 @@
   font-size: 14px;
   cursor: pointer;
   border: none;
+  min-width: 100px;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
 
 .btn-confirm {
@@ -68,11 +81,17 @@
   color: white;
 }
 
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Table scroll */
 .table-scroll-wrapper {
   overflow-x: auto;
   width: 100%;
 }
 
+/* Table base style */
 table {
   border-collapse: collapse;
   width: max-content;
@@ -83,8 +102,10 @@ table {
 th,
 td {
   background: white;
+  padding: 8px;
 }
 
+/* Sticky headers/columns if needed */
 th.sticky-left,
 td.sticky-left {
   position: sticky;
@@ -105,4 +126,53 @@ td.sticky-left-2 {
 th.sticky-left-3,
 td.sticky-left-3 {
   left: 250px;
+}
+
+/* === DARK MODE === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #eaeaea;
+  }
+
+  .modal-content {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #333;
+  }
+
+  .modal-grid input,
+  .modal-grid select {
+    background-color: #2b2b2b;
+    color: #fff;
+    border: 1px solid #555;
+  }
+
+  .btn-cancel {
+    background-color: #555;
+    color: #eee;
+  }
+
+  th,
+  td {
+    background: #2a2a2a;
+    color: #f1f1f1;
+  }
+}
+
+/* === RESPONSIVE POPUP === */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95vw;
+    padding: 16px;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

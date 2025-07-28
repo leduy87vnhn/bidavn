@@ -172,11 +172,11 @@ const PlayerList = () => {
     };
 
     const filteredPlayers = players.filter(p =>
-    p.id.includes(filter.id) &&
-    p.name.toLowerCase().includes(filter.name.toLowerCase()) &&
-    p.phone.includes(filter.phone) &&
-    (filter.ranking === '' || String(p.ranking) === filter.ranking) &&
-    (filter.pool_ranking === '' || String(p.pool_ranking) === filter.pool_ranking)
+        p.id.includes(filter.id) &&
+        p.name.toLowerCase().includes(filter.name.toLowerCase()) &&
+        p.phone.includes(filter.phone) &&
+        (filter.ranking === '' || String(p.ranking) === filter.ranking) &&
+        (filter.pool_ranking === '' || String(p.pool_ranking) === filter.pool_ranking)
     );
     const totalPages = Math.ceil(filteredPlayers.length / limit);
     //const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
@@ -579,7 +579,22 @@ const PlayerList = () => {
                 onClose={() => setShowForm(false)}
                 onConfirm={async (newPlayer) => {
                     try {
-                    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players`, newPlayer);
+                    const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
+                    const maxId = res.data.reduce((max, p) => {
+                        const num = parseInt((p.id || '').replace(/[^\d]/g, ''), 10);
+                        return isNaN(num) ? max : Math.max(max, num);
+                    }, 0);
+                    const nextId = 'V' + String(maxId + 1).padStart(4, '0');
+
+                    const now = new Date().toISOString();
+                    const playerWithId = {
+                        ...newPlayer,
+                        id: nextId,
+                        created_date: now,
+                        modified_date: now,
+                    };
+
+                    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players`, playerWithId);
                     setMessage('✅ Đã thêm VĐV');
                     fetchPlayers();
                     setShowForm(false);
