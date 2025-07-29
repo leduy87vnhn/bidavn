@@ -3,7 +3,6 @@ import '../css/playerList.scss';
 
 const AddPlayerModal = ({ isOpen, onClose, onConfirm }) => {
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
     phone: '',
     gender: 0,
