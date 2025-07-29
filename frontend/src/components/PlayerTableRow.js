@@ -81,16 +81,14 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) =
 
   return (
     <tr>
-      <tr>
-        <td className="sticky-col col-id">{form.id}</td>
-        <td className="sticky-col col-name">
-          {editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}
-        </td>
-        <td className="sticky-col col-phone">
-          {isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}
-        </td>
-        {/* các cột còn lại giữ nguyên */}
-      </tr>
+      <td className="sticky-col col-id">{form.id}</td>
+      <td className="sticky-col col-name">
+        {editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}
+      </td>
+      <td className="sticky-col col-phone">
+        {isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}
+      </td>
+
       {isAdmin && (
         <>
           <td>{editing ? (
@@ -122,31 +120,23 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) =
             </select>
           ) : disciplineLabel}</td>
 
-          {/* <td>{editing ? <input name="ranking" value={form.ranking || form.pool_ranking || ''} onChange={handleChange} /> : form.ranking || form.pool_ranking}</td>
-          <td>{editing ? <input name="points" value={form.points || form.pool_points || ''} onChange={handleChange} /> : form.points || form.pool_points}</td> */}
-
           <td>{form.ranking}</td>
           <td>{form.points}</td>
           <td>{form.pool_ranking}</td>
           <td>{form.pool_points}</td>
 
-          <td>
-            {editing
-              ? <input type="file" onChange={(e) => setFrontFile(e.target.files[0])} />
-              : (form.citizen_id_front_photo && renderImage(form.citizen_id_front_photo))}
-          </td>
-          <td>
-            {editing
-              ? <input type="file" onChange={(e) => setBackFile(e.target.files[0])} />
-              : (form.citizen_id_back_photo && renderImage(form.citizen_id_back_photo))}
-          </td>
-          <td>
-            {editing
-              ? <input type="file" onChange={(e) => setFaceFile(e.target.files[0])} />
-              : (form.face_photo && renderImage(form.face_photo))}
-          </td>
+          <td>{editing
+            ? <input type="file" onChange={(e) => setFrontFile(e.target.files[0])} />
+            : (form.citizen_id_front_photo && renderImage(form.citizen_id_front_photo))}</td>
+          <td>{editing
+            ? <input type="file" onChange={(e) => setBackFile(e.target.files[0])} />
+            : (form.citizen_id_back_photo && renderImage(form.citizen_id_back_photo))}</td>
+          <td>{editing
+            ? <input type="file" onChange={(e) => setFaceFile(e.target.files[0])} />
+            : (form.face_photo && renderImage(form.face_photo))}</td>
         </>
       )}
+
       {isAdmin && (
         <td>
           {editing ? (
