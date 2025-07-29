@@ -39,11 +39,11 @@ const PlayerList = () => {
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('user_info'));
+        fetchPlayers();
         if (!userInfo) {
             //navigate('/login');
         } else {
             setUser(userInfo);
-            fetchPlayers();
         }
     }, []);
 
