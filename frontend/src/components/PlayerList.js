@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import MainPageMenuBar from '../components/MainPageMenuBar';
 import MainPageHeader from '../components/MainPageHeader';
 import AddPlayerModal from '../components/AddPlayerModal';
+import EditPlayerModal from '../components/EditPlayerModal';
 import PlayerTableRow from '../components/PlayerTableRow';
 import '../css/playerList.scss';
 
