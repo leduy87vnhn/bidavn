@@ -374,8 +374,8 @@ const PlayerList = () => {
                             <th className="sticky-col col-id" onClick={() => handleSort('id')}>
                             ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                             </th>
-                            <th className="sticky-col col-name">Tên</th>
-                            <th className="sticky-col col-phone">SĐT</th>
+                            <th className="sticky-col col-name" style={{ zIndex: 10 }}>Tên</th>
+                            <th className="sticky-col col-phone" style={{ zIndex: 10 }}>SĐT</th>
 
                             {isAdmin && (
                             <>
