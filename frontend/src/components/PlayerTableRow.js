@@ -81,9 +81,16 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) =
 
   return (
     <tr>
-      <td>{form.id}</td>
-      <td>{editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}</td>
-      <td>{isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}</td>
+      <tr>
+        <td className="sticky-col col-id">{form.id}</td>
+        <td className="sticky-col col-name">
+          {editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}
+        </td>
+        <td className="sticky-col col-phone">
+          {isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}
+        </td>
+        {/* các cột còn lại giữ nguyên */}
+      </tr>
       {isAdmin && (
         <>
           <td>{editing ? (

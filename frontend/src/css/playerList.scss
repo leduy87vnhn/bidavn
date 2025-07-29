@@ -176,3 +176,41 @@ td.sticky-left-3 {
     gap: 10px;
   }
 }
+
+.player-table thead th {
+  position: sticky;
+  top: 0;
+  background: #2a334a;
+  color: white;
+  z-index: 3;
+}
+
+.player-table td,
+.player-table th {
+  white-space: nowrap;
+  padding: 8px 12px;
+}
+
+/* Freeze ID */
+.player-table .col-id {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 2;
+}
+
+/* Freeze Tên */
+.player-table .col-name {
+  position: sticky;
+  left: 100px; /* chiều rộng cột ID */
+  background: white;
+  z-index: 2;
+}
+
+/* Freeze SĐT */
+.player-table .col-phone {
+  position: sticky;
+  left: 300px; /* tổng chiều rộng ID + Tên */
+  background: white;
+  z-index: 2;
+}

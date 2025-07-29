@@ -371,11 +371,11 @@ const PlayerList = () => {
                     </thead> */}
                     <thead>
                         <tr>
-                            <th style={{background: '#fff', zIndex: 1, cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                            <th className="sticky-col col-id" onClick={() => handleSort('id')}>
                             ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                             </th>
-                            <th style={{background: '#fff', zIndex: 1 }}>Tên</th>
-                            <th style={{background: '#fff', zIndex: 1 }}>SĐT</th>
+                            <th className="sticky-col col-name">Tên</th>
+                            <th className="sticky-col col-phone">SĐT</th>
 
                             {isAdmin && (
                             <>
