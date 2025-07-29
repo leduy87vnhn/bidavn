@@ -214,3 +214,25 @@ td.sticky-left-3 {
   background: white;
   z-index: 2;
 }
+
+
+/* Freeze cột dọc */
+.sticky-col {
+  position: sticky;
+  background: white;
+  z-index: 9;
+}
+
+/* Định vị theo chiều ngang cho từng cột */
+.col-id {
+  left: 0;
+  z-index: 11;
+}
+.col-name {
+  left: 120px; /* điều chỉnh tùy theo chiều rộng cột ID */
+  z-index: 11;
+}
+.col-phone {
+  left: 320px; /* ID (120px) + Name (200px) */
+  z-index: 11;
+}
