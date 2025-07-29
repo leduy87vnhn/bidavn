@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
   const [formData, setFormData] = useState({ ...player });
 
