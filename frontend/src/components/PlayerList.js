@@ -26,6 +26,8 @@ const PlayerList = () => {
     const [page, setPage] = useState(1);
     const [limit] = useState(50);
     const [sortConfig, setSortConfig] = useState({ key: 'ranking', direction: 'asc' });
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const buttonStyle = {
         padding: '6px 14px',
         fontSize: '14px',
@@ -508,12 +510,16 @@ const PlayerList = () => {
                     <tbody>
                     {currentPagePlayers.map(player => (
                         <PlayerTableRow
-                        key={player.id}
-                        player={player}
-                        isAdmin={user?.user_type === 2}
-                        onUpdated={fetchPlayers}
-                        onDeleted={handleDelete}
-                        onApproved={fetchPlayers}
+                            key={player.id}
+                            player={player}
+                            isAdmin={user?.user_type === 2}
+                            onUpdated={fetchPlayers}
+                            onDeleted={handleDelete}
+                            onApproved={fetchPlayers}
+                            onEditClick={(player) => {
+                                setSelectedPlayer(player);
+                                setEditModalOpen(true);
+                            }}
                         />
                     ))}
                     </tbody>
@@ -603,6 +609,22 @@ const PlayerList = () => {
                     setMessage('❌ Lỗi khi thêm VĐV');
                     }
                 }}
+            />
+            <EditPlayerModal
+            isOpen={editModalOpen}
+            player={selectedPlayer}
+            onClose={() => setEditModalOpen(false)}
+            onConfirm={async (updated) => {
+                try {
+                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/players/${updated.id}`, updated);
+                setMessage('✅ Đã cập nhật VĐV');
+                fetchPlayers();
+                setEditModalOpen(false);
+                } catch (err) {
+                console.error(err);
+                setMessage('❌ Lỗi khi cập nhật');
+                }
+            }}
             />
 
 

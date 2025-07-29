@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) => {
+const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onEditClick }) => {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ ...player });
   const [frontFile, setFrontFile] = useState(null);
@@ -80,7 +80,10 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved }) =
   );
 
   return (
-    <tr>
+    <tr
+      onClick={() => isAdmin && onEditClick(player)}
+      style={{ cursor: isAdmin ? 'pointer' : 'default' }}
+    >
       <td className="sticky-col col-id">{form.id}</td>
       <td className="sticky-col col-name">
         {editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}
