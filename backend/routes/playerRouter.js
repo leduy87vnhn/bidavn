@@ -28,18 +28,18 @@ router.post('/', async (req, res) => {
 
   name = name.toUpperCase(); // chuẩn hóa tên
 
-  if (!id) {
-    // Tự động lấy ID mới theo format Hxxxxx
-    const result = await client.query(`
-      SELECT id FROM players 
-      WHERE id ~ '^H[0-9]+$' 
-      ORDER BY CAST(SUBSTRING(id FROM 2) AS INTEGER) DESC 
-      LIMIT 1
-    `);
-    const lastId = result.rows[0]?.id || 'H00000';
-    const newNumber = String(parseInt(lastId.slice(1)) + 1).padStart(5, '0');
-    id = 'H' + newNumber;
-  }
+  let id; // 🔧 Khai báo biến id
+
+  // Tự động lấy ID mới theo format Hxxxxx
+  const result = await client.query(`
+    SELECT id FROM players 
+    WHERE id ~ '^H\\d{5}$' 
+    ORDER BY id DESC 
+    LIMIT 1
+  `);
+  const lastId = result.rows[0]?.id || 'H00000';
+  const newNumber = String(parseInt(lastId.slice(1)) + 1).padStart(5, '0');
+  id = 'H' + newNumber;
 
   try {
     await client.query(`
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
       address, competition_unit, discipline, created_date, modified_date
     ]);
 
-    res.json({ message: 'Đã thêm VĐV' });
+    res.json({ message: 'Đã thêm VĐV', id }); // ✅ Có thể trả luôn id mới nếu frontend cần
   } catch (err) {
     console.error('Error adding player:', err);
     res.status(500).json({ message: 'Lỗi khi thêm VĐV' });
