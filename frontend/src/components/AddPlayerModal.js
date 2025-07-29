@@ -32,8 +32,10 @@ const AddPlayerModal = ({ isOpen, onClose, onConfirm }) => {
 
   const handleConfirm = () => {
     const now = new Date().toISOString();
+    const { id, ...rest } = formData; // loại bỏ id
+
     const player = {
-      ...formData,
+      ...rest,
       created_date: now,
       modified_date: now,
       ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : null,
@@ -41,6 +43,7 @@ const AddPlayerModal = ({ isOpen, onClose, onConfirm }) => {
       pool_ranking: formData.discipline === 1 ? Number(formData.ranking || 0) : null,
       pool_points: formData.discipline === 1 ? Number(formData.points || 0) : null,
     };
+
     onConfirm(player);
   };
 

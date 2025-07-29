@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 // Thêm 1 player
 router.post('/', async (req, res) => {
   let {
-    id, name, phone, ranking, points, pool_ranking, pool_points,
+    name, phone, ranking, points, pool_ranking, pool_points,
     gender, birth_day, citizen_id_passport, member_status, member_fee_status,
     address, competition_unit, discipline,
     created_date, modified_date
