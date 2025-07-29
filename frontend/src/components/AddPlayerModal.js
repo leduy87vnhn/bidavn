@@ -22,7 +22,8 @@ const AddPlayerModal = ({ isOpen, onClose, onConfirm }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const newValue = name === 'name' ? value.toUpperCase() : value;
+    setFormData(prev => ({ ...prev, [name]: newValue }));
   };
 
   const handleSelectChange = (e) => {

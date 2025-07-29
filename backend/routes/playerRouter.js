@@ -19,12 +19,27 @@ router.get('/', async (req, res) => {
 
 // Thêm 1 player
 router.post('/', async (req, res) => {
-  const {
+  let {
     id, name, phone, ranking, points, pool_ranking, pool_points,
     gender, birth_day, citizen_id_passport, member_status, member_fee_status,
     address, competition_unit, discipline,
     created_date, modified_date
   } = req.body;
+
+  name = name.toUpperCase(); // chuẩn hóa tên
+
+  if (!id) {
+    // Tự động lấy ID mới theo format Hxxxxx
+    const result = await client.query(`
+      SELECT id FROM players 
+      WHERE id ~ '^H[0-9]+$' 
+      ORDER BY CAST(SUBSTRING(id FROM 2) AS INTEGER) DESC 
+      LIMIT 1
+    `);
+    const lastId = result.rows[0]?.id || 'H00000';
+    const newNumber = String(parseInt(lastId.slice(1)) + 1).padStart(5, '0');
+    id = 'H' + newNumber;
+  }
 
   try {
     await client.query(`
