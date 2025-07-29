@@ -48,3 +48,5 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
     </div>
   );
 };
+
+export default EditPlayerModal;
