@@ -41,8 +41,8 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
             modified_date: now,
             ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : null,
             points: formData.discipline === 0 ? Number(formData.points || 0) : null,
-            pool_ranking: formData.discipline === 1 ? Number(formData.ranking || 0) : null,
-            pool_points: formData.discipline === 1 ? Number(formData.points || 0) : null
+            pool_ranking: formData.discipline === 1 ? Number(formData.pool_ranking || 0) : null,
+            pool_points: formData.discipline === 1 ? Number(formData.pool_points || 0) : null
         };
 
         onConfirm(updatedPlayer);
@@ -86,13 +86,13 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
                 </select>
                 <input
                     name={formData.discipline === 0 ? 'ranking' : 'pool_ranking'}
-                    value={formData.discipline === 0 ? (formData.ranking ?? '') : (formData.pool_ranking ?? '')}
+                    value={formData.discipline === 0 ? formData.ranking ?? '' : formData.pool_ranking ?? ''}
                     onChange={handleChange}
                     placeholder="Thứ hạng"
                 />
                 <input
                     name={formData.discipline === 0 ? 'points' : 'pool_points'}
-                    value={formData.discipline === 0 ? (formData.points ?? '') : (formData.pool_points ?? '')}
+                    value={formData.discipline === 0 ? formData.points ?? '' : formData.pool_points ?? ''}
                     onChange={handleChange}
                     placeholder="Điểm số"
                 />
