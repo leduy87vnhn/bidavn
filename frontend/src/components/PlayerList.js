@@ -13,11 +13,11 @@ const PlayerList = () => {
     const navigate = useNavigate();
     const [players, setPlayers] = useState([]);
     const [filter, setFilter] = useState({
-    id: '',
-    name: '',
-    ranking: '',
-    pool_ranking: '',
-    phone: ''
+        id: '',
+        name: '',
+        ranking: '',
+        pool_ranking: '',
+        phone: ''
     });
     const [newPlayer, setNewPlayer] = useState({ id: '', name: '', phone: '', ranking: '', points: '' });
     const [message, setMessage] = useState('');
@@ -263,6 +263,12 @@ const PlayerList = () => {
     });
 
     const currentPagePlayers = sortedPlayers.slice((page - 1) * limit, page * limit);
+
+    useEffect(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        setCurrentPagePlayers(players.slice(start, end));
+    }, [players, page, limit]);
 
     const handleSort = (key) => {
         setSortConfig(prev => ({
