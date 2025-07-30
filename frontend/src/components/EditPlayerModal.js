@@ -40,7 +40,12 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
             <option value={1}>Nữ</option>
             <option value={2}>Chưa rõ</option>
         </select>
-        <input type="date" name="birth_day" value={formData.birth_day || ''} onChange={handleChange} />
+        <input
+            type="date"
+            name="birth_day"
+            value={formData.birth_day ? formData.birth_day.slice(0, 10) : ''}
+            onChange={handleChange}
+        />
         <input name="citizen_id_passport" value={formData.citizen_id_passport || ''} onChange={handleChange} placeholder="CCCD/Hộ chiếu" />
         <select name="member_status" value={formData.member_status || 0} onChange={handleSelectChange}>
             <option value={0}>Tự do</option>
