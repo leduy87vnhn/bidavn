@@ -7,10 +7,26 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
     setFormData({ ...player });
   }, [player]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Nếu đang nhập 'ranking' hoặc 'points' → cập nhật đúng field theo discipline
+        if (name === 'ranking') {
+            setFormData(prev => (
+            prev.discipline === 0
+                ? { ...prev, ranking: value }
+                : { ...prev, pool_ranking: value }
+            ));
+        } else if (name === 'points') {
+            setFormData(prev => (
+            prev.discipline === 0
+                ? { ...prev, points: value }
+                : { ...prev, pool_points: value }
+            ));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
 
     const handleSelectChange = (e) => {
         const { name, value } = e.target;
