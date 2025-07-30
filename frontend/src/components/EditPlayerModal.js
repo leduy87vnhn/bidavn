@@ -10,19 +10,18 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Nếu đang nhập 'ranking' hoặc 'points' → cập nhật đúng field theo discipline
         if (name === 'ranking') {
-            setFormData(prev => (
-            prev.discipline === 0
-                ? { ...prev, ranking: value }
-                : { ...prev, pool_ranking: value }
-            ));
+            setFormData(prev => ({
+            ...prev,
+            ranking: prev.discipline === 0 ? value : prev.ranking,
+            pool_ranking: prev.discipline === 1 ? value : prev.pool_ranking
+            }));
         } else if (name === 'points') {
-            setFormData(prev => (
-            prev.discipline === 0
-                ? { ...prev, points: value }
-                : { ...prev, pool_points: value }
-            ));
+            setFormData(prev => ({
+            ...prev,
+            points: prev.discipline === 0 ? value : prev.points,
+            pool_points: prev.discipline === 1 ? value : prev.pool_points
+            }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
