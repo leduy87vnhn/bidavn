@@ -80,18 +80,28 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
   );
 
   return (
-    <tr
-      onClick={() => isAdmin && onEditClick(player)}
-      style={{ cursor: isAdmin ? 'pointer' : 'default' }}
-    >
+    <tr style={{ cursor: 'default' }}>
       <td className="sticky-col col-id">{form.id}</td>
       <td className="sticky-col col-name">
-        {editing ? <input name="name" value={form.name} onChange={handleChange} /> : form.name}
+        {isAdmin ? (
+          <span
+            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={(e) => {
+              e.stopPropagation(); // không lan sự kiện lên <tr>
+              onEditClick(player);
+            }}
+          >
+            {form.name}
+          </span>
+        ) : (
+          form.name
+        )}
       </td>
       <td className="sticky-col col-phone">
         {isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}
       </td>
 
+      {/* Các cột chỉ hiển thị cho admin */}
       {isAdmin && (
         <>
           <td>{editing ? (
@@ -122,12 +132,18 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
               <option value={1}>Pool</option>
             </select>
           ) : disciplineLabel}</td>
+        </>
+      )}
 
-          <td>{form.ranking}</td>
-          <td>{form.points}</td>
-          <td>{form.pool_ranking}</td>
-          <td>{form.pool_points}</td>
+      {/* Các cột xếp hạng và điểm - luôn hiển thị cho mọi user */}
+      <td>{form.ranking ?? ''}</td>
+      <td>{form.points ?? ''}</td>
+      <td>{form.pool_ranking ?? ''}</td>
+      <td>{form.pool_points ?? ''}</td>
 
+      {/* Các cột ảnh chỉ cho admin */}
+      {isAdmin && (
+        <>
           <td>{editing
             ? <input type="file" onChange={(e) => setFrontFile(e.target.files[0])} />
             : (form.citizen_id_front_photo && renderImage(form.citizen_id_front_photo))}</td>
@@ -149,7 +165,7 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
             </>
           ) : (
             <>
-              <button onClick={() => setEditing(true)}>✏️ Sửa</button>
+              {/* <button onClick={() => setEditing(true)}>✏️ Sửa</button> */}
               <button onClick={() => onDeleted(form.id)}>🗑️ Xoá</button>
               {form.member_status === 1 && (
                 <button onClick={handleApprove}>✔️ Phê duyệt</button>

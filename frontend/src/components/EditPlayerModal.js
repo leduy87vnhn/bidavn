@@ -33,14 +33,32 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
       <div className="modal-content">
         <h3>Cập nhật vận động viên</h3>
         <div className="modal-grid">
-          <input name="name" value={formData.name} onChange={handleChange} placeholder="Họ tên" />
-          <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Số điện thoại" />
-          <select name="gender" value={formData.gender} onChange={handleSelectChange}>
+        <input name="name" value={formData.name || ''} onChange={handleChange} placeholder="Họ tên" />
+        <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="Số điện thoại" />
+        <select name="gender" value={formData.gender || 0} onChange={handleSelectChange}>
             <option value={0}>Nam</option>
             <option value={1}>Nữ</option>
             <option value={2}>Chưa rõ</option>
-          </select>
-          {/* Các trường khác tương tự */}
+        </select>
+        <input type="date" name="birth_day" value={formData.birth_day || ''} onChange={handleChange} />
+        <input name="citizen_id_passport" value={formData.citizen_id_passport || ''} onChange={handleChange} placeholder="CCCD/Hộ chiếu" />
+        <select name="member_status" value={formData.member_status || 0} onChange={handleSelectChange}>
+            <option value={0}>Tự do</option>
+            <option value={1}>Đăng ký</option>
+            <option value={2}>Hội viên</option>
+        </select>
+        <select name="member_fee_status" value={formData.member_fee_status || 0} onChange={handleSelectChange}>
+            <option value={0}>Chưa đóng hội phí</option>
+            <option value={1}>Đã đóng hội phí</option>
+        </select>
+        <input name="address" value={formData.address || ''} onChange={handleChange} placeholder="Địa chỉ thường trú" />
+        <input name="competition_unit" value={formData.competition_unit || ''} onChange={handleChange} placeholder="Đơn vị thi đấu" />
+        <select name="discipline" value={formData.discipline || 0} onChange={handleSelectChange}>
+            <option value={0}>Carom</option>
+            <option value={1}>Pool</option>
+        </select>
+        <input name="ranking" value={formData.ranking || ''} onChange={handleChange} placeholder="Thứ hạng" />
+        <input name="points" value={formData.points || ''} onChange={handleChange} placeholder="Điểm số" />
         </div>
         <div className="modal-actions">
           <button onClick={handleConfirm} className="btn btn-confirm">Lưu</button>

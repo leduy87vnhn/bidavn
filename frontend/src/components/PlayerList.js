@@ -391,25 +391,31 @@ const PlayerList = () => {
                                 <th>Đơn vị</th>
                                 <th>Ngày tham gia</th>
                                 <th>Nội dung</th>
-                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
-                                Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                                </th>
-                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
-                                Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                                </th>
-                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
-                                Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                                </th>
-                                <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
-                                Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                                </th>
-                                <th>Ảnh CCCD trước</th>
-                                <th>Ảnh CCCD sau</th>
-                                <th>Ảnh 4x6</th>
                             </>
                             )}
 
-                            {isAdmin && <th>Thao tác</th>}
+                            {/* 4 cột hạng & điểm: Luôn hiển thị cho mọi user */}
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
+                            Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
+                            Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
+                            Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
+                            Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                            </th>
+
+                            {isAdmin && (
+                            <>
+                                <th>Ảnh CCCD trước</th>
+                                <th>Ảnh CCCD sau</th>
+                                <th>Ảnh 4x6</th>
+                                <th>Thao tác</th>
+                            </>
+                            )}
                         </tr>
                     </thead>
                     {/* <tbody>
