@@ -85,29 +85,21 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
                     <option value={1}>Pool</option>
                 </select>
                 <input
-                    name="ranking"
-                    value={
-                        formData.discipline === 0
-                        ? formData.ranking ?? ''
-                        : formData.pool_ranking ?? ''
-                    }
+                    name={formData.discipline === 0 ? 'ranking' : 'pool_ranking'}
+                    value={formData.discipline === 0 ? (formData.ranking ?? '') : (formData.pool_ranking ?? '')}
                     onChange={handleChange}
                     placeholder="Thứ hạng"
                 />
                 <input
-                    name="points"
-                    value={
-                        formData.discipline === 0
-                        ? formData.points ?? ''
-                        : formData.pool_points ?? ''
-                    }
+                    name={formData.discipline === 0 ? 'points' : 'pool_points'}
+                    value={formData.discipline === 0 ? (formData.points ?? '') : (formData.pool_points ?? '')}
                     onChange={handleChange}
                     placeholder="Điểm số"
                 />
                 </div>
                 <div className="modal-actions">
-                <button onClick={handleConfirm} className="btn btn-confirm">Lưu</button>
-                <button onClick={onClose} className="btn btn-cancel">Huỷ</button>
+                    <button onClick={handleConfirm} className="btn btn-confirm">Lưu</button>
+                    <button onClick={onClose} className="btn btn-cancel">Huỷ</button>
                 </div>
             </div>
         </div>
