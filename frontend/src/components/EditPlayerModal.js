@@ -38,10 +38,10 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
         const updatedPlayer = {
             ...formData,
             modified_date: now,
-            ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : null,
-            points: formData.discipline === 0 ? Number(formData.points || 0) : null,
-            pool_ranking: formData.discipline === 1 ? Number(formData.pool_ranking || 0) : null,
-            pool_points: formData.discipline === 1 ? Number(formData.pool_points || 0) : null
+            ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : formData.ranking,
+            points: formData.discipline === 0 ? Number(formData.points || 0) : formData.points,
+            pool_ranking: formData.discipline === 1 ? Number(formData.pool_ranking || 0) : formData.pool_ranking,
+            pool_points: formData.discipline === 1 ? Number(formData.pool_points || 0) : formData.pool_points
         };
 
         onConfirm(updatedPlayer);
