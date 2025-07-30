@@ -618,20 +618,21 @@ const PlayerList = () => {
                 }}
             />
             <EditPlayerModal
-            isOpen={editModalOpen}
-            player={selectedPlayer}
-            onClose={() => setEditModalOpen(false)}
-            onConfirm={async (updated) => {
-                try {
-                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/players/${updated.id}`, updated);
-                setMessage('✅ Đã cập nhật VĐV');
-                fetchPlayers();
-                setEditModalOpen(false);
-                } catch (err) {
-                console.error(err);
-                setMessage('❌ Lỗi khi cập nhật');
-                }
-            }}
+                isOpen={editModalOpen}
+                player={selectedPlayer}
+                onClose={() => setEditModalOpen(false)}
+                onConfirm={async (updated) => {
+                    try {
+                        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/players/${updated.id}`, updated);
+                        setMessage('✅ Đã cập nhật VĐV');
+                        fetchPlayers();
+                        setEditModalOpen(false);
+                        fetchPlayers();
+                    } catch (err) {
+                        console.error(err);
+                        setMessage('❌ Lỗi khi cập nhật');
+                    }
+                }}
             />
 
 
