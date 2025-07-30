@@ -10,13 +10,14 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        if (name === 'ranking') {
+        // Luôn cập nhật đúng field thật sự đang hiển thị
+        if (name === 'ranking' || name === 'pool_ranking') {
             setFormData(prev => ({
             ...prev,
             ranking: prev.discipline === 0 ? value : prev.ranking,
             pool_ranking: prev.discipline === 1 ? value : prev.pool_ranking
             }));
-        } else if (name === 'points') {
+        } else if (name === 'points' || name === 'pool_points') {
             setFormData(prev => ({
             ...prev,
             points: prev.discipline === 0 ? value : prev.points,
@@ -38,10 +39,10 @@ const EditPlayerModal = ({ isOpen, player, onClose, onConfirm }) => {
         const updatedPlayer = {
             ...formData,
             modified_date: now,
-            ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : formData.ranking,
-            points: formData.discipline === 0 ? Number(formData.points || 0) : formData.points,
-            pool_ranking: formData.discipline === 1 ? Number(formData.pool_ranking || 0) : formData.pool_ranking,
-            pool_points: formData.discipline === 1 ? Number(formData.pool_points || 0) : formData.pool_points
+            ranking: formData.discipline === 0 ? Number(formData.ranking || 0) : player.ranking,
+            points: formData.discipline === 0 ? Number(formData.points || 0) : player.points,
+            pool_ranking: formData.discipline === 1 ? Number(formData.pool_ranking || 0) : player.pool_ranking,
+            pool_points: formData.discipline === 1 ? Number(formData.pool_points || 0) : player.pool_points,
         };
 
         onConfirm(updatedPlayer);
