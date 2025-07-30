@@ -264,11 +264,11 @@ const PlayerList = () => {
 
     const currentPagePlayers = sortedPlayers.slice((page - 1) * limit, page * limit);
 
-    useEffect(() => {
-        const start = (page - 1) * limit;
-        const end = start + limit;
-        setCurrentPagePlayers(players.slice(start, end));
-    }, [players, page, limit]);
+    // useEffect(() => {
+    //     const start = (page - 1) * limit;
+    //     const end = start + limit;
+    //     setCurrentPagePlayers(players.slice(start, end));
+    // }, [players, page, limit]);
 
     const handleSort = (key) => {
         setSortConfig(prev => ({
