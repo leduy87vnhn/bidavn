@@ -75,18 +75,17 @@
   input {
     flex: 1;
     padding: 10px 12px;
+    height: 42px; // ✅ Chiều cao cố định
     border: 1px solid #ccc;
     border-right: none;
     border-radius: 4px 0 0 4px;
     background-color: #e6f0ff;
     font-size: 16px;
-    line-height: 1;
   }
 
   button {
     width: 40px;
-    min-width: 40px;
-    padding: 0;
+    height: 42px; // ✅ Chiều cao khớp với input
     border: 1px solid #ccc;
     border-left: none;
     border-radius: 0 4px 4px 0;
