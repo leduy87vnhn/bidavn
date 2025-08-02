@@ -21,6 +21,8 @@ const Register = () => {
   const [cccdBack, setCccdBack] = useState(null);
   const [facePhoto, setFacePhoto] = useState(null);
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +43,15 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (
+        !form.phone_number || !form.password || !form.name ||
+        !form.citizen_id_passport || !form.citizen_id_issued_date ||
+        !form.citizen_id_issued_place || !form.address
+      ) {
+        setMessage('❌ Vui lòng nhập đầy đủ các trường bắt buộc.');
+        return;
+      }
+
       const citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
       const citizen_id_back_photo = await uploadImage(cccdBack, 'cccd_rear');
       const face_photo = await uploadImage(facePhoto, 'anh46');
@@ -105,7 +116,24 @@ const Register = () => {
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
           <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
-          <input type="password" name="password" value={form.password} onChange={handleChange} required />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            style={{ flex: 1 }}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(prev => !prev)}
+            style={{ marginLeft: 10 }}
+            title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+          >
+            👁️
+          </button>
+          </div>
 
           <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
@@ -127,7 +155,23 @@ const Register = () => {
           <input type="date" name="citizen_id_issued_date" value={form.citizen_id_issued_date} onChange={handleChange} required />
 
           <label>NƠI CẤP CCCD:</label>
-          <input name="citizen_id_issued_place" value={form.citizen_id_issued_place} onChange={handleChange} required />
+          <select
+            name="citizen_id_issued_place"
+            value={form.citizen_id_issued_place}
+            onChange={handleChange}
+            required
+            >
+            <option value="">-- Chọn nơi cấp --</option>
+            <option value="Cục Cảnh sát quản lý hành chính về trật tự xã hội">
+                1. Cục Cảnh sát quản lý hành chính về trật tự xã hội
+            </option>
+            <option value="Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc gia về dân cư">
+                2. Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc gia về dân cư
+            </option>
+            <option value="Bộ Công an">
+                3. Bộ Công an
+            </option>
+          </select>
 
           <label>ĐỊA CHỈ THƯỜNG TRÚ:</label>
           <input name="address" value={form.address} onChange={handleChange} required />
