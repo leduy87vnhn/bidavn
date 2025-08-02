@@ -140,41 +140,26 @@ const Register = () => {
             <div style={{ position: 'relative' }}>
             <input
                 type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={form.password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 placeholder="Nhập mật khẩu"
-                style={{
-                width: '100%',
-                padding: '10px 40px 10px 10px',  // chừa khoảng cho icon bên phải
-                border: '1px solid #ccc',
-                borderRadius: '6px',
-                backgroundColor: '#eef4ff',
-                fontSize: '14px',
-                boxSizing: 'border-box',
-                }}
+                style={{ backgroundColor: '#e9f1ff', paddingRight: '40px' }}
             />
             <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
                 position: 'absolute',
-                right: '6px',
                 top: '50%',
+                right: '6px',
                 transform: 'translateY(-50%)',
                 border: 'none',
-                background: '#f3f3f3',
-                padding: '6px',
-                borderRadius: '4px',
+                background: 'none',
                 cursor: 'pointer',
-                height: '30px',
-                width: '30px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                fontSize: '16px',
                 }}
             >
-                <img src="/eye.png" alt="toggle" style={{ width: '16px', height: '16px' }} />
+                {showPassword ? '🙈' : '👁️'}
             </button>
             </div>
             </label>
