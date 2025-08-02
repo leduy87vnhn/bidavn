@@ -123,40 +123,15 @@ const Register = () => {
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
           <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: '500px' }}>
+            <div className="password-wrapper">
             <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
                 required
-                style={{
-                flex: 1,
-                height: '40px',
-                padding: '8px 12px',
-                fontSize: '16px',
-                border: '1px solid #ccc',
-                borderRight: 'none',
-                borderRadius: '6px 0 0 6px',
-                boxSizing: 'border-box'
-                }}
             />
-            <button
-                type="button"
-                onClick={() => setShowPassword(prev => !prev)}
-                style={{
-                width: '40px',
-                height: '40px',
-                border: '1px solid #ccc',
-                borderRadius: '0 6px 6px 0',
-                backgroundColor: '#eee',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                padding: 0
-                }}
-            >
+            <button type="button" onClick={() => setShowPassword(prev => !prev)}>
                 👁️
             </button>
             </div>
