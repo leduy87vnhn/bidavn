@@ -131,7 +131,11 @@ const Register = () => {
                 onChange={handleChange}
                 required
             />
-            <button type="button" onClick={() => setShowPassword(prev => !prev)}>
+            <button
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+                title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+            >
                 👁️
             </button>
             </div>
