@@ -181,17 +181,23 @@ const TournamentRegistrationSingle = () => {
     }
 
     try {
-      const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
-        name: competitor.name,
-        phone: competitor.phone
-      });
+      // const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
+      //   name: competitor.name,
+      //   phone: competitor.phone
+      // });
 
-      if (resolveRes.data.status !== 'ok') {
-        setMessage('❌ Không xác định được VĐV.');
+      // if (resolveRes.data.status !== 'ok') {
+      //   setMessage('❌ Không xác định được VĐV.');
+      //   return;
+      // }
+
+      // const player_id = resolveRes.data.player_id;
+      const resolveRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-phone?phone=${competitor.phone}`);
+      if (!resolveRes.data || resolveRes.data.name !== competitor.name) {
+        setMessage('❌ Bạn chưa đăng ký thông tin với liên đoàn hoặc thông tin không khớp.');
         return;
       }
-
-      const player_id = resolveRes.data.player_id;
+      const player_id = resolveRes.data.id;
       setResolvedPlayerId(player_id);
 
       const formRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
@@ -278,7 +284,7 @@ const TournamentRegistrationSingle = () => {
       )}
       <table style={{ width: '100%', borderCollapse: 'collapse', margin: '20px 0' }}>
         <tbody>
-          <tr>
+          <tr style={{ display: 'none' }}>
             <td className="table-cell"><strong>ID VĐV:</strong></td>
             <td className="table-cell">
               <input
@@ -371,18 +377,6 @@ const TournamentRegistrationSingle = () => {
         </tbody>
       </table>
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
-        {/* <button onClick={() => navigate(`/tournament_events/${tournamentId}`)}>⬅️ Quay Lại Chi Tiết Giải Đấu</button> */}
-        {/* <h2>Đăng ký thi đấu cá nhân <span style={{ backgroundColor: '#ffe0b3', padding: '4px 8px', borderRadius: 6 }}>Chưa Phê Duyệt</span></h2> */}
-
-        {/* {tournament && (
-          <div>
-            <p><strong>Tên giải:</strong> {tournament.name}</p>
-            <p><strong>Thời gian:</strong> {new Date(tournament.start_date).toLocaleDateString('vi-VN')} → {new Date(tournament.end_date).toLocaleDateString('vi-VN')}</p>
-            <p><strong>Địa điểm:</strong> {tournament.location}</p>
-            <p><strong>Nội dung:</strong> {tournament.content}</p>
-          </div>
-        )} */}
-
         {/* ✅ Phần chọn ngày thi đấu */}
         <form onSubmit={handleSubmit}>
           {availableDates.length > 0 && (
