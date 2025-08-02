@@ -45,7 +45,7 @@ router.post('/competitors', async (req, res) => {
     const tourRes = await client.query(
       `SELECT content, attendance_fee_common, attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
               rank1, rank2, rank3
-       FROM tournament_event
+       FROM tournament_events
        WHERE id = $1`,
       [tournament_id]
     );
