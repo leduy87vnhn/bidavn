@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../register.scss'; // bạn nên cập nhật CSS theo UI đã gửi
+import '../register.scss';
+import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -106,6 +108,11 @@ const Register = () => {
   };
 
   return (
+  <>
+    <div style={{ position: 'relative', zIndex: 1000 }}>
+      <MainPageHeader />
+      <MainPageMenuBar />
+    </div>
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>ĐĂNG KÝ THÀNH VIÊN LIÊN ĐOÀN<br />BILLIARDS & SNOOKER THÀNH PHỐ HỒ CHÍ MINH</h2>
@@ -123,13 +130,27 @@ const Register = () => {
             value={form.password}
             onChange={handleChange}
             required
-            style={{ flex: 1 }}
+            style={{
+            flex: 1,
+            padding: '8px',
+            border: '1px solid #ccc',
+            borderTopLeftRadius: 4,
+            borderBottomLeftRadius: 4
+            }}
           />
           <button
             type="button"
             onClick={() => setShowPassword(prev => !prev)}
-            style={{ marginLeft: 10 }}
             title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+            style={{
+            padding: '8px',
+            background: '#eee',
+            border: '1px solid #ccc',
+            borderLeft: 'none',
+            borderTopRightRadius: 4,
+            borderBottomRightRadius: 4,
+            cursor: 'pointer'
+            }}
           >
             👁️
           </button>
@@ -200,6 +221,7 @@ const Register = () => {
         </div>
       </form>
     </div>
+  </>
   );
 };
 
