@@ -77,7 +77,6 @@
     font-size: 16px;
     background-color: #e6f0ff;
     border: 1px solid #ccc;
-    border-right: none;
     border-radius: 6px 0 0 6px;
     height: 44px;
     box-sizing: border-box;
@@ -88,7 +87,7 @@
     height: 44px;
     background: transparent;       // bỏ nền
     border: none;                  // bỏ viền
-    margin-top: -2px;              // nâng lên một chút
+    margin-top: -1px;              // nâng lên một chút
     display: flex;
     align-items: center;
     justify-content: center;
