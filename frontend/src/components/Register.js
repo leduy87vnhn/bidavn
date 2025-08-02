@@ -123,7 +123,7 @@ const Register = () => {
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
           <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: '500px' }}>
             <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
@@ -132,26 +132,29 @@ const Register = () => {
                 required
                 style={{
                 flex: 1,
-                padding: '8px',
+                height: '40px',
+                padding: '8px 12px',
+                fontSize: '16px',
                 border: '1px solid #ccc',
                 borderRight: 'none',
-                borderRadius: '4px 0 0 4px'
+                borderRadius: '6px 0 0 6px',
+                boxSizing: 'border-box'
                 }}
             />
             <button
                 type="button"
                 onClick={() => setShowPassword(prev => !prev)}
-                title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                 style={{
                 width: '40px',
-                height: '38px',
-                background: '#eee',
+                height: '40px',
                 border: '1px solid #ccc',
-                borderRadius: '0 4px 4px 0',
+                borderRadius: '0 6px 6px 0',
+                backgroundColor: '#eee',
                 display: 'flex',
-                justifyContent: 'center',
                 alignItems: 'center',
-                cursor: 'pointer'
+                justifyContent: 'center',
+                cursor: 'pointer',
+                padding: 0
                 }}
             >
                 👁️
