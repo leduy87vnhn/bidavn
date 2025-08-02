@@ -28,7 +28,11 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    let newValue = value;
+    if (name === 'name') {
+      newValue = value.toUpperCase();
+    }
+    setForm(prev => ({ ...prev, [name]: newValue }));
   };
 
   const uploadImage = async (file, suffix) => {
