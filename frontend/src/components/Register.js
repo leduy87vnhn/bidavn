@@ -122,33 +122,23 @@ const Register = () => {
           <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này</span></label>
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
-            <label>
-            MẬT KHẨU:
-            <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
-            {/* <div className="password-wrapper">
-                <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-                />
-                <div className="eye-button" onClick={() => setShowPassword(!showPassword)}>
-                👁️
-                </div>
-            </div> */}
-            <div style={{ position: 'relative' }}>
+        <label>
+        MẬT KHẨU:
+        <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
+        <div style={{ position: 'relative' }}>
             <input
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                placeholder="Nhập mật khẩu"
-                style={{ backgroundColor: '#e9f1ff', paddingRight: '40px' }}
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            placeholder="Nhập mật khẩu"
+            required
+            style={{ backgroundColor: '#e9f1ff', paddingRight: '40px' }}
             />
             <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
                 position: 'absolute',
                 top: '50%',
                 right: '6px',
@@ -157,12 +147,12 @@ const Register = () => {
                 background: 'none',
                 cursor: 'pointer',
                 fontSize: '16px',
-                }}
+            }}
             >
-                {showPassword ? '🙈' : '👁️'}
+            {showPassword ? '🙈' : '👁️'}
             </button>
-            </div>
-            </label>
+        </div>
+        </label>
 
           <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
