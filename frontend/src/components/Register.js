@@ -140,7 +140,8 @@ const Register = () => {
             <div style={{ position: 'relative' }}>
             <input
                 type={showPassword ? 'text' : 'password'}
-                value={password}
+                name="password"
+                value={form.password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Nhập mật khẩu"
                 style={{
