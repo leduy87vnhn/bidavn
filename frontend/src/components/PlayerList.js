@@ -391,6 +391,8 @@ const PlayerList = () => {
                                 <th>Giới tính</th>
                                 <th>Ngày sinh</th>
                                 <th>CCCD/Hộ chiếu</th>
+                                <th>Ngày cấp CCCD</th>
+                                <th>Nơi cấp CCCD</th>
                                 <th>Thành viên</th>
                                 <th>Hội phí</th>
                                 <th>Địa chỉ</th>

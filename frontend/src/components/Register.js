@@ -1,133 +1,162 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../register.scss';
-import { FaSignInAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import '../register.scss'; // bạn nên cập nhật CSS theo UI đã gửi
 
 const Register = () => {
-    const [user_name, setUserName] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [user_type, setUserType] = useState(0); // 0 for Vận Động Viên, 1 for Trọng Tài
-    const [birthday, setBirthday] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone_number, setPhoneNumber] = useState('');
-    const [message, setMessage] = useState('');
+  const [form, setForm] = useState({
+    phone_number: '',
+    password: '',
+    name: '',
+    gender: 0,
+    birthday: '',
+    citizen_id_passport: '',
+    citizen_id_issued_date: '',
+    citizen_id_issued_place: '',
+    address: '',
+    competition_unit: '',
+    email: ''
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const [cccdFront, setCccdFront] = useState(null);
+  const [cccdBack, setCccdBack] = useState(null);
+  const [facePhoto, setFacePhoto] = useState(null);
+  const [message, setMessage] = useState('');
 
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
-                user_name,
-                name,
-                password,
-                user_type,
-                birthday,
-                phone_number,
-                email
-            }, {
-                withCredentials: false // <== THÊM DÒNG NÀY
-            });
-            setMessage(response.data.message);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-                setMessage(error.response.data.message);
-            } else {
-                setMessage('Đăng ký thất bại.');
-            }
-        }
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
 
-    return (
-        <div className="register-container">
-            <form className="register-form" onSubmit={handleSubmit}>
-                <h2>Đăng ký tài khoản</h2>
+  const uploadImage = async (file, suffix) => {
+    if (!file) return null;
+    const ext = file.name.split('.').pop();
+    const filename = `${form.phone_number}_${suffix}.${ext}`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', filename);
+    const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players/upload-photo`, formData);
+    return res.data.filePath;
+  };
 
-                <div className="form-group">
-                    <label>Tên đăng nhập:</label>
-                    <input
-                        type="text"
-                        value={user_name}
-                        onChange={(e) => setUserName(e.target.value)}
-                        required
-                    />
-                </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
+      const citizen_id_back_photo = await uploadImage(cccdBack, 'cccd_rear');
+      const face_photo = await uploadImage(facePhoto, 'anh46');
+      const now = new Date().toISOString();
 
-                <div className="form-group">
-                    <label>Họ và tên:</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
+      // Tạo user
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/users`, {
+        user_name: form.phone_number,
+        password: form.password,
+        name: form.name,
+        phone_number: form.phone_number,
+        birthday: form.birthday,
+        user_type: 0,
+        email: form.email,
+        enable: true,
+        created_date: now,
+        modified_date: now,
+      });
 
-                <div className="form-group">
-                    <label>Mật khẩu:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
+      // Lấy mã player mới
+      const idRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
+      const maxId = idRes.data.reduce((max, p) => {
+        const num = parseInt((p.id || '').replace(/[^\d]/g, ''), 10);
+        return isNaN(num) ? max : Math.max(max, num);
+      }, 0);
+      const playerId = 'H' + String(maxId + 1).padStart(5, '0');
 
-                <div className="form-group">
-                    <label>Loại người dùng:</label>
-                    <select
-                        value={user_type}
-                        onChange={(e) => setUserType(Number(e.target.value))}
-                        required
-                    >
-                        <option value={0}>Vận Động Viên</option>
-                        <option value={1}>Trọng Tài</option>
-                    </select>
-                </div>
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players`, {
+        id: playerId,
+        name: form.name.toUpperCase(),
+        phone: form.phone_number,
+        birth_day: form.birthday,
+        citizen_id_passport: form.citizen_id_passport,
+        citizen_id_issued_date: form.citizen_id_issued_date,
+        citizen_id_issued_place: form.citizen_id_issued_place,
+        address: form.address,
+        competition_unit: form.competition_unit,
+        citizen_id_front_photo,
+        citizen_id_back_photo,
+        face_photo,
+        member_status: 1,
+        member_fee_status: 0,
+        created_date: now,
+        modified_date: now
+      });
 
-                <div className="form-group">
-                    <label>Ngày sinh:</label>
-                    <input
-                        type="date"
-                        value={birthday}
-                        onChange={(e) => setBirthday(e.target.value)}
-                        required
-                    />
-                </div>
+      window.location.href = 'https://hbsf.com.vn/';
+    } catch (err) {
+      console.error(err);
+      setMessage('❌ Đăng ký thất bại. Có thể SĐT hoặc email đã tồn tại.');
+    }
+  };
 
-                <div className="form-group">
-                    <label>Số điện thoại:</label>
-                    <input
-                        type="text"
-                        value={phone_number}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        required
-                    />
-                </div>
+  return (
+    <div className="register-container">
+      <form className="register-form" onSubmit={handleSubmit}>
+        <h2>ĐĂNG KÝ THÀNH VIÊN LIÊN ĐOÀN<br />BILLIARDS & SNOOKER THÀNH PHỐ HỒ CHÍ MINH</h2>
+        <div className="form-section">
+          <h3>📝 THÔNG TIN ĐĂNG KÝ</h3>
 
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input
-                        type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
+          <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này</span></label>
+          <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
-                <button type="submit">Đăng ký</button>
+          <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
+          <input type="password" name="password" value={form.password} onChange={handleChange} required />
 
-                {message && <div className="form-message">{message}</div>}
-                <p className="form-link">
-                    <span title="Chuyển đến trang đăng nhập">
-                        <FaSignInAlt style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                    </span>
-                    Đã có tài khoản? <Link to="/login">Đăng nhập tại đây</Link>
-                </p>
-            </form>
+          <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
+          <input name="name" value={form.name} onChange={handleChange} required />
+
+          <label>GIỚI TÍNH:</label>
+          <select name="gender" value={form.gender} onChange={handleChange}>
+            <option value={0}>Nam</option>
+            <option value={1}>Nữ</option>
+            <option value={2}>Khác</option>
+          </select>
+
+          <label>NGÀY SINH:</label>
+          <input type="date" name="birthday" value={form.birthday} onChange={handleChange} required />
+
+          <label>SỐ CCCD:</label>
+          <input name="citizen_id_passport" value={form.citizen_id_passport} onChange={handleChange} required />
+
+          <label>NGÀY CẤP CCCD:</label>
+          <input type="date" name="citizen_id_issued_date" value={form.citizen_id_issued_date} onChange={handleChange} required />
+
+          <label>NƠI CẤP CCCD:</label>
+          <input name="citizen_id_issued_place" value={form.citizen_id_issued_place} onChange={handleChange} required />
+
+          <label>ĐỊA CHỈ THƯỜNG TRÚ:</label>
+          <input name="address" value={form.address} onChange={handleChange} required />
+
+          <label>ĐANG THI ĐẤU CHO ĐƠN VỊ (TỈNH/THÀNH):</label>
+          <input name="competition_unit" value={form.competition_unit} onChange={handleChange} required />
+
+          <label>EMAIL:</label>
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+
+          <label>ẢNH (4X6):</label>
+          <input type="file" accept="image/*" onChange={e => setFacePhoto(e.target.files[0])} required />
+
+          <label>ẢNH (MẶT TRƯỚC) CCCD App VNeID:</label>
+          <input type="file" accept="image/*" onChange={e => setCccdFront(e.target.files[0])} required />
+
+          <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
+          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])} required />
+
+          <div className="note">
+            Việc cung cấp ảnh CCCD trên App VNeID để phục vụ cho tính chính xác đối với các thông tin đăng ký.
+          </div>
+
+          <button type="submit">XÁC NHẬN ĐĂNG KÝ</button>
+          {message && <div className="form-message">{message}</div>}
         </div>
-    );
+      </form>
+    </div>
+  );
 };
 
 export default Register;

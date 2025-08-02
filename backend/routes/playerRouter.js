@@ -23,42 +23,52 @@ router.post('/', async (req, res) => {
     name, phone, ranking, points, pool_ranking, pool_points,
     gender, birth_day, citizen_id_passport, member_status, member_fee_status,
     address, competition_unit, discipline,
+    citizen_id_issued_date, citizen_id_issued_place,
+    citizen_id_front_photo, citizen_id_back_photo, face_photo,
     created_date, modified_date
   } = req.body;
 
-  name = name.toUpperCase(); // chuẩn hóa tên
+  name = name.toUpperCase();
 
-  let id; // 🔧 Khai báo biến id
-
-  // Tự động lấy ID mới theo format Hxxxxx
-  const result = await client.query(`
-    SELECT id FROM players 
-    WHERE id ~ '^H\\d{5}$' 
-    ORDER BY id DESC 
-    LIMIT 1
-  `);
+  let id;
+  const result = await client.query(
+    `SELECT id FROM players 
+     WHERE id ~ '^H\\d{5}$' 
+     ORDER BY id DESC 
+     LIMIT 1`
+  );
   const lastId = result.rows[0]?.id || 'H00000';
   const newNumber = String(parseInt(lastId.slice(1)) + 1).padStart(5, '0');
   id = 'H' + newNumber;
 
   try {
-    await client.query(`
-      INSERT INTO players (
+    await client.query(
+      `INSERT INTO players (
         id, name, phone, ranking, points, pool_ranking, pool_points,
         gender, birth_day, citizen_id_passport, member_status, member_fee_status,
-        address, competition_unit, discipline, created_date, modified_date
+        address, competition_unit, discipline,
+        citizen_id_issued_date, citizen_id_issued_place,
+        citizen_id_front_photo, citizen_id_back_photo, face_photo,
+        created_date, modified_date
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12,
-        $13, $14, $15, $16, $17
-      )
-    `, [
-      id, name, phone || 'unknown', ranking, points, pool_ranking, pool_points,
-      gender, birth_day, citizen_id_passport, member_status, member_fee_status,
-      address, competition_unit, discipline, created_date, modified_date
-    ]);
+        $13, $14, $15,
+        $16, $17,
+        $18, $19, $20,
+        $21, $22
+      )`,
+      [
+        id, phone || 'unknown' ? name : name.toUpperCase(), phone || 'unknown', ranking, points, pool_ranking, pool_points,
+        gender, birth_day, citizen_id_passport, member_status, member_fee_status,
+        address, competition_unit, discipline,
+        citizen_id_issued_date, citizen_id_issued_place,
+        citizen_id_front_photo, citizen_id_back_photo, face_photo,
+        created_date, modified_date
+      ]
+    );
 
-    res.json({ message: 'Đã thêm VĐV', id }); // ✅ Có thể trả luôn id mới nếu frontend cần
+    res.json({ message: 'Đã thêm VĐV', id });
   } catch (err) {
     console.error('Error adding player:', err);
     res.status(500).json({ message: 'Lỗi khi thêm VĐV' });

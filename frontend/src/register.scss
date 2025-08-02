@@ -1,84 +1,67 @@
-.register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f4f7fa;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .register-form {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 400px;
-}
+  background: white;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid #ccc;
 
-.register-form h2 {
+  h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #6a98f0;
-    outline: none;
-}
-
-button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4a90e2;
+    background: #003b6f;
     color: white;
+    padding: 12px;
+    font-size: 20px;
+  }
+
+  h3 {
+    background: #e8e8ff;
+    padding: 10px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+
+    span {
+      font-weight: normal;
+      font-style: italic;
+      display: block;
+      font-size: 0.85em;
+    }
+  }
+
+  input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .note {
+    font-size: 0.9em;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #d2d2c2;
     border: none;
-    border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
+  }
 
-button[type="submit"]:hover {
-    background-color: #357ab8;
-}
-
-.form-message {
-    text-align: center;
-    margin-top: 15px;
-    color: #d9534f;
-}
-
-.form-link {
-    margin-top: 12px;
-    font-size: 14px;
-    text-align: center;
-
-    a {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    svg {
-        color: #007bff;
-    }
+  .form-message {
+    color: red;
+    margin-top: 10px;
+  }
 }

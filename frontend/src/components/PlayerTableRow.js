@@ -118,6 +118,8 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
 
           <td>{editing ? <input type="date" name="birth_day" value={formatDate(form.birth_day)} onChange={handleChange} /> : formatDate(form.birth_day)}</td>
           <td>{editing ? <input name="citizen_id_passport" value={form.citizen_id_passport} onChange={handleChange} /> : form.citizen_id_passport}</td>
+          <td>{editing ? <input type="date" name="citizen_id_issued_date" value={form.citizen_id_issued_date} onChange={handleChange} /> : formatDate(form.citizen_id_issued_date)}</td>
+          <td>{editing ? <input name="citizen_id_issued_place" value={form.citizen_id_issued_place} onChange={handleChange} /> : form.citizen_id_issued_place}</td>
           <td>{memberStatusLabel}</td>
           <td>{editing ? (
             <select name="member_fee_status" value={form.member_fee_status} onChange={handleSelectChange}>
