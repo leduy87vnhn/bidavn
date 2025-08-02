@@ -125,19 +125,19 @@ const Register = () => {
             <label>
             MẬT KHẨU:
             <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div style={{ position: 'relative' }}>
                 <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
+                required
                 placeholder="Nhập mật khẩu"
                 style={{
                     backgroundColor: '#e9f1ff',
                     paddingRight: '40px',
-                    flex: 1,
-                    height: '36px',
-                    fontSize: '16px'
+                    width: '100%',
+                    boxSizing: 'border-box'
                 }}
                 />
                 <button
@@ -145,12 +145,15 @@ const Register = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
                     position: 'absolute',
+                    top: '50%',
                     right: '10px',
-                    background: 'none',
+                    transform: 'translateY(-50%)',
                     border: 'none',
+                    background: 'none',
                     cursor: 'pointer',
-                    fontSize: '18px',
-                    lineHeight: '1'
+                    fontSize: '16px',
+                    padding: 0,
+                    lineHeight: 1
                 }}
                 >
                 {showPassword ? '🙈' : '👁️'}
