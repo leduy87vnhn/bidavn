@@ -122,23 +122,22 @@ const Register = () => {
           <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này</span></label>
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
-          <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
+            <label>
+            MẬT KHẨU:
+            <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
             <div className="password-wrapper">
-            <input
+                <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
                 required
-            />
-            <button
-                type="button"
-                onClick={() => setShowPassword(prev => !prev)}
-                title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
-            >
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
                 👁️
-            </button>
+                </button>
             </div>
+            </label>
 
           <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
