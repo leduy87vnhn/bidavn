@@ -123,38 +123,40 @@ const Register = () => {
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
           <label>MẬT KHẨU:<span> Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span></label>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-          <input
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            style={{
-            flex: 1,
-            padding: '8px',
-            border: '1px solid #ccc',
-            borderTopLeftRadius: 4,
-            borderBottomLeftRadius: 4
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(prev => !prev)}
-            title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
-            style={{
-            padding: '8px',
-            background: '#eee',
-            border: '1px solid #ccc',
-            borderLeft: 'none',
-            borderTopRightRadius: 4,
-            borderBottomRightRadius: 4,
-            cursor: 'pointer'
-            }}
-          >
-            👁️
-          </button>
-          </div>
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                style={{
+                flex: 1,
+                padding: '8px',
+                border: '1px solid #ccc',
+                borderRight: 'none',
+                borderRadius: '4px 0 0 4px'
+                }}
+            />
+            <button
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+                title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                style={{
+                width: '40px',
+                height: '38px',
+                background: '#eee',
+                border: '1px solid #ccc',
+                borderRadius: '0 4px 4px 0',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer'
+                }}
+            >
+                👁️
+            </button>
+            </div>
 
           <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
