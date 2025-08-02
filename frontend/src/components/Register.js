@@ -133,9 +133,9 @@ const Register = () => {
                 onChange={handleChange}
                 required
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                <div className="eye-button" onClick={() => setShowPassword(!showPassword)}>
                 👁️
-                </button>
+                </div>
             </div>
             </label>
 
