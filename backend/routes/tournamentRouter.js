@@ -96,24 +96,49 @@ router.get('/', async (req, res) => {
         condition = `WHERE t.end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
     }
 
+    // const dataQuery = `
+    //   SELECT 
+    //     t.*, 
+    //     tg.tournament_name AS group_name,
+    //     tg.start_date AS group_start_date,
+    //     tg.end_date AS group_end_date,
+    //     (
+    //       SELECT COUNT(*)
+    //       FROM registration_form rf
+    //       LEFT JOIN competitors c ON c.registration_form_id = rf.id
+    //       LEFT JOIN players p ON c.player_id = p.id
+    //       WHERE rf.tournament_id = t.id AND rf.status = 1 AND p.id IS NOT NULL
+    //     ) AS approved_competitors_count
+    //   FROM tournament_events t
+    //   LEFT JOIN tournament_group tg ON t.group_id = tg.id
+    //   ${condition}
+    //   ORDER BY t.start_date ASC
+    //   LIMIT $1 OFFSET $2
+    // `;
+
     const dataQuery = `
       SELECT 
-        t.*, 
+        tg.id AS group_id,
         tg.tournament_name AS group_name,
         tg.start_date AS group_start_date,
         tg.end_date AS group_end_date,
+        te.id AS event_id,
+        te.name AS event_name,
+        te.code,
+        te.attendance_fee_common,
+        te.location,
+        te.start_date,
+        te.end_date,
         (
           SELECT COUNT(*)
           FROM registration_form rf
           LEFT JOIN competitors c ON c.registration_form_id = rf.id
           LEFT JOIN players p ON c.player_id = p.id
-          WHERE rf.tournament_id = t.id AND rf.status = 1 AND p.id IS NOT NULL
+          WHERE rf.tournament_id = te.id AND rf.status = 1 AND p.id IS NOT NULL
         ) AS approved_competitors_count
-      FROM tournament_events t
-      LEFT JOIN tournament_group tg ON t.group_id = tg.id
-      ${condition}
-      ORDER BY t.start_date ASC
-      LIMIT $1 OFFSET $2
+      FROM tournament_group tg
+      LEFT JOIN tournament_events te ON te.group_id = tg.id
+      ORDER BY tg.start_date ASC, te.start_date ASC
     `;
 
     const countQuery = `
@@ -164,23 +189,34 @@ router.get('/', async (req, res) => {
 
 // Add tournament
 router.post('/', async (req, res) => {
-    const { name, code, attendance_fee_common, start_date, end_date } = req.body;
+    const { name, code, attendance_fee_common, start_date, end_date, group_id } = req.body;
+
+    console.log('➡️ Tạo giải đấu với dữ liệu:', req.body);
 
     if (!name || !code || !start_date || !end_date) {
+        console.warn('❌ Thiếu thông tin:', { name, code, start_date, end_date });
         return res.status(400).json({ message: 'Thiếu thông tin.' });
     }
 
     try {
         const query = `
-            INSERT INTO tournament_events (name, code, attendance_fee_common, start_date, end_date)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO tournament_events (name, code, attendance_fee_common, start_date, end_date, group_id)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *
         `;
-        const result = await client.query(query, [name, code, attendance_fee_common, start_date, end_date]);
+        const result = await client.query(query, [
+            name,
+            code,
+            attendance_fee_common ? parseInt(attendance_fee_common) : null,
+            start_date,
+            end_date,
+            group_id || null
+        ]);
+        console.log('✅ Đã tạo giải:', result.rows[0]);
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating tournament:', error);
-        res.status(500).json({ message: 'Lỗi server khi tạo giải đấu.' });
+        console.error('❌ Error creating tournament:', error.message);
+        res.status(500).json({ message: 'Lỗi server khi tạo giải đấu.', error: error.message });
     }
 });
 

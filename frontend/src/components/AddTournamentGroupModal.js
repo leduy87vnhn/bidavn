@@ -67,9 +67,9 @@ const AddTournamentGroupModal = ({
             }
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Lỗi khi lưu nhóm');
+            if (!res.ok) throw new Error(data.message || 'Lỗi khi lưu giải đấu');
 
-            setMsg('✅ Đã lưu nhóm thành công!');
+            setMsg('✅ Đã lưu giải đấu thành công!');
             onGroupCreated && onGroupCreated(data);
 
             setTimeout(() => {
@@ -77,7 +77,7 @@ const AddTournamentGroupModal = ({
                 onClose();
             }, 800);
         } catch (err) {
-            setMsg('❌ ' + (err.message || 'Lỗi khi lưu nhóm'));
+            setMsg('❌ ' + (err.message || 'Lỗi khi lưu giải đấu'));
         } finally {
             setLoading(false);
         }
@@ -148,7 +148,7 @@ const AddTournamentGroupModal = ({
                     onClick={handleSaveGroup}
                     disabled={loading}
                 >
-                    {loading ? "Đang lưu..." : (initialData ? "Cập nhật" : "Lưu Nhóm")}
+                    {loading ? "Đang lưu..." : (initialData ? "Cập nhật" : "Lưu Giải Đấu")}
                 </button>
             </div>
         </Modal>
