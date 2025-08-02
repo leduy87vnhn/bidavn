@@ -125,7 +125,7 @@ const Register = () => {
             <label>
             MẬT KHẨU:
             <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
-            <div className="password-wrapper">
+            {/* <div className="password-wrapper">
                 <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
@@ -136,6 +136,45 @@ const Register = () => {
                 <div className="eye-button" onClick={() => setShowPassword(!showPassword)}>
                 👁️
                 </div>
+            </div> */}
+            <div style={{ position: 'relative' }}>
+            <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Nhập mật khẩu"
+                style={{
+                width: '100%',
+                padding: '10px 40px 10px 10px',  // chừa khoảng cho icon bên phải
+                border: '1px solid #ccc',
+                borderRadius: '6px',
+                backgroundColor: '#eef4ff',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+                }}
+            />
+            <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                position: 'absolute',
+                right: '6px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                border: 'none',
+                background: '#f3f3f3',
+                padding: '6px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                height: '30px',
+                width: '30px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+            >
+                <img src="/eye.png" alt="toggle" style={{ width: '16px', height: '16px' }} />
+            </button>
             </div>
             </label>
 
