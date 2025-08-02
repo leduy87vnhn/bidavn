@@ -86,16 +86,14 @@
   .eye-button {
     width: 44px;
     height: 44px;
-    background: #f5f5f5;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 0 6px 6px 0;
+    background: transparent;       // bỏ nền
+    border: none;                  // bỏ viền
+    margin-top: -2px;              // nâng lên một chút
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     padding: 0;
-    box-sizing: border-box;
   }
 }
