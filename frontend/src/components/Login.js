@@ -29,7 +29,8 @@ const Login = () => {
     useEffect(() => {
         if (loginSuccess) {
             //navigate('/tournament_events');
-            window.location.href = '/tournament_events';
+            //window.location.href = '/tournament_events';
+            window.location.href = 'https://hbsf.com.vn/';
         }
     }, [loginSuccess, navigate]);
 
@@ -47,8 +48,9 @@ const Login = () => {
             localStorage.setItem('user_info', JSON.stringify(response.data.user));
             setMessage('Đăng nhập thành công.');
             setLoginSuccess(true); // ✅ dùng flag để điều hướng
-            window.location.href = '/tournament_events';
-            navigate('/tournament_events');
+            //window.location.href = '/tournament_events';
+            //navigate('/tournament_events');
+            window.location.href = 'https://hbsf.com.vn/';
 
             // Ghi nhớ tên đăng nhập nếu được chọn
             if (remember) {
