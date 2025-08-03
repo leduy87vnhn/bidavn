@@ -3,7 +3,8 @@ import {
   TextField, Button, Grid, Typography, Box
 } from '@mui/material';
 import axios from 'axios';
-import '../css/memberRegistration.scss';
+//import '../css/memberRegistration.scss';
+import '../css/personalMember.scss';
 
 const PersonalMemberTab = () => {
   const [player, setPlayer] = useState(null);
@@ -111,79 +112,80 @@ const PersonalMemberTab = () => {
   );
 
   return (
-    <Box mt={2}>
+    <Box className="personal-member-container" mt={2}>
+      <Typography className="section-title">HỘI VIÊN CÁ NHÂN</Typography>
+
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Họ Tên"
-            fullWidth
-            value={player.name}
-            onChange={(e) => setPlayer({ ...player, name: e.target.value })}
-            disabled={!isEditing}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Số Điện Thoại"
-            fullWidth
-            value={player.phone}
-            disabled
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Số CCCD"
-            fullWidth
-            value={player.citizen_id_passport || ''}
-            onChange={(e) => setPlayer({ ...player, citizen_id_passport: e.target.value })}
-            disabled={!isEditing}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Địa Chỉ"
-            fullWidth
-            multiline
-            minRows={2}
-            value={player.address || ''}
-            onChange={(e) => setPlayer({ ...player, address: e.target.value })}
-            disabled={!isEditing}
-          />
+        {/* Cột trái: thông tin */}
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <div className="label">Số điện thoại:</div>
+              <div className="readonly-field">{player.phone || '—'}</div>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <div className="label">Họ và tên:</div>
+              <div className="readonly-field">{player.name || '—'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Giới tính:</div>
+              <div className="readonly-field">{player.gender === 1 ? 'Nữ' : player.gender === 2 ? 'Khác' : 'Nam'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Ngày sinh:</div>
+              <div className="readonly-field">{player.birth_day || '—'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Số CCCD / Hộ chiếu:</div>
+              <div className="readonly-field">{player.citizen_id_passport || '—'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Địa chỉ thường trú:</div>
+              <div className="readonly-field">{player.address || '—'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Đơn vị thi đấu:</div>
+              <div className="readonly-field">{player.competition_unit || '—'}</div>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <div className="label">Trạng thái:</div>
+              <div className="readonly-field status-free">
+                {player.member_status === 1 ? 'Tự do/Hội viên' : 'Chưa đăng ký'}
+              </div>
+            </Grid>
+          </Grid>
         </Grid>
 
-        {renderImage("ẢNH MẶT TRƯỚC CCCD", "citizen_id_front_photo", "front")}
-        {renderImage("ẢNH MẶT SAU CCCD", "citizen_id_back_photo", "back")}
-        {renderImage("ẢNH 4x6", "face_photo", "face")}
+        {/* Cột phải: ảnh 4x6 */}
+        <Grid item xs={12} md={4}>
+          <div className="photo-box">
+            <div className="label">Ảnh 4x6</div>
+            {player.face_photo ? (
+              <img
+                src={`/uploads/players/${player.face_photo}`}
+                alt="Ảnh 4x6"
+                onClick={() => window.open(`/uploads/players/${player.face_photo}`, '_blank')}
+              />
+            ) : (
+              <div style={{ fontStyle: 'italic' }}>Chưa có ảnh</div>
+            )}
+          </div>
 
-        <Grid item xs={12} mt={2}>
-          {!isEditing ? (
-            <Button variant="outlined" onClick={() => setIsEditing(true)}>Điều Chỉnh</Button>
-          ) : (
-            <Button variant="contained" onClick={handleUpdate}>Cập Nhật</Button>
-          )}
-          {player.member_status === 0 && !isEditing && (
-            <Button
-                variant="contained"
-                color="success"
-                onClick={() => setShowConfirm(true)}
-                sx={{ ml: 2 }}
-            >
-                Đăng Ký
-            </Button>
-          )}
+          <div className="action-buttons">
+            {!isEditing ? (
+              <Button variant="outlined" onClick={() => setIsEditing(true)}>ĐIỀU CHỈNH</Button>
+            ) : (
+              <Button variant="contained" onClick={handleUpdate}>CẬP NHẬT</Button>
+            )}
+          </div>
         </Grid>
       </Grid>
-        {showConfirm && (
-        <div className="confirm-modal-overlay">
-            <div className="confirm-modal-content">
-            <h3>Xác Nhận Đăng Ký Hội Viên</h3>
-            <div className="confirm-modal-buttons">
-                <button className="confirm" onClick={handleRegisterConfirm}>Xác Nhận</button>
-                <button className="cancel" onClick={() => setShowConfirm(false)}>Hủy</button>
-            </div>
-            </div>
-        </div>
-        )}
     </Box>
   );
 };
