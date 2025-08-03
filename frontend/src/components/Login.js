@@ -74,7 +74,7 @@ const Login = () => {
                 <h2>Đăng nhập</h2>
 
                 <div className="form-group">
-                    <label>Tên đăng nhập:</label>
+                    <label>SĐT đăng nhập:</label>
                     <input
                         type="text"
                         value={user_name}

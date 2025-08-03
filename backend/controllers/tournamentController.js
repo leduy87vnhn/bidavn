@@ -13,7 +13,7 @@ const uploadBackground = async (req, res) => {
         const fileName = file.filename;
 
         await client.query(
-            'UPDATE tournament_event SET background_image = $1 WHERE id = $2',
+            'UPDATE tournament_events SET background_image = $1 WHERE id = $2',
             [fileName, tournamentId]
         );
 
@@ -37,7 +37,7 @@ const uploadBankQr = async (req, res) => {
         const fileName = file.filename;
 
         await client.query(
-            'UPDATE tournament_event SET bank_qr = $1 WHERE id = $2',
+            'UPDATE tournament_events SET bank_qr = $1 WHERE id = $2',
             [fileName, tournamentId]
         );
 
@@ -53,7 +53,7 @@ const getTournamentById = async (req, res) => {
     try {
       const query = `
         SELECT id, name, start_date, end_date, location, content
-        FROM tournament_event
+        FROM tournament_events
         WHERE id = $1
       `;
       const result = await req.client.query(query, [tournamentId]);
