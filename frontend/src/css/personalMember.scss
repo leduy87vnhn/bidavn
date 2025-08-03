@@ -1,58 +1,71 @@
 .personal-member-container {
-  border: 2px solid #003366;
+  border: 1px solid #004080;
   padding: 20px;
   border-radius: 8px;
-  background: #f9f9f9;
+  background: #fff;
+  font-family: Arial, sans-serif;
 
   .section-title {
-    background-color: #003366;
-    color: white;
+    background: #004080;
+    color: #fff;
     font-weight: bold;
-    font-size: 18px;
     padding: 8px 12px;
+    margin-bottom: 12px;
     border-radius: 4px;
-    margin-bottom: 16px;
   }
 
-  .label {
-    font-weight: bold;
-    color: #003366;
-    margin-bottom: 4px;
+  .info-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 180px 1fr;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+
+    label {
+      font-weight: bold;
+      color: #004080;
+    }
+
+    .value-box {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      border-radius: 4px;
+      min-height: 36px;
+      background-color: #f7f7f7;
+    }
   }
 
-  .readonly-field {
-    background: #fff;
-    border: 1px solid #ccc;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 15px;
-    min-height: 38px;
+  .photo-side {
+    margin-left: 24px;
+    text-align: center;
+
+    img {
+      width: 100px;
+      height: 130px;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      margin-top: 6px;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-top: 8px;
+    }
   }
 
-  .status-free {
+  .status-box {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #e0f8e0;
     color: green;
     font-weight: bold;
-  }
-
-  .photo-box {
-    text-align: center;
-    border: 1px dashed #999;
-    padding: 12px;
-    border-radius: 8px;
-    background: #fff;
-  }
-
-  .photo-box img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: contain;
-    border-radius: 6px;
-    cursor: zoom-in;
+    border-radius: 4px;
+    margin-top: 4px;
   }
 
   .action-buttons {
-    margin-top: 20px;
+    margin-top: 16px;
     display: flex;
-    gap: 12px;
+    gap: 10px;
   }
 }

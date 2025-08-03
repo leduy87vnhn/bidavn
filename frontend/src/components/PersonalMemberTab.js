@@ -112,80 +112,74 @@ const PersonalMemberTab = () => {
   );
 
   return (
-    <Box className="personal-member-container" mt={2}>
-      <Typography className="section-title">HỘI VIÊN CÁ NHÂN</Typography>
+    <Box className="personal-member-container">
+      <div className="section-title">HỘI VIÊN CÁ NHÂN</div>
 
-      <Grid container spacing={2}>
-        {/* Cột trái: thông tin */}
-        <Grid item xs={12} md={8}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <div className="label">Số điện thoại:</div>
-              <div className="readonly-field">{player.phone || '—'}</div>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <div className="label">Họ và tên:</div>
-              <div className="readonly-field">{player.name || '—'}</div>
-            </Grid>
+      {/* Dòng thông tin */}
+      <div className="info-row">
+        <label>Số điện thoại:</label>
+        <div className="value-box">{player.phone || '—'}</div>
+        <label>Họ và tên:</label>
+        <div className="value-box">{player.name || '—'}</div>
+      </div>
+      <div className="info-row">
+        <label>Giới tính:</label>
+        <div className="value-box">{player.gender === 1 ? 'Nữ' : player.gender === 2 ? 'Khác' : 'Nam'}</div>
+        <label>Ngày sinh:</label>
+        <div className="value-box">{player.birth_day ? new Date(player.birth_day).toLocaleDateString('vi-VN') : '—'}</div>
+      </div>
+      <div className="info-row">
+        <label>Số CCCD / Hộ chiếu:</label>
+        <div className="value-box">{player.citizen_id_passport || '—'}</div>
+        <label>Địa chỉ thường trú:</label>
+        <div className="value-box">{player.address || '—'}</div>
+      </div>
+      <div className="info-row">
+        <label>Đơn vị thi đấu:</label>
+        <div className="value-box">{player.competition_unit || '—'}</div>
+        <label>Trạng thái:</label>
+        <div className="value-box">
+          <span className="status-box">
+            {player.member_status === 1 ? 'Tự do/Hội viên' : 'Chưa đăng ký'}
+          </span>
+        </div>
+      </div>
 
-            <Grid item xs={12} sm={6}>
-              <div className="label">Giới tính:</div>
-              <div className="readonly-field">{player.gender === 1 ? 'Nữ' : player.gender === 2 ? 'Khác' : 'Nam'}</div>
-            </Grid>
+      {/* Ảnh 4x6 */}
+      <div className="photo-side">
+        <div className="label">Ảnh 4x6</div>
+        {player.face_photo ? (
+          <img
+            src={`/uploads/players/${player.face_photo}`}
+            alt="Ảnh 4x6"
+            onClick={() => window.open(`/uploads/players/${player.face_photo}`, '_blank')}
+          />
+        ) : (
+          <div style={{ fontStyle: 'italic' }}>Chưa có ảnh</div>
+        )}
+      </div>
 
-            <Grid item xs={12} sm={6}>
-              <div className="label">Ngày sinh:</div>
-              <div className="readonly-field">{player.birth_day || '—'}</div>
-            </Grid>
+      {/* Nút */}
+      <div className="action-buttons">
+        {!isEditing ? (
+          <Button variant="outlined" onClick={() => setIsEditing(true)}>ĐIỀU CHỈNH</Button>
+        ) : (
+          <Button variant="contained" onClick={handleUpdate}>CẬP NHẬT</Button>
+        )}
+      </div>
 
-            <Grid item xs={12} sm={6}>
-              <div className="label">Số CCCD / Hộ chiếu:</div>
-              <div className="readonly-field">{player.citizen_id_passport || '—'}</div>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <div className="label">Địa chỉ thường trú:</div>
-              <div className="readonly-field">{player.address || '—'}</div>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <div className="label">Đơn vị thi đấu:</div>
-              <div className="readonly-field">{player.competition_unit || '—'}</div>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <div className="label">Trạng thái:</div>
-              <div className="readonly-field status-free">
-                {player.member_status === 1 ? 'Tự do/Hội viên' : 'Chưa đăng ký'}
-              </div>
-            </Grid>
-          </Grid>
-        </Grid>
-
-        {/* Cột phải: ảnh 4x6 */}
-        <Grid item xs={12} md={4}>
-          <div className="photo-box">
-            <div className="label">Ảnh 4x6</div>
-            {player.face_photo ? (
-              <img
-                src={`/uploads/players/${player.face_photo}`}
-                alt="Ảnh 4x6"
-                onClick={() => window.open(`/uploads/players/${player.face_photo}`, '_blank')}
-              />
-            ) : (
-              <div style={{ fontStyle: 'italic' }}>Chưa có ảnh</div>
-            )}
-          </div>
-
-          <div className="action-buttons">
-            {!isEditing ? (
-              <Button variant="outlined" onClick={() => setIsEditing(true)}>ĐIỀU CHỈNH</Button>
-            ) : (
-              <Button variant="contained" onClick={handleUpdate}>CẬP NHẬT</Button>
-            )}
-          </div>
-        </Grid>
-      </Grid>
+      {/* Phần "Thông tin chuyên môn" nếu cần */}
+      <div className="section-title" style={{ marginTop: 24 }}>THÔNG TIN CHUYÊN MÔN</div>
+      <div className="info-row">
+        <label>Nội dung thi đấu:</label>
+        <div className="value-box">{player.discipline || '—'}</div>
+        <label>Điểm số:</label>
+        <div className="value-box">{player.points || '—'}</div>
+      </div>
+      <div className="info-row">
+        <label>Thứ hạng:</label>
+        <div className="value-box">{player.ranking || '—'}</div>
+      </div>
     </Box>
   );
 };
