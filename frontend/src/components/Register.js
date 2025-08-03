@@ -190,19 +190,19 @@ const Register = () => {
           <input name="address" value={form.address} onChange={handleChange} required />
 
           <label>ĐANG THI ĐẤU CHO ĐƠN VỊ (TỈNH/THÀNH):</label>
-          <input name="competition_unit" value={form.competition_unit} onChange={handleChange} required />
+          <input name="competition_unit" value={form.competition_unit} onChange={handleChange}  />
 
           <label>EMAIL:</label>
           <input type="email" name="email" value={form.email} onChange={handleChange} required />
 
           <label>ẢNH (4X6):</label>
-          <input type="file" accept="image/*" onChange={e => setFacePhoto(e.target.files[0])} required />
+          <input type="file" accept="image/*" onChange={e => setFacePhoto(e.target.files[0])}  />
 
           <label>ẢNH (MẶT TRƯỚC) CCCD App VNeID:</label>
-          <input type="file" accept="image/*" onChange={e => setCccdFront(e.target.files[0])} required />
+          <input type="file" accept="image/*" onChange={e => setCccdFront(e.target.files[0])}  />
 
           <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
-          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])} required />
+          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])}  />
 
           <div className="note">
             Việc cung cấp ảnh CCCD trên App VNeID để phục vụ cho tính chính xác đối với các thông tin đăng ký.
