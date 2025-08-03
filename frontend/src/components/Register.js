@@ -35,13 +35,24 @@ const Register = () => {
     setForm(prev => ({ ...prev, [name]: newValue }));
   };
 
-  const uploadImage = async (file, suffix) => {
+  const uploadImage = async (file, type) => {
     if (!file) return null;
+
     const ext = file.name.split('.').pop();
-    const filename = `${form.phone_number}_${suffix}.${ext}`;
+    let filename = '';
+
+    if (type === 'face') {
+      filename = `${form.phone_number}_face_photo.${ext}`;
+    } else if (type === 'cccd_front') {
+      filename = `${form.phone_number}_citizen_id_front_photo.${ext}`;
+    } else if (type === 'cccd_back') {
+      filename = `${form.phone_number}_citizen_id_back_photo.${ext}`;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('filename', filename);
+
     const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players/upload-photo`, formData);
     return res.data.filePath;
   };
@@ -58,9 +69,13 @@ const Register = () => {
         return;
       }
 
-      const citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
-      const citizen_id_back_photo = await uploadImage(cccdBack, 'cccd_rear');
-      const face_photo = await uploadImage(facePhoto, 'anh46');
+      let citizen_id_front_photo = null;
+      let citizen_id_back_photo = null;
+      let face_photo = null;
+
+      if (cccdFront) citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
+      if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
+      if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
       const now = new Date().toISOString();
 
       // Tạo user

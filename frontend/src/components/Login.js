@@ -124,7 +124,7 @@ const Login = () => {
                 <p className="form-link">
                     Chưa có tài khoản? <Link to="/register">Đăng ký tại đây</Link>
                 </p>
-                <div className="login-demo-info">
+                {/* <div className="login-demo-info">
                     <p style={{ marginTop: '12px', fontStyle: 'italic', fontSize: '14px' }}>
                         Sử dụng tài khoản sau nếu không muốn đăng ký:
                     </p>
@@ -132,7 +132,7 @@ const Login = () => {
                         <li><strong>Tài khoản:</strong> vandongvien</li>
                         <li><strong>Mật khẩu:</strong> vandongvien</li>
                     </ul>
-                </div>
+                </div> */}
             </form>
         </div>
     );
