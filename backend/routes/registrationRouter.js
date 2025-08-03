@@ -223,7 +223,7 @@ router.get('/', async (req, res) => {
           WHERE c.registration_form_id = rf.id
         ) AS athlete_names
       FROM registration_form rf
-      JOIN tournament_event t ON rf.tournament_id = t.id
+      JOIN tournament_events t ON rf.tournament_id = t.id
       JOIN users u ON rf.user_id = u.id
       WHERE
         ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%')) AND
