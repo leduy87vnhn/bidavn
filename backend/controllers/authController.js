@@ -171,7 +171,9 @@ const loginUser = async (req, res) => {
             user: {
                 id: user.id,
                 name: user.name,
-                user_type: user.user_type
+                user_type: user.user_type,
+                phone_number: user.phone_number,     // ✅ thêm dòng này
+                email: user.email                    // (tùy chọn nếu bạn cần dùng sau này)
             }
         });
     } catch (error) {
