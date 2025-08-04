@@ -69,27 +69,32 @@ const PersonalMemberTab = () => {
     alert('Đã gửi yêu cầu đăng ký!');
   };
 
-    const handleRegisterConfirm = async () => {
-        if (!player?.phone || !player.name || !player.citizen_id_passport || !player.citizen_id_front_photo || !player.citizen_id_back_photo || !player.face_photo) {
-            alert('Vui lòng nhập đầy đủ thông tin và ảnh trước khi đăng ký!');
-            setShowConfirm(false);
-            return;
-        }
+  const handleCancel = () => {
+    setTempData(player);  // Reset dữ liệu về lại như cũ
+    setIsEditing(false);  // Thoát chế độ chỉnh sửa
+  };
 
-        try {
-            await axios.post('/api/members/register-member', { id: player.id });
-            alert('✅ Đã đăng ký hội viên thành công!');
-            setShowConfirm(false);
-            fetchPlayer(userPhone); // reload lại thông tin mới
-        } catch (err) {
-            console.error('Đăng ký thất bại:', err);
-            alert('❌ Có lỗi khi đăng ký hội viên.');
-        }
+  const handleRegisterConfirm = async () => {
+      if (!player?.phone || !player.name || !player.citizen_id_passport || !player.citizen_id_front_photo || !player.citizen_id_back_photo || !player.face_photo) {
+          alert('Vui lòng nhập đầy đủ thông tin và ảnh trước khi đăng ký!');
+          setShowConfirm(false);
+          return;
+      }
 
-        // TODO: gửi yêu cầu đăng ký hội viên thật sự (API hoặc cập nhật status)
-        alert('✅ Đã gửi yêu cầu đăng ký!');
-        setShowConfirm(false);
-    };
+      try {
+          await axios.post('/api/members/register-member', { id: player.id });
+          alert('✅ Đã đăng ký hội viên thành công!');
+          setShowConfirm(false);
+          fetchPlayer(userPhone); // reload lại thông tin mới
+      } catch (err) {
+          console.error('Đăng ký thất bại:', err);
+          alert('❌ Có lỗi khi đăng ký hội viên.');
+      }
+
+      // TODO: gửi yêu cầu đăng ký hội viên thật sự (API hoặc cập nhật status)
+      alert('✅ Đã gửi yêu cầu đăng ký!');
+      setShowConfirm(false);
+  };
 
   if (!player) {
     return <Typography>Không có thông tin hội viên cá nhân.</Typography>;
@@ -171,10 +176,18 @@ const PersonalMemberTab = () => {
 
       {/* Nút */}
       <div className="action-buttons">
-        {!isEditing ? (
+        {/* {!isEditing ? (
           <Button variant="outlined" onClick={() => setIsEditing(true)}>ĐIỀU CHỈNH</Button>
         ) : (
           <Button variant="contained" onClick={handleUpdate}>CẬP NHẬT</Button>
+        )} */}
+        {isEditing ? (
+          <>
+            <button onClick={handleSave}>💾 Lưu</button>
+            <button onClick={handleCancel} style={{ marginLeft: '10px', backgroundColor: '#ccc' }}>❌ Hủy</button>
+          </>
+        ) : (
+          <button onClick={() => setIsEditing(true)}>🛠️ Điều chỉnh</button>
         )}
       </div>
 
