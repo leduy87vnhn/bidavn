@@ -106,7 +106,7 @@ const PersonalMemberTab = () => {
       ) : (
         player[field] && (
           <img
-            src={`/uploads/players/${player[field]}`}
+            src={player[field].includes('/') ? `/${player[field]}` : `/uploads/players/${player[field]}`}
             alt={label}
             onClick={() => window.open(`/uploads/players/${player[field]}`, '_blank')}
             style={{ width: '100%', maxHeight: 180, objectFit: 'contain', cursor: 'zoom-in', borderRadius: 8 }}
