@@ -25,8 +25,13 @@ const PersonalMemberTab = () => {
   }, []);
 
   const fetchPlayer = async (phone) => {
-    const res = await axios.get(`/api/members/me?phone=${phone}`);
-    if (res.data) setPlayer(res.data);
+    try {
+      const res = await axios.get(`/api/members/me?phone=${phone}`);
+      console.log('📦 Dữ liệu player trả về:', res.data); // 👈 Thêm log này
+      if (res.data) setPlayer(res.data);
+    } catch (err) {
+      console.error('❌ Lỗi khi gọi API /api/members/me:', err);
+    }
   };
 
   const handleFileChange = (e, type) => {
