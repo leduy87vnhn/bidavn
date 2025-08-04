@@ -183,7 +183,7 @@ const PersonalMemberTab = () => {
         )} */}
         {isEditing ? (
           <>
-            <button onClick={handleSave}>💾 Lưu</button>
+            <button onClick={handleUpdate}>💾 Lưu</button>
             <button onClick={handleCancel} style={{ marginLeft: '10px', backgroundColor: '#ccc' }}>❌ Hủy</button>
           </>
         ) : (
