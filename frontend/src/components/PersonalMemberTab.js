@@ -146,7 +146,7 @@ const PersonalMemberTab = () => {
       </div>
 
       {/* Ảnh 4x6 */}
-      <div className="photo-side">
+      {/* <div className="photo-side">
         <div className="label">Ảnh 4x6</div>
         {player.face_photo ? (
           <img
@@ -157,7 +157,12 @@ const PersonalMemberTab = () => {
         ) : (
           <div style={{ fontStyle: 'italic' }}>Chưa có ảnh</div>
         )}
-      </div>
+      </div> */}
+      <Grid container spacing={2}>
+        {renderImage('Ảnh 4x6', 'face_photo', setFacePhoto)}
+        {renderImage('CCCD mặt trước', 'citizen_id_front_photo', setFrontPhoto)}
+        {renderImage('CCCD mặt sau', 'citizen_id_back_photo', setBackPhoto)}
+      </Grid>
 
       {/* Nút */}
       <div className="action-buttons">
@@ -169,16 +174,19 @@ const PersonalMemberTab = () => {
       </div>
 
       {/* Phần "Thông tin chuyên môn" nếu cần */}
-      <div className="section-title" style={{ marginTop: 24 }}>THÔNG TIN CHUYÊN MÔN</div>
       <div className="info-row">
         <label>Nội dung thi đấu:</label>
-        <div className="value-box">{player.discipline || '—'}</div>
+        <div className="value-box">
+          {player.discipline === 1 ? 'Pool' : player.discipline === 0 ? 'Carom' : '—'}
+        </div>
         <label>Điểm số:</label>
-        <div className="value-box">{player.points || '—'}</div>
-      </div>
-      <div className="info-row">
+        <div className="value-box">
+          {player.discipline === 1 ? player.pool_points || '—' : player.points || '—'}
+        </div>
         <label>Thứ hạng:</label>
-        <div className="value-box">{player.ranking || '—'}</div>
+        <div className="value-box">
+          {player.discipline === 1 ? player.pool_ranking || '—' : player.ranking || '—'}
+        </div>
       </div>
     </Box>
   );
