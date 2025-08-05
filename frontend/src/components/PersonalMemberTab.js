@@ -15,6 +15,7 @@ const PersonalMemberTab = () => {
 
   const [userPhone, setUserPhone] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
+  const [tempData, setTempData] = useState(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_info'));
@@ -70,7 +71,8 @@ const PersonalMemberTab = () => {
   };
 
   const handleCancel = () => {
-    setTempData(player);  // Reset dữ liệu về lại như cũ
+    //setTempData(player);  // Reset dữ liệu về lại như cũ
+    setPlayer(tempData);
     setIsEditing(false);  // Thoát chế độ chỉnh sửa
   };
 
@@ -187,7 +189,12 @@ const PersonalMemberTab = () => {
             <button onClick={handleCancel} style={{ marginLeft: '10px', backgroundColor: '#ccc' }}>❌ Hủy</button>
           </>
         ) : (
-          <button onClick={() => setIsEditing(true)}>🛠️ Điều chỉnh</button>
+          <button onClick={() => {
+            setTempData({ ...player }); // Lưu bản sao
+            setIsEditing(true);
+          }}>
+            🛠️ Điều chỉnh
+          </button>        
         )}
       </div>
 
