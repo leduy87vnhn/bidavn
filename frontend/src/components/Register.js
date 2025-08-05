@@ -35,6 +35,39 @@ const Register = () => {
     setForm(prev => ({ ...prev, [name]: newValue }));
   };
 
+  const resizeImage = (file, maxSizeMB = 1) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const MAX_WIDTH = 1000;
+        const scaleSize = MAX_WIDTH / img.width;
+        canvas.width = MAX_WIDTH;
+        canvas.height = img.height * scaleSize;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const quality = 0.85;
+        canvas.toBlob((blob) => {
+          if (!blob) return reject(new Error('Resize thất bại'));
+          resolve(blob);
+        }, 'image/jpeg', quality);
+      };
+
+      img.onerror = reject;
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const uploadImage = async (file, type) => {
     if (!file) return null;
 
@@ -53,9 +86,19 @@ const Register = () => {
     // const formData = new FormData();
     // formData.append('file', file);
     // formData.append('filename', filename);
+    let finalBlob = file;
+    if (file.size > 1024 * 1024) {
+      try {
+        finalBlob = await resizeImage(file); // resize thành blob (JPEG)
+        console.log('✅ Ảnh đã được resize:', finalBlob.size, 'bytes');
+      } catch (err) {
+        console.warn('⚠️ Lỗi resize ảnh, dùng ảnh gốc.', err);
+        finalBlob = file;
+      }
+    }
 
     // Trick: tạo Blob mới để inject filename
-    const renamedFile = new File([file], filename, { type: file.type });
+    const renamedFile = new File([finalBlob], filename, { type: finalBlob.type });
 
     const formData = new FormData();
     formData.append('file', renamedFile);
