@@ -24,7 +24,7 @@ const Register = () => {
   const [facePhoto, setFacePhoto] = useState(null);
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [showOkButton, setShowOkButton] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,9 +50,15 @@ const Register = () => {
       filename = `${form.phone_number}_citizen_id_back_photo.${ext}`;
     }
 
+    // const formData = new FormData();
+    // formData.append('file', file);
+    // formData.append('filename', filename);
+
+    // Trick: tạo Blob mới để inject filename
+    const renamedFile = new File([file], filename, { type: file.type });
+
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('filename', filename);
+    formData.append('file', renamedFile);
 
     const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/players/upload-photo`, formData);
     return res.data.filePath;
@@ -104,7 +110,8 @@ const Register = () => {
         if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
         if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
       } catch (uploadErr) {
-        console.warn('⚠️ Lỗi upload ảnh, tiếp tục đăng ký với ảnh = null');
+        setMessage('❌ Upload ảnh không thành công. Vẫn tiếp tục đăng ký.');
+        setShowOkButton(true);
         citizen_id_front_photo = null;
         citizen_id_back_photo = null;
         face_photo = null;
