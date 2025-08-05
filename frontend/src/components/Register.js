@@ -38,7 +38,8 @@ const Register = () => {
   const uploadImage = async (file, type) => {
     if (!file) return null;
 
-    const ext = file.name.split('.').pop();
+    console.log(`[Upload] File name:`, file.name);
+    const ext = file.name && file.name.includes('.') ? file.name.split('.').pop() : 'jpg';
     let filename = '';
 
     if (type === 'face') {
@@ -69,13 +70,45 @@ const Register = () => {
         return;
       }
 
+      // Check trùng SĐT
+      try {
+        await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/by-phone?phone=${form.phone_number}`);
+        setMessage('❌ Số điện thoại này đã được đăng ký.');
+        return;
+      } catch (err) {
+        if (err.response?.status !== 404) {
+          setMessage('❌ Lỗi kiểm tra số điện thoại.');
+          return;
+        }
+      }
+
+      try {
+        const allPlayers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
+        const duplicate = allPlayers.data.find(p => p.citizen_id_passport === form.citizen_id_passport);
+        if (duplicate) {
+          setMessage('❌ Số CCCD này đã được đăng ký.');
+          return;
+        }
+      } catch (err) {
+        console.error('Lỗi kiểm tra CCCD:', err);
+        setMessage('❌ Lỗi kiểm tra CCCD.');
+        return;
+      }
+
       let citizen_id_front_photo = null;
       let citizen_id_back_photo = null;
       let face_photo = null;
 
-      if (cccdFront) citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
-      if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
-      if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
+      try {
+        if (cccdFront) citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
+        if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
+        if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
+      } catch (uploadErr) {
+        console.warn('⚠️ Lỗi upload ảnh, tiếp tục đăng ký với ảnh = null');
+        citizen_id_front_photo = null;
+        citizen_id_back_photo = null;
+        face_photo = null;
+      }
       const now = new Date().toISOString();
 
       // Tạo user
