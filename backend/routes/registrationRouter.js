@@ -396,7 +396,13 @@ router.get('/by-phone', async (req, res) => {
 });
 
 router.get('/check-duplicate', async (req, res) => {
-  const { tournament_id, phone } = req.query;
+  const tournament_id = parseInt(req.query.tournament_id, 10);
+  const phone = req.query.phone;
+
+  if (isNaN(tournament_id) || !phone) {
+    return res.status(400).json({ message: 'Thiếu tournament_id hoặc phone' });
+  }
+
   try {
     const result = await client.query(`
       SELECT * FROM registration_form
