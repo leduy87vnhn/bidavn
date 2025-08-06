@@ -135,7 +135,7 @@ const Register = () => {
         const allPlayers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
         const duplicate = allPlayers.data.find(p => p.citizen_id_passport === form.citizen_id_passport);
         if (duplicate) {
-          setMessage('❌ Số CCCD này đã được đăng ký.');
+          setMessage(`❌ Số CCCD này đã được đăng ký với số điện thoại ${duplicate.phone || '(không rõ)'}.`);
           return;
         }
       } catch (err) {
@@ -158,6 +158,9 @@ const Register = () => {
         citizen_id_front_photo = null;
         citizen_id_back_photo = null;
         face_photo = null;
+      }
+      if (form.phone_number.startsWith('+84')) {
+        form.phone_number = '0' + form.phone_number.slice(3);
       }
       const now = new Date().toISOString();
 

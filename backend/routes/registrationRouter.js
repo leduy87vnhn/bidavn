@@ -395,6 +395,32 @@ router.get('/by-phone', async (req, res) => {
   }
 });
 
+router.get('/check-duplicate', async (req, res) => {
+  const { tournament_id, phone } = req.query;
+  try {
+    const result = await client.query(`
+      SELECT * FROM registration_form
+      WHERE tournament_id = $1 AND registered_phone = $2
+      ORDER BY created_date DESC
+      LIMIT 1
+    `, [tournament_id, phone]);
+
+    if (result.rows.length === 0) {
+      return res.json({ exists: false });
+    }
+
+    const form = result.rows[0];
+    if (form.status === 2) {
+      return res.json({ exists: false }); // đã bị từ chối → cho phép đăng ký lại
+    }
+
+    return res.json({ exists: true, status: form.status });
+  } catch (err) {
+    console.error('Lỗi kiểm tra đăng ký trùng:', err);
+    res.status(500).json({ message: 'Lỗi server khi kiểm tra đăng ký trùng' });
+  }
+});
+
 // GET /api/registration_form/:id
 // ✅ API: Lấy chi tiết 1 bản đăng ký theo ID
 router.get('/:id', async (req, res) => {

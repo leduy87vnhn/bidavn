@@ -104,6 +104,20 @@ const UserManagement = () => {
     fetchUsers();
   };
 
+  const handleRowUpdate = (updatedRow, oldRow) => {
+    const id = updatedRow.id;
+
+    setEditedRows(prev => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        ...updatedRow,
+      }
+    }));
+
+    return updatedRow;
+  };
+
   const columns = [
     { field: 'user_name', headerName: 'Tên đăng nhập', flex: 1, editable: false },
     { field: 'password', headerName: 'Mật khẩu', flex: 1, editable: true },
@@ -185,7 +199,9 @@ const UserManagement = () => {
             columns={columns}
             pagination
             pageSize={10}
-            onCellEditCommit={handleEditCellChange}
+            // onCellEditCommit={handleEditCellChange}
+            processRowUpdate={handleRowUpdate}
+            experimentalFeatures={{ newEditingApi: true }}
           />
         </div>
       </div>

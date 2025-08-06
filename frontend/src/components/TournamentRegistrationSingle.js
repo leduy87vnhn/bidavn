@@ -200,6 +200,25 @@ const TournamentRegistrationSingle = () => {
       const player_id = resolveRes.data.id;
       setResolvedPlayerId(player_id);
 
+      // Kiểm tra đã đăng ký trước đó chưa
+      try {
+        const checkRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/check-duplicate`, {
+          params: {
+            tournament_id: tournamentId,
+            phone: competitor.phone
+          }
+        });
+
+        if (checkRes.data.exists) {
+          setMessage('❌ Bạn đã đăng ký thi đấu cho giải này. Hãy đợi admin phê duyệt.');
+          return;
+        }
+      } catch (err) {
+        console.error('Lỗi khi kiểm tra trùng đăng ký:', err);
+        setMessage('❌ Không thể kiểm tra thông tin đăng ký trước đó.');
+        return;
+      }
+
       const formRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournament.id,
         registered_phone: competitor.phone,
