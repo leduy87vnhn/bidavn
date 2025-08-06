@@ -204,7 +204,7 @@ const TournamentRegistrationSingle = () => {
       try {
         const checkRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/check-duplicate`, {
           params: {
-            tournament_id: tournamentId,
+            tournament_id: Number(tournamentId),
             phone: competitor.phone
           }
         });
