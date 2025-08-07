@@ -132,6 +132,19 @@ const Register = () => {
       }
 
       try {
+        const allUsers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users`);
+        const emailExists = allUsers.data.find(u => u.email === form.email);
+        if (emailExists) {
+          setMessage(`❌ Email này đã được đăng ký cho tài khoản: ${emailExists.user_name || '(không rõ tên đăng nhập)'}.`);
+          return;
+        }
+      } catch (err) {
+        console.error('Lỗi kiểm tra email:', err);
+        setMessage('❌ Lỗi kiểm tra email.');
+        return;
+      }
+
+      try {
         const allPlayers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
         const duplicate = allPlayers.data.find(p => p.citizen_id_passport === form.citizen_id_passport);
         if (duplicate) {
@@ -150,7 +163,8 @@ const Register = () => {
 
       try {
         if (cccdFront) citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
-        if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
+        //if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
+        citizen_id_back_photo = null;
         if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
       } catch (uploadErr) {
         setMessage('❌ Upload ảnh không thành công. Vẫn tiếp tục đăng ký.');
@@ -261,7 +275,7 @@ const Register = () => {
           <select name="gender" value={form.gender} onChange={handleChange}>
             <option value={0}>Nam</option>
             <option value={1}>Nữ</option>
-            <option value={2}>Khác</option>
+            {/* <option value={2}>Khác</option> */}
           </select>
 
           <label>NGÀY SINH:</label>
@@ -307,8 +321,8 @@ const Register = () => {
           <label>ẢNH (MẶT TRƯỚC) CCCD App VNeID:</label>
           <input type="file" accept="image/*" onChange={e => setCccdFront(e.target.files[0])}  />
 
-          <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
-          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])}  />
+          {/* <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
+          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])}  /> */}
 
           <div className="note">
             Việc cung cấp ảnh CCCD trên App VNeID để phục vụ cho tính chính xác đối với các thông tin đăng ký.
