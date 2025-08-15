@@ -261,8 +261,8 @@ router.get('/:id/ranking', async (req, res) => {
     }
 
     const player = result.rows[0];
-    const tourRes = await client.query(`SELECT name FROM tournament_events WHERE id = $1`, [tournament_id]);
-    console.log('📘 Tournament name result:', tourRes.rows);
+    const tourRes = await client.query(`SELECT content FROM tournament_events WHERE id = $1`, [tournament_id]);
+    console.log('📘 Tournament content result:', tourRes.rows);
     const tournament = tourRes.rows[0];
     const content = tournament?.content?.toLowerCase() || '';
 

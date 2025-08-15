@@ -204,6 +204,7 @@ const Register = () => {
         id: playerId,
         name: form.name.toUpperCase(),
         phone: form.phone_number,
+        gender: form.gender,
         birth_day: form.birthday,
         citizen_id_passport: form.citizen_id_passport,
         citizen_id_issued_date: form.citizen_id_issued_date,

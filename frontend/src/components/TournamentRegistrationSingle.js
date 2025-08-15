@@ -375,7 +375,7 @@ const TournamentRegistrationSingle = () => {
                 type="text"
                 value={competitor.club}
                 onChange={e => setCompetitor({ ...competitor, club: e.target.value })}
-                placeholder="Nhập tên CLB"
+                placeholder="Nhập tên đơn vị, tỉnh thành"
                 className="table-input"
               />
               {getFilteredClubs().length > 0 && (
