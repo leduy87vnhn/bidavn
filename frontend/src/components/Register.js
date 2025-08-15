@@ -314,9 +314,9 @@ const Register = () => {
 
           <label>
             BẠN CÓ ĐỒNG Ý CHIA SẺ THÔNG TIN BÊN DƯỚI CHO LIÊN ĐOÀN BILLIARD VIỆT NAM KHÔNG?
-            <SmallHint required={false}>
+            <span>
               Cần đăng ký các thông tin bên dưới mới có thể tham gia các giải của liên đoàn billiard quốc gia
-            </SmallHint>
+            </span>
           </label>
           <select value={form.share_info ? 'true' : 'false'} onChange={handleShareInfoChange}>
             <option value="true">Đồng ý</option>
@@ -331,20 +331,20 @@ const Register = () => {
           </select>
 
           <label>NGÀY SINH:</label>
-          <input type="date" name="birthday" value={form.birthday} onChange={handleChange} required />
+          <input type="date" name="birthday" value={form.birthday} onChange={handleChange} />
 
           <label>SỐ CCCD:</label>
-          <input name="citizen_id_passport" value={form.citizen_id_passport} onChange={handleChange} required />
+          <input name="citizen_id_passport" value={form.citizen_id_passport} onChange={handleChange} />
 
           <label>NGÀY CẤP CCCD:</label>
-          <input type="date" name="citizen_id_issued_date" value={form.citizen_id_issued_date} onChange={handleChange} required />
+          <input type="date" name="citizen_id_issued_date" value={form.citizen_id_issued_date} onChange={handleChange} />
 
           <label>NƠI CẤP CCCD:</label>
           <select
             name="citizen_id_issued_place"
             value={form.citizen_id_issued_place}
             onChange={handleChange}
-            required
+            
             >
             <option value="">-- Chọn nơi cấp --</option>
             <option value="Cục Cảnh sát quản lý hành chính về trật tự xã hội">
@@ -359,7 +359,7 @@ const Register = () => {
           </select>
 
           <label>ĐỊA CHỈ THƯỜNG TRÚ:</label>
-          <input name="address" value={form.address} onChange={handleChange} required />
+          <input name="address" value={form.address} onChange={handleChange} />
 
           <label>ĐANG THI ĐẤU CHO ĐƠN VỊ (TỈNH/THÀNH):</label>
           <input name="competition_unit" value={form.competition_unit} onChange={handleChange}  />
