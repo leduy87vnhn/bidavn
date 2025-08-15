@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     address, competition_unit, discipline,
     citizen_id_issued_date, citizen_id_issued_place,
     citizen_id_front_photo, citizen_id_back_photo, face_photo,
-    created_date, modified_date
+    created_date, modified_date, share_info 
   } = req.body;
 
   name = name.toUpperCase();
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
         address, competition_unit, discipline,
         citizen_id_issued_date, citizen_id_issued_place,
         citizen_id_front_photo, citizen_id_back_photo, face_photo,
-        created_date, modified_date
+        created_date, modified_date, share_info 
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12,
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
         address, competition_unit, discipline,
         citizen_id_issued_date, citizen_id_issued_place,
         citizen_id_front_photo, citizen_id_back_photo, face_photo,
-        created_date, modified_date
+        created_date, modified_date, share_info 
       ]
     );
 

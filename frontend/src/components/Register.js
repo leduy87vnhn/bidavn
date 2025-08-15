@@ -16,7 +16,8 @@ const Register = () => {
     citizen_id_issued_place: '',
     address: '',
     competition_unit: '',
-    email: ''
+    email: '',
+    share_info: true   // 👈 thêm
   });
 
   const [cccdFront, setCccdFront] = useState(null);
@@ -25,6 +26,16 @@ const Register = () => {
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showOkButton, setShowOkButton] = useState(false);
+  const [showConsentModal, setShowConsentModal] = useState(true);
+
+  const handleConsent = (agree) => {
+    setForm(prev => ({ ...prev, share_info: !!agree }));
+    setShowConsentModal(false);
+  };
+
+  const handleShareInfoChange = (e) => {
+    setForm(prev => ({ ...prev, share_info: e.target.value === 'true' }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,13 +121,18 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (
-        !form.phone_number || !form.password || !form.name ||
-        !form.citizen_id_passport || !form.citizen_id_issued_date ||
-        !form.citizen_id_issued_place || !form.address
-      ) {
-        setMessage('❌ Vui lòng nhập đầy đủ các trường bắt buộc.');
+      // 4 trường luôn bắt buộc
+      if (!form.phone_number || !form.password || !form.name || !form.email) {
+        setMessage('❌ Vui lòng nhập: Số điện thoại, Mật khẩu, Họ và tên, Email.');
         return;
+      }
+
+      // Nếu chọn Đồng ý -> CCCD/Ngày cấp/Nơi cấp bắt buộc
+      if (form.share_info) {
+        if (!form.citizen_id_passport || !form.citizen_id_issued_date || !form.citizen_id_issued_place) {
+          setMessage('❌ Bạn đã chọn "Đồng ý chia sẻ", vui lòng nhập đầy đủ Số CCCD, Ngày cấp, Nơi cấp.');
+          return;
+        }
       }
 
       // Check trùng SĐT
@@ -144,17 +160,19 @@ const Register = () => {
         return;
       }
 
-      try {
-        const allPlayers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
-        const duplicate = allPlayers.data.find(p => p.citizen_id_passport === form.citizen_id_passport);
-        if (duplicate) {
-          setMessage(`❌ Số CCCD này đã được đăng ký với số điện thoại ${duplicate.phone || '(không rõ)'}.`);
+      if (form.share_info && form.citizen_id_passport) {
+        try {
+          const allPlayers = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players`);
+          const duplicate = allPlayers.data.find(p => p.citizen_id_passport === form.citizen_id_passport);
+          if (duplicate) {
+            setMessage(`❌ Số CCCD này đã được đăng ký với số điện thoại ${duplicate.phone || '(không rõ)'}.`);
+            return;
+          }
+        } catch (err) {
+          console.error('Lỗi kiểm tra CCCD:', err);
+          setMessage('❌ Lỗi kiểm tra CCCD.');
           return;
         }
-      } catch (err) {
-        console.error('Lỗi kiểm tra CCCD:', err);
-        setMessage('❌ Lỗi kiểm tra CCCD.');
-        return;
       }
 
       let citizen_id_front_photo = null;
@@ -163,8 +181,8 @@ const Register = () => {
 
       try {
         if (cccdFront) citizen_id_front_photo = await uploadImage(cccdFront, 'cccd_front');
-        //if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
-        citizen_id_back_photo = null;
+        if (cccdBack)  citizen_id_back_photo  = await uploadImage(cccdBack, 'cccd_back');
+        //citizen_id_back_photo = null;
         if (facePhoto) face_photo             = await uploadImage(facePhoto, 'face');
       } catch (uploadErr) {
         setMessage('❌ Upload ảnh không thành công. Vẫn tiếp tục đăng ký.');
@@ -204,6 +222,7 @@ const Register = () => {
         id: playerId,
         name: form.name.toUpperCase(),
         phone: form.phone_number,
+        share_info: !!form.share_info,
         gender: form.gender,
         birth_day: form.birthday,
         citizen_id_passport: form.citizen_id_passport,
@@ -238,18 +257,35 @@ const Register = () => {
       <MainPageHeader />
       <MainPageMenuBar />
     </div>
+    {showConsentModal && (
+      <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:9999,
+                    display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
+        <div style={{ background:'#fff', borderRadius:12, maxWidth:640, width:'100%', padding:24 }}>
+          <h3 style={{ marginTop:0 }}>
+            BẠN CÓ ĐỒNG Ý CHIA SẺ THÔNG TIN BÊN DƯỚI CHO LIÊN ĐOÀN BILLIARD VIỆT NAM KHÔNG?
+          </h3>
+          <p style={{ marginBottom:16 }}>
+            Cần đăng ký các thông tin bên dưới mới có thể tham gia các giải của liên đoàn billiard quốc gia
+          </p>
+          <div style={{ display:'flex', gap:12, justifyContent:'flex-end' }}>
+            <button type="button" onClick={() => handleConsent(false)}>Không đồng ý</button>
+            <button type="button" onClick={() => handleConsent(true)}>Đồng ý</button>
+          </div>
+        </div>
+      </div>
+    )}
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>ĐĂNG KÝ THÀNH VIÊN LIÊN ĐOÀN<br />BILLIARDS & SNOOKER THÀNH PHỐ HỒ CHÍ MINH</h2>
         <div className="form-section">
           <h3>📝 THÔNG TIN ĐĂNG KÝ</h3>
 
-          <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này</span></label>
+          <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này (bắt buộc điền)</span></label>
           <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
 
           <label>
             MẬT KHẨU:
-            <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số</span>
+            <span>Một mật khẩu gồm ít nhất 6 ký tự hoặc số (bắt buộc điền)</span>
             <div className="password-wrapper">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -269,8 +305,23 @@ const Register = () => {
             </div>
           </label>
 
-          <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt</span></label>
+          <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt (bắt buộc điền)</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
+
+          <label>EMAIL:</label>
+          <span> Email được sử dụng để nhận các thông báo của Liên đoàn HBSF về các thông tin giải (bắt buộc điền)</span>
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+
+          <label>
+            BẠN CÓ ĐỒNG Ý CHIA SẺ THÔNG TIN BÊN DƯỚI CHO LIÊN ĐOÀN BILLIARD VIỆT NAM KHÔNG?
+            <SmallHint required={false}>
+              Cần đăng ký các thông tin bên dưới mới có thể tham gia các giải của liên đoàn billiard quốc gia
+            </SmallHint>
+          </label>
+          <select value={form.share_info ? 'true' : 'false'} onChange={handleShareInfoChange}>
+            <option value="true">Đồng ý</option>
+            <option value="false">Không đồng ý</option>
+          </select>
 
           <label>GIỚI TÍNH:</label>
           <select name="gender" value={form.gender} onChange={handleChange}>
@@ -313,17 +364,14 @@ const Register = () => {
           <label>ĐANG THI ĐẤU CHO ĐƠN VỊ (TỈNH/THÀNH):</label>
           <input name="competition_unit" value={form.competition_unit} onChange={handleChange}  />
 
-          <label>EMAIL:</label>
-          <input type="email" name="email" value={form.email} onChange={handleChange} required />
-
           <label>ẢNH (4X6):</label>
           <input type="file" accept="image/*" onChange={e => setFacePhoto(e.target.files[0])}  />
 
           <label>ẢNH (MẶT TRƯỚC) CCCD App VNeID:</label>
           <input type="file" accept="image/*" onChange={e => setCccdFront(e.target.files[0])}  />
 
-          {/* <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
-          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])}  /> */}
+          <label>ẢNH (MẶT SAU) CCCD App VNeID:</label>
+          <input type="file" accept="image/*" onChange={e => setCccdBack(e.target.files[0])}  />
 
           <div className="note">
             Việc cung cấp ảnh CCCD trên App VNeID để phục vụ cho tính chính xác đối với các thông tin đăng ký.
