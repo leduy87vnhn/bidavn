@@ -308,8 +308,9 @@ const Register = () => {
           <label>HỌ VÀ TÊN:<span> Nhập họ tên có dấu bằng tiếng Việt (bắt buộc điền)</span></label>
           <input name="name" value={form.name} onChange={handleChange} required />
 
-          <label>EMAIL:</label>
+          <label>EMAIL:
           <span> Email được sử dụng để nhận các thông báo của Liên đoàn HBSF về các thông tin giải (bắt buộc điền)</span>
+          </label>
           <input type="email" name="email" value={form.email} onChange={handleChange} required />
 
           <label>
