@@ -91,6 +91,11 @@ router.post('/competitors', async (req, res) => {
       }
     }
 
+    // Fallback nếu tính ra 0 hoặc null
+    if (!attendance_fee || attendance_fee <= 0) {
+      attendance_fee = tournament.attendance_fee_common || 0;
+    }
+
     await client.query(
       `INSERT INTO competitors
         (registration_form_id, player_id, nick_name, club, selected_date, uniform_size, attendance_fee)
