@@ -149,6 +149,11 @@ const Register = () => {
         return;
       }
 
+      if (!/^\d{10}$/.test(form.phone_number)) {
+        setMessage('❌ Số điện thoại phải gồm đúng 10 chữ số.');
+        return;
+      }
+
       // Nếu chọn Đồng ý -> CCCD/Ngày cấp/Nơi cấp bắt buộc
       if (form.share_info) {
         if (!form.citizen_id_passport || !form.citizen_id_issued_date || !form.citizen_id_issued_place) {
