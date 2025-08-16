@@ -36,6 +36,13 @@ const TournamentRegistrationSingle = () => {
     }
   }, [user, navigate]);
 
+  // Thêm ở trên cùng trong component (sau các useState/useEffect)
+  const sanitizePhone = (v) => (v || '').replace(/\D/g, '').slice(0, 10);
+  const handlePhoneChange = (e) => {
+    const clean = sanitizePhone(e.target.value);
+    setCompetitor(prev => ({ ...prev, phone: clean }));
+  };
+
   const loadAvailableSlots = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${tournamentId}`);
@@ -150,6 +157,11 @@ const TournamentRegistrationSingle = () => {
     //if (!competitor.name || !competitor.phone || !registeredPhone) {
     if (!competitor.name || !competitor.phone) {
       setMessage('❌ Vui lòng điền đầy đủ thông tin bắt buộc.');
+      return;
+    }
+
+    if (competitor.phone.length !== 10) {
+      setMessage('❌ Số điện thoại phải gồm đúng 10 chữ số.');
       return;
     }
 
@@ -344,11 +356,26 @@ const TournamentRegistrationSingle = () => {
           <tr>
             <td className="table-cell"><strong>ĐIỆN THOẠI LIÊN HỆ:</strong></td>
             <td className="table-cell">
-              <input
+              {/* <input
                 type="text"
                 value={competitor.phone}
                 onChange={e => setCompetitor({ ...competitor, phone: e.target.value })}
                 placeholder="Nhập số điện thoại"
+                className="table-input"
+              /> */}
+              <input
+                type="tel"
+                inputMode="numeric"
+                pattern="\d{10}"
+                maxLength={10}
+                value={competitor.phone}
+                onChange={handlePhoneChange}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const text = (e.clipboardData || window.clipboardData).getData('text');
+                  setCompetitor(prev => ({ ...prev, phone: sanitizePhone(text) }));
+                }}
+                placeholder="Nhập số điện thoại (10 số)"
                 className="table-input"
               />
               {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (

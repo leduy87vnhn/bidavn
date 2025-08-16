@@ -517,7 +517,7 @@ const TournamentList = () => {
                                     }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <div>
-                                        Giải đấu: {group.group_id ? (
+                                        {group.group_id ? (
                                             <Link
                                                 to={`/tournament-group/${group.group_id}`}
                                                 style={{
@@ -534,7 +534,9 @@ const TournamentList = () => {
                                             group.group_name
                                         )}
                                         {"\n"}
-                                        Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                                            <div style={{ fontSize: '20px', marginTop: '4px', fontWeight: '500' }}>
+                                                Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                                            </div>
                                         </div>
 
                                         {user?.user_type === 2 && group.group_id && (
