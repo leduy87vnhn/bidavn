@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         $13, $14, $15,
         $16, $17,
         $18, $19, $20,
-        $21, $22
+        $21, $22, $23
       )`,
       [
         id, phone || 'unknown' ? name : name.toUpperCase(), phone || 'unknown', ranking, points, pool_ranking, pool_points,

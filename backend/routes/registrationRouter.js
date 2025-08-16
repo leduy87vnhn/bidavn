@@ -63,7 +63,7 @@ router.post('/competitors', async (req, res) => {
     let attendance_fee = tournament.attendance_fee_common;
 
     const isCarom = (tournament.content || '').toLowerCase().includes('carom');
-    const isPool = (tournament.content || '').toLowerCase().includes('poo');
+    const isPool = (tournament.content || '').toLowerCase().includes('pool');
 
     const player = playerRes.rows[0] || {};
     const r = isCarom ? player.ranking : player.pool_ranking;
