@@ -28,6 +28,14 @@ const Register = () => {
   const [showOkButton, setShowOkButton] = useState(false);
   const [showConsentModal, setShowConsentModal] = useState(true);
 
+  // Chuẩn hoá số điện thoại: chỉ giữ số và tối đa 10 ký tự
+  const sanitizePhone = (v) => (v || '').replace(/\D/g, '').slice(0, 10);
+
+  const handlePhoneChange = (e) => {
+    const clean = sanitizePhone(e.target.value);
+    setForm(prev => ({ ...prev, phone_number: clean }));
+  };
+
   const handleConsent = (agree) => {
     setForm(prev => ({ ...prev, share_info: !!agree }));
     setShowConsentModal(false);
@@ -37,12 +45,26 @@ const Register = () => {
     setForm(prev => ({ ...prev, share_info: e.target.value === 'true' }));
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   let newValue = value;
+  //   if (name === 'name') {
+  //     newValue = value.toUpperCase();
+  //   }
+  //   setForm(prev => ({ ...prev, [name]: newValue }));
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
+
     if (name === 'name') {
       newValue = value.toUpperCase();
     }
+    if (name === 'phone_number') {
+      newValue = sanitizePhone(value);
+    }
+
     setForm(prev => ({ ...prev, [name]: newValue }));
   };
 
@@ -281,7 +303,22 @@ const Register = () => {
           <h3>📝 THÔNG TIN ĐĂNG KÝ</h3>
 
           <label>SỐ ĐIỆN THOẠI:<span> Sử dụng làm ID đăng nhập sau này (bắt buộc điền)</span></label>
-          <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
+          <input
+            name="phone_number"
+            type="tel"
+            inputMode="numeric"
+            pattern="\d{10}"
+            maxLength={10}
+            value={form.phone_number}
+            onChange={handlePhoneChange}
+            onPaste={(e) => {
+              e.preventDefault();
+              const text = (e.clipboardData || window.clipboardData).getData('text');
+              setForm(prev => ({ ...prev, phone_number: sanitizePhone(text) }));
+            }}
+            placeholder="Nhập số điện thoại (10 số)"
+            required
+          />
 
           <label>
             MẬT KHẨU:
