@@ -279,18 +279,20 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
         <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
         <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
         <p><strong>Lệ phí:</strong><br />{getInput('attendance_fee_common')}</p>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <div style={{ flex: 1 }}>
-            <p><strong>Hạng 1:</strong><br />{getInput('rank1')}</p>
-            <p><strong>Hạng 2:</strong><br />{getInput('rank2')}</p>
-            <p><strong>Hạng 3:</strong><br />{getInput('rank3')}</p>
+        {user?.user_type === 2 && (
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <div style={{ flex: 1 }}>
+              <p><strong>Hạng 1:</strong><br />{getInput('rank1')}</p>
+              <p><strong>Hạng 2:</strong><br />{getInput('rank2')}</p>
+              <p><strong>Hạng 3:</strong><br />{getInput('rank3')}</p>
+            </div>
+            <div style={{ flex: 1 }}>
+              <p><strong>Lệ phí Hạng 1:</strong><br />{getInput('attendance_fee_rank1')}</p>
+              <p><strong>Lệ phí Hạng 2:</strong><br />{getInput('attendance_fee_rank2')}</p>
+              <p><strong>Lệ phí Hạng 3:</strong><br />{getInput('attendance_fee_rank3')}</p>
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <p><strong>Lệ phí Hạng 1:</strong><br />{getInput('attendance_fee_rank1')}</p>
-            <p><strong>Lệ phí Hạng 2:</strong><br />{getInput('attendance_fee_rank2')}</p>
-            <p><strong>Lệ phí Hạng 3:</strong><br />{getInput('attendance_fee_rank3')}</p>
-          </div>
-        </div>
+        )}
         <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
         <p><strong>Số tài khoản:</strong><br />{getInput('bank_number')}</p>
         <p><strong>Tên tài khoản:</strong><br />{getInput('bank_acc_name')}</p>
