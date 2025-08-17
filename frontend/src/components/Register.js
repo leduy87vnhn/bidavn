@@ -157,7 +157,7 @@ const Register = () => {
       // Nếu chọn Đồng ý -> CCCD/Ngày cấp/Nơi cấp bắt buộc
       if (form.share_info) {
         if (!form.citizen_id_passport || !form.citizen_id_issued_date || !form.citizen_id_issued_place) {
-          setMessage('❌ Bạn đã chọn "Đồng ý chia sẻ", vui lòng nhập đầy đủ Số CCCD, Ngày cấp, Nơi cấp.');
+          setMessage('❌ Bạn đã chọn "Đồng ý chia sẻ thông tin", vui lòng nhập đầy đủ Số CCCD, Ngày cấp, Nơi cấp.');
           return;
         }
       }
@@ -289,7 +289,7 @@ const Register = () => {
                     display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
         <div style={{ background:'#fff', borderRadius:12, maxWidth:640, width:'100%', padding:24 }}>
           <h3 style={{ marginTop:0 }}>
-            BẠN CÓ ĐỒNG Ý CHIA SẺ THÔNG TIN BÊN DƯỚI CHO LIÊN ĐOÀN BILLIARD VIỆT NAM KHÔNG?
+            BẠN CÓ ĐỒNG Ý CHIA SẺ THÔNG TIN CÁ NHÂN CHO LIÊN ĐOÀN BILLIARDS & SNOOKER VIỆT NAM (VBSF) KHÔNG?
           </h3>
           <p style={{ marginBottom:16 }}>
             Cần đăng ký các thông tin bên dưới mới có thể tham gia các giải của liên đoàn billiard quốc gia

@@ -155,6 +155,13 @@ const TournamentList = () => {
         return new Date(startDate) < today;
     };
 
+    const isRegistrationClosed = (deadline) => {
+    if (!deadline) return false;
+    const now = new Date();
+    const regDate = new Date(deadline);
+    return regDate < now.setHours(0, 0, 0, 0); // so sánh đến ngày (bỏ giờ)
+    };
+
     const handleSave = async () => {
         const start = new Date(newTournament.start_date);
         const end = new Date(newTournament.end_date);
@@ -645,9 +652,18 @@ const TournamentList = () => {
                                         {/* Đăng ký lẻ: ai cũng thấy */}
                                         <button
                                             className="teal"
-                                            onClick={() => navigate(`/tournament_events/${tour.id}/register-single`)}
+                                            disabled={isRegistrationClosed(tour.registration_deadline)}
+                                            style={{
+                                                backgroundColor: isRegistrationClosed(tour.registration_deadline) ? '#ccc' : undefined,
+                                                cursor: isRegistrationClosed(tour.registration_deadline) ? 'not-allowed' : 'pointer'
+                                            }}
+                                            onClick={() => {
+                                                if (!isRegistrationClosed(tour.registration_deadline)) {
+                                                navigate(`/tournament_events/${tour.id}/register-single`);
+                                                }
+                                            }}
                                         >
-                                            Đăng ký thi đấu
+                                        Đăng ký thi đấu
                                         </button>
 
                                         {/* Danh sách VĐV: ai cũng thấy */}
