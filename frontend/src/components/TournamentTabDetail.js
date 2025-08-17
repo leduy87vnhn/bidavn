@@ -22,6 +22,13 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
   const user = JSON.parse(localStorage.getItem('user_info'));
   const navigate = useNavigate();
 
+  const isRegistrationClosed = (deadline) => {
+    if (!deadline) return false;
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    return deadlineDate < now;
+  };
+
   useEffect(() => {
     setTournament(tournamentProp);
     setFormData(tournamentProp);
@@ -254,7 +261,19 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
         <h2 style={{ marginBottom: 10 }}>📋 Thông tin chung</h2>
 
         <div style={{ marginBottom: '10px' }}>
-          <button style={primaryButtonStyle} onClick={() => navigate(`/tournament/${tournament.id}/register`)}>
+          <button
+            style={{
+              ...primaryButtonStyle,
+              backgroundColor: isRegistrationClosed(tournament.registration_deadline) ? '#ccc' : primaryButtonStyle.backgroundColor,
+              cursor: isRegistrationClosed(tournament.registration_deadline) ? 'not-allowed' : 'pointer'
+            }}
+            disabled={isRegistrationClosed(tournament.registration_deadline)}
+            onClick={() => {
+              if (!isRegistrationClosed(tournament.registration_deadline)) {
+                navigate(`/tournament/${tournament.id}/register`);
+              }
+            }}
+          >
             Đăng ký thi đấu
           </button>
         </div>
