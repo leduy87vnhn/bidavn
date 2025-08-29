@@ -3,7 +3,7 @@ import {
   TextField, Button, Grid, Typography, Box
 } from '@mui/material';
 import axios from 'axios';
-//import '../css/memberRegistration.scss';
+import { TextField, Button, Grid, Typography, Box, Select, MenuItem } from '@mui/material';
 import '../css/personalMember.scss';
 
 const PersonalMemberTab = () => {
@@ -26,7 +26,7 @@ const PersonalMemberTab = () => {
   const [backPreview, setBackPreview] = useState(null);
   const [facePreview, setFacePreview] = useState(null);
 
-  const disciplineText = (player.discipline === 1) ? 'Pool' : (player.discipline === 0) ? 'Carom' : '—';  
+  const disciplineText = (player.discipline === 1) ? 'Pool' : (player.discipline === 0) ? 'Carom' : '—';
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_info'));
@@ -131,8 +131,46 @@ const PersonalMemberTab = () => {
   };
 
   // [THÊM] – resize (giống Register.js)
-  const resizeImage = (file, maxWidth = 1000, quality = 0.85) => new Promise((resolve, reject) => { ... });
+const resizeImage = (file, maxWidth = 1000, quality = 0.85) =>
+  new Promise((resolve, reject) => {
+    try {
+      const img = new Image();
+      const reader = new FileReader();
 
+      reader.onload = (e) => {
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / img.width);
+          const w = Math.round(img.width * scale);
+          const h = Math.round(img.height * scale);
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) return reject(new Error('Canvas toBlob failed'));
+              const out = new File([blob], file.name.replace(/\.\w+$/i, '.jpg'), {
+                type: 'image/jpeg',
+              });
+              resolve(out);
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    } catch (err) {
+      reject(err);
+    }
+  });
   // [THÊM] – upload ảnh tới /api/players/upload-photo
   const API = process.env.REACT_APP_API_BASE_URL || '';
 
