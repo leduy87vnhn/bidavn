@@ -475,7 +475,7 @@ const resizeImage = (file, maxWidth = 1000, quality = 0.85) =>
         )} */}
         {isEditing ? (
           <>
-            <button onClick={handleUpdate}>💾 Lưu</button>
+            <button onClick={saveAll}>💾 Lưu</button>
             <button onClick={handleCancel} style={{ marginLeft: '10px', backgroundColor: '#ccc' }}>❌ Hủy</button>
           </>
         ) : (
