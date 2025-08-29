@@ -503,7 +503,7 @@ const resizeImage = (file, maxWidth = 1000, quality = 0.85) =>
               <MenuItem value={0}>Carom</MenuItem>
               <MenuItem value={1}>Pool</MenuItem>
             </Select>
-          ) : (player.discipline === 1 ? 'Pool' : player.discipline === 0 ? 'Carom' : '—')}
+          ) : (Number(player.discipline) === 1 ? 'Pool' : Number(player.discipline) === 0 ? 'Carom' : '—')}
         </div>
 
         <label>Điểm số:</label>
