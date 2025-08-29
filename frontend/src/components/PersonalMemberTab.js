@@ -23,7 +23,10 @@ const PersonalMemberTab = () => {
   const [backPreview, setBackPreview] = useState(null);
   const [facePreview, setFacePreview] = useState(null);
 
-  const disciplineText = (player.discipline === 1) ? 'Pool' : (player.discipline === 0) ? 'Carom' : '—';
+  const disciplineText =
+    player?.discipline === 1 ? 'Pool'
+    : player?.discipline === 0 ? 'Carom'
+    : '—';
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_info'));
