@@ -635,14 +635,14 @@ const TournamentList = () => {
                                         <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
                                         {tour.attendance_fee_common ? `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n` : ''}
                                         {tour.attendance_fee_rank1 && tour.rank1
-                                            ? `Lệ phí rank ${tour.rank1} trở lên: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`
-                                            : ''}
+                                        ? `${tour.fee_label_rank1 || ('Lệ phí rank ' + tour.rank1 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`
+                                        : ''}
                                         {tour.attendance_fee_rank2 && tour.rank2
-                                            ? `Lệ phí rank ${tour.rank2} trở lên: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`
-                                            : ''}
+                                        ? `${tour.fee_label_rank2 || ('Lệ phí rank ' + tour.rank2 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`
+                                        : ''}
                                         {tour.attendance_fee_rank3 && tour.rank3
-                                            ? `Lệ phí rank ${tour.rank3} trở lên: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`
-                                            : ''}
+                                        ? `${tour.fee_label_rank3 || ('Lệ phí rank ' + tour.rank3 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`
+                                        : ''}
                                         </td>
                                         {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td> */}
