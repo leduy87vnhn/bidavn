@@ -547,7 +547,7 @@ const TournamentList = () => {
                                             </div>
                                         </div>
 
-                                        {user?.user_type === 2 && group.group_id && (
+                                        {group.group_id && (
                                         <div style={{ display: 'flex', gap: '10px' }}>
                                             {/* 📥 Tải Điều Lệ Giải */}
                                             {group.group_regulations ? (
