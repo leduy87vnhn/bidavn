@@ -4,12 +4,22 @@ import '../css/mainpage.css';
 
 const MainPageTournamentSummary = () => {
   const [groups, setGroups] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem('user_info');
+    if (userInfo) setUser(JSON.parse(userInfo));
+  }, []);
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const groupRes = await axios.get('/api/tournament_events/upcoming-groups');
-        setGroups(groupRes.data);
+        const res = await axios.get('/api/tournament_events/upcoming-groups');
+        let data = res.data;
+        if (!userInfo || JSON.parse(userInfo).user_type !== 2) {
+          data = data.filter(g => g.display !== false);
+        }
+        setGroups(data);
       } catch (err) {
         console.error('Lỗi khi tải danh sách nhóm giải:', err);
       }
@@ -24,6 +34,17 @@ const MainPageTournamentSummary = () => {
       return `${d.getDate()}/${d.getMonth() + 1}`;
     };
     return `${format(start)} - ${format(end)}`;
+  };
+
+  const toggleDisplay = async (groupId, newDisplay) => {
+    try {
+      await axios.put(`/api/tournament_events/tournament-group/${groupId}`, {
+        display: newDisplay
+      });
+      setGroups(prev => prev.map(g => g.id === groupId ? { ...g, display: newDisplay } : g));
+    } catch (err) {
+      console.error('Lỗi khi cập nhật display:', err);
+    }
   };
 
   return (
@@ -55,6 +76,16 @@ const MainPageTournamentSummary = () => {
               <button className="btn-disabled" disabled>📄 Điều lệ</button>
             )}
           </div>
+          {user?.user_type === 2 && (
+            <div className="summary-col action">
+              <button
+                className="btn-download"
+                onClick={() => toggleDisplay(item.id, !item.display)}
+              >
+                {item.display ? 'Ẩn' : 'Hiện'}
+              </button>
+            </div>
+          )}
         </div>
       ))}
     </div>

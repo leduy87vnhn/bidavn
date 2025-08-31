@@ -465,24 +465,59 @@ router.delete('/tournament-group/:groupId', async (req, res) => {
 
 router.put('/tournament-group/:id', async (req, res) => {
   const { id } = req.params;
-  const { tournament_name, description, start_date, end_date } = req.body;
-  if (!tournament_name) return res.status(400).json({ message: 'Tên nhóm không được để trống' });
+  const {
+    tournament_name,
+    description,
+    start_date,
+    end_date,
+    display,
+  } = req.body;
 
+  const client = await pool.connect();
   try {
-    await client.query(
-      `UPDATE tournament_group
-       SET tournament_name = $1,
-           description = $2,
-           start_date = $3,
-           end_date = $4,
-           modified_date = NOW()
-       WHERE id = $5`,
-      [tournament_name, description || null, start_date || null, end_date || null, id]
-    );
+    const fields = [];
+    const values = [];
+    let idx = 1;
+
+    if (tournament_name !== undefined) {
+      fields.push(`tournament_name = $${idx++}`);
+      values.push(tournament_name);
+    }
+    if (description !== undefined) {
+      fields.push(`description = $${idx++}`);
+      values.push(description);
+    }
+    if (start_date !== undefined) {
+      fields.push(`start_date = $${idx++}`);
+      values.push(start_date);
+    }
+    if (end_date !== undefined) {
+      fields.push(`end_date = $${idx++}`);
+      values.push(end_date);
+    }
+    if (display !== undefined) {
+      fields.push(`display = $${idx++}`);
+      values.push(display);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({ message: 'Không có trường nào để cập nhật.' });
+    }
+
+    fields.push(`modified_date = NOW()`);
+
+    const query = `
+      UPDATE tournament_group SET ${fields.join(', ')} WHERE id = $${idx}
+    `;
+    values.push(id);
+
+    await client.query(query, values);
     res.json({ message: 'Đã cập nhật nhóm giải.' });
   } catch (error) {
-    console.error('Error updating group:', error);
-    res.status(500).json({ message: 'Lỗi cập nhật nhóm giải' });
+    console.error('Lỗi khi cập nhật tournament_group:', error);
+    res.status(500).json({ message: 'Lỗi server.' });
+  } finally {
+    client.release();
   }
 });
 
