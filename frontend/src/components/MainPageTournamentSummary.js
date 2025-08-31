@@ -30,8 +30,14 @@ const MainPageTournamentSummary = () => {
     <div className="mainpage-tournament-summary">
       <div className="summary-header">GIẢI THỂ THAO</div>
       {groups.map((item, idx) => (
-        <div key={idx} className="summary-row" onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}>
-          <div className="summary-col name">{item.tournament_name}</div>
+        <div key={idx} className="summary-row">
+          <div
+            className="summary-col name"
+            onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}
+            style={{ cursor: 'pointer', color: '#007bff' }}
+          >
+            {item.tournament_name}
+          </div>
           <div className="summary-col date">{formatRange(item.start_date, item.end_date)}</div>
           <div className="summary-col address">{item.event_location}</div>
           {/* 🔽 Cột mới: Điều Lệ */}
