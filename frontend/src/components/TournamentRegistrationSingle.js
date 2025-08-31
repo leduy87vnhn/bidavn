@@ -69,6 +69,42 @@ const TournamentRegistrationSingle = () => {
   }, [tournamentId]);
 
   useEffect(() => {
+    const prefillFromUser = async () => {
+      const userPhone = sanitizePhone(user?.phone_number);
+      if (!userPhone) return;
+
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-phone?phone=${userPhone}`);
+        const p = res.data;
+        setCompetitor(prev => ({
+          ...prev,
+          name: (p.name || '').toUpperCase(),
+          phone: p.phone || '',
+          club: p.competition_unit || ''
+        }));
+        setPlayerSearchText(p.id?.toString() || '');
+
+        try {
+          const rres = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/players/${p.id}/ranking?tournament_id=${tournamentId}`);
+          setPlayerRanking(rres.data?.ranking ?? 'Chưa có');
+        } catch (e) {
+          // không cần làm gì nếu lỗi
+        }
+      } catch (err) {
+        setCompetitor(prev => ({
+          ...prev,
+          phone: userPhone,
+          name: (user?.name || '').toUpperCase(),
+        }));
+      }
+    };
+
+    if (user && tournamentId) {
+      prefillFromUser();
+    }
+  }, [user, tournamentId]);
+
+  useEffect(() => {
     const loadClubs = async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/clubs`);
