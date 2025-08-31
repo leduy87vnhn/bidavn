@@ -5,20 +5,25 @@ import '../css/mainpage.css';
 const MainPageTournamentSummary = () => {
   const [groups, setGroups] = useState([]);
   const [user, setUser] = useState(null);
+  const [userLoaded, setUserLoaded] = useState(false);
 
   useEffect(() => {
     const userInfo = localStorage.getItem('user_info');
-    if (userInfo) setUser(JSON.parse(userInfo));
+    if (userInfo) {
+      setUser(JSON.parse(userInfo));
+    }
+    setUserLoaded(true);
   }, []);
 
   useEffect(() => {
+    if (!userLoaded) return;
+
     const fetchGroups = async () => {
       try {
-        // Gọi đúng endpoint backend
-        const res = await axios.get('/api/tournament_events/upcoming-groups');
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/upcoming-groups`);
         let data = Array.isArray(res.data) ? res.data : [];
 
-        // Nếu KHÔNG phải admin → chỉ giữ display = true
+        // Chỉ lọc nếu user != admin
         if (user?.user_type !== 2) {
           data = data.filter(g => g.display !== false);
         }
@@ -26,11 +31,12 @@ const MainPageTournamentSummary = () => {
         setGroups(data);
       } catch (err) {
         console.error('Lỗi khi tải danh sách nhóm giải:', err);
+        setGroups([]);
       }
     };
 
     fetchGroups();
-  }, [user]);
+  }, [user, userLoaded]);
 
   const formatRange = (start, end) => {
     const format = (dateStr) => {
