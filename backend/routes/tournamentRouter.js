@@ -396,6 +396,49 @@ router.post('/group/:groupId/upload-background', uploadGroupBackground.single('b
   }
 });
 
+const fs = require('fs');
+
+// Multer config cho điều lệ
+const regulationStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/regulations'); // Thư mục đã tồn tại
+  },
+  filename: async (req, file, cb) => {
+    const groupId = req.params.groupId;
+
+    try {
+      const result = await client.query(`SELECT tournament_name FROM tournament_group WHERE id = $1`, [groupId]);
+      if (result.rows.length === 0) return cb(new Error('Group not found'), '');
+
+      const name = result.rows[0].tournament_name.replace(/\s+/g, '');
+      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const newName = `${name}${dateStr}_ĐiềuLệ.pdf`;
+
+      cb(null, newName);
+    } catch (err) {
+      cb(err, '');
+    }
+  }
+});
+const uploadRegulation = multer({ storage: regulationStorage });
+
+router.post('/group/:groupId/upload-regulation', uploadRegulation.single('regulation'), async (req, res) => {
+  const { groupId } = req.params;
+  const file = req.file;
+  if (!file) return res.status(400).json({ message: 'Không có file nào được tải lên.' });
+
+  try {
+    await client.query(
+      `UPDATE tournament_group SET regulations = $1, modified_date = NOW() WHERE id = $2`,
+      [file.filename, groupId]
+    );
+    res.json({ message: '✅ Đã cập nhật điều lệ giải', filename: file.filename });
+  } catch (err) {
+    console.error('Lỗi cập nhật regulations:', err);
+    res.status(500).json({ message: 'Lỗi server khi cập nhật điều lệ' });
+  }
+});
+
 router.delete('/tournament-group/:groupId', async (req, res) => {
   const { groupId } = req.params;
   try {
