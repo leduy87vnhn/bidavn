@@ -245,8 +245,11 @@ router.put('/:id', async (req, res) => {
               rank3 = $28,
               attendance_fee_rank1 = $29,
               attendance_fee_rank2 = $30,
-              attendance_fee_rank3 = $31
-          WHERE id = $32
+              attendance_fee_rank3 = $31,
+              fee_label_rank1 = $32,
+              fee_label_rank2 = $33,
+              fee_label_rank3 = $34
+          WHERE id = $35
         `;
         await client.query(query, [
           name, code, attendance_fee_common, start_date, end_date,
@@ -256,6 +259,7 @@ router.put('/:id', async (req, res) => {
           registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
           group_id, rank1, rank2, rank3,
           attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
+          fee_label_rank1, fee_label_rank2, fee_label_rank3,
           id
         ]);
         res.json({ message: 'Cập nhật thành công.' });

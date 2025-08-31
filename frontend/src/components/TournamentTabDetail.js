@@ -310,6 +310,11 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
               <p><strong>Lệ phí Hạng 2:</strong><br />{getInput('attendance_fee_rank2')}</p>
               <p><strong>Lệ phí Hạng 3:</strong><br />{getInput('attendance_fee_rank3')}</p>
             </div>
+            <div style={{ flex: 1 }}>
+              <p><strong>Tên lệ phí 1:</strong><br />{getInput('fee_label_rank1')}</p>
+              <p><strong>Tên lệ phí 2:</strong><br />{getInput('fee_label_rank2')}</p>
+              <p><strong>Tên lệ phí 3:</strong><br />{getInput('fee_label_rank3')}</p>
+            </div>
           </div>
         )}
         <p><strong>Ngân hàng:</strong><br />{getInput('bank_name')}</p>
