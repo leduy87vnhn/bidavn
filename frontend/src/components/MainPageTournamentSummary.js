@@ -34,6 +34,21 @@ const MainPageTournamentSummary = () => {
           <div className="summary-col name">{item.tournament_name}</div>
           <div className="summary-col date">{formatRange(item.start_date, item.end_date)}</div>
           <div className="summary-col address">{item.event_location}</div>
+          {/* 🔽 Cột mới: Điều Lệ */}
+          <div className="summary-col action">
+            {item.regulations ? (
+              <a
+                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${item.regulations}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-download"
+              >
+                📥 Điều lệ
+              </a>
+            ) : (
+              <button className="btn-disabled" disabled>📄 Điều lệ</button>
+            )}
+          </div>
         </div>
       ))}
     </div>
