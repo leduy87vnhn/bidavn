@@ -473,7 +473,6 @@ router.put('/tournament-group/:id', async (req, res) => {
     display,
   } = req.body;
 
-  const client = await pool.connect();
   try {
     const fields = [];
     const values = [];
@@ -516,8 +515,6 @@ router.put('/tournament-group/:id', async (req, res) => {
   } catch (error) {
     console.error('Lỗi khi cập nhật tournament_group:', error);
     res.status(500).json({ message: 'Lỗi server.' });
-  } finally {
-    client.release();
   }
 });
 
@@ -525,7 +522,7 @@ router.put('/tournament-group/:id', async (req, res) => {
 router.get('/upcoming-groups', async (req, res) => {
   try {
     const result = await client.query(`
-      SELECT g.id, g.tournament_name, g.start_date, g.end_date,
+      SELECT g.id, g.tournament_name, g.start_date, g.end_date, g.display,
         (
           SELECT location
           FROM tournament_events e

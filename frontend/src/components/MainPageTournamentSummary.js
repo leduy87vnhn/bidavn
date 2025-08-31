@@ -14,11 +14,15 @@ const MainPageTournamentSummary = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
+        // Gọi đúng endpoint backend
         const res = await axios.get('/api/tournament_events/upcoming-groups');
-        let data = res.data;
-        if (!userInfo || JSON.parse(userInfo).user_type !== 2) {
+        let data = Array.isArray(res.data) ? res.data : [];
+
+        // Nếu KHÔNG phải admin → chỉ giữ display = true
+        if (user?.user_type !== 2) {
           data = data.filter(g => g.display !== false);
         }
+
         setGroups(data);
       } catch (err) {
         console.error('Lỗi khi tải danh sách nhóm giải:', err);
@@ -26,7 +30,7 @@ const MainPageTournamentSummary = () => {
     };
 
     fetchGroups();
-  }, []);
+  }, [user]);
 
   const formatRange = (start, end) => {
     const format = (dateStr) => {
@@ -50,14 +54,19 @@ const MainPageTournamentSummary = () => {
   return (
     <div className="mainpage-tournament-summary">
       <div className="summary-header">GIẢI THỂ THAO</div>
-      {groups.map((item, idx) => (
-        <div key={idx} className="summary-row">
+      {groups.map((item) => (
+        <div key={item.id} className="summary-row">
           <div
             className="summary-col name"
             onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}
             style={{ cursor: 'pointer', color: '#007bff' }}
           >
             {item.tournament_name}
+            {user?.user_type === 2 && item.display === false && (
+              <span style={{ marginLeft: 8, color: 'red', fontWeight: 'bold' }}>
+                (đang ẨN)
+              </span>
+            )}
           </div>
           <div className="summary-col date">{formatRange(item.start_date, item.end_date)}</div>
           <div className="summary-col address">{item.event_location}</div>
