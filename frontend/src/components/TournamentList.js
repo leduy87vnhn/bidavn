@@ -256,6 +256,7 @@ const TournamentList = () => {
                 group_name: tour.group_name || 'Không thuộc nhóm',
                 group_start_date: tour.group_start_date,
                 group_end_date: tour.group_end_date,
+                group_regulations: tour.group_regulations,
                 tournament_events: []
             };
         }
@@ -548,6 +549,26 @@ const TournamentList = () => {
 
                                         {user?.user_type === 2 && group.group_id && (
                                         <div style={{ display: 'flex', gap: '10px' }}>
+                                            {/* 📥 Tải Điều Lệ Giải */}
+                                            {group.group_regulations ? (
+                                            <a
+                                                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="top-action-button primary"
+                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                                            >
+                                                📥 Điều lệ
+                                            </a>
+                                            ) : (
+                                            <button
+                                                className="top-action-button grey"
+                                                title="Chưa có điều lệ"
+                                                disabled
+                                            >
+                                                📄 Điều lệ
+                                            </button>
+                                            )}
                                             <button
                                             className="edit"
                                             onClick={() => {

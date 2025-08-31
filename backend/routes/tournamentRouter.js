@@ -102,6 +102,7 @@ router.get('/', async (req, res) => {
         tg.tournament_name AS group_name,
         tg.start_date AS group_start_date,
         tg.end_date AS group_end_date,
+        tg.regulations AS group_regulations,
         (
           SELECT COUNT(*)
           FROM registration_form rf
@@ -131,6 +132,7 @@ router.get('/', async (req, res) => {
               tg.tournament_name AS group_name,
               tg.start_date AS group_start_date,
               tg.end_date AS group_end_date,
+              tg.regulations AS group_regulations,
               (
                 SELECT COUNT(*)
                 FROM registration_form rf
@@ -412,7 +414,7 @@ const regulationStorage = multer.diskStorage({
 
       const name = result.rows[0].tournament_name.replace(/\s+/g, '');
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      const newName = `${name}${dateStr}_ĐiềuLệ.pdf`;
+      const newName = `${name}_${dateStr}_ĐiềuLệ.pdf`;
 
       cb(null, newName);
     } catch (err) {
