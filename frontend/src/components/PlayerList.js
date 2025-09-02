@@ -53,36 +53,36 @@ const PlayerList = () => {
 
     // ==== Helpers cho export Excel có ảnh ====
     const toFullUrl = (path) => {
-    if (!path) return null;
-    const base = process.env.REACT_APP_API_BASE_URL || '';
-    if (/^https?:\/\//i.test(path)) return path;           // đã absolute
-    return `${base}/${String(path).replace(/^\/+/, '')}`;  // ghép base + path
+        if (!path) return null;
+        const base = process.env.REACT_APP_API_BASE_URL || '';
+        if (/^https?:\/\//i.test(path)) return path;           // đã absolute
+        return `${base}/${String(path).replace(/^\/+/, '')}`;  // ghép base + path
     };
 
     const fetchImageAsBase64 = async (url) => {
-    if (!url) return null;
-    try {
-        const res = await fetch(url, { mode: 'cors' });
-        if (!res.ok) return null;
-        const blob = await res.blob();
-        const buf = await blob.arrayBuffer();
-        let binary = '';
-        const bytes = new Uint8Array(buf);
-        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-        const base64 = btoa(binary);
+        if (!url) return null;
+        try {
+            const res = await fetch(url, { mode: 'cors' });
+            if (!res.ok) return null;
+            const blob = await res.blob();
+            const buf = await blob.arrayBuffer();
+            let binary = '';
+            const bytes = new Uint8Array(buf);
+            for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+            const base64 = btoa(binary);
 
-        const ct = res.headers.get('content-type') || '';
-        if (ct.includes('png')) return { base64, ext: 'png' };
-        if (ct.includes('jpeg') || ct.includes('jpg')) return { base64, ext: 'jpeg' };
+            const ct = res.headers.get('content-type') || '';
+            if (ct.includes('png')) return { base64, ext: 'png' };
+            if (ct.includes('jpeg') || ct.includes('jpg')) return { base64, ext: 'jpeg' };
 
-        const lower = url.toLowerCase();
-        if (lower.endsWith('.png')) return { base64, ext: 'png' };
-        if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return { base64, ext: 'jpeg' };
-        return { base64, ext: 'jpeg' };
-    } catch (e) {
-        console.error('Không tải được ảnh:', url, e);
-        return null;
-    }
+            const lower = url.toLowerCase();
+            if (lower.endsWith('.png')) return { base64, ext: 'png' };
+            if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return { base64, ext: 'jpeg' };
+            return { base64, ext: 'jpeg' };
+        } catch (e) {
+            console.error('Không tải được ảnh:', url, e);
+            return null;
+        }
     };
     // ==== /Helpers ====
 
@@ -293,40 +293,7 @@ const PlayerList = () => {
     const headerRowCount = 1;
     const IMG_W = 110, IMG_H = 110;
 
-    const toFullUrl = (path) => {
-        if (!path) return null;
-        const base = process.env.REACT_APP_API_BASE_URL || '';
-        if (/^https?:\/\//i.test(path)) return path;
-        return `${base}/${String(path).replace(/^\/+/, '')}`;
-    };
-
-    const fetchImageAsBase64 = async (url) => {
-        if (!url) return null;
-        try {
-        const res = await fetch(url, { mode: 'cors' });
-        if (!res.ok) return null;
-        const blob = await res.blob();
-        const buf = await blob.arrayBuffer();
-        let binary = '';
-        const bytes = new Uint8Array(buf);
-        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-        const base64 = btoa(binary);
-
-        const ct = res.headers.get('content-type') || '';
-        if (ct.includes('png')) return { base64, ext: 'png' };
-        if (ct.includes('jpeg') || ct.includes('jpg')) return { base64, ext: 'jpeg' };
-
-        const lower = url.toLowerCase();
-        if (lower.endsWith('.png')) return { base64, ext: 'png' };
-        if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return { base64, ext: 'jpeg' };
-        return { base64, ext: 'jpeg' };
-        } catch (e) {
-        console.error('Không tải được ảnh:', url, e);
-        return null;
-        }
-    };
-
-    for (let i = 0; i < dataSource.length; i++) {
+    for (const [i, p] of dataSource.entries()) {
         const p = dataSource[i];
         const rowIndex = headerRowCount + 1 + i;
 
@@ -342,7 +309,7 @@ const PlayerList = () => {
             extension: img.ext,
         });
         ws.addImage(imageId, {
-            tl: { col: targetCol - 1 + 0.15, row: rowIndex - 1 + 0.15 },
+            tl: { col: targetCol - 1 + 0.15, row: rowIndex - 1 + 0.2 },
             ext: { width: IMG_W, height: IMG_H },
             editAs: 'oneCell',
         });
