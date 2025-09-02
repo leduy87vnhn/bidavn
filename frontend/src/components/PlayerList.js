@@ -7,6 +7,8 @@ import MainPageHeader from '../components/MainPageHeader';
 import AddPlayerModal from '../components/AddPlayerModal';
 import EditPlayerModal from '../components/EditPlayerModal';
 import PlayerTableRow from '../components/PlayerTableRow';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 import '../css/playerList.scss';
 
 const PlayerList = () => {
@@ -48,6 +50,41 @@ const PlayerList = () => {
     }, []);
 
     const isAdmin = user?.user_type === 2;
+
+    // ==== Helpers cho export Excel có ảnh ====
+    const toFullUrl = (path) => {
+    if (!path) return null;
+    const base = process.env.REACT_APP_API_BASE_URL || '';
+    if (/^https?:\/\//i.test(path)) return path;           // đã absolute
+    return `${base}/${String(path).replace(/^\/+/, '')}`;  // ghép base + path
+    };
+
+    const fetchImageAsBase64 = async (url) => {
+    if (!url) return null;
+    try {
+        const res = await fetch(url, { mode: 'cors' });
+        if (!res.ok) return null;
+        const blob = await res.blob();
+        const buf = await blob.arrayBuffer();
+        let binary = '';
+        const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        const base64 = btoa(binary);
+
+        const ct = res.headers.get('content-type') || '';
+        if (ct.includes('png')) return { base64, ext: 'png' };
+        if (ct.includes('jpeg') || ct.includes('jpg')) return { base64, ext: 'jpeg' };
+
+        const lower = url.toLowerCase();
+        if (lower.endsWith('.png')) return { base64, ext: 'png' };
+        if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return { base64, ext: 'jpeg' };
+        return { base64, ext: 'jpeg' };
+    } catch (e) {
+        console.error('Không tải được ảnh:', url, e);
+        return null;
+    }
+    };
+    // ==== /Helpers ====
 
     const fetchPlayers = async () => {
         try {
@@ -184,40 +221,146 @@ const PlayerList = () => {
     const totalPages = Math.ceil(filteredPlayers.length / limit);
     //const currentPagePlayers = filteredPlayers.slice((page - 1) * limit, page * limit);
 
-    const exportToExcel = () => {
-        const genderText = (val) => ['Nam', 'Nữ', 'Chưa rõ'][val] || '';
-        const memberStatusText = (val) => ['Tự do', 'Đăng ký', 'Hội viên'][val] || '';
-        const feeText = (val) => ['Chưa đóng', 'Đã đóng'][val] || '';
-        const disciplineText = (val) => ['Carom', 'Pool'][val] || '';
+    const exportToExcel = async () => {
+    const genderText = (val) => ['Nam', 'Nữ', 'Chưa rõ'][val] || '';
+    const memberStatusText = (val) => ['Tự do', 'Đăng ký', 'Hội viên'][val] || '';
+    const feeText = (val) => ['Chưa đóng', 'Đã đóng'][val] || '';
+    const disciplineText = (val) => ['Carom', 'Pool'][val] || '';
 
-        const exportData = [...filteredPlayers]
-            .sort((a, b) => a.id.localeCompare(b.id))
-            .map(p => ({
-            'ID': p.id,
-            'Tên': p.name,
-            'SĐT': p.phone,
-            'Giới tính': genderText(p.gender),
-            'Ngày sinh': p.birth_day ? new Date(p.birth_day).toLocaleDateString('vi-VN') : '',
-            'CCCD/Hộ chiếu': p.citizen_id_passport || '',
-            'Hội viên': memberStatusText(p.member_status),
-            'Hội phí': feeText(p.member_fee_status),
-            'Địa chỉ': p.address || '',
-            'Đơn vị thi đấu': p.competition_unit || '',
-            'Ngày tham gia': p.joined_date ? new Date(p.joined_date).toLocaleDateString('vi-VN') : '',
-            'Nội dung thi đấu': disciplineText(p.discipline),
-            'Hạng Carom': p.ranking,
-            'Điểm Carom': p.points,
-            'Hạng Pool': p.pool_ranking,
-            'Điểm Pool': p.pool_points
-            }));
+    const dataSource = [...sortedPlayers];
 
-        const worksheet = XLSX.utils.json_to_sheet(exportData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách VĐV");
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('Danh sách VĐV');
 
-        XLSX.writeFile(workbook, "Danh_sach_VDV.xlsx");
+    ws.columns = [
+        { header: 'ID', key: 'id', width: 12 },
+        { header: 'Tên', key: 'name', width: 28 },
+        { header: 'SĐT', key: 'phone', width: 16 },
+        { header: 'Giới tính', key: 'gender', width: 10 },
+        { header: 'Ngày sinh', key: 'birth_day', width: 14 },
+        { header: 'CCCD/Hộ chiếu', key: 'citizen_id_passport', width: 18 },
+        { header: 'Thành viên', key: 'member_status', width: 12 },
+        { header: 'Hội phí', key: 'member_fee_status', width: 10 },
+        { header: 'Địa chỉ', key: 'address', width: 28 },
+        { header: 'Đơn vị thi đấu', key: 'competition_unit', width: 18 },
+        { header: 'Ngày tham gia', key: 'joined_date', width: 14 },
+        { header: 'Nội dung', key: 'discipline', width: 10 },
+        { header: 'Hạng Carom', key: 'ranking', width: 12 },
+        { header: 'Điểm Carom', key: 'points', width: 12 },
+        { header: 'Hạng Pool', key: 'pool_ranking', width: 12 },
+        { header: 'Điểm Pool', key: 'pool_points', width: 12 },
+        { header: 'Ảnh CCCD trước', key: 'front_photo', width: 18 },
+        { header: 'Ảnh CCCD sau', key: 'back_photo', width: 18 },
+        { header: 'Ảnh 4x6', key: 'face_photo', width: 18 },
+    ];
+
+    ws.getRow(1).font = { bold: true };
+    ws.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getRow(1).height = 22;
+
+    dataSource.forEach((p) => {
+        ws.addRow({
+        id: p.id,
+        name: p.name,
+        phone: p.phone || '',
+        gender: genderText(p.gender),
+        birth_day: p.birth_day ? new Date(p.birth_day).toLocaleDateString('vi-VN') : '',
+        citizen_id_passport: p.citizen_id_passport || '',
+        member_status: memberStatusText(p.member_status),
+        member_fee_status: feeText(p.member_fee_status),
+        address: p.address || '',
+        competition_unit: p.competition_unit || '',
+        joined_date: p.joined_date ? new Date(p.joined_date).toLocaleDateString('vi-VN') : '',
+        discipline: disciplineText(p.discipline),
+        ranking: p.ranking ?? '',
+        points: p.points ?? '',
+        pool_ranking: p.pool_ranking ?? '',
+        pool_points: p.pool_points ?? '',
+        front_photo: '',
+        back_photo: '',
+        face_photo: '',
+        });
+    });
+
+    for (let r = 2; r <= ws.rowCount; r++) {
+        ws.getRow(r).height = 120;
+    }
+
+    const colFront = ws.columns.findIndex((c) => c.key === 'front_photo') + 1;
+    const colBack = ws.columns.findIndex((c) => c.key === 'back_photo') + 1;
+    const colFace = ws.columns.findIndex((c) => c.key === 'face_photo') + 1;
+
+    const headerRowCount = 1;
+    const IMG_W = 110, IMG_H = 110;
+
+    const toFullUrl = (path) => {
+        if (!path) return null;
+        const base = process.env.REACT_APP_API_BASE_URL || '';
+        if (/^https?:\/\//i.test(path)) return path;
+        return `${base}/${String(path).replace(/^\/+/, '')}`;
     };
 
+    const fetchImageAsBase64 = async (url) => {
+        if (!url) return null;
+        try {
+        const res = await fetch(url, { mode: 'cors' });
+        if (!res.ok) return null;
+        const blob = await res.blob();
+        const buf = await blob.arrayBuffer();
+        let binary = '';
+        const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        const base64 = btoa(binary);
+
+        const ct = res.headers.get('content-type') || '';
+        if (ct.includes('png')) return { base64, ext: 'png' };
+        if (ct.includes('jpeg') || ct.includes('jpg')) return { base64, ext: 'jpeg' };
+
+        const lower = url.toLowerCase();
+        if (lower.endsWith('.png')) return { base64, ext: 'png' };
+        if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return { base64, ext: 'jpeg' };
+        return { base64, ext: 'jpeg' };
+        } catch (e) {
+        console.error('Không tải được ảnh:', url, e);
+        return null;
+        }
+    };
+
+    for (let i = 0; i < dataSource.length; i++) {
+        const p = dataSource[i];
+        const rowIndex = headerRowCount + 1 + i;
+
+        const urlFront = toFullUrl(p.citizen_id_front_photo);
+        const urlBack = toFullUrl(p.citizen_id_back_photo);
+        const urlFace = toFullUrl(p.face_photo);
+
+        const placeImage = async (url, targetCol) => {
+        const img = await fetchImageAsBase64(url);
+        if (!img) return;
+        const imageId = wb.addImage({
+            base64: `data:image/${img.ext};base64,${img.base64}`,
+            extension: img.ext,
+        });
+        ws.addImage(imageId, {
+            tl: { col: targetCol - 1 + 0.15, row: rowIndex - 1 + 0.15 },
+            ext: { width: IMG_W, height: IMG_H },
+            editAs: 'oneCell',
+        });
+        };
+
+        if (urlFront) await placeImage(urlFront, colFront);
+        if (urlBack) await placeImage(urlBack, colBack);
+        if (urlFace) await placeImage(urlFace, colFace);
+    }
+
+    const buffer = await wb.xlsx.writeBuffer();
+    saveAs(
+        new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        }),
+        'Danh_sach_VDV.xlsx'
+    );
+    };
     const maskPhone = (phone) => {
         if (!phone || phone.length < 3) return '***';
         return '*'.repeat(phone.length - 3) + phone.slice(-3);
@@ -426,102 +569,6 @@ const PlayerList = () => {
                             )}
                         </tr>
                     </thead>
-                    {/* <tbody>
-                        {currentPagePlayers.map(p => (
-                            <tr key={p.id}>
-                                <td>{p.id}</td>
-                                <td>
-                                    {editingId === p.id ? (
-                                        <input value={p.name} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, name: e.target.value } : x))} />
-                                    ) : p.name}
-                                </td>
-                                <td>
-                                    {editingId === p.id ? (
-                                        <input value={p.phone} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, phone: e.target.value } : x))} />
-                                    ) : (
-                                        user?.user_type === 2 ? p.phone : maskPhone(p.phone)  // 👈 Che số nếu không phải admin
-                                    )}
-                                </td>
-                                <td>
-                                    {editingId === p.id ? (
-                                        <input value={p.ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, ranking: e.target.value } : x))} />
-                                    ) : p.ranking}
-                                </td>
-                                <td>
-                                    {editingId === p.id ? (
-                                        <input value={p.points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, points: e.target.value } : x))} />
-                                    ) : p.points}
-                                </td>
-                                <td>
-                                {editingId === p.id ? (
-                                    <input value={p.pool_ranking} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_ranking: e.target.value } : x))} />
-                                ) : p.pool_ranking}
-                                </td>
-                                <td>
-                                {editingId === p.id ? (
-                                    <input value={p.pool_points} onChange={e => setPlayers(players.map(x => x.id === p.id ? { ...x, pool_points: e.target.value } : x))} />
-                                ) : p.pool_points}
-                                </td>
-                                <td>
-                                    {editingId === p.id ? (
-                                        <div style={{ display: 'flex', gap: 8 }}>
-                                            <button
-                                                onClick={() => handleUpdate(p.id)}
-                                                style={{
-                                                    backgroundColor: '#007bff',
-                                                    color: 'white',
-                                                    padding: '4px 10px',
-                                                    border: 'none',
-                                                    borderRadius: 5
-                                                }}
-                                            >
-                                                Lưu
-                                            </button>
-                                            <button
-                                                onClick={() => setEditingId(null)}
-                                                style={{
-                                                    padding: '4px 10px',
-                                                    backgroundColor: '#6c757d',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: 5
-                                                }}
-                                            >
-                                                Huỷ
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div style={{ display: 'flex', gap: 8 }}>
-                                            <button
-                                                onClick={() => setEditingId(p.id)}
-                                                style={{
-                                                    backgroundColor: '#007bff',
-                                                    color: 'white',
-                                                    padding: '4px 10px',
-                                                    border: 'none',
-                                                    borderRadius: 5
-                                                }}
-                                            >
-                                                Sửa
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(p.id)}
-                                                style={{
-                                                    backgroundColor: '#dc3545',
-                                                    color: 'white',
-                                                    padding: '4px 10px',
-                                                    border: 'none',
-                                                    borderRadius: 5
-                                                }}
-                                            >
-                                                Xoá
-                                            </button>
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody> */}
                     <tbody>
                     {currentPagePlayers.map(player => (
                         <PlayerTableRow
