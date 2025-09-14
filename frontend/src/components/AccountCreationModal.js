@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 
@@ -9,7 +9,7 @@ const AccountCreationModal = ({
   onSuccess
 }) => {
   const [form, setForm] = useState({
-    phone_number: phoneNumber,
+    phone_number: '',
     name: '',
     password: '',
     email: ''
@@ -20,6 +20,18 @@ const AccountCreationModal = ({
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+    // 🔑 Đồng bộ số điện thoại (và tên nếu có) từ props
+    useEffect(() => {
+    if (phoneNumber) {
+        setForm(prev => ({
+        ...prev,
+        phone_number: phoneNumber,
+        // Nếu bạn muốn auto điền tên từ props => thêm dòng này
+        name: prev.name || ''
+        }));
+    }
+    }, [phoneNumber, isOpen]);
 
   const handleRegister = async () => {
     const { phone_number, name, password, email } = form;
@@ -70,6 +82,8 @@ const AccountCreationModal = ({
       setError('❌ Không thể tạo tài khoản. Có thể email hoặc số điện thoại đã tồn tại.');
     }
   };
+
+
 
   return (
     <ReactModal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false}>
