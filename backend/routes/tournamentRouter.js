@@ -209,7 +209,8 @@ router.put('/:id', async (req, res) => {
       rules, uniform, registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
       group_id, // ✅ Thêm dòng này
       rank1, rank2, rank3,
-      attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3
+      attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
+      fee_label_rank1, fee_label_rank2, fee_label_rank3
     } = req.body;
 
     try {
