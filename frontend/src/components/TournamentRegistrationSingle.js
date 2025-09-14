@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../tournamentRegistration.scss';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import AccountCreationModal from '../components/AccountCreationModal';
 import ReactModal from 'react-modal';
 
 const TournamentRegistrationSingle = () => {
@@ -28,6 +29,15 @@ const TournamentRegistrationSingle = () => {
   const [showConflictModal, setShowConflictModal] = useState(false);
   const [conflictInfo, setConflictInfo] = useState({ id: '', name: '', phone: '' });
   const [playerRanking, setPlayerRanking] = useState(null);
+  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [accountForm, setAccountForm] = useState({
+    phone_number: '',
+    name: '',
+    password: '',
+    email: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [accountError, setAccountError] = useState('');
 
   useEffect(() => {
     if (!user) {
@@ -193,24 +203,42 @@ const TournamentRegistrationSingle = () => {
     }
 
     try {
-      // const resolveRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/resolve-player`, {
-      //   name: competitor.name,
-      //   phone: competitor.phone
-      // });
-
-      // if (resolveRes.data.status !== 'ok') {
-      //   setMessage('❌ Không xác định được VĐV.');
+      // const resolveRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-phone?phone=${competitor.phone}`);
+      // if (!resolveRes.data || resolveRes.data.name !== competitor.name) {
+      //   setMessage('❌ Bạn chưa đăng ký thông tin với liên đoàn hoặc thông tin không khớp.');
       //   return;
-      // }
+      // }      
+      // const player_id = resolveRes.data.id;
+      // setResolvedPlayerId(player_id);
+      let player_id = '';
+      try {
+        const resolveRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-phone?phone=${competitor.phone}`);
 
-      // const player_id = resolveRes.data.player_id;
-      const resolveRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-phone?phone=${competitor.phone}`);
-      if (!resolveRes.data || resolveRes.data.name !== competitor.name) {
-        setMessage('❌ Bạn chưa đăng ký thông tin với liên đoàn hoặc thông tin không khớp.');
-        return;
+        // Nếu tìm thấy player nhưng tên không khớp
+        if (!resolveRes.data || resolveRes.data.name !== competitor.name) {
+          throw new Error('Tên không khớp');
+        }
+
+        player_id = resolveRes.data.id;
+        setResolvedPlayerId(player_id);
+      } catch (err) {
+        // 🎯 Nếu không tìm thấy player → Kiểm tra xem có đang login hay không
+        if (!user) {
+          // ✅ (1) chưa đăng nhập, (2) và số điện thoại không tồn tại → hiện popup tạo tài khoản
+          setAccountForm({
+            phone_number: competitor.phone,
+            name: '',
+            password: '',
+            email: '',
+          });
+          setShowAccountModal(true);
+          return;
+        } else {
+          // 🎯 Có đăng nhập nhưng số điện thoại không tồn tại
+          setMessage('❌ Bạn chưa đăng ký thông tin với liên đoàn hoặc thông tin không khớp.');
+          return;
+        }
       }
-      const player_id = resolveRes.data.id;
-      setResolvedPlayerId(player_id);
 
       // Kiểm tra đã đăng ký trước đó chưa
       try {
@@ -546,6 +574,19 @@ const TournamentRegistrationSingle = () => {
         <p><strong>SĐT:</strong> {conflictInfo.phone}</p>
         <button onClick={() => setShowConflictModal(false)}>Đóng</button>
       </ReactModal>
+
+      <AccountCreationModal
+        isOpen={showAccountModal}
+        onClose={() => setShowAccountModal(false)}
+        phoneNumber={competitor.phone}
+        onSuccess={(newUser) => {
+          setCompetitor(prev => ({ ...prev, name: newUser.name, phone: newUser.phone_number }));
+          setRegisteredPhone(newUser.phone_number);
+          setResolvedPlayerId(''); // để cho phép submit lại
+          handleSubmit(new Event('submit'));
+        }}
+      />
+
     </div>
   </>
   );
