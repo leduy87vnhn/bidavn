@@ -314,6 +314,20 @@ const TournamentList = () => {
 
     const totalPages = Math.ceil(total / limit);
 
+    const filterEventsByStatus = (events, status) => {
+    if (status === 'all') return events;
+    const now = new Date();
+    return events.filter(e => {
+        const s = new Date(e.start_date);
+        const en = new Date(e.end_date);
+        if (status === 'upcoming') return s > now;
+        if (status === 'ongoing') return s <= now && en >= now;
+        if (status === 'ended') return en < now;
+        if (status === 'not_ended') return en >= now;
+        return true;
+    });
+    };
+
     return (
         <>
         <div style={{ position: 'relative', zIndex: 1000 }}>
