@@ -340,13 +340,36 @@ router.get('/groups-with-events', async (req, res) => {
         g.end_date AS group_end_date,
         g.regulations AS group_regulations,
         g.display,
-        e.*
+
+        e.id AS event_id,
+        e.name AS event_name,
+        e.code AS event_code,
+        e.start_date AS event_start_date,
+        e.end_date AS event_end_date,
+        e.location,
+        e.attendance_fee_common,
+        e.attendance_fee_rank1,
+        e.rank1,
+        e.attendance_fee_rank2,
+        e.rank2,
+        e.attendance_fee_rank3,
+        e.rank3,
+        e.fee_label_rank1,
+        e.fee_label_rank2,
+        e.fee_label_rank3,
+        e.registration_deadline,
+        (
+          SELECT COUNT(*)
+          FROM registration_form rf
+          LEFT JOIN competitors c ON c.registration_form_id = rf.id
+          LEFT JOIN players p ON c.player_id = p.id
+          WHERE rf.tournament_id = e.id AND rf.status = 1 AND p.id IS NOT NULL
+        ) AS approved_competitors_count
       FROM tournament_group g
       LEFT JOIN tournament_events e ON g.id = e.group_id
       ORDER BY g.start_date ASC NULLS LAST, e.start_date ASC NULLS LAST
     `);
 
-    // Gom nhóm
     const groups = {};
     result.rows.forEach(row => {
       if (!groups[row.group_id]) {
@@ -360,8 +383,27 @@ router.get('/groups-with-events', async (req, res) => {
           tournament_events: []
         };
       }
-      if (row.id) { // chỉ push nếu có event
-        groups[row.group_id].tournament_events.push(row);
+      if (row.event_id) {
+        groups[row.group_id].tournament_events.push({
+          id: row.event_id,
+          name: row.event_name,
+          code: row.event_code,
+          start_date: row.event_start_date,
+          end_date: row.event_end_date,
+          location: row.location,
+          attendance_fee_common: row.attendance_fee_common,
+          attendance_fee_rank1: row.attendance_fee_rank1,
+          rank1: row.rank1,
+          attendance_fee_rank2: row.attendance_fee_rank2,
+          rank2: row.rank2,
+          attendance_fee_rank3: row.attendance_fee_rank3,
+          rank3: row.rank3,
+          fee_label_rank1: row.fee_label_rank1,
+          fee_label_rank2: row.fee_label_rank2,
+          fee_label_rank3: row.fee_label_rank3,
+          registration_deadline: row.registration_deadline,
+          approved_competitors_count: row.approved_competitors_count
+        });
       }
     });
 
