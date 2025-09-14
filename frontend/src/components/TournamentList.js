@@ -88,7 +88,10 @@ const TournamentList = () => {
     try {
         if (user?.user_type === 2) {
         // Admin → API mới
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`);
+        const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`,
+        { params: { status: statusFilter } }
+        );
         setTournamentEvents(res.data || []);
         setTotal(res.data.length);
         } else {

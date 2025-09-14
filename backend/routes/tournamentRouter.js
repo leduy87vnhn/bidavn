@@ -331,7 +331,20 @@ router.get('/groups', async (req, res) => {
 
 // ✅ Lấy danh sách group và event (kể cả group chưa có event)
 router.get('/groups-with-events', async (req, res) => {
+  const status = req.query.status || 'all';
   try {
+    let condition = 'TRUE';
+    if (status === 'upcoming') {
+      condition = `e.start_date > (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
+    } else if (status === 'ongoing') {
+      condition = `e.start_date <= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh') 
+                   AND e.end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
+    } else if (status === 'ended') {
+      condition = `e.end_date < (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
+    } else if (status === 'not_ended') {
+      condition = `e.end_date >= (now() AT TIME ZONE 'Asia/Ho_Chi_Minh')`;
+    }
+
     const result = await client.query(`
       SELECT 
         g.id AS group_id,
@@ -367,6 +380,7 @@ router.get('/groups-with-events', async (req, res) => {
         ) AS approved_competitors_count
       FROM tournament_group g
       LEFT JOIN tournament_events e ON g.id = e.group_id
+      WHERE ${condition}
       ORDER BY g.start_date ASC NULLS LAST, e.start_date ASC NULLS LAST
     `);
 
