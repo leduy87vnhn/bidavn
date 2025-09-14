@@ -87,16 +87,34 @@ const TournamentList = () => {
     const fetchTournamentEvents = async () => {
     try {
         if (user?.user_type === 2) {
-        // Admin → lấy tất cả group, kể cả rỗng
+        // Admin → API mới
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`);
         setTournamentEvents(res.data || []);
         setTotal(res.data.length);
         } else {
-        // User thường → giữ API cũ (chỉ hiện group có event)
+        // User thường → API cũ
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, {
             params: { page, limit, status: statusFilter }
         });
-        setTournamentEvents(res.data?.data || []);
+
+        // ⚡ Ép thành cùng format group + tournament_events
+        const grouped = res.data?.data.reduce((groups, tour) => {
+            const gid = tour.group_id || 'ungrouped';
+            if (!groups[gid]) {
+            groups[gid] = {
+                group_id: tour.group_id,
+                group_name: tour.group_name || 'Không thuộc nhóm',
+                group_start_date: tour.group_start_date,
+                group_end_date: tour.group_end_date,
+                group_regulations: tour.group_regulations,
+                tournament_events: []
+            };
+            }
+            groups[gid].tournament_events.push(tour);
+            return groups;
+        }, {});
+        
+        setTournamentEvents(Object.values(grouped));
         setTotal(res.data?.total || 0);
         }
     } catch (err) {
