@@ -32,6 +32,7 @@ npm install react-markdown-editor-lite react-markdown --legacy-peer-deps
 npm install markdown-it --legacy-peer-deps
 npm install @mui/x-data-grid --legacy-peer-deps
 npm install multer
+npm i exceljs file-saver
 
 
 Start backend:
@@ -53,7 +54,11 @@ sudo pm2 logs backend-server
 sudo pm2 logs billard-frontend
 sudo pm2 flush
 
-
+Merge code
+git switch main
+git fetch origin
+git reset --hard origin/main
+git clean -fd
 
 
 

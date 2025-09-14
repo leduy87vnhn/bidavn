@@ -256,6 +256,7 @@ const TournamentList = () => {
                 group_name: tour.group_name || 'Không thuộc nhóm',
                 group_start_date: tour.group_start_date,
                 group_end_date: tour.group_end_date,
+                group_regulations: tour.group_regulations,
                 tournament_events: []
             };
         }
@@ -546,8 +547,28 @@ const TournamentList = () => {
                                             </div>
                                         </div>
 
-                                        {user?.user_type === 2 && group.group_id && (
+                                        {group.group_id && (
                                         <div style={{ display: 'flex', gap: '10px' }}>
+                                            {/* 📥 Tải Điều Lệ Giải */}
+                                            {group.group_regulations ? (
+                                            <a
+                                                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="top-action-button primary"
+                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                                            >
+                                                📥 Điều lệ
+                                            </a>
+                                            ) : (
+                                            <button
+                                                className="top-action-button grey"
+                                                title="Chưa có điều lệ"
+                                                disabled
+                                            >
+                                                📄 Điều lệ
+                                            </button>
+                                            )}
                                             <button
                                             className="edit"
                                             onClick={() => {
@@ -614,14 +635,14 @@ const TournamentList = () => {
                                         <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
                                         {tour.attendance_fee_common ? `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n` : ''}
                                         {tour.attendance_fee_rank1 && tour.rank1
-                                            ? `Lệ phí rank ${tour.rank1} trở lên: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`
-                                            : ''}
+                                        ? `${tour.fee_label_rank1 || ('Lệ phí rank ' + tour.rank1 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`
+                                        : ''}
                                         {tour.attendance_fee_rank2 && tour.rank2
-                                            ? `Lệ phí rank ${tour.rank2} trở lên: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`
-                                            : ''}
+                                        ? `${tour.fee_label_rank2 || ('Lệ phí rank ' + tour.rank2 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`
+                                        : ''}
                                         {tour.attendance_fee_rank3 && tour.rank3
-                                            ? `Lệ phí rank ${tour.rank3} trở lên: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`
-                                            : ''}
+                                        ? `${tour.fee_label_rank3 || ('Lệ phí rank ' + tour.rank3 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`
+                                        : ''}
                                         </td>
                                         {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td> */}

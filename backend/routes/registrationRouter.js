@@ -387,7 +387,7 @@ router.get('/by-phone', async (req, res) => {
   }
   try {
     const result = await client.query(
-      'SELECT id, name, phone FROM players WHERE phone = $1 LIMIT 1',
+      'SELECT id, name, phone, competition_unit FROM players WHERE phone = $1 LIMIT 1',
       [phone]
     );
     if (result.rows.length === 0) {

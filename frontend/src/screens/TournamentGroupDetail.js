@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
-//import MainLayout from '../components/MainLayout';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
 import TournamentTabDetail from '../components/TournamentTabDetail';
@@ -76,6 +75,29 @@ const TournamentGroupDetail = () => {
     }
   };
 
+  const handleRegulationUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !group?.id) return;
+
+    const form = new FormData();
+    form.append('regulation', file);
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${group.id}/upload-regulation`,
+        form,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      alert('✅ Đã tải lên điều lệ giải!');
+      // Tải lại group để cập nhật regulations nếu cần
+      const updated = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`);
+      setGroup(updated.data.group);
+    } catch (err) {
+      console.error('❌ Lỗi upload điều lệ:', err);
+      alert('❌ Không thể tải lên điều lệ.');
+    }
+  };
+
   if (loading) return <MainPageHeader ><p>Đang tải...</p></MainPageHeader >;
   if (!group) return <MainPageHeader ><p>Không tìm thấy nhóm giải đấu.</p></MainPageHeader >;
   if (!tournamentEvents.length) return <MainPageHeader ><p>Nhóm này chưa có giải đấu nào.</p></MainPageHeader >;
@@ -107,82 +129,6 @@ const TournamentGroupDetail = () => {
           position: 'relative',
         }}
       >
-        {/* Logo HBSF góc trên phải */}
-        {/* {logoFile && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 24,
-              right: 36,
-              zIndex: 10,
-              background: '#fff9',
-              borderRadius: 12,
-              padding: 5,
-              boxShadow: '0 2px 12px #0002'
-            }}
-          >
-            <img
-              src={`${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${logoFile}`}
-              alt="Logo HBSF"
-              style={{ height: 58, objectFit: 'contain', display: 'block' }}
-            />
-          </div>
-        )} */}
-
-        {/* <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '24px 36px 0 36px',
-        }}>
-          <button
-            onClick={() => navigate('/tournament_events')}
-            style={{
-              background: '#2a334a',
-              color: 'white',
-              border: 'none',
-              borderRadius: 8,
-              padding: '10px 18px',
-              fontSize: 17,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}
-          >
-            <FaArrowLeft /> Quay lại danh sách
-          </button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            {user?.user_type === 2 && (
-              <label
-                style={{
-                  background: '#12ad7b',
-                  color: 'white',
-                  padding: '9px 15px',
-                  borderRadius: 8,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: 15,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 7,
-                }}
-              >
-                <FaCamera /> Tải hình nền group
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBackgroundUpload}
-                  style={{ display: 'none' }}
-                  ref={fileInputRef}
-                />
-              </label>
-            )}
-            {uploading && <span style={{ color: '#246' }}>Đang tải lên...</span>}
-          </div>
-        </div> */}
-
         <div
           style={{
             display: 'flex',
@@ -210,6 +156,22 @@ const TournamentGroupDetail = () => {
                 ref={fileInputRef}
               />
             </label>
+          )}
+
+          {user?.user_type === 2 && (
+            <>
+              {/* Upload Điều Lệ */}
+              <input
+                type="file"
+                id="regulationFile"
+                accept="application/pdf"
+                style={{ display: 'none' }}
+                onChange={handleRegulationUpload}
+              />
+              <label htmlFor="regulationFile" className="top-action-button primary" style={{ height: 42, fontSize: 15 }}>
+                📄 Tải Điều Lệ Giải
+              </label>
+            </>
           )}
 
           {uploading && (
