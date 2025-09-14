@@ -329,6 +329,49 @@ router.get('/groups', async (req, res) => {
   }
 });
 
+// ✅ Lấy danh sách group và event (kể cả group chưa có event)
+router.get('/groups-with-events', async (req, res) => {
+  try {
+    const result = await client.query(`
+      SELECT 
+        g.id AS group_id,
+        g.tournament_name AS group_name,
+        g.start_date AS group_start_date,
+        g.end_date AS group_end_date,
+        g.regulations AS group_regulations,
+        g.display,
+        e.*
+      FROM tournament_group g
+      LEFT JOIN tournament_events e ON g.id = e.group_id
+      ORDER BY g.start_date ASC NULLS LAST, e.start_date ASC NULLS LAST
+    `);
+
+    // Gom nhóm
+    const groups = {};
+    result.rows.forEach(row => {
+      if (!groups[row.group_id]) {
+        groups[row.group_id] = {
+          group_id: row.group_id,
+          group_name: row.group_name,
+          group_start_date: row.group_start_date,
+          group_end_date: row.group_end_date,
+          group_regulations: row.group_regulations,
+          display: row.display,
+          tournament_events: []
+        };
+      }
+      if (row.id) { // chỉ push nếu có event
+        groups[row.group_id].tournament_events.push(row);
+      }
+    });
+
+    res.json(Object.values(groups));
+  } catch (error) {
+    console.error('Error fetching groups with events:', error);
+    res.status(500).json({ message: 'Lỗi server khi lấy groups.' });
+  }
+});
+
 // GET group info và list tournament_events theo group_id
 router.get('/group/:groupId', async (req, res) => {
   const { groupId } = req.params;

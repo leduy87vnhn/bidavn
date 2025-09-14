@@ -65,23 +65,45 @@ const TournamentList = () => {
         }
     };
 
-    const fetchTournamentEvents = () => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, {
-            params: {
-                page,
-                limit,
-                status: statusFilter // Gửi thêm status filter
-            }
-        })
-        .then(res => {
-            setTournamentEvents(res.data?.data || []);
-            setTotal(res.data?.total || 0);
-        })
-        .catch(err => {
-            console.error(err);
-            setTournamentEvents([]);
-            setTotal(0);
+    // const fetchTournamentEvents = () => {
+    //     axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, {
+    //         params: {
+    //             page,
+    //             limit,
+    //             status: statusFilter // Gửi thêm status filter
+    //         }
+    //     })
+    //     .then(res => {
+    //         setTournamentEvents(res.data?.data || []);
+    //         setTotal(res.data?.total || 0);
+    //     })
+    //     .catch(err => {
+    //         console.error(err);
+    //         setTournamentEvents([]);
+    //         setTotal(0);
+    //     });
+    // };
+
+    const fetchTournamentEvents = async () => {
+    try {
+        if (user?.user_type === 2) {
+        // Admin → lấy tất cả group, kể cả rỗng
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`);
+        setTournamentEvents(res.data || []);
+        setTotal(res.data.length);
+        } else {
+        // User thường → giữ API cũ (chỉ hiện group có event)
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tournament_events`, {
+            params: { page, limit, status: statusFilter }
         });
+        setTournamentEvents(res.data?.data || []);
+        setTotal(res.data?.total || 0);
+        }
+    } catch (err) {
+        console.error(err);
+        setTournamentEvents([]);
+        setTotal(0);
+    }
     };
 
     const getTournamentEventStatus = (start, end) => {
@@ -498,234 +520,130 @@ const TournamentList = () => {
                         Bảng xếp hạng Carom - Pool HBSF
                     </Link> */}
                 </div>
-                {/* Table danh sách giải */}
-                {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 ? (
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                            <thead>
-                            <tr style={{ backgroundColor: '#f8f9fa' }}>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
-                                {user?.user_type === 2 && (
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
-                                )}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {Object.values(groupedTournamentEvents).map(group => (
-                                <React.Fragment key={group.group_id || 'ungrouped'}>
-                                <tr>
-                                    <td colSpan={user?.user_type === 2 ? 4 : 3} style={{
-                                    backgroundColor: '#dbeafe',
-                                    fontWeight: 'bold',
-                                    padding: '10px',
-                                    border: '1px solid #ccc',
-                                    whiteSpace: 'pre-line'
-                                    }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div>
-                                        {group.group_id ? (
-                                            <Link
-                                                to={`/tournament-group/${group.group_id}`}
-                                                style={{
-                                                    color: '#007bff',
-                                                    textDecoration: 'underline',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '20px',
-                                                    cursor: 'pointer'
-                                                }}
-                                                >
-                                                {group.group_name}
-                                            </Link>
-                                        ) : (
-                                            group.group_name
-                                        )}
-                                        {"\n"}
-                                            <div style={{ fontSize: '20px', marginTop: '4px', fontWeight: '500' }}>
-                                                Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
-                                            </div>
-                                        </div>
 
-                                        {group.group_id && (
-                                        <div style={{ display: 'flex', gap: '10px' }}>
-                                            {/* 📥 Tải Điều Lệ Giải */}
-                                            {group.group_regulations ? (
-                                            <a
-                                                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="top-action-button primary"
-                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                                            >
-                                                📥 Điều lệ
-                                            </a>
-                                            ) : (
-                                            <button
-                                                className="top-action-button grey"
-                                                title="Chưa có điều lệ"
-                                                disabled
-                                            >
-                                                📄 Điều lệ
-                                            </button>
-                                            )}
-                                            <button
-                                            className="edit"
-                                            onClick={() => {
-                                                setEditingGroup({
-                                                id: group.group_id,
-                                                tournament_name: group.group_name,
-                                                start_date: group.group_start_date,
-                                                end_date: group.group_end_date
-                                                });
-                                                setShowGroupPopup(true);
-                                            }}
-                                            >
-                                            ✏️ Sửa
-                                            </button>
-                                            <button
-                                            style={{
-                                                backgroundColor: '#dc3545',
-                                                color: '#fff',
-                                                border: 'none',
-                                                padding: '5px 10px',
-                                                borderRadius: '5px',
-                                                cursor: 'pointer'
-                                            }}
-                                            onClick={() => handleDeleteGroup(group.group_id)}
-                                            >
-                                            🗑 Xóa
-                                            </button>
-                                        </div>
-                                        )}
-                                    </div>
-                                    </td>
-                                </tr>
+                {tournamentEvents.map(group => (
+                <React.Fragment key={group.group_id || 'ungrouped'}>
+                    <tr>
+                    <td colSpan={user?.user_type === 2 ? 4 : 3} style={{
+                        backgroundColor: '#dbeafe',
+                        fontWeight: 'bold',
+                        padding: '10px',
+                        border: '1px solid #ccc',
+                        whiteSpace: 'pre-line'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                            {group.group_id ? (
+                            <Link
+                                to={`/tournament-group/${group.group_id}`}
+                                style={{
+                                color: '#007bff',
+                                textDecoration: 'underline',
+                                fontWeight: 'bold',
+                                fontSize: '20px',
+                                cursor: 'pointer'
+                                }}
+                            >
+                                {group.group_name}
+                            </Link>
+                            ) : (
+                            group.group_name
+                            )}
+                            {"\n"}
+                            {group.group_start_date && group.group_end_date && (
+                            <div style={{ fontSize: '20px', marginTop: '4px', fontWeight: '500' }}>
+                                Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                            </div>
+                            )}
+                        </div>
 
-                                {group.tournament_events.map(tour => {
-                                    const status = getTournamentEventStatus(tour.start_date, tour.end_date);
-                                    let bgColor = 'white';
-                                    if (status === 'ongoing') bgColor = '#d0ebff';
-                                    else if (status === 'ended') bgColor = '#f0f0f0';
+                        {group.group_id && user?.user_type === 2 && (
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                            {/* 📥 Tải Điều Lệ Giải */}
+                            {group.group_regulations ? (
+                                <a
+                                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="top-action-button primary"
+                                >
+                                📥 Điều lệ
+                                </a>
+                            ) : (
+                                <button className="top-action-button grey" disabled>📄 Điều lệ</button>
+                            )}
+                            <button
+                                className="edit"
+                                onClick={() => {
+                                setEditingGroup({
+                                    id: group.group_id,
+                                    tournament_name: group.group_name,
+                                    start_date: group.group_start_date,
+                                    end_date: group.group_end_date
+                                });
+                                setShowGroupPopup(true);
+                                }}
+                            >
+                                ✏️ Sửa
+                            </button>
+                            <button
+                                style={{ backgroundColor: '#dc3545', color: '#fff' }}
+                                onClick={() => handleDeleteGroup(group.group_id)}
+                            >
+                                🗑 Xóa
+                            </button>
+                            </div>
+                        )}
+                        </div>
+                    </td>
+                    </tr>
 
-                                    return (
-                                    <tr key={tour.id} style={{ backgroundColor: bgColor }}>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                                        <div>
-                                            {/* <Link to={`/tournament_events/${tour.id}`} style={{ color: '#007bff', textDecoration: 'none', fontWeight: 600 }}> */}
-                                            {tour.name}
-                                            {/* </Link> */}
-                                        </div>
-                                        {typeof tour.approved_competitors_count !== 'undefined' && (
-                                            <div onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)} style={{
-                                            marginTop: '4px',
-                                            display: 'inline-block',
-                                            backgroundColor: '#28a745',
-                                            color: 'white',
-                                            padding: '4px 8px',
-                                            borderRadius: '5px',
-                                            fontSize: '13px',
-                                            cursor: 'pointer'
-                                            }}>
-                                            🧑‍🎱 {tour.approved_competitors_count} VĐV
-                                            </div>
-                                        )}
-                                        </td>
-                                        {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.content}</td> */}
-                                        <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
-                                        {tour.attendance_fee_common ? `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n` : ''}
-                                        {tour.attendance_fee_rank1 && tour.rank1
-                                        ? `${tour.fee_label_rank1 || ('Lệ phí rank ' + tour.rank1 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`
-                                        : ''}
-                                        {tour.attendance_fee_rank2 && tour.rank2
-                                        ? `${tour.fee_label_rank2 || ('Lệ phí rank ' + tour.rank2 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`
-                                        : ''}
-                                        {tour.attendance_fee_rank3 && tour.rank3
-                                        ? `${tour.fee_label_rank3 || ('Lệ phí rank ' + tour.rank3 + ' trở lên')}: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`
-                                        : ''}
-                                        </td>
-                                        {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.start_date)}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(tour.end_date)}</td> */}
-                                        <td style={{
-                                            border: '1px solid #ddd',
-                                            padding: '8px',
-                                            maxHeight: '100px',
-                                            overflowY: 'auto',
-                                            whiteSpace: 'pre-wrap',
-                                            wordBreak: 'break-word'
-                                        }}>{tour.location}</td>
-                                        {/* <td style={{
-                                            border: '1px solid #ddd',
-                                            padding: '8px',
-                                            maxHeight: '100px',
-                                            overflowY: 'auto',
-                                            whiteSpace: 'pre-wrap',
-                                            wordBreak: 'break-word'
-                                        }}>{tour.prize}</td> */}
+                    {group.tournament_events.length > 0 ? (
+                    group.tournament_events.map(tour => {
+                        const status = getTournamentEventStatus(tour.start_date, tour.end_date);
+                        let bgColor = 'white';
+                        if (status === 'ongoing') bgColor = '#d0ebff';
+                        else if (status === 'ended') bgColor = '#f0f0f0';
 
-                                        <td style={{
-                                            border: '1px solid #ddd',
-                                            padding: '8px',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            gap: '6px'
-                                        }}>
-                                        {/* Đăng ký lẻ: ai cũng thấy */}
-                                        <button
-                                            className="teal"
-                                            disabled={isRegistrationClosed(tour.registration_deadline)}
-                                            style={{
-                                                backgroundColor: isRegistrationClosed(tour.registration_deadline) ? '#ccc' : undefined,
-                                                cursor: isRegistrationClosed(tour.registration_deadline) ? 'not-allowed' : 'pointer'
-                                            }}
-                                            onClick={() => {
-                                                if (!isRegistrationClosed(tour.registration_deadline)) {
-                                                navigate(`/tournament_events/${tour.id}/register-single`);
-                                                }
-                                            }}
-                                        >
-                                        Đăng ký thi đấu
-                                        </button>
+                        return (
+                        <tr key={tour.id} style={{ backgroundColor: bgColor }}>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                            {tour.name}
+                            {typeof tour.approved_competitors_count !== 'undefined' && (
+                                <div onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}
+                                style={{ marginTop: '4px', backgroundColor: '#28a745', color: 'white', padding: '4px 8px', borderRadius: '5px', fontSize: '13px', cursor: 'pointer' }}>
+                                🧑‍🎱 {tour.approved_competitors_count} VĐV
+                                </div>
+                            )}
+                            </td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
+                            {tour.attendance_fee_common && `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n`}
+                            {tour.attendance_fee_rank1 && tour.rank1 && `${tour.fee_label_rank1 || 'Lệ phí rank ' + tour.rank1}: ${parseInt(tour.attendance_fee_rank1).toLocaleString('vi-VN')} VNĐ\n`}
+                            {tour.attendance_fee_rank2 && tour.rank2 && `${tour.fee_label_rank2 || 'Lệ phí rank ' + tour.rank2}: ${parseInt(tour.attendance_fee_rank2).toLocaleString('vi-VN')} VNĐ\n`}
+                            {tour.attendance_fee_rank3 && tour.rank3 && `${tour.fee_label_rank3 || 'Lệ phí rank ' + tour.rank3}: ${parseInt(tour.attendance_fee_rank3).toLocaleString('vi-VN')} VNĐ`}
+                            </td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{tour.location}</td>
+                            {user?.user_type === 2 && (
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                <button className="teal" onClick={() => navigate(`/tournament_events/${tour.id}/register-single`)}>Đăng ký thi đấu</button>
+                                <button className="primary" onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}>Danh sách VĐV</button>
+                                <button className="primary" onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}>Phê duyệt</button>
+                                <button className="danger" onClick={() => handleDelete(tour.id)}>Xóa</button>
+                            </td>
+                            )}
+                        </tr>
+                        );
+                    })
+                    ) : (
+                    <tr>
+                        <td colSpan={user?.user_type === 2 ? 4 : 3} style={{ textAlign: 'center', fontStyle: 'italic', color: '#666' }}>
+                        (Chưa có nội dung nào)
+                        </td>
+                    </tr>
+                    )}
+                </React.Fragment>
+                ))}
 
-                                        {/* Danh sách VĐV: ai cũng thấy */}
-                                        <button
-                                            className="primary"
-                                            onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}
-                                        >
-                                            Danh sách VĐV
-                                        </button>
-
-                                        {/* Phê duyệt: chỉ Admin */}
-                                        {user?.user_type === 2 && (
-                                            <button
-                                            className="primary"
-                                            onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}
-                                            >
-                                            Phê duyệt
-                                            </button>
-                                        )}
-
-                                        {/* Xóa: chỉ Admin */}
-                                        {user?.user_type === 2 && (
-                                            <button
-                                            className="danger"
-                                            onClick={() => handleDelete(tour.id)}
-                                            >
-                                            Xóa
-                                            </button>
-                                        )}
-                                        </td>
-                                    </tr>
-                                    );
-                                })}
-                                </React.Fragment>
-                            ))}
-                            </tbody>
-                        </table>
-                    </div>
-                ) : (
-                    <p>Không có giải đấu nào.</p>
-                )}
 
                 {/* Phân trang */}
                 <div style={{ marginTop: '20px' }}>
