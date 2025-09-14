@@ -686,48 +686,59 @@ const TournamentList = () => {
                                     </td>
 
                                     {/* Thao tác */}
-                                    {user?.user_type === 2 && (
                                     <td
-                                        style={{
+                                    style={{
                                         border: '1px solid #ddd',
                                         padding: '8px',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         gap: '6px'
-                                        }}
+                                    }}
                                     >
-                                        <button
+                                    {/* Đăng ký thi đấu: luôn hiển thị */}
+                                    <button
                                         className="teal"
                                         disabled={isRegistrationClosed(tour.registration_deadline)}
                                         style={{
-                                            backgroundColor: isRegistrationClosed(tour.registration_deadline) ? '#ccc' : undefined,
-                                            cursor: isRegistrationClosed(tour.registration_deadline) ? 'not-allowed' : 'pointer'
+                                        backgroundColor: isRegistrationClosed(tour.registration_deadline) ? '#ccc' : undefined,
+                                        cursor: isRegistrationClosed(tour.registration_deadline) ? 'not-allowed' : 'pointer'
                                         }}
                                         onClick={() => {
-                                            if (!isRegistrationClosed(tour.registration_deadline)) {
+                                        if (!isRegistrationClosed(tour.registration_deadline)) {
                                             navigate(`/tournament_events/${tour.id}/register-single`);
-                                            }
+                                        }
                                         }}
-                                        >
+                                    >
                                         Đăng ký thi đấu
-                                        </button>
+                                    </button>
 
-                                        <button className="primary" onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}>
+                                    {/* Danh sách VĐV: luôn hiển thị */}
+                                    <button
+                                        className="primary"
+                                        onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}
+                                    >
                                         Danh sách VĐV
-                                        </button>
+                                    </button>
 
+                                    {/* Phê duyệt: chỉ Admin */}
+                                    {user?.user_type === 2 && (
                                         <button
                                         className="primary"
-                                        onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}
+                                        onClick={() =>
+                                            navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)
+                                        }
                                         >
                                         Phê duyệt
                                         </button>
+                                    )}
 
+                                    {/* Xóa: chỉ Admin */}
+                                    {user?.user_type === 2 && (
                                         <button className="danger" onClick={() => handleDelete(tour.id)}>
                                         Xóa
                                         </button>
-                                    </td>
                                     )}
+                                    </td>
                                 </tr>
                                 );
                             })
