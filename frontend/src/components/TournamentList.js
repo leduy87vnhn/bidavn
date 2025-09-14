@@ -518,30 +518,22 @@ const TournamentList = () => {
                     </Link> */}
                 </div>
 
-                {/* Danh sách giải */}
-                <div style={{ overflowX: 'auto', marginTop: 20 }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                {/* Table danh sách giải */}
+                {Array.isArray(tournamentEvents) && tournamentEvents.length > 0 ? (
+                <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
                     <thead>
-                    <tr style={{ backgroundColor: '#f8f9fa' }}>
-                        <th style={{ border: '1px solid #ddd', padding: 8 }}>Tên nội dung</th>
-                        <th style={{ border: '1px solid #ddd', padding: 8 }}>Lệ phí (VNĐ)</th>
-                        <th style={{ border: '1px solid #ddd', padding: 8 }}>Địa điểm</th>
+                        <tr style={{ backgroundColor: '#f8f9fa' }}>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
                         {user?.user_type === 2 && (
-                        <th style={{ border: '1px solid #ddd', padding: 8 }}>Thao tác</th>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
                         )}
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
-                    {tournamentEvents.map(group => {
-                        // Lọc nội dung theo trạng thái nếu là Admin
-                        const filteredEvents =
-                        user?.user_type === 2
-                            ? filterEventsByStatus(group.tournament_events, statusFilter)
-                            : group.tournament_events;
-
-                        if (filteredEvents.length === 0) return null;
-
-                        return (
+                        {tournamentEvents.map(group => (
                         <React.Fragment key={group.group_id || 'ungrouped'}>
                             {/* Hàng tiêu đề nhóm */}
                             <tr>
@@ -550,18 +542,12 @@ const TournamentList = () => {
                                 style={{
                                 backgroundColor: '#dbeafe',
                                 fontWeight: 'bold',
-                                padding: 10,
+                                padding: '10px',
                                 border: '1px solid #ccc',
                                 whiteSpace: 'pre-line'
                                 }}
                             >
-                                <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}
-                                >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div>
                                     {group.group_id ? (
                                     <Link
@@ -581,22 +567,14 @@ const TournamentList = () => {
                                     )}
                                     {"\n"}
                                     {group.group_start_date && group.group_end_date && (
-                                    <div
-                                        style={{
-                                        fontSize: '20px',
-                                        marginTop: '4px',
-                                        fontWeight: '500'
-                                        }}
-                                    >
-                                        Thời gian: {formatDate(group.group_start_date)} đến{" "}
-                                        {formatDate(group.group_end_date)}
+                                    <div style={{ fontSize: '20px', marginTop: '4px', fontWeight: '500' }}>
+                                        Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
                                     </div>
                                     )}
                                 </div>
 
                                 {group.group_id && user?.user_type === 2 && (
                                     <div style={{ display: 'flex', gap: '10px' }}>
-                                    {/* 📥 Tải Điều Lệ Giải */}
                                     {group.group_regulations ? (
                                         <a
                                         href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
@@ -637,134 +615,137 @@ const TournamentList = () => {
                             </td>
                             </tr>
 
-                            {/* Hàng nội dung */}
-                            {filteredEvents.map(tour => {
-                            const status = getTournamentEventStatus(
-                                tour.start_date,
-                                tour.end_date
-                            );
-                            let bgColor = 'white';
-                            if (status === 'ongoing') bgColor = '#d0ebff';
-                            else if (status === 'ended') bgColor = '#f0f0f0';
+                            {/* Hàng các giải thuộc group */}
+                            {group.tournament_events.length > 0 ? (
+                            group.tournament_events.map(tour => {
+                                const status = getTournamentEventStatus(tour.start_date, tour.end_date);
+                                let bgColor = 'white';
+                                if (status === 'ongoing') bgColor = '#d0ebff';
+                                else if (status === 'ended') bgColor = '#f0f0f0';
 
-                            return (
+                                return (
                                 <tr key={tour.id} style={{ backgroundColor: bgColor }}>
-                                <td style={{ border: '1px solid #ddd', padding: 8 }}>
-                                    {tour.name}
+                                    {/* Tên nội dung */}
+                                    <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                    <div>{tour.name}</div>
                                     {typeof tour.approved_competitors_count !== 'undefined' && (
-                                    <div
-                                        onClick={() =>
-                                        navigate(`/tournament_events/${tour.id}/competitors`)
-                                        }
+                                        <div
+                                        onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}
                                         style={{
-                                        marginTop: '4px',
-                                        backgroundColor: '#28a745',
-                                        color: 'white',
-                                        padding: '4px 8px',
-                                        borderRadius: '5px',
-                                        fontSize: '13px',
-                                        cursor: 'pointer',
-                                        display: 'inline-block'
+                                            marginTop: '4px',
+                                            backgroundColor: '#28a745',
+                                            color: 'white',
+                                            padding: '4px 8px',
+                                            borderRadius: '5px',
+                                            fontSize: '13px',
+                                            cursor: 'pointer',
+                                            display: 'inline-block'
                                         }}
-                                    >
+                                        >
                                         🧑‍🎱 {tour.approved_competitors_count} VĐV
-                                    </div>
+                                        </div>
                                     )}
-                                </td>
-                                <td
-                                    style={{
-                                    border: '1px solid #ddd',
-                                    padding: 8,
-                                    whiteSpace: 'pre-line'
-                                    }}
-                                >
+                                    </td>
+
+                                    {/* Lệ phí */}
+                                    <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
                                     {tour.attendance_fee_common &&
-                                    `Lệ phí chung: ${parseInt(
-                                        tour.attendance_fee_common
-                                    ).toLocaleString('vi-VN')} VNĐ\n`}
+                                        `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n`}
                                     {tour.attendance_fee_rank1 &&
-                                    tour.rank1 &&
-                                    `${
-                                        tour.fee_label_rank1 || 'Lệ phí rank ' + tour.rank1
-                                    }: ${parseInt(tour.attendance_fee_rank1).toLocaleString(
-                                        'vi-VN'
-                                    )} VNĐ\n`}
+                                        tour.rank1 &&
+                                        `${tour.fee_label_rank1 || 'Lệ phí rank ' + tour.rank1}: ${parseInt(
+                                        tour.attendance_fee_rank1
+                                        ).toLocaleString('vi-VN')} VNĐ\n`}
                                     {tour.attendance_fee_rank2 &&
-                                    tour.rank2 &&
-                                    `${
-                                        tour.fee_label_rank2 || 'Lệ phí rank ' + tour.rank2
-                                    }: ${parseInt(tour.attendance_fee_rank2).toLocaleString(
-                                        'vi-VN'
-                                    )} VNĐ\n`}
+                                        tour.rank2 &&
+                                        `${tour.fee_label_rank2 || 'Lệ phí rank ' + tour.rank2}: ${parseInt(
+                                        tour.attendance_fee_rank2
+                                        ).toLocaleString('vi-VN')} VNĐ\n`}
                                     {tour.attendance_fee_rank3 &&
-                                    tour.rank3 &&
-                                    `${
-                                        tour.fee_label_rank3 || 'Lệ phí rank ' + tour.rank3
-                                    }: ${parseInt(tour.attendance_fee_rank3).toLocaleString(
-                                        'vi-VN'
-                                    )} VNĐ`}
-                                </td>
-                                <td style={{ border: '1px solid #ddd', padding: 8 }}>
-                                    {tour.location}
-                                </td>
-                                {user?.user_type === 2 && (
+                                        tour.rank3 &&
+                                        `${tour.fee_label_rank3 || 'Lệ phí rank ' + tour.rank3}: ${parseInt(
+                                        tour.attendance_fee_rank3
+                                        ).toLocaleString('vi-VN')} VNĐ`}
+                                    </td>
+
+                                    {/* Địa điểm */}
                                     <td
                                     style={{
                                         border: '1px solid #ddd',
-                                        padding: 8,
+                                        padding: '8px',
+                                        maxHeight: '100px',
+                                        overflowY: 'auto',
+                                        whiteSpace: 'pre-wrap',
+                                        wordBreak: 'break-word'
+                                    }}
+                                    >
+                                    {tour.location}
+                                    </td>
+
+                                    {/* Thao tác */}
+                                    {user?.user_type === 2 && (
+                                    <td
+                                        style={{
+                                        border: '1px solid #ddd',
+                                        padding: '8px',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         gap: '6px'
-                                    }}
-                                    >
-                                    <button
-                                        className="teal"
-                                        disabled={isRegistrationClosed(tour.registration_deadline)}
-                                        onClick={() => {
-                                        if (!isRegistrationClosed(tour.registration_deadline)) {
-                                            navigate(`/tournament_events/${tour.id}/register-single`);
-                                        }
                                         }}
                                     >
+                                        <button
+                                        className="teal"
+                                        disabled={isRegistrationClosed(tour.registration_deadline)}
+                                        style={{
+                                            backgroundColor: isRegistrationClosed(tour.registration_deadline) ? '#ccc' : undefined,
+                                            cursor: isRegistrationClosed(tour.registration_deadline) ? 'not-allowed' : 'pointer'
+                                        }}
+                                        onClick={() => {
+                                            if (!isRegistrationClosed(tour.registration_deadline)) {
+                                            navigate(`/tournament_events/${tour.id}/register-single`);
+                                            }
+                                        }}
+                                        >
                                         Đăng ký thi đấu
-                                    </button>
-                                    <button
-                                        className="primary"
-                                        onClick={() =>
-                                        navigate(`/tournament_events/${tour.id}/competitors`)
-                                        }
-                                    >
+                                        </button>
+
+                                        <button className="primary" onClick={() => navigate(`/tournament_events/${tour.id}/competitors`)}>
                                         Danh sách VĐV
-                                    </button>
-                                    <button
+                                        </button>
+
+                                        <button
                                         className="primary"
-                                        onClick={() =>
-                                        navigate(
-                                            `/registrations?tournament=${encodeURIComponent(
-                                            tour.name
-                                            )}`
-                                        )
-                                        }
-                                    >
+                                        onClick={() => navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)}
+                                        >
                                         Phê duyệt
-                                    </button>
-                                    <button
-                                        className="danger"
-                                        onClick={() => handleDelete(tour.id)}
-                                    >
+                                        </button>
+
+                                        <button className="danger" onClick={() => handleDelete(tour.id)}>
                                         Xóa
-                                    </button>
+                                        </button>
                                     </td>
-                                )}
+                                    )}
                                 </tr>
-                            );
-                            })}
+                                );
+                            })
+                            ) : (
+                            <tr>
+                                <td
+                                colSpan={user?.user_type === 2 ? 4 : 3}
+                                style={{ textAlign: 'center', fontStyle: 'italic', color: '#666' }}
+                                >
+                                (Chưa có nội dung nào)
+                                </td>
+                            </tr>
+                            )}
                         </React.Fragment>
-                        );
-                    })}
+                        ))}
                     </tbody>
-                </table>
+                    </table>
                 </div>
+                ) : (
+                <p>Không có giải đấu nào.</p>
+                )}
 
 
                 {/* Phân trang */}
