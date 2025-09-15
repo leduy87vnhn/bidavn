@@ -539,13 +539,13 @@ const TournamentList = () => {
                             {/* Hàng tiêu đề nhóm */}
                             <tr>
                                 <td
-                                    colSpan={user?.user_type === 2 ? 4 : 3}
+                                    colSpan={3}
                                     style={{
-                                    backgroundColor: '#dbeafe',
-                                    fontWeight: 'bold',
-                                    padding: '10px',
-                                    border: '1px solid #ccc',
-                                    whiteSpace: 'pre-line'
+                                        backgroundColor: '#dbeafe',
+                                        fontWeight: 'bold',
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        whiteSpace: 'pre-line'
                                     }}
                                 >
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
