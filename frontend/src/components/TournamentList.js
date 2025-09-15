@@ -529,10 +529,8 @@ const TournamentList = () => {
                         <tr style={{ backgroundColor: '#f8f9fa' }}>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>
-                        {user?.user_type === 2 && (
-                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>
-                        )}
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>                        
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>                        
                         </tr>
                     </thead>
                     <tbody>
