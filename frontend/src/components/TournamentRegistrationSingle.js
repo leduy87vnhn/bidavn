@@ -298,7 +298,7 @@ const TournamentRegistrationSingle = () => {
       const formRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form`, {
         tournament_id: tournament.id,
         registered_phone: competitor.phone,
-        user_id: user?.id
+        //user_id: user?.id
       });
 
       const registration_form_id = formRes.data.id;

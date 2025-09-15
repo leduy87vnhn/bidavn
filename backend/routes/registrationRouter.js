@@ -10,6 +10,19 @@ router.post('/', async (req, res) => {
   const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   try {
+
+    // Luôn tìm user_id theo phone
+    const userRes = await client.query(
+      `SELECT id FROM users WHERE phone_number = $1 LIMIT 1`,
+      [registered_phone]
+    );
+
+    if (userRes.rows.length === 0) {
+      return res.status(400).json({ message: '❌ Không tìm thấy tài khoản nào với số điện thoại này.' });
+    }
+
+    const user_id = userRes.rows[0].id;
+
     const result = await client.query(
       `INSERT INTO registration_form (user_id, registered_phone, tournament_id, status, created_date, modified_date)
        VALUES ($1, $2, $3, 0, $4, $4) RETURNING id`,
