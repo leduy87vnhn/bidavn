@@ -62,7 +62,7 @@ const MainPageTournamentSummary = () => {
       <div className="summary-header">GIẢI THỂ THAO</div>
       {groups
       .slice() // copy ra để không làm mutate state
-      .sort((a, b) => new Date(a.start_date) - new Date(b.start_date)) // sắp xếp tăng dần theo start_date
+      .sort((a, b) => new Date(b.start_date) - new Date(a.start_date)) // sắp xếp tăng dần theo start_date
       .map((item) => (
         <div key={item.id} className="summary-row">
           <div
