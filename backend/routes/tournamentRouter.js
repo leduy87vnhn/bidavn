@@ -634,7 +634,7 @@ router.get('/upcoming-groups', async (req, res) => {
       FROM tournament_group g
       WHERE g.start_date IS NOT NULL
       ORDER BY g.start_date DESC
-      LIMIT 3
+      LIMIT 5
     `);
     res.json(result.rows);
   } catch (error) {
