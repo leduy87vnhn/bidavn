@@ -537,7 +537,7 @@ const TournamentList = () => {
                         {tournamentEvents.map(group => (
                         <React.Fragment key={group.group_id || 'ungrouped'}>
                             {/* Hàng tiêu đề nhóm */}
-                            <tr>
+                            {/* <tr>
                                 <td
                                     colSpan={3}
                                     style={{
@@ -619,6 +619,94 @@ const TournamentList = () => {
                                         )}
                                     </div>
                                 </td>
+                            </tr> */}
+                            <tr>
+                            {/* Gộp 3 cột đầu */}
+                            <td
+                                colSpan={3}
+                                style={{
+                                backgroundColor: '#dbeafe',
+                                fontWeight: 'bold',
+                                padding: '10px',
+                                border: '1px solid #ccc',
+                                whiteSpace: 'pre-line'
+                                }}
+                            >
+                                <div>
+                                {group.group_id ? (
+                                    <Link
+                                    to={`/tournament-group/${group.group_id}`}
+                                    style={{
+                                        color: '#007bff',
+                                        textDecoration: 'underline',
+                                        fontWeight: 'bold',
+                                        fontSize: '20px',
+                                        cursor: 'pointer'
+                                    }}
+                                    >
+                                    {group.group_name}
+                                    </Link>
+                                ) : (
+                                    group.group_name
+                                )}
+                                {"\n"}
+                                {group.group_start_date && group.group_end_date && (
+                                    <div style={{ fontSize: '20px', marginTop: '4px', fontWeight: '500' }}>
+                                    Thời gian: {formatDate(group.group_start_date)} đến {formatDate(group.group_end_date)}
+                                    </div>
+                                )}
+                                </div>
+                            </td>
+
+                            {/* Cột Thao tác riêng */}
+                            <td
+                                style={{
+                                border: '1px solid #ccc',
+                                backgroundColor: '#dbeafe',
+                                padding: '10px',
+                                textAlign: 'right'
+                                }}
+                            >
+                                {group.group_regulations ? (
+                                <a
+                                    href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="top-action-button primary"
+                                >
+                                    📥 Điều lệ
+                                </a>
+                                ) : (
+                                <button className="top-action-button grey" disabled>
+                                    📄 Điều lệ
+                                </button>
+                                )}
+
+                                {user?.user_type === 2 && (
+                                <>
+                                    <button
+                                    className="edit"
+                                    onClick={() => {
+                                        setEditingGroup({
+                                        id: group.group_id,
+                                        tournament_name: group.group_name,
+                                        start_date: group.group_start_date,
+                                        end_date: group.group_end_date
+                                        });
+                                        setShowGroupPopup(true);
+                                    }}
+                                    >
+                                    ✏️ Sửa
+                                    </button>
+                                    <button
+                                    style={{ backgroundColor: '#dc3545', color: '#fff' }}
+                                    onClick={() => handleDeleteGroup(group.group_id)}
+                                    >
+                                    🗑 Xóa
+                                    </button>
+                                </>
+                                )}
+                            </td>
                             </tr>
 
                             {/* Hàng các giải thuộc group */}
