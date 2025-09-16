@@ -35,12 +35,12 @@ const TournamentList = () => {
         end_date: ''
     });
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (!token) {
+    //         navigate('/login');
+    //     }
+    // }, []);
 
     useEffect(() => {
         const userInfo = localStorage.getItem('user_info');
@@ -529,7 +529,7 @@ const TournamentList = () => {
                         <tr style={{ backgroundColor: '#f8f9fa' }}>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tên nội dung</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Lệ phí (VNĐ)</th>
-                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Địa điểm</th>                        
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Ghi chú</th>                        
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Thao tác</th>                        
                         </tr>
                     </thead>
@@ -744,7 +744,7 @@ const TournamentList = () => {
                                     {/* Lệ phí */}
                                     <td style={{ border: '1px solid #ddd', padding: '8px', whiteSpace: 'pre-line' }}>
                                     {tour.attendance_fee_common &&
-                                        `Lệ phí chung: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n`}
+                                        `Lệ phí: ${parseInt(tour.attendance_fee_common).toLocaleString('vi-VN')} VNĐ\n`}
                                     {tour.attendance_fee_rank1 &&
                                         tour.rank1 &&
                                         `${tour.fee_label_rank1 || 'Lệ phí rank ' + tour.rank1}: ${parseInt(
