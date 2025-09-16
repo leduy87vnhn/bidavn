@@ -46,17 +46,7 @@ export default function App() {
           }
         />
         <Route path="/members" element={<MembersScreen />} />
-
-        {/* Route bảo vệ: chỉ vào nếu đã login */}
-        <Route
-          path="/tournament_events"
-          element={
-            <PrivateRoute>
-              <TournamentList />
-            </PrivateRoute>
-          }
-
-        />
+        <Route path="/tournament_events" element={<TournamentList />} />
       </Routes>
     </BrowserRouter>
   );
