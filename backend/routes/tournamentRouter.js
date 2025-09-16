@@ -519,7 +519,11 @@ const regulationStorage = multer.diskStorage({
       const name = result.rows[0].tournament_name.replace(/\s+/g, '');
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
       const newName = `${name}_${dateStr}_ĐiềuLệ.pdf`;
-
+      // 🔥 Nếu đã có file cũ → xoá
+      if (result.rows[0].regulations) {
+        const oldPath = path.join('uploads/regulations', result.rows[0].regulations);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      }
       cb(null, newName);
     } catch (err) {
       cb(err, '');
