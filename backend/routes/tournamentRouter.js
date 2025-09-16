@@ -505,26 +505,59 @@ router.post('/group/:groupId/upload-background', uploadGroupBackground.single('b
 const fs = require('fs');
 
 // Multer config cho điều lệ
+// const regulationStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/regulations'); // Thư mục đã tồn tại
+//   },
+//   filename: async (req, file, cb) => {
+//     const groupId = req.params.groupId;
+
+//     try {
+//       const result = await client.query(`SELECT tournament_name FROM tournament_group WHERE id = $1`, [groupId]);
+//       if (result.rows.length === 0) return cb(new Error('Group not found'), '');
+
+//       const name = result.rows[0].tournament_name.replace(/\s+/g, '');
+//       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+//       const newName = `${name}_${dateStr}_ĐiềuLệ.pdf`;
+//       // 🔥 Nếu đã có file cũ → xoá
+//       if (result.rows[0].regulations) {
+//         const oldPath = path.join('uploads/regulations', result.rows[0].regulations);
+//         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+//       }
+//       cb(null, newName);
+//     } catch (err) {
+//       cb(err, '');
+//     }
+//   }
+// });
 const regulationStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/regulations'); // Thư mục đã tồn tại
+    cb(null, 'uploads/regulations');
   },
   filename: async (req, file, cb) => {
     const groupId = req.params.groupId;
 
     try {
-      const result = await client.query(`SELECT tournament_name FROM tournament_group WHERE id = $1`, [groupId]);
+      const result = await client.query(
+        `SELECT tournament_name FROM tournament_group WHERE id = $1`,
+        [groupId]
+      );
       if (result.rows.length === 0) return cb(new Error('Group not found'), '');
 
       const name = result.rows[0].tournament_name.replace(/\s+/g, '');
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      const newName = `${name}_${dateStr}_ĐiềuLệ.pdf`;
-      // 🔥 Nếu đã có file cũ → xoá
-      if (result.rows[0].regulations) {
-        const oldPath = path.join('uploads/regulations', result.rows[0].regulations);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      const baseName = `${name}_${dateStr}_ĐiềuLệ`;
+      const ext = '.pdf';
+      let finalName = baseName + ext;
+      let counter = 1;
+
+      // Kiểm tra nếu file tồn tại → thêm hậu tố -1, -2, ...
+      while (fs.existsSync(path.join('uploads/regulations', finalName))) {
+        finalName = `${baseName}-${counter}${ext}`;
+        counter++;
       }
-      cb(null, newName);
+
+      cb(null, finalName);
     } catch (err) {
       cb(err, '');
     }
