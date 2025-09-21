@@ -8,7 +8,7 @@ const MainPageMenuBar = () => {
   return (
     <div className="mainpage-menu-bar">
       <div className="menu-left">
-        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/'}>Tin Tức Sự Kiện </span>
+        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/'}>Trang Chủ </span>
         <span className="menu-item" onClick={() => navigate('/tournament_events')}>Giải Thể Thao</span>
         {/* <span className="menu-item">Liên Đoàn</span> */}
         <span className="menu-item" onClick={() => navigate('/members')}>Hội Viên</span>
@@ -19,7 +19,7 @@ const MainPageMenuBar = () => {
         {user?.user_type === 2 && (
           <span className="menu-item" onClick={() => navigate('/users')}>Users</span>
         )}
-        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký</span>
+        {/* <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký</span>*/}
       </div>
       <div className="menu-right">
         {user ? (
