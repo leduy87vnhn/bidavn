@@ -587,7 +587,8 @@ const TournamentRegistrationSingle = () => {
         <button
           onClick={() => {
             setShowSuccessModal(false);
-            navigate(`/tournament_events/${tournamentId}/competitors`);
+            //navigate(`/tournament_events/${tournamentId}/competitors`);
+            navigate(`/tournament_events`);
           }}
           style={{
             padding: '8px 16px',
