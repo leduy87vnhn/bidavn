@@ -579,7 +579,7 @@ const TournamentRegistrationSingle = () => {
 
       <ReactModal isOpen={showSuccessModal} onRequestClose={() => setShowSuccessModal(false)} ariaHideApp={false}>
         <h2>Đơn Đăng Ký Đang Được Tiếp Nhận</h2>
-        <p>Hãy Hoàn Thành Chuyển khoản Để Hoàn Tất Đăng Ký<strong>{modalInfo.totalFee?.toLocaleString('vi-VN')} VND</strong> đến:</p>
+        <p>Để hoàn tất đăng ký hãy chuyển khoản <strong>{modalInfo.totalFee?.toLocaleString('vi-VN')} VND</strong> đến:</p>
         <p>📄 STK: {modalInfo.bankNumber}</p>
         <p>👤 Chủ TK: {modalInfo.bankAccName}</p>
         <p>🏦 Ngân hàng: {modalInfo.bankName}</p>
