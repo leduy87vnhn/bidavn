@@ -1,7 +1,7 @@
 // File: frontend/src/screens/TournamentGroupDetailForPlayer.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   FaMapMarkerAlt,
@@ -9,6 +9,7 @@ import {
   FaMoneyBillWave,
   FaGift,
   FaArrowLeft,
+  FaCalendarAlt 
 } from 'react-icons/fa';
 import '../css/tournamentGroupDetailForPlayer.scss';
 
@@ -51,7 +52,7 @@ const TournamentGroupDetailForPlayer = () => {
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${group.logo_image}`
     : null;
 
-  const backgroundUrl = group.background_image
+  const groupBgUrl = group.background_image
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
     : null;
 
