@@ -163,10 +163,10 @@ const TournamentGroupDetailForPlayer = () => {
             {/* Các nút hành động */}
             <div className="tgdp-event-actions">
             <Link to={`/tournament/${ev.id}/register`} className="tgdp-btn primary">
-                Đăng Ký
+                📝 Đăng Ký
             </Link>
-            <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn secondary">
-                Danh Sách Thi Đấu
+            <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
+                📋 Danh Sách Thi Đấu
             </Link>
             </div>
 
