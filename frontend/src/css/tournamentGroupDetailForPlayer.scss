@@ -1,0 +1,89 @@
+// File: frontend/src/css/tournamentGroupDetailForPlayer.scss
+
+.tgdp-wrapper {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.tgdp-header {
+  padding: 20px;
+}
+
+.tgdp-back-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    background: #0056b3;
+  }
+}
+
+.tgdp-logo {
+  text-align: center;
+  margin-bottom: 20px;
+
+  img {
+    max-height: 140px;
+    object-fit: contain;
+  }
+}
+
+.tgdp-events {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.tgdp-event-card {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tgdp-event-title {
+  margin: 0 0 16px 0;
+  font-size: 1.8rem;
+  color: #222;
+  font-weight: bold;
+}
+
+.tgdp-event-line {
+  font-size: 16px;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tgdp-icon {
+  &.red {
+    color: #e63946;
+  }
+  &.blue {
+    color: #1d3557;
+  }
+  &.green {
+    color: #2a9d8f;
+  }
+  &.orange {
+    color: #f4a261;
+  }
+}
+
+.tgdp-loading,
+.tgdp-error {
+  padding: 20px;
+  font-size: 16px;
+}

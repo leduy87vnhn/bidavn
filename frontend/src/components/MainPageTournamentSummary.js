@@ -67,7 +67,8 @@ const MainPageTournamentSummary = () => {
         <div key={item.id} className="summary-row">
           <div
             className="summary-col name"
-            onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}
+            //onClick={() => window.location.href = 'https://hbsf.com.vn/tournament_events'}
+            onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
             style={{ cursor: 'pointer', color: '#007bff' }}
           >
             {item.tournament_name}

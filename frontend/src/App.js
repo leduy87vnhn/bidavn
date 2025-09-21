@@ -17,6 +17,8 @@ import MainPageSettings from './screens/MainPageSettings';
 import TournamentGroupDetail from './screens/TournamentGroupDetail';
 import UserManagement from './screens/UserManagement';
 import MembersScreen from './screens/MembersScreen';
+import TournamentGroupDetailForPlayer from './screens/TournamentGroupDetailForPlayer';
+
 
 ReactModal.setAppElement('#root');
 
@@ -47,6 +49,7 @@ export default function App() {
         />
         <Route path="/members" element={<MembersScreen />} />
         <Route path="/tournament_events" element={<TournamentList />} />
+        <Route path="/tournament-group/:groupId/for-player" element={<TournamentGroupDetailForPlayer />} />
       </Routes>
     </BrowserRouter>
   );
