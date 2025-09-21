@@ -129,9 +129,12 @@ const UserManagement = () => {
         headerName: 'Ngày sinh',
         width: 130,
         valueFormatter: (params) => {
-            if (!params.value) return '';
-            const date = new Date(params.value);
-            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+          if (!params || !params.value) return '';
+          const date = new Date(params.value);
+          if (isNaN(date)) return ''; // tránh lỗi với giá trị không hợp lệ
+          return `${date.getDate().toString().padStart(2, '0')}/${
+            (date.getMonth() + 1).toString().padStart(2, '0')
+          }/${date.getFullYear()}`;
         },
         editable: true
     },
