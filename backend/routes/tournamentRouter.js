@@ -372,6 +372,7 @@ router.get('/groups-with-events', async (req, res) => {
         e.fee_label_rank1,
         e.fee_label_rank2,
         e.fee_label_rank3,
+        e.maximum_competitors,
         e.registration_deadline,
         (
           SELECT COUNT(*)
@@ -417,6 +418,7 @@ router.get('/groups-with-events', async (req, res) => {
           fee_label_rank1: row.fee_label_rank1,
           fee_label_rank2: row.fee_label_rank2,
           fee_label_rank3: row.fee_label_rank3,
+          maximum_competitors: row.maximum_competitors,
           registration_deadline: row.registration_deadline,
           approved_competitors_count: row.approved_competitors_count
         });
