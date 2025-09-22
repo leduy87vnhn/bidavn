@@ -162,12 +162,26 @@ const TournamentGroupDetailForPlayer = () => {
 
             {/* Các nút hành động */}
             <div className="tgdp-event-actions">
-            <Link to={`/tournament/${ev.id}/register`} className="tgdp-btn primary">
-                📝 Đăng Ký
-            </Link>
-            <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
-                📋 Danh Sách Thi Đấu
-            </Link>
+                <Link to={`/tournament/${ev.id}/register`} className="tgdp-btn primary">
+                    📝 Đăng Ký
+                </Link>
+                {ev.schedule_url ? (
+                    <a
+                    href={ev.schedule_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tgdp-btn primary"
+                    >
+                    📅 Lịch Thi Đấu
+                    </a>
+                ) : (
+                    <button className="tgdp-btn grey" disabled>
+                    📅 Lịch Thi Đấu
+                    </button>
+                )}
+                <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
+                    📋 Danh Sách Thi Đấu
+                </Link>
             </div>
 
           </div>

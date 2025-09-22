@@ -296,6 +296,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
           <div style={{ flex: 1 }}><p><strong>Ngày kết thúc:</strong><br />{getInput('end_date')}</p></div>
         </div>
         <p><strong>Địa điểm:</strong><br />{getInput('location', true, 5, true)}</p>
+        <p><strong>Lịch thi đấu (URL):</strong><br />{getInput('schedule_url')}</p>
         <p><strong>Nội dung:</strong><br />{getInput('content')}</p>
         <p><strong>Lệ phí:</strong><br />{getInput('attendance_fee_common')}</p>
         {user?.user_type === 2 && (

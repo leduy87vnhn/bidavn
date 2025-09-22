@@ -12,14 +12,14 @@ const MainPageMenuBar = () => {
         <span className="menu-item" onClick={() => navigate('/tournament_events')}>Giải Thể Thao</span>
         {/* <span className="menu-item">Liên Đoàn</span> */}
         <span className="menu-item" onClick={() => navigate('/members')}>Hội Viên</span>
-        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/players'}>Bảng xếp hạng</span>
+        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/players'}>Bảng Xếp Hạng</span>
         {user?.user_type === 2 && (
           <span className="menu-item" onClick={() => navigate('/settings')}>Thiết lập</span>
         )}
         {user?.user_type === 2 && (
           <span className="menu-item" onClick={() => navigate('/users')}>Users</span>
         )}
-        {/* <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký</span>*/}
+        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký Tài Khoản</span>
       </div>
       <div className="menu-right">
         {user ? (

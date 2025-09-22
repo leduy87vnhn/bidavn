@@ -210,7 +210,7 @@ router.put('/:id', async (req, res) => {
       group_id, // ✅ Thêm dòng này
       rank1, rank2, rank3,
       attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
-      fee_label_rank1, fee_label_rank2, fee_label_rank3
+      fee_label_rank1, fee_label_rank2, fee_label_rank3, schedule_url
     } = req.body;
 
     try {
@@ -249,8 +249,9 @@ router.put('/:id', async (req, res) => {
               attendance_fee_rank3 = $31,
               fee_label_rank1 = $32,
               fee_label_rank2 = $33,
-              fee_label_rank3 = $34
-          WHERE id = $35
+              fee_label_rank3 = $34,
+              schedule_url = $35
+          WHERE id = $36
         `;
         await client.query(query, [
           name, code, attendance_fee_common, start_date, end_date,
@@ -260,7 +261,7 @@ router.put('/:id', async (req, res) => {
           registration_deadline, nickname_enabled, uniform_enabled, cue_reg_enabled,
           group_id, rank1, rank2, rank3,
           attendance_fee_rank1, attendance_fee_rank2, attendance_fee_rank3,
-          fee_label_rank1, fee_label_rank2, fee_label_rank3,
+          fee_label_rank1, fee_label_rank2, fee_label_rank3, schedule_url,
           id
         ]);
         res.json({ message: 'Cập nhật thành công.' });
