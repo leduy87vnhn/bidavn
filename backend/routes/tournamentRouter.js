@@ -354,6 +354,7 @@ router.get('/groups-with-events', async (req, res) => {
         g.start_date AS group_start_date,
         g.end_date AS group_end_date,
         g.regulations AS group_regulations,
+        g.background_image AS background_image,
         g.display,
 
         e.id AS event_id,
@@ -396,6 +397,7 @@ router.get('/groups-with-events', async (req, res) => {
           group_start_date: row.group_start_date,
           group_end_date: row.group_end_date,
           group_regulations: row.group_regulations,
+          background_image: row.background_image,
           display: row.display,
           tournament_events: []
         };
