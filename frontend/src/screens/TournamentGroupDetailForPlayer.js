@@ -154,7 +154,7 @@ const TournamentGroupDetailForPlayer = () => {
           <div key={ev.id} className="tgdp-event-card">
 
             {/* Ảnh background event */}
-            {ev.background_image && (
+            {ev.ev_background_image && (
             <div className="tgdp-event-bg">
                 <img
                 src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.background_image}`}
