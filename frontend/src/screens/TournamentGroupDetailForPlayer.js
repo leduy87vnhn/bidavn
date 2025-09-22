@@ -21,14 +21,51 @@ const TournamentGroupDetailForPlayer = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`
+  //       );
+  //       setGroup(res.data.group);
+  //       setEvents(res.data.tournament_events || []);
+  //     } catch (err) {
+  //       console.error('❌ Lỗi tải group:', err);
+  //       setGroup(null);
+  //       setEvents([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [groupId]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`
         );
-        setGroup(res.data.group);
-        setEvents(res.data.tournament_events || []);
+  
+        // tìm group theo groupId
+        const foundGroup = res.data.find(g => String(g.group_id) === String(groupId));
+  
+        if (foundGroup) {
+          setGroup({
+            id: foundGroup.group_id,
+            tournament_name: foundGroup.group_name,
+            start_date: foundGroup.group_start_date,
+            end_date: foundGroup.group_end_date,
+            regulations: foundGroup.group_regulations,
+            display: foundGroup.display,
+            background_image: foundGroup.background_image || null,
+            logo_image: foundGroup.logo_image || null
+          });
+          setEvents(foundGroup.tournament_events || []);
+        } else {
+          setGroup(null);
+          setEvents([]);
+        }
       } catch (err) {
         console.error('❌ Lỗi tải group:', err);
         setGroup(null);
@@ -40,10 +77,10 @@ const TournamentGroupDetailForPlayer = () => {
     fetchData();
   }, [groupId]);
 
-    useEffect(() => {
+  useEffect(() => {
     const userInfo = localStorage.getItem('user_info');
     if (userInfo) setUser(JSON.parse(userInfo));
-    }, []);
+  }, []);
 
   if (loading) return <p className="tgdp-loading">Đang tải...</p>;
   if (!group) return <p className="tgdp-error">Không tìm thấy nhóm giải</p>;
