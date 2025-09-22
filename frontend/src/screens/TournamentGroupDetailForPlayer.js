@@ -162,7 +162,7 @@ const TournamentGroupDetailForPlayer = () => {
 
             {/* Các nút hành động */}
             <div className="tgdp-event-actions">
-                <Link to={`/tournament_events/${ev.id}/register`} className="tgdp-btn primary">
+                <Link to={`/tournament_events/${ev.id}/register-single`} className="tgdp-btn primary">
                     📝 Đăng Ký
                 </Link>
                 {ev.schedule_url ? (
