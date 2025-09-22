@@ -635,7 +635,11 @@ const TournamentList = () => {
                                 <div>
                                 {group.group_id ? (
                                     <Link
-                                    to={`/tournament-group/${group.group_id}`}
+                                    to={
+                                        user?.user_type === 2
+                                          ? `/tournament-group/${group.group_id}`
+                                          : `/tournament-group/${group.group_id}/for-player`
+                                    }
                                     style={{
                                         color: '#007bff',
                                         textDecoration: 'underline',
