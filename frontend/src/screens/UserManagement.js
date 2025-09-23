@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import MainLayout from '../components/MainLayout';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 const UserManagement = () => {
   const [rows, setRows] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [editedRows, setEditedRows] = useState({});
   const [rowIdCounter, setRowIdCounter] = useState(-1);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMsg, setDialogMsg] = useState('');
 
   const fetchUsers = async () => {
     try {
@@ -118,6 +120,21 @@ const UserManagement = () => {
     return updatedRow;
   };
 
+  const handleResetPassword = async (id) => {
+    if (window.confirm('Bạn có chắc muốn reset mật khẩu về "123456"?')) {
+      try {
+        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}/reset-password`);
+        setDialogMsg('Đã reset mật khẩu về mặc định 123456');
+        setDialogOpen(true);
+        alert('✅ Đã reset mật khẩu về 123456');
+        fetchUsers();  // 👈 reload lại danh sách
+      } catch (err) {
+        console.error('Lỗi khi reset mật khẩu:', err);
+        alert('❌ Lỗi khi reset mật khẩu');
+      }
+    }
+  };
+
   const columns = [
     { field: 'user_name', headerName: 'Tên đăng nhập', flex: 1, editable: false },
     { field: 'password', headerName: 'Mật khẩu', flex: 1, editable: true },
@@ -222,6 +239,13 @@ const UserManagement = () => {
           />
         </div>
       </div>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Thông báo</DialogTitle>
+        <DialogContent>{dialogMsg}</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Đóng</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
