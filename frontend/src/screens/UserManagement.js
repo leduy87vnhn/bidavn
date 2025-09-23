@@ -158,16 +158,30 @@ const UserManagement = () => {
       editable: true
     },
     {
-        field: 'actions',
-        headerName: 'Thao tác',
-        width: 150,
-        renderCell: (params) => (
-            <>
-            <Button variant="contained" color="error" size="small" onClick={() => handleDelete(params.id)}>
-                Xóa
-            </Button>
-            </>
-        ),
+      field: 'actions',
+      headerName: 'Thao tác',
+      width: 250,
+      renderCell: (params) => (
+        <>
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={() => handleDelete(params.id)}
+            style={{ marginRight: 8 }}
+          >
+            Xóa
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            size="small"
+            onClick={() => handleResetPassword(params.id)}
+          >
+            Reset MK
+          </Button>
+        </>
+      ),
     }
   ];
 

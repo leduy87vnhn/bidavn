@@ -86,3 +86,28 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ error: 'Lỗi server khi xoá người dùng.' });
   }
 };
+
+// Reset mật khẩu về mặc định "123456"
+exports.resetPassword = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const hashedPassword = await bcrypt.hash("123456", 10);
+    const modified_date = new Date();
+
+    const result = await client.query(
+      `UPDATE users 
+       SET password = $1, modified_date = $2 
+       WHERE id = $3 RETURNING id, user_name, email, phone_number`,
+      [hashedPassword, modified_date, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User không tồn tại." });
+    }
+
+    res.json({ success: true, message: "Đã reset mật khẩu về mặc định 123456" });
+  } catch (err) {
+    console.error("Error resetting password:", err);
+    res.status(500).json({ error: "Lỗi server khi reset mật khẩu." });
+  }
+};
