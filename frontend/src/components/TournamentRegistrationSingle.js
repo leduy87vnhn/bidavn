@@ -179,7 +179,8 @@ const TournamentRegistrationSingle = () => {
     setCompetitor({
       name: player.name,
       phone: player.phone,
-      club: player.club || '',
+      //club: player.club || '',
+      club: '',
       selected_date: '',
       uniform_size: 'L'
     });
@@ -307,7 +308,8 @@ const TournamentRegistrationSingle = () => {
         registration_form_id,
         player_id,
         nick_name: competitor.nickname?.trim() || competitor.name,
-        club: competitor.club,
+        //club: competitor.club,
+        club: '',
         uniform_size: competitor.uniform_size || 'L',
         selected_date: competitor.selected_date || null
       });
@@ -459,7 +461,7 @@ const TournamentRegistrationSingle = () => {
               </td>
             </tr>
           )}
-          <tr>
+          {/* <tr>
             <td className="table-cell"><strong>ĐƠN VỊ (TỈNH/THÀNH):</strong></td>
             <td className="table-cell">
               <input
@@ -483,7 +485,7 @@ const TournamentRegistrationSingle = () => {
                 </ul>
               )}
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
       <div style={{ backgroundColor: 'white', maxWidth: 800, margin: 'auto', padding: 20, borderRadius: 12 }}>
