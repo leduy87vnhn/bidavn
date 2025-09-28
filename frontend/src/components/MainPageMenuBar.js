@@ -19,7 +19,7 @@ const MainPageMenuBar = () => {
         {user?.user_type === 2 && (
           <span className="menu-item" onClick={() => navigate('/users')}>Users</span>
         )}
-        <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký Tài Khoản</span>
+        {/* <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/register'}>Đăng Ký Tài Khoản</span> */}
       </div>
       <div className="menu-right">
         {user ? (
