@@ -530,7 +530,8 @@ const TournamentRegistrationSingle = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
             <button
               type="button"
-              onClick={() => navigate('/tournament_events')}
+              //onClick={() => navigate('/tournament_events')}
+              onClick={() => navigate(`/tournament-group/${tournament.group_id}/for-player`)}
               style={{
                 padding: '8px 16px',
                 borderRadius: '6px',
@@ -583,7 +584,8 @@ const TournamentRegistrationSingle = () => {
           onClick={() => {
             setShowSuccessModal(false);
             //navigate(`/tournament_events/${tournamentId}/competitors`);
-            navigate(`/tournament_events`);
+            //navigate(`/tournament_events`);
+            navigate(`/tournament-group/${tournament.group_id}/for-player`);
           }}
           style={{
             padding: '8px 16px',
