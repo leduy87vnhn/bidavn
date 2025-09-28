@@ -401,34 +401,8 @@ const TournamentRegistrationSingle = () => {
             </td>
           </tr>
           <tr>
-            <td className="table-cell"><strong>TÊN VĐV:</strong></td>
-            <td className="table-cell">
-              <input
-                type="text"
-                value={competitor.name}
-                onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
-                placeholder="Nhập tên VĐV"
-                className="table-input"
-              />
-              {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
-                <ul className="autocomplete-list">
-                  {playerSuggestions.map(p => (
-                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
-                  ))}
-                </ul>
-              )}
-            </td>
-          </tr>
-          <tr>
             <td className="table-cell"><strong>ĐIỆN THOẠI LIÊN HỆ:</strong></td>
             <td className="table-cell">
-              {/* <input
-                type="text"
-                value={competitor.phone}
-                onChange={e => setCompetitor({ ...competitor, phone: e.target.value })}
-                placeholder="Nhập số điện thoại"
-                className="table-input"
-              /> */}
               <input
                 type="tel"
                 inputMode="numeric"
@@ -445,6 +419,25 @@ const TournamentRegistrationSingle = () => {
                 className="table-input"
               />
               {!playerSearchText && !competitor.name && competitor.phone && playerSuggestions.length > 0 && (
+                <ul className="autocomplete-list">
+                  {playerSuggestions.map(p => (
+                    <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>
+                  ))}
+                </ul>
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td className="table-cell"><strong>TÊN VĐV:</strong></td>
+            <td className="table-cell">
+              <input
+                type="text"
+                value={competitor.name}
+                onChange={e => setCompetitor({ ...competitor, name: e.target.value.toUpperCase() })}
+                placeholder="Nhập tên VĐV"
+                className="table-input"
+              />
+              {!playerSearchText && !competitor.phone && competitor.name && playerSuggestions.length > 0 && (
                 <ul className="autocomplete-list">
                   {playerSuggestions.map(p => (
                     <li key={p.id} onClick={() => handleSelectSuggestion(p)}>#{p.id} - {p.name} ({p.phone})</li>

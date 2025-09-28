@@ -270,7 +270,7 @@ const TournamentTabDetail = ({ tournament: tournamentProp, transparentBackground
             disabled={isRegistrationClosed(tournament.registration_deadline)}
             onClick={() => {
               if (!isRegistrationClosed(tournament.registration_deadline)) {
-                navigate(`/tournament/${tournament.id}/register`);
+                navigate(`/tournament/${tournament.id}/register-single`);
               }
             }}
           >
