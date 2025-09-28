@@ -36,7 +36,7 @@ const AccountCreationModal = ({
   const handleRegister = async () => {
     const { phone_number, name, password, email } = form;
 
-    if (!phone_number || !name || !password || !email) {
+    if (!phone_number || !name || !password) {
       setError('❌ Vui lòng điền đầy đủ thông tin.');
       return;
     }
@@ -44,7 +44,7 @@ const AccountCreationModal = ({
       setError('❌ Số điện thoại phải gồm đúng 10 chữ số.');
       return;
     }
-    if (!email.includes('@')) {
+    if (email && !email.includes('@')) {
       setError('❌ Email không hợp lệ.');
       return;
     }
@@ -112,7 +112,13 @@ const AccountCreationModal = ({
         </div>
 
         <label>Email:</label>
-        <input className="table-input" name="email" value={form.email} onChange={handleChange} />
+        <input
+          className="table-input"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email (không bắt buộc)"
+        />
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
