@@ -129,6 +129,23 @@ const MainPageEventTab = () => {
                     />
                   </td>
 
+
+                  <td style={td}>
+                    <input
+                      style={{ ...input, width: '100%' }}
+                      value={e.event_video}
+                      onChange={ev => updateField(ev, idx, 'event_video')}
+                    />
+                  </td>
+
+                  <td style={td}>
+                    <input
+                      type="date"
+                      value={e.event_date?.substring(0, 10)}
+                      onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
+                    />
+                  </td>
+
                   <td style={td}>
                     {/* Ảnh 1 */}
                     {e.event_photo && (
@@ -144,7 +161,30 @@ const MainPageEventTab = () => {
                         </div>
                       </div>
                     )}
+                  </td>
 
+                  <td style={td}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {/* Ảnh slideshow event */}
+                      <div
+                        onDrop={(ev) => handleDrop(ev, idx)}
+                        onDragOver={(ev) => ev.preventDefault()}
+                        onClick={() => fileInputRefs.current[idx]?.click()}
+                        style={dropZone}
+                      >
+                        Kéo & thả ảnh slideshow event<br />hoặc click để chọn
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          ref={(el) => (fileInputRefs.current[idx] = el)}
+                          onChange={(e) => handleFileSelect(e, idx)}
+                        />
+                      </div>
+                    </div>
+                  </td>
+
+                  <td style={td}>
                     {/* Ảnh 2 */}
                     {e.event_photo_second && (
                       <div className="thumbnail-container">
@@ -193,26 +233,6 @@ const MainPageEventTab = () => {
                       />
                     </div>
                   </td> */}
-                  <td style={td}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {/* Ảnh slideshow event */}
-                      <div
-                        onDrop={(ev) => handleDrop(ev, idx)}
-                        onDragOver={(ev) => ev.preventDefault()}
-                        onClick={() => fileInputRefs.current[idx]?.click()}
-                        style={dropZone}
-                      >
-                        Kéo & thả ảnh slideshow event<br />hoặc click để chọn
-                        <input
-                          type="file"
-                          accept="image/*"
-                          style={{ display: 'none' }}
-                          ref={(el) => (fileInputRefs.current[idx] = el)}
-                          onChange={(e) => handleFileSelect(e, idx)}
-                        />
-                      </div>
-                    </div>
-                  </td>
 
                   <td style={td}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -233,22 +253,6 @@ const MainPageEventTab = () => {
                         />
                       </div>
                     </div>
-                  </td>
-
-                  <td style={td}>
-                    <input
-                      style={{ ...input, width: '100%' }}
-                      value={e.event_video}
-                      onChange={ev => updateField(ev, idx, 'event_video')}
-                    />
-                  </td>
-
-                  <td style={td}>
-                    <input
-                      type="date"
-                      value={e.event_date?.substring(0, 10)}
-                      onChange={ev => updateField(ev, idx, 'event_date', ev.target.value)}
-                    />
                   </td>
 
                   <td style={td}>
