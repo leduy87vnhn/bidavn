@@ -129,16 +129,6 @@ const MainPageEventTab = () => {
                     />
                   </td>
 
-
-                  <td style={td}>
-                    <input
-                      style={{ ...input, width: '100%' }}
-                      value={e.event_video ?? ''} // đảm bảo placeholder hiện khi giá trị null
-                      placeholder="Link video (YouTube/MP4) — vd: https://youtube/abc... hoặc /uploads/videos/a.mp4"
-                      onChange={ev => updateField(ev, idx, 'event_video')}
-                    />
-                  </td>
-
                   <td style={td}>
                     <input
                       type="date"
@@ -147,41 +137,19 @@ const MainPageEventTab = () => {
                     />
                   </td>
 
-                  {/* <td style={td}>
-                    <div
-                      onDrop={(ev) => handleDrop(ev, idx)}
-                      onDragOver={(ev) => ev.preventDefault()}
-                      onClick={() => fileInputRefs.current[idx]?.click()}
-                      style={dropZone}
-                    >
-                      Kéo & thả ảnh slideshow event<br />hoặc click để chọn
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        ref={(el) => (fileInputRefs.current[idx] = el)}
-                        onChange={(e) => handleFileSelect(e, idx)}
-                      />
-                    </div>
-                    <div
-                      onDrop={(ev) => handleDrop(ev, idx, 'event_photo_second')}
-                      onDragOver={(ev) => ev.preventDefault()}
-                      onClick={() => fileInputRefsSecond.current[idx]?.click()}
-                      style={dropZone}
-                    >
-                      Kéo & thả ảnh tiêu đề event<br />hoặc click để chọn
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        ref={(el) => (fileInputRefsSecond.current[idx] = el)}
-                        onChange={(e) => handleFileSelect(e, idx, 'event_photo_second')}
-                      />
-                    </div>
-                  </td> */}
-
                   <td style={td}>
                     <button style={btnDanger} onClick={() => handleDelete(e.id)}>Xoá</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={td}>
+                    <input
+                      style={{ ...input, width: '100%' }}
+                      value={e.event_video ?? ''} // đảm bảo placeholder hiện khi giá trị null
+                      placeholder="Link video (YouTube/MP4) — vd: https://youtube/abc... hoặc /uploads/videos/a.mp4"
+                      onChange={ev => updateField(ev, idx, 'event_video')}
+                    />
                   </td>
                 </tr>
 
