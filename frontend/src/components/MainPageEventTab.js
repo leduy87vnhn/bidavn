@@ -211,7 +211,11 @@ const MainPageEventTab = () => {
                           onChange={(e) => handleFileSelect(e, idx)}
                         />
                       </div>
+                    </div>
+                  </td>
 
+                  <td style={td}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {/* Ảnh tiêu đề event */}
                       <div
                         onDrop={(ev) => handleDrop(ev, idx, 'event_photo_second')}
