@@ -51,11 +51,11 @@ exports.getEvents = async (req, res) => {
 };
 
 exports.createEvent = async (req, res) => {
-  const { id, event_name, event_photo, event_video, event_content, event_date } = req.body;
+  const { id, event_name, event_photo, event_photo_second, event_video, event_content, event_date } = req.body;
   try {
     await db.query(
-      'INSERT INTO mainpage_event_settings (id, event_name, event_photo, event_video, event_content, event_date) VALUES ($1, $2, $3, $4, $5, $6)',
-      [id, event_name, event_photo, event_video, event_content, event_date]
+      'INSERT INTO mainpage_event_settings (id, event_name, event_photo, event_photo_second, event_video, event_content, event_date) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [id, event_name, event_photo, event_video, event_photo_second, event_content, event_date]
     );
     res.json({ success: true });
   } catch (err) {
@@ -64,11 +64,11 @@ exports.createEvent = async (req, res) => {
 };
 
 exports.updateEvent = async (req, res) => {
-  const { id, event_name, event_photo, event_video, event_content, event_date } = req.body;
+  const { id, event_name, event_photo, event_photo_second, event_video, event_content, event_date } = req.body;
   try {
     await db.query(
-      'UPDATE mainpage_event_settings SET event_name=$2, event_photo=$3, event_video=$4, event_content=$5, event_date=$6 WHERE id=$1',
-      [id, event_name, event_photo, event_video, event_content, event_date]
+      'UPDATE mainpage_event_settings SET event_name=$2, event_photo=$3, event_photo_second=$4, event_video=$5, event_content=$6, event_date=$7 WHERE id=$1',
+      [id, event_name, event_photo, event_photo_second, event_video, event_content, event_date]
     );
     res.json({ success: true });
   } catch (err) {

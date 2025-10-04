@@ -10,8 +10,9 @@ const mdParser = new MarkdownIt();
 const MainPageEventTab = () => {
   const [events, setEvents] = useState([]);
   const [newEvent, setNewEvent] = useState({
-    id: '', event_name: '', event_photo: '', event_video: '', event_content: '', event_date: ''
+    id: '', event_name: '', event_photo: '', event_photo_second: '', event_video: '', event_content: '', event_date: ''
   });
+  const fileInputRefsSecond = useRef({});
 
   const fileInputRefs = useRef({});
   const newFileInputRef = useRef(null);
@@ -129,16 +130,32 @@ const MainPageEventTab = () => {
                   </td>
 
                   <td style={td}>
+                    {/* Ảnh 1 */}
                     {e.event_photo && (
-                      <div className="thumbnail-container">
+                      <div className="thumbnail-container" style={{ marginBottom: '6px' }}>
                         <img
                           src={getImageUrl(e.event_photo)}
-                          alt="event"
+                          alt="event 1"
                           style={thumbnailStyle}
                           className="thumbnail-image"
                         />
                         <div className="preview-popup">
-                          <img src={getImageUrl(e.event_photo)} alt="preview" />
+                          <img src={getImageUrl(e.event_photo)} alt="preview 1" />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Ảnh 2 */}
+                    {e.event_photo_second && (
+                      <div className="thumbnail-container">
+                        <img
+                          src={getImageUrl(e.event_photo_second)}
+                          alt="event 2"
+                          style={thumbnailStyle}
+                          className="thumbnail-image"
+                        />
+                        <div className="preview-popup">
+                          <img src={getImageUrl(e.event_photo_second)} alt="preview 2" />
                         </div>
                       </div>
                     )}
@@ -151,13 +168,28 @@ const MainPageEventTab = () => {
                       onClick={() => fileInputRefs.current[idx]?.click()}
                       style={dropZone}
                     >
-                      Kéo & thả ảnh<br />hoặc click để chọn
+                      Kéo & thả ảnh slideshow event<br />hoặc click để chọn
                       <input
                         type="file"
                         accept="image/*"
                         style={{ display: 'none' }}
                         ref={(el) => (fileInputRefs.current[idx] = el)}
                         onChange={(e) => handleFileSelect(e, idx)}
+                      />
+                    </div>
+                    <div
+                      onDrop={(ev) => handleDrop(ev, idx, 'event_photo_second')}
+                      onDragOver={(ev) => ev.preventDefault()}
+                      onClick={() => fileInputRefsSecond.current[idx]?.click()}
+                      style={dropZone}
+                    >
+                      Kéo & thả ảnh tiêu đề event<br />hoặc click để chọn
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        ref={(el) => (fileInputRefsSecond.current[idx] = el)}
+                        onChange={(e) => handleFileSelect(e, idx, 'event_photo_second')}
                       />
                     </div>
                   </td>
