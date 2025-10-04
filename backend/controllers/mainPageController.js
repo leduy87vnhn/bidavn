@@ -55,7 +55,7 @@ exports.createEvent = async (req, res) => {
   try {
     await db.query(
       'INSERT INTO mainpage_event_settings (id, event_name, event_photo, event_photo_second, event_video, event_content, event_date) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [id, event_name, event_photo, event_video, event_photo_second, event_content, event_date]
+      [id, event_name, event_photo, event_photo_second, event_video, event_content, event_date]
     );
     res.json({ success: true });
   } catch (err) {

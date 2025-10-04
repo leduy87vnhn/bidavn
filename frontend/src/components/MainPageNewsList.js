@@ -120,7 +120,7 @@ const MainPageNewsList = () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/news`);
         const filtered = res.data
-          .filter(e => e.event_photo)
+          .filter(e => e.event_photo_second || e.event_photo)
           .sort((a, b) => new Date(a.event_date) - new Date(b.event_date)); // sắp xếp theo event_date tăng dần
 
         setNews(filtered.slice(0, 5)); // lấy 5 sự kiện đầu
@@ -143,7 +143,7 @@ const MainPageNewsList = () => {
   return (
     <div className="news-container">
       <div className="news-image">
-        <img src={getEventPhotoUrl(selectedEvent.event_photo)} alt="event" />
+        <img src={getEventPhotoUrl(selectedEvent.event_photo_second)} alt="event" />
       </div>
       <div className="news-list">
         <div className="news-header">TIN TỨC - SỰ KIỆN</div>
