@@ -133,7 +133,8 @@ const MainPageEventTab = () => {
                   <td style={td}>
                     <input
                       style={{ ...input, width: '100%' }}
-                      value={e.event_video}
+                      value={e.event_video ?? ''} // đảm bảo placeholder hiện khi giá trị null
+                      placeholder="Link video (YouTube/MP4) — vd: https://youtube/abc... hoặc /uploads/videos/a.mp4"
                       onChange={ev => updateField(ev, idx, 'event_video')}
                     />
                   </td>
@@ -337,7 +338,8 @@ const MainPageEventTab = () => {
               <td style={td}>
                 <input
                   style={{ ...input, width: '100%' }}
-                  value={newEvent.event_video}
+                  value={newEvent.event_video ?? ''}
+                  placeholder="Link video (YouTube/MP4)"
                   onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })}
                 />
               </td>
