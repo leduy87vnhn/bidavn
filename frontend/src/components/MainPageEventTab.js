@@ -161,7 +161,7 @@ const MainPageEventTab = () => {
                     )}
                   </td>
 
-                  <td style={td}>
+                  {/* <td style={td}>
                     <div
                       onDrop={(ev) => handleDrop(ev, idx)}
                       onDragOver={(ev) => ev.preventDefault()}
@@ -191,6 +191,43 @@ const MainPageEventTab = () => {
                         ref={(el) => (fileInputRefsSecond.current[idx] = el)}
                         onChange={(e) => handleFileSelect(e, idx, 'event_photo_second')}
                       />
+                    </div>
+                  </td> */}
+                  <td style={td}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {/* Ảnh slideshow event */}
+                      <div
+                        onDrop={(ev) => handleDrop(ev, idx)}
+                        onDragOver={(ev) => ev.preventDefault()}
+                        onClick={() => fileInputRefs.current[idx]?.click()}
+                        style={dropZone}
+                      >
+                        Kéo & thả ảnh slideshow event<br />hoặc click để chọn
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          ref={(el) => (fileInputRefs.current[idx] = el)}
+                          onChange={(e) => handleFileSelect(e, idx)}
+                        />
+                      </div>
+
+                      {/* Ảnh tiêu đề event */}
+                      <div
+                        onDrop={(ev) => handleDrop(ev, idx, 'event_photo_second')}
+                        onDragOver={(ev) => ev.preventDefault()}
+                        onClick={() => fileInputRefsSecond.current[idx]?.click()}
+                        style={dropZone}
+                      >
+                        Kéo & thả ảnh tiêu đề event<br />hoặc click để chọn
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          ref={(el) => (fileInputRefsSecond.current[idx] = el)}
+                          onChange={(e) => handleFileSelect(e, idx, 'event_photo_second')}
+                        />
+                      </div>
                     </div>
                   </td>
 
