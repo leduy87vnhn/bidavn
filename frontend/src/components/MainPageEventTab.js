@@ -16,6 +16,7 @@ const MainPageEventTab = () => {
 
   const fileInputRefs = useRef({});
   const newFileInputRef = useRef(null);
+  const newFileInputRef2 = useRef(null);
 
   const fetchEvents = async () => {
     const res = await axios.get(`${API_BASE}/api/mainpage/events-full`);
@@ -55,6 +56,26 @@ const MainPageEventTab = () => {
       updated[idx].event_photo = res.data.filePath;
       setEvents(updated);
     }
+  };
+
+  // Upload ảnh thứ 2 cho "Thêm mới"
+  const handleNewSelectSecond = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('image', file);
+    const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, fd);
+    setNewEvent(prev => ({ ...prev, event_photo_second: res.data.filePath }));
+  };
+
+  const handleNewDropSecond = async (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer?.files?.[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('image', file);
+    const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, fd);
+    setNewEvent(prev => ({ ...prev, event_photo_second: res.data.filePath }));
   };
 
   const handleSave = async () => {
@@ -144,6 +165,9 @@ const MainPageEventTab = () => {
 
                 <tr>
                   <td style={td}>
+                    <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <b>Video URL:</b>
+                    </td>
                     <input
                       style={{ ...input, width: '100%' }}
                       value={e.event_video ?? ''} // đảm bảo placeholder hiện khi giá trị null
@@ -252,7 +276,7 @@ const MainPageEventTab = () => {
             ))}
 
             {/* Dòng thêm mới */}
-            <tr style={{ background: '#e0efff' }}>
+            {/* <tr style={{ background: '#e0efff' }}>
               <td style={td}>
                 <input
                   style={input}
@@ -325,6 +349,132 @@ const MainPageEventTab = () => {
               </td>
             </tr>
 
+            <tr>
+              <td colSpan="7" style={{
+                background: '#eef7ff',
+                padding: '15px 20px',
+                borderBottom: '2px solid #ccc'
+              }}>
+                <b>Nội dung:</b>
+                <MdEditor
+                  value={newEvent.event_content}
+                  style={{ height: '200px', marginTop: '10px' }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={({ text }) => setNewEvent({ ...newEvent, event_content: text })}
+                />
+              </td>
+            </tr> */}
+            {/* Dòng thêm mới - HÀNG 1: ID + Tên + Ngày + Thêm */}
+            <tr style={{ background: '#e8f4ff' }}>
+              <td style={td}>
+                <input
+                  style={input}
+                  value={newEvent.id}
+                  placeholder="ID"
+                  onChange={e => setNewEvent({ ...newEvent, id: e.target.value })}
+                />
+              </td>
+
+              <td style={td}>
+                <input
+                  style={{ ...input, width: '100%', fontWeight: 'bold' }}
+                  value={newEvent.event_name}
+                  placeholder="Tên sự kiện"
+                  onChange={e => setNewEvent({ ...newEvent, event_name: e.target.value })}
+                />
+              </td>
+
+              {/* cột Ảnh để trống giống hàng event */}
+              <td style={td}></td>
+
+              {/* cột Upload để trống, upload đưa xuống hàng sau */}
+              <td style={td}></td>
+
+              {/* cột Video đưa xuống hàng riêng ở dưới */}
+              <td style={td}></td>
+
+              <td style={td}>
+                <input
+                  type="date"
+                  value={newEvent.event_date}
+                  onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })}
+                />
+              </td>
+
+              <td style={td}>
+                <button style={btnPrimary} onClick={handleAdd}>Thêm</button>
+              </td>
+            </tr>
+
+            {/* HÀNG 2: Video */}
+            <tr style={{ background: '#e8f4ff' }}>
+              <td style={td}></td>
+              <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                <b>Video:</b>
+              </td>
+              <td style={td} colSpan="6">
+                <input
+                  style={{ ...input, width: '100%' }}
+                  value={newEvent.event_video ?? ''}
+                  placeholder="Link video (YouTube/MP4)"
+                  onChange={e => setNewEvent({ ...newEvent, event_video: e.target.value })}
+                />
+              </td>
+            </tr>
+
+            {/* HÀNG 3: Ảnh 1 (slideshow) */}
+            <tr style={{ background: '#e8f4ff' }}>
+              <td style={td}>
+                {newEvent.event_photo && (
+                  <img src={getImageUrl(newEvent.event_photo)} alt="new 1" style={thumbnailStyle} />
+                )}
+              </td>
+              <td style={td} colSpan="6">
+                <div
+                  onDrop={(e) => handleDrop(e, null, true)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onClick={() => newFileInputRef.current?.click()}
+                  style={dropZone}
+                >
+                  Kéo & thả ảnh slideshow event<br/>hoặc click để chọn
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={newFileInputRef}
+                    onChange={(e) => handleFileSelect(e, null, true)}
+                  />
+                </div>
+              </td>
+            </tr>
+
+            {/* HÀNG 4: Ảnh 2 (tiêu đề) */}
+            <tr style={{ background: '#e8f4ff' }}>
+              <td style={td}>
+                {newEvent.event_photo_second && (
+                  <img src={getImageUrl(newEvent.event_photo_second)} alt="new 2" style={thumbnailStyle} />
+                )}
+              </td>
+              <td style={td} colSpan="6">
+                <div
+                  onDrop={handleNewDropSecond}
+                  onDragOver={(e) => e.preventDefault()}
+                  onClick={() => newFileInputRef2.current?.click()}
+                  style={dropZone}
+                >
+                  Kéo & thả ảnh tiêu đề event<br/>hoặc click để chọn
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={newFileInputRef2}
+                    onChange={handleNewSelectSecond}
+                  />
+                </div>
+              </td>
+            </tr>
+
+            {/* HÀNG 5: Nội dung (giữ như anh đang có) */}
             <tr>
               <td colSpan="7" style={{
                 background: '#eef7ff',
