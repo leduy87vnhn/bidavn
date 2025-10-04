@@ -27,34 +27,51 @@ const MainPageEventTab = () => {
     fetchEvents();
   }, []);
 
-  const handleFileSelect = async (e, idx, isNew = false) => {
-    const file = e.target.files[0];
+  const handleFileSelect = async (e, idx, arg3 = false, arg4 = false) => {
+    const file = e.target.files?.[0];
     if (!file) return;
+
     const formData = new FormData();
     formData.append('image', file);
     const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, formData);
+    const path = res.data.filePath;
+
+    // Nếu arg3 là string => đó là field, nếu boolean => đó là isNew
+    const field = typeof arg3 === 'string' ? arg3 : 'event_photo';
+    const isNew = typeof arg3 === 'boolean' ? arg3 : !!arg4;
+
     if (isNew) {
-      setNewEvent({ ...newEvent, event_photo: res.data.filePath });
+      setNewEvent(prev => ({ ...prev, [field]: path }));
     } else {
-      const updated = [...events];
-      updated[idx].event_photo = res.data.filePath;
-      setEvents(updated);
+      setEvents(prev => {
+        const updated = [...prev];
+        updated[idx][field] = path;
+        return updated;
+      });
     }
   };
 
-  const handleDrop = async (e, idx, isNew = false) => {
+  const handleDrop = async (e, idx, arg3 = false, arg4 = false) => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
+    const file = e.dataTransfer?.files?.[0];
     if (!file) return;
+
     const formData = new FormData();
     formData.append('image', file);
     const res = await axios.post(`${API_BASE}/api/mainpage/upload-event`, formData);
+    const path = res.data.filePath;
+
+    const field = typeof arg3 === 'string' ? arg3 : 'event_photo';
+    const isNew = typeof arg3 === 'boolean' ? arg3 : !!arg4;
+
     if (isNew) {
-      setNewEvent({ ...newEvent, event_photo: res.data.filePath });
+      setNewEvent(prev => ({ ...prev, [field]: path }));
     } else {
-      const updated = [...events];
-      updated[idx].event_photo = res.data.filePath;
-      setEvents(updated);
+      setEvents(prev => {
+        const updated = [...prev];
+        updated[idx][field] = path;
+        return updated;
+      });
     }
   };
 
@@ -87,7 +104,7 @@ const MainPageEventTab = () => {
 
   const handleAdd = async () => {
     await axios.post(`${API_BASE}/api/mainpage/create-event`, newEvent);
-    setNewEvent({ id: '', event_name: '', event_photo: '', event_video: '', event_content: '', event_date: '' });
+    setNewEvent({ id: '', event_name: '', event_photo: '', event_photo_second: '', event_video: '', event_content: '', event_date: '' });
     fetchEvents();
   };
 
@@ -410,7 +427,7 @@ const MainPageEventTab = () => {
             <tr style={{ background: '#e8f4ff' }}>
               <td style={td}></td>
               <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
-                <b>Video:</b>
+                <b>Video URL:</b>
               </td>
               <td style={td} colSpan="6">
                 <input
