@@ -93,113 +93,117 @@ const TournamentListForPlayer = () => {
 
   if (loading) return <p className="tgdp-loading">Đang tải danh sách...</p>;
 
-  return (
-    <div className="tgdp-wrapper">
-      <MainPageHeader />
-      <MainPageMenuBar />
+return (
+  <div className="tgdp-wrapper">
+    <MainPageHeader />
+    <MainPageMenuBar />
 
-      {groups.length === 0 ? (
-        <p className="tgdp-error">Không có giải đấu nào.</p>
-      ) : (
-        groups.map((group) => {
+    {groups.length === 0 ? (
+      <p className="tgdp-error">Không có giải đấu nào.</p>
+    ) : (
+      groups.map((group) => {
+        return (
+          <div key={group.group_id}>
             <div
-            className="tournament-group-header"
-            style={{
+              className="tournament-group-header"
+              style={{
                 background: '#e6f0ff',
                 borderRadius: '12px',
                 padding: '24px 36px',
                 marginTop: '30px',
-            }}
+              }}
             >
-            <h1 style={{ fontSize: '1.8em', color: '#003399', marginBottom: '10px' }}>
+              <h1 style={{ fontSize: '1.8em', color: '#003399', marginBottom: '10px' }}>
                 {group.group_name}
-            </h1>
+              </h1>
 
-            {(group.group_start_date || group.group_end_date) && (
+              {(group.group_start_date || group.group_end_date) && (
                 <p
-                style={{
+                  style={{
                     fontSize: '1.3em',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
                     color: '#333',
-                }}
+                  }}
                 >
-                <FaCalendarAlt className="tgdp-icon purple" />
-                {`${formatDate(group.group_start_date)} - ${formatDate(group.group_end_date)}`}
+                  <FaCalendarAlt className="tgdp-icon purple" />
+                  {`${formatDate(group.group_start_date)} - ${formatDate(group.group_end_date)}`}
                 </p>
-            )}
+              )}
 
-            {/* 🔹 Nút điều lệ */}
-            {group.group_regulations ? (
+              {/* 🔹 Nút điều lệ */}
+              {group.group_regulations ? (
                 <a
-                href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="top-action-button primary"
-                style={{ marginTop: '10px', fontSize: '1.2em' }}
+                  href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="top-action-button primary"
+                  style={{ marginTop: '10px', fontSize: '1.2em' }}
                 >
-                📥 Điều lệ
+                  📥 Điều lệ
                 </a>
-            ) : (
+              ) : (
                 <button className="top-action-button grey" disabled style={{ marginTop: '10px' }}>
-                📄 Điều lệ
+                  📄 Điều lệ
                 </button>
-            )}
+              )}
             </div>
 
             {/* 🔹 Carousel */}
             <div className="event-carousel-container">
-            {group.tournament_events.length > 3 && (
+              {group.tournament_events.length > 3 && (
                 <button className="slide-btn left" onClick={() => handleSlide(group.group_id, 'left')}>
-                <FaChevronLeft />
+                  <FaChevronLeft />
                 </button>
-            )}
+              )}
 
-            <div className="event-carousel">
+              <div className="event-carousel">
                 {group.tournament_events
-                .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 3)
-                .map((ev) => (
+                  .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 3)
+                  .map((ev) => (
                     <div key={ev.id} className="event-card">
-                    {ev.ev_background_image && (
+                      {ev.ev_background_image && (
                         <img
-                        src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
-                        alt="Event Background"
-                        style={{
+                          src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
+                          alt="Event Background"
+                          style={{
                             width: '100%',
                             height: '160px',
                             objectFit: 'cover',
                             borderRadius: '8px',
-                        }}
+                          }}
                         />
-                    )}
-                    <h2 style={{ fontSize: '1.3em', color: '#0044cc' }}>{ev.name}</h2>
+                      )}
+                      <h2 style={{ fontSize: '1.3em', color: '#0044cc' }}>{ev.name}</h2>
 
-                    {(ev.start_date || ev.end_date) && (
+                      {(ev.start_date || ev.end_date) && (
                         <p style={{ fontSize: '1.1em' }}>
-                        <FaCalendarAlt /> {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
+                          <FaCalendarAlt /> {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
                         </p>
-                    )}
+                      )}
 
-                    {ev.location && (
+                      {ev.location && (
                         <p style={{ fontSize: '1.1em' }}>
-                        <FaMapMarkerAlt /> {ev.location}
+                          <FaMapMarkerAlt /> {ev.location}
                         </p>
-                    )}
+                      )}
                     </div>
-                ))}
-            </div>
+                  ))}
+              </div>
 
-            {group.tournament_events.length > 3 && (
+              {group.tournament_events.length > 3 && (
                 <button className="slide-btn right" onClick={() => handleSlide(group.group_id, 'right')}>
-                <FaChevronRight />
+                  <FaChevronRight />
                 </button>
-            )}
+              )}
             </div>
-        })
-      )}
-    </div>
-  );
+          </div>
+        );
+      })
+    )}
+  </div>
+);
 };
 
 export default TournamentListForPlayer;
