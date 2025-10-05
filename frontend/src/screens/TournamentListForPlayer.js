@@ -130,7 +130,7 @@ return (
                   }}
                 >
                   <FaCalendarAlt className="tgdp-icon purple" />
-                  {`${formatDate(group.group_start_date)} - ${formatDate(group.group_end_date)}`}
+                  {`${formatDate(group.group_start_date)} đến ${formatDate(group.group_end_date)}`}
                 </p>
               )}
 
@@ -186,7 +186,7 @@ return (
 
                       {(ev.start_date || ev.end_date) && (
                         <p style={{ fontSize: '1.1em' }}>
-                          <FaCalendarAlt className="tgdp-icon purple" /> {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
+                          <FaCalendarAlt className="tgdp-icon purple" /> {`${formatDate(ev.start_date)} đến ${formatDate(ev.end_date)}`}
                         </p>
                       )}
 
@@ -217,7 +217,7 @@ return (
                         )}
 
                         {/* 🔹 Các nút hành động */}
-                        <div className="tgdp-event-actions">
+                        {/* <div className="tgdp-event-actions">
                             <div
                                 style={{
                                 display: 'flex',
@@ -240,6 +240,39 @@ return (
                                 </Link>
                             )}
                             </div>
+                        </div> */}
+                        {/* 🔹 Các nút hành động */}
+                        <div
+                        className="tgdp-event-actions"
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100vh', // toàn màn hình
+                        }}
+                        >
+                        <div
+                            style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '10px',
+                            flexWrap: 'wrap',
+                            }}
+                        >
+                            {ev.registration_deadline && new Date(ev.registration_deadline) < new Date() ? (
+                            <button className="tgdp-btn grey" disabled>
+                                📝 Hết hạn đăng ký
+                            </button>
+                            ) : (
+                            <Link
+                                to={`/tournament_events/${ev.id}/register-single`}
+                                className="tgdp-btn primary"
+                            >
+                                📝 Đăng Ký
+                            </Link>
+                            )}
+                        </div>
                         </div>
 
                         <div className="tgdp-event-actions">
