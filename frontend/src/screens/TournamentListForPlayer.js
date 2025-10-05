@@ -124,6 +124,7 @@ return (
                     fontSize: '1.3em',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '8px',
                     color: '#333',
                   }}
