@@ -329,7 +329,7 @@ const TournamentCompetitorList = () => {
         <thead>
           <tr>
             <th>STT</th>
-            <th>ID</th>
+            {isAdmin && <th>ID</th>} {/* 🔹 chỉ hiện ID cho admin */}
             <th>Tên</th>
             <th>SĐT</th>
             <th>Lệ phí</th> {/* 👈 thêm dòng này */}
@@ -377,7 +377,7 @@ const TournamentCompetitorList = () => {
                       String(c.status) === '2' ? '#f0f0f0' : 'white'
                   }}>
                     <td>{index + 1}</td> {/* STT theo nhóm */}
-                    <td>{c.player_id}</td>
+                    {isAdmin && <td>{c.player_id}</td>} {/* 🔹 chỉ hiện ID cho admin */}
                     <td>{c.name}</td>
                     <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
                     <td>{(c.attendance_fee ?? 0).toLocaleString()}</td> {/* 👈 thêm dòng này */}
