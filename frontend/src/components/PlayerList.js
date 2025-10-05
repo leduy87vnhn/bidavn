@@ -485,33 +485,13 @@ const PlayerList = () => {
             </div>
             <div className="table-scroll-wrapper">
                 <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', marginTop: 10 }}>
-                    {/* <thead>
-                        <tr>
-                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>
-                                ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                            </th>
-                            <th>Tên</th>
-                            <th>SĐT</th>
-                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('ranking')}>
-                                Hạng Carom {sortConfig.key === 'ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                            </th>
-                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('points')}>
-                                Điểm Carom {sortConfig.key === 'points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                            </th>
-                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_ranking')}>
-                                Hạng Pool {sortConfig.key === 'pool_ranking' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                            </th>
-                            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('pool_points')}>
-                                Điểm Pool {sortConfig.key === 'pool_points' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                            </th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead> */}
                     <thead>
                         <tr>
+                            {isAdmin && (
                             <th className="sticky-col col-id" onClick={() => handleSort('id')}>
                             ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                             </th>
+                            )}
                             <th className="sticky-col col-name" style={{ zIndex: 10 }}>Tên</th>
                             <th className="sticky-col col-phone" style={{ zIndex: 10 }}>SĐT</th>
 
@@ -611,23 +591,6 @@ const PlayerList = () => {
             </div>
             )}
 
-            {/* {showForm && (
-                <div style={{ marginTop: 30 }}>
-                    <h4>Thêm VĐV mới</h4>
-                    <input placeholder="Tên" value={newPlayer.name} onChange={e => setNewPlayer({ ...newPlayer, name: e.target.value })} style={{ marginRight: 10 }} />
-                    <input placeholder="SĐT" value={newPlayer.phone} onChange={e => setNewPlayer({ ...newPlayer, phone: e.target.value })} style={{ marginRight: 10 }} />
-                    <input placeholder="Ranking" value={newPlayer.ranking} onChange={e => setNewPlayer({ ...newPlayer, ranking: e.target.value })} style={{ marginRight: 10 }} />
-                    <input placeholder="Points" value={newPlayer.points} onChange={e => setNewPlayer({ ...newPlayer, points: e.target.value })} style={{ marginRight: 10 }} />
-                    <button
-                        onClick={handleSave}
-                        style={{ backgroundColor: '#007bff', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 5, marginRight: 10 }}
-                    >Lưu</button>
-                    <button
-                        onClick={handleCancel}
-                        style={{ backgroundColor: '#6c757d', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 5 }}
-                    >Huỷ</button>
-                </div>
-            )} */}
             <AddPlayerModal
                 isOpen={showForm}
                 onClose={() => setShowForm(false)}

@@ -85,7 +85,9 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
 
   return (
     <tr style={{ cursor: 'default' }}>
+      {isAdmin && (
       <td className="sticky-col col-id">{form.id}</td>
+      )}
       <td className="sticky-col col-name">
         {isAdmin ? (
           <span
