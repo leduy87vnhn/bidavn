@@ -201,7 +201,17 @@ return (
                       )}
 
                       {ev.location && (
-                        <p style={{ fontSize: '1.1em' }}>
+                        <p
+                            style={{
+                            fontSize: '1.1em',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3, // ✅ Giới hạn 3 dòng
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            minHeight: '4.5em', // ✅ Giữ độ cao cố định (1.5em x 3 dòng)
+                            }}
+                        >
                           <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
                         </p>
                       )}
