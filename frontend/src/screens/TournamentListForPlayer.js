@@ -239,6 +239,8 @@ return (
                             gap: '10px',
                             marginTop: '10px',
                             flexWrap: 'wrap',
+                            width: '100%',
+                            flexBasis: '100%',
                             }}
                         >
                             {ev.schedule_url ? (
