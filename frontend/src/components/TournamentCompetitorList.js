@@ -282,7 +282,7 @@ const TournamentCompetitorList = () => {
         <p><strong>Tổng số VĐV (sau khi lọc):</strong> {data.length}</p>
       )}
 
-      {tournament && (
+      {tournament && isAdmin &&  (
         <div style={{ marginTop: 20, marginBottom: 30 }}>
           <h4>📅 Số lượng VĐV thi đấu mỗi ngày</h4>
           <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '80%' }}>
