@@ -21,10 +21,11 @@ import TournamentGroupDetailForPlayer from './screens/TournamentGroupDetailForPl
 import TournamentListForPlayer from './screens/TournamentListForPlayer';
 
 
-
 ReactModal.setAppElement('#root');
 
 export default function App() {
+  const userInfo = JSON.parse(localStorage.getItem('user_info'));
+  const isAdmin = userInfo?.user_type === 2;
   return (
     <BrowserRouter>
       <Routes>
