@@ -248,7 +248,7 @@ return (
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: '100vh', // toàn màn hình
+                            //height: '100vh', // toàn màn hình
                         }}
                         >
                         <div
