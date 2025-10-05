@@ -193,6 +193,39 @@ return (
                           <FaMapMarkerAlt /> {ev.location}
                         </p>
                       )}
+
+                        {/* 🔹 Các nút hành động */}
+                        <div className="tgdp-event-actions">
+                        {ev.registration_deadline && new Date(ev.registration_deadline) < new Date() ? (
+                            <button className="tgdp-btn grey" disabled>
+                            📝 Hết hạn đăng ký
+                            </button>
+                        ) : (
+                            <Link
+                            to={`/tournament_events/${ev.id}/register-single`}
+                            className="tgdp-btn primary"
+                            >
+                            📝 Đăng Ký
+                            </Link>
+                        )}
+                        {ev.schedule_url ? (
+                            <a
+                            href={ev.schedule_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="tgdp-btn primary"
+                            >
+                            📅 Lịch Thi Đấu
+                            </a>
+                        ) : (
+                            <button className="tgdp-btn grey" disabled>
+                            📅 Lịch Thi Đấu
+                            </button>
+                        )}
+                        <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
+                            📋 Danh Sách Thi Đấu
+                        </Link>
+                        </div>
                     </div>
                   ))}
               </div>
