@@ -60,9 +60,9 @@ const TournamentListForPlayer = () => {
         const updated = { ...prev };
         groups.forEach((g) => {
             const max = g.tournament_events.length;
-            if (max > 3) {
+            if (max > 2) {
             const nextIndex = prev[g.group_id] + 1;
-            updated[g.group_id] = nextIndex > max - 3 ? 0 : nextIndex;
+            updated[g.group_id] = nextIndex > max - 2 ? 0 : nextIndex;
             }
         });
         return updated;
@@ -86,7 +86,7 @@ const TournamentListForPlayer = () => {
         const newIndex =
         direction === 'left'
             ? Math.max(0, prev[groupId] - 1)
-            : Math.min(max - 3, prev[groupId] + 1);
+            : Math.min(max - 2, prev[groupId] + 1);
         return { ...prev, [groupId]: newIndex };
     });
   };
@@ -165,7 +165,7 @@ return (
                 gap: '20px'
               }}>
                 {group.tournament_events
-                  .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 3)
+                  .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 2)
                   .map((ev) => (
                     <div key={ev.id} className="event-card">
                       {ev.ev_background_image && (
@@ -184,15 +184,35 @@ return (
 
                       {(ev.start_date || ev.end_date) && (
                         <p style={{ fontSize: '1.1em' }}>
-                          <FaCalendarAlt /> {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
+                          <FaCalendarAlt className="tgdp-icon purple" /> {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
                         </p>
                       )}
 
                       {ev.location && (
                         <p style={{ fontSize: '1.1em' }}>
-                          <FaMapMarkerAlt /> {ev.location}
+                          <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
                         </p>
                       )}
+
+                        {ev.maximum_competitors && (
+                        <p style={{ fontSize: '1.1em' }}>
+                            <FaUsers className="tgdp-icon blue" />{' '}
+                            {`${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`}
+                        </p>
+                        )}
+
+                        {ev.attendance_fee_common && (
+                        <p style={{ fontSize: '1.1em' }}>
+                            <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
+                            {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
+                        </p>
+                        )}
+
+                        {ev.prize && (
+                        <p style={{ fontSize: '1.1em' }}>
+                            <FaGift className="tgdp-icon orange" /> {ev.prize}
+                        </p>
+                        )}
 
                         {/* 🔹 Các nút hành động */}
                         <div className="tgdp-event-actions">
