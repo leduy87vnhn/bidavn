@@ -20,11 +20,21 @@ const TournamentListForPlayer = () => {
           `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`
         );
 
+        // 🔹 Lọc chỉ các group có display = true (hoặc = 'yes')
+        const visibleGroups = res.data.filter(
+        (g) => g.display === true || g.display === 'yes'
+        );
+
         // Sắp xếp group: start_date DESC (muộn → sớm)
-        const sortedGroups = [...res.data].sort((a, b) => {
-          const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
-          const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
-          return dateB - dateA;
+        // const sortedGroups = [...res.data].sort((a, b) => {
+        //   const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
+        //   const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
+        //   return dateB - dateA;
+        // });
+        const sortedGroups = [...visibleGroups].sort((a, b) => {
+        const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
+        const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
+        return dateB - dateA;
         });
 
         // Sắp xếp event trong mỗi group: start_date DESC (muộn → sớm)
