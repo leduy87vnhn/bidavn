@@ -11,11 +11,7 @@ const MainPageMenuBar = () => {
         <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/'}>Trang Chủ </span>
         <span
           className="menu-item"
-          onClick={() =>
-            user?.user_type === 2
-              ? navigate('/tournament_events_admin')
-              : navigate('/tournament_events')
-          }
+          onClick={() => navigate('/tournament_events')}
         >
           Giải Thể Thao
         </span>
