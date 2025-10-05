@@ -107,7 +107,7 @@ return (
             <div
               className="tournament-group-header"
               style={{
-                background: '#e6f0ff',
+                background: '#e8fbe8',
                 borderRadius: '12px',
                 padding: '24px 36px',
                 marginTop: '30px',
@@ -158,7 +158,12 @@ return (
                 </button>
               )}
 
-              <div className="event-carousel">
+              <div className="event-carousel" style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                gap: '20px'
+              }}>
                 {group.tournament_events
                   .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 3)
                   .map((ev) => (
