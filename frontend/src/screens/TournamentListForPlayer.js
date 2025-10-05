@@ -330,7 +330,7 @@ return (
                   ))}
               </div>
 
-              {group.tournament_events.length > 3 && (
+              {group.tournament_events.length > 2 && (
                 <button className="slide-btn right" onClick={() => handleSlide(group.group_id, 'right')}>
                   <FaChevronRight />
                 </button>
