@@ -492,8 +492,31 @@ const PlayerList = () => {
                             ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                             </th>
                             )}
-                            <th className="sticky-col col-name" style={{ zIndex: 10 }}>Tên</th>
-                            <th className="sticky-col col-phone" style={{ zIndex: 10 }}>SĐT</th>
+                            {/* Cột Tên */}
+                            <th
+                            className={isAdmin ? 'sticky-col col-name' : ''}
+                            style={{
+                                zIndex: 10,
+                                position: isAdmin ? 'sticky' : 'static',
+                                left: isAdmin ? (isAdmin ? 80 : 0) : 'auto',
+                                background: '#fff'
+                            }}
+                            >
+                            Tên
+                            </th>
+
+                            {/* Cột SĐT */}
+                            <th
+                            className={isAdmin ? 'sticky-col col-phone' : ''}
+                            style={{
+                                zIndex: 10,
+                                position: isAdmin ? 'sticky' : 'static',
+                                left: isAdmin ? (isAdmin ? 240 : 0) : 'auto',
+                                background: '#fff'
+                            }}
+                            >
+                            SĐT
+                            </th>
 
                             {isAdmin && (
                             <>
