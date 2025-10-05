@@ -12,6 +12,7 @@ const TournamentListForPlayer = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [eventIndexes, setEventIndexes] = useState({});
+  const [expandedEventId, setExpandedEventId] = useState(null);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -25,12 +26,6 @@ const TournamentListForPlayer = () => {
         (g) => g.display === true || g.display === 'yes'
         );
 
-        // Sắp xếp group: start_date DESC (muộn → sớm)
-        // const sortedGroups = [...res.data].sort((a, b) => {
-        //   const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
-        //   const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
-        //   return dateB - dateA;
-        // });
         const sortedGroups = [...visibleGroups].sort((a, b) => {
         const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
         const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
@@ -200,7 +195,7 @@ return (
                         </p>
                       )}
 
-                      {ev.location && (
+                      {/* {ev.location && (
                         <p
                             style={{
                             fontSize: '1.1em',
@@ -214,7 +209,29 @@ return (
                         >
                           <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
                         </p>
-                      )}
+                      )} */}
+
+                        {ev.location && (
+                        <p
+                            style={{
+                            fontSize: '1.1em',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: expandedEventId === ev.id ? 'unset' : 3, // ✅ Mở rộng nếu đang click
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            minHeight: expandedEventId === ev.id ? 'auto' : '4.5em', // giữ đều khi thu gọn
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            }}
+                            title="Bấm để xem đầy đủ"
+                            onClick={() =>
+                            setExpandedEventId(expandedEventId === ev.id ? null : ev.id)
+                            }
+                        >
+                            <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
+                        </p>
+                        )}
 
                         {ev.maximum_competitors && (
                         <p style={{ fontSize: '1.1em' }}>
