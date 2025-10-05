@@ -230,7 +230,9 @@ return (
                             📝 Đăng Ký
                             </Link>
                         )}
+                        </div>
 
+                        <div className="tgdp-event-actions">
                         {/* 🔹 Nhóm 2 nút xuống hàng */}
                         <div
                             style={{
@@ -239,8 +241,6 @@ return (
                             gap: '10px',
                             marginTop: '10px',
                             flexWrap: 'wrap',
-                            width: '100%',
-                            flexBasis: '100%',
                             }}
                         >
                             {ev.schedule_url ? (
