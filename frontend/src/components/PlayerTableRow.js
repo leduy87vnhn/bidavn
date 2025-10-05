@@ -88,7 +88,7 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
       {isAdmin && (
       <td className="sticky-col col-id">{form.id}</td>
       )}
-      <td className="sticky-col col-name">
+      {/* <td className="sticky-col col-name">
         {isAdmin ? (
           <span
             style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
@@ -105,6 +105,36 @@ const PlayerTableRow = ({ player, isAdmin, onUpdated, onDeleted, onApproved, onE
       </td>
       <td className="sticky-col col-phone">
         {isAdmin ? (editing ? <input name="phone" value={form.phone} onChange={handleChange} /> : form.phone) : '***' + form.phone?.slice(-3)}
+      </td> */}
+
+      {/* Cột tên */}
+      <td className={isAdmin ? 'sticky-col col-name' : ''}>
+        {isAdmin ? (
+          <span
+            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEditClick(player);
+            }}
+          >
+            {form.name}
+          </span>
+        ) : (
+          form.name
+        )}
+      </td>
+
+      {/* Cột SĐT */}
+      <td className={isAdmin ? 'sticky-col col-phone' : ''}>
+        {isAdmin ? (
+          editing ? (
+            <input name="phone" value={form.phone} onChange={handleChange} />
+          ) : (
+            form.phone
+          )
+        ) : (
+          '***' + form.phone?.slice(-3)
+        )}
       </td>
 
       {/* Các cột chỉ hiển thị cho admin */}
