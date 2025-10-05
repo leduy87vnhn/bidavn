@@ -218,18 +218,28 @@ return (
 
                         {/* 🔹 Các nút hành động */}
                         <div className="tgdp-event-actions">
-                        {ev.registration_deadline && new Date(ev.registration_deadline) < new Date() ? (
-                            <button className="tgdp-btn grey" disabled>
-                            📝 Hết hạn đăng ký
-                            </button>
-                        ) : (
-                            <Link
-                            to={`/tournament_events/${ev.id}/register-single`}
-                            className="tgdp-btn primary"
+                            <div
+                                style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                gap: '10px',
+                                marginTop: '10px',
+                                flexWrap: 'wrap',
+                                }}
                             >
-                            📝 Đăng Ký
-                            </Link>
-                        )}
+                            {ev.registration_deadline && new Date(ev.registration_deadline) < new Date() ? (
+                                <button className="tgdp-btn grey" disabled>
+                                📝 Hết hạn đăng ký
+                                </button>
+                            ) : (
+                                <Link
+                                to={`/tournament_events/${ev.id}/register-single`}
+                                className="tgdp-btn primary"
+                                >
+                                📝 Đăng Ký
+                                </Link>
+                            )}
+                            </div>
                         </div>
 
                         <div className="tgdp-event-actions">
