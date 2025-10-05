@@ -111,6 +111,7 @@ return (
                 borderRadius: '12px',
                 padding: '24px 36px',
                 marginTop: '30px',
+                textAlign: 'center',
               }}
             >
               <h1 style={{ fontSize: '1.8em', color: '#003399', marginBottom: '10px' }}>
@@ -139,12 +140,12 @@ return (
                   target="_blank"
                   rel="noopener noreferrer"
                   className="top-action-button primary"
-                  style={{ marginTop: '10px', fontSize: '1.2em' }}
+                  style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block', }}
                 >
                   📥 Điều lệ
                 </a>
               ) : (
-                <button className="top-action-button grey" disabled style={{ marginTop: '10px' }}>
+                <button className="top-action-button grey" disabled style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block',  }}>
                   📄 Điều lệ
                 </button>
               )}
