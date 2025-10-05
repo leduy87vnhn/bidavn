@@ -18,6 +18,8 @@ import TournamentGroupDetail from './screens/TournamentGroupDetail';
 import UserManagement from './screens/UserManagement';
 import MembersScreen from './screens/MembersScreen';
 import TournamentGroupDetailForPlayer from './screens/TournamentGroupDetailForPlayer';
+import TournamentListForPlayer from './screens/TournamentListForPlayer';
+
 
 
 ReactModal.setAppElement('#root');
@@ -39,17 +41,10 @@ export default function App() {
         <Route path="/tournament_events/:id/competitors" element={<TournamentCompetitorList />} />
         <Route path="/settings" element={<MainPageSettings />} />
         <Route path="/tournament-group/:groupId" element={<TournamentGroupDetail />} />
-        <Route
-          path="/users"
-          element={
-            <PrivateRoute>
-              <UserManagement />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/users" element={<PrivateRoute><UserManagement /></PrivateRoute>} />
         <Route path="/members" element={<MembersScreen />} />
-        <Route path="/tournament_events" element={<TournamentList />} />
         <Route path="/tournament-group/:groupId/for-player" element={<TournamentGroupDetailForPlayer />} />
+        <Route path="/tournament_events" element={isAdmin ? <TournamentList /> : <TournamentListForPlayer />} />
       </Routes>
     </BrowserRouter>
   );
