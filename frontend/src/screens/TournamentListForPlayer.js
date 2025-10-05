@@ -229,23 +229,36 @@ return (
                             📝 Đăng Ký
                             </Link>
                         )}
-                        {ev.schedule_url ? (
+
+                        {/* 🔹 Nhóm 2 nút xuống hàng */}
+                        <div
+                            style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '10px',
+                            marginTop: '10px',
+                            flexWrap: 'wrap',
+                            }}
+                        >
+                            {ev.schedule_url ? (
                             <a
-                            href={ev.schedule_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="tgdp-btn primary"
+                                href={ev.schedule_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="tgdp-btn primary"
                             >
-                            📅 Lịch Thi Đấu
+                                📅 Lịch Thi Đấu
                             </a>
-                        ) : (
+                            ) : (
                             <button className="tgdp-btn grey" disabled>
-                            📅 Lịch Thi Đấu
+                                📅 Lịch Thi Đấu
                             </button>
-                        )}
-                        <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
+                            )}
+
+                            <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
                             📋 Danh Sách Thi Đấu
-                        </Link>
+                            </Link>
+                        </div>
                         </div>
                     </div>
                   ))}
