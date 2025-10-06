@@ -206,13 +206,18 @@
 }
 
 .top-action-button {
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
+  display: inline-flex;               /* dùng flex để căn icon và text */
+  align-items: center;                /* căn giữa theo chiều dọc */
+  justify-content: center;
+  gap: 6px;                           /* khoảng cách giữa icon và chữ */
+  padding: 10px 18px;                 /* cân chỉnh padding */
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
   text-decoration: none;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
   &.primary {
     background: #007bff;
