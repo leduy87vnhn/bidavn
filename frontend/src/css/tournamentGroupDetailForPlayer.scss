@@ -286,3 +286,17 @@
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* 🔹 Tiêu đề group với font League Spartan */
+.tournament-group-title {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 800;
+  font-size: 4em;
+  color: #003399;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.1;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
