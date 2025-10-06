@@ -181,12 +181,12 @@ return (
                   target="_blank"
                   rel="noopener noreferrer"
                   className="top-action-button primary"
-                  style={{ marginTop: '10px', fontSize: '1.4em', display: 'inline-block', }}
+                  style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block', }}
                 >
                   📥 Điều lệ
                 </a>
               ) : (
-                <button className="top-action-button grey" disabled style={{ marginTop: '10px', fontSize: '1.4em', display: 'inline-block',  }}>
+                <button className="top-action-button grey" disabled style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block',  }}>
                   📄 Điều lệ
                 </button>
               )}

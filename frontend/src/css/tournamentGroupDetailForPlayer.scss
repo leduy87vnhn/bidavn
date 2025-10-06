@@ -212,7 +212,7 @@
   gap: 6px;                           /* khoảng cách giữa icon và chữ */
   padding: 10px 18px;                 /* cân chỉnh padding */
   border-radius: 8px;
-  font-size: 1.4em;
+  font-size: 1.2em;
   font-weight: 600;
   text-decoration: none;
   border: none;
@@ -231,6 +231,11 @@
     background: #ccc;
     color: #444;
     cursor: not-allowed;
+  }
+  span.emoji {
+    position: relative;
+    top: -2px;             /* 🔹 đẩy emoji lên một chút */
+    font-size: 1.2em;
   }
 }
 
