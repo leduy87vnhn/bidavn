@@ -59,30 +59,38 @@ const TournamentListForPlayer = () => {
     if (userInfo) setUser(JSON.parse(userInfo));
   }, []);
 
-    useEffect(() => {
-    const interval = setInterval(() => {
-        setEventIndexes((prev) => {
-        const updated = { ...prev };
-        groups.forEach((g) => {
-            const max = g.tournament_events.length;
-            if (max > 2) {
-            const nextIndex = prev[g.group_id] + 1;
-            updated[g.group_id] = nextIndex > max - 2 ? 0 : nextIndex;
-            }
-        });
-        return updated;
-        });
-    }, 5000); // đổi 5000 → 3000 nếu muốn nhanh hơn
-    return () => clearInterval(interval);
-    }, [groups]);
+  // useEffect(() => {
+  // const interval = setInterval(() => {
+  //     setEventIndexes((prev) => {
+  //     const updated = { ...prev };
+  //     groups.forEach((g) => {
+  //         const max = g.tournament_events.length;
+  //         if (max > 2) {
+  //         const nextIndex = prev[g.group_id] + 1;
+  //         updated[g.group_id] = nextIndex > max - 2 ? 0 : nextIndex;
+  //         }
+  //     });
+  //     return updated;
+  //     });
+  // }, 5000); // đổi 5000 → 3000 nếu muốn nhanh hơn
+  // return () => clearInterval(interval);
+  // }, [groups]);
 
+  // const formatDate = (isoStr) => {
+  //   if (!isoStr) return '';
+  //   const d = new Date(isoStr);
+  //   if (isNaN(d.getTime())) return '';
+  //   return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
+  //     .toString()
+  //     .padStart(2, '0')}-${d.getFullYear()}`;
+  // };
   const formatDate = (isoStr) => {
     if (!isoStr) return '';
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return '';
     return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}-${d.getFullYear()}`;
+      .padStart(2, '0')}`; // chỉ hiển thị ngày-tháng
   };
 
   const handleSlide = (groupId, direction) => {
@@ -108,7 +116,7 @@ return (
     ) : (
       groups.map((group) => {
         return (
-          <div key={group.group_id}>
+          <div key={group.group_id} className="tgdp-group-card">
             <div
               className="tournament-group-header"
               style={{
@@ -119,14 +127,23 @@ return (
                 textAlign: 'center',
               }}
             >
-              <h1 style={{ fontSize: '1.8em', color: '#003399', marginBottom: '10px' }}>
+
+              {group.background_image && (
+                <div className="tgdp-group-bg">
+                  <img
+                    src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`}
+                    alt="Group Background"
+                  />
+                </div>
+              )}
+              <h1 style={{ fontSize: '2.5em', color: '#003399', marginBottom: '10px' }}>
                 {group.group_name}
               </h1>
 
               {(group.group_start_date || group.group_end_date) && (
                 <p
                   style={{
-                    fontSize: '1.3em',
+                    fontSize: '1.6em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -139,6 +156,24 @@ return (
                 </p>
               )}
 
+              {/* 🔹 Địa chỉ của event đầu tiên */}
+              {group.tournament_events[0]?.location && (
+                <p
+                  style={{
+                    fontSize: '1.6em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    color: '#555',
+                    marginTop: '4px',
+                  }}
+                >
+                  <FaMapMarkerAlt className="tgdp-icon red" />
+                  {group.tournament_events[0].location}
+                </p>
+              )}
+
               {/* 🔹 Nút điều lệ */}
               {group.group_regulations ? (
                 <a
@@ -146,12 +181,12 @@ return (
                   target="_blank"
                   rel="noopener noreferrer"
                   className="top-action-button primary"
-                  style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block', }}
+                  style={{ marginTop: '10px', fontSize: '1.6em', display: 'inline-block', }}
                 >
                   📥 Điều lệ
                 </a>
               ) : (
-                <button className="top-action-button grey" disabled style={{ marginTop: '10px', fontSize: '1.2em', display: 'inline-block',  }}>
+                <button className="top-action-button grey" disabled style={{ marginTop: '10px', fontSize: '1.6em', display: 'inline-block',  }}>
                   📄 Điều lệ
                 </button>
               )}
@@ -187,7 +222,20 @@ return (
                           }}
                         />
                       )}
-                      <h2 style={{ fontSize: '1.3em', color: '#0044cc' }}>{ev.name}</h2>
+                      <h2
+                        style={{
+                          fontSize: '1.3em',
+                          color: '#0044cc',
+                          height: '3em', // giữ cố định 2 dòng
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                        }}
+                      >
+                        {ev.name}
+                      </h2>
 
                       {(ev.start_date || ev.end_date) && (
                         <p style={{ fontSize: '1.1em' }}>
@@ -196,42 +244,26 @@ return (
                       )}
 
                       {/* {ev.location && (
-                        <p
-                            style={{
-                            fontSize: '1.1em',
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 3, // ✅ Giới hạn 3 dòng
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            minHeight: '4.5em', // ✅ Giữ độ cao cố định (1.5em x 3 dòng)
-                            }}
-                        >
+                      <p
+                          style={{
+                          fontSize: '1.1em',
+                          display: '-webkit-box',
+                          WebkitBoxOrient: 'vertical',
+                          WebkitLineClamp: expandedEventId === ev.id ? 'unset' : 3, // ✅ Mở rộng nếu đang click
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          minHeight: expandedEventId === ev.id ? 'auto' : '4.5em', // giữ đều khi thu gọn
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          }}
+                          title="Bấm để xem đầy đủ"
+                          onClick={() =>
+                          setExpandedEventId(expandedEventId === ev.id ? null : ev.id)
+                          }
+                      >
                           <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
-                        </p>
+                      </p>
                       )} */}
-
-                        {ev.location && (
-                        <p
-                            style={{
-                            fontSize: '1.1em',
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: expandedEventId === ev.id ? 'unset' : 3, // ✅ Mở rộng nếu đang click
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            minHeight: expandedEventId === ev.id ? 'auto' : '4.5em', // giữ đều khi thu gọn
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            }}
-                            title="Bấm để xem đầy đủ"
-                            onClick={() =>
-                            setExpandedEventId(expandedEventId === ev.id ? null : ev.id)
-                            }
-                        >
-                            <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
-                        </p>
-                        )}
 
                         {ev.maximum_competitors && (
                         <p style={{ fontSize: '1.1em' }}>

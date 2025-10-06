@@ -39,19 +39,6 @@
   }
 }
 
-// .tgdp-group-bg {
-//   position: relative;
-//   display: inline-block; // thay vì text-align: center
-//   margin-bottom: 20px;
-
-//   img {
-//     max-width: 90%;
-//     border-radius: 12px;
-//     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-//     display: block; // giữ ảnh đúng layout
-//   }
-// }
-
 .tgdp-events {
   max-width: 700px;
   margin: 0 auto;
@@ -150,17 +137,67 @@
   }
 }
 
-.tgdp-group-bg {
-  position: relative;
-  text-align: center;
-  margin-bottom: 20px;
+// .tgdp-group-bg {
+//   position: relative;
+//   text-align: center;
+//   margin-bottom: 20px;
 
+//   img {
+//     max-width: 90%;
+//     border-radius: 12px;
+//     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+//   }
+// }
+
+/* (7) Ảnh nền group */
+.tgdp-group-bg {
+  margin-bottom: 12px;
   img {
-    max-width: 90%;
+    width: 90%;
+    max-height: 260px;
+    object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   }
 }
+
+/* (1) Viền cho khối group */
+.tgdp-group-card {
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  margin: 30px auto;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* (1) Viền cho khối event */
+.event-card {
+  flex: 0 0 calc(50% - 20px);
+  background: #ffffff;
+  border: 1.5px solid #bbb;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* (3) Giới hạn tên event 2 dòng */
+.event-card h2 {
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* (5) Font chữ group to hơn */
+.tgdp-group-card h1 {
+  font-size: 2.7em !important;
+}
+
 
 .tgdp-regulation-btn {
   position: center;
@@ -205,9 +242,9 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 18px;
+  width: 63px;
+  height: 63px;
+  font-size: 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -215,6 +252,9 @@
   transition: 0.2s;
   z-index: 10;
 }
+
+
+
 .slide-btn:hover {
   background-color: #0056b3;
 }
