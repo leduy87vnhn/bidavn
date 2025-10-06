@@ -272,13 +272,13 @@
 .event-carousel {
   display: flex;
   overflow: hidden;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: nowrap;
   width: 100%;
 }
 
 .event-card {
-  flex: 0 0 calc(33.33% - 20px);
+  flex: 0 0 calc(50% - 20px);
   background: #ffffff;
   border: 1px solid #ccc;
   border-radius: 10px;

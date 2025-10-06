@@ -136,14 +136,14 @@ return (
                   />
                 </div>
               )}
-              <h1 style={{ fontSize: '2.5em', color: '#003399', marginBottom: '10px' }}>
+              <h1 style={{ fontSize: '3.0em', color: '#003399', marginBottom: '10px' }}>
                 {group.group_name}
               </h1>
 
               {(group.group_start_date || group.group_end_date) && (
                 <p
                   style={{
-                    fontSize: '1.6em',
+                    fontSize: '2.0em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -160,7 +160,7 @@ return (
               {group.tournament_events[0]?.location && (
                 <p
                   style={{
-                    fontSize: '1.6em',
+                    fontSize: '2.0em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
