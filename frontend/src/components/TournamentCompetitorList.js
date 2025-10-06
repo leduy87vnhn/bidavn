@@ -75,16 +75,19 @@ const TournamentCompetitorList = () => {
   // }, [sortConfig]);
 
   const exportToExcel = (rows) => {
-    const formatted = rows.map(c => ({
-      "ID": c.player_id,
-      "Tên": c.name,
-      "SĐT": isAdmin ? c.phone : maskPhone(c.phone),
-      "Lệ phí": c.attendance_fee ?? 0, // 👈 thêm dòng này
-      "Đơn vị": c.club,
-      "Size trang phục": c.uniform_size,
-      "Ngày thi đấu": c.selected_date?.slice(0, 10),
-      "Trạng thái": statusText(c.status)
-    }));
+    const formatted = rows.map(c => {
+      const base = {
+        "ID": c.player_id,
+        "Tên": c.name,
+        "SĐT": isAdmin ? c.phone : maskPhone(c.phone),
+        "Đơn vị": c.club,
+        "Size trang phục": c.uniform_size,
+        "Ngày thi đấu": c.selected_date?.slice(0, 10),
+        "Trạng thái": statusText(c.status)
+      };
+      if (isAdmin) base["Lệ phí"] = c.attendance_fee ?? 0; // ✅ chỉ thêm nếu admin
+      return base;
+    });
 
     const worksheet = XLSX.utils.json_to_sheet(formatted);
     const workbook = XLSX.utils.book_new();
@@ -332,7 +335,7 @@ const TournamentCompetitorList = () => {
             {isAdmin && <th>ID</th>} {/* 🔹 chỉ hiện ID cho admin */}
             <th>Tên</th>
             <th>SĐT</th>
-            <th>Lệ phí</th> {/* 👈 thêm dòng này */}
+            {isAdmin && <th>Lệ phí</th>} {/* 👈 chỉ hiện ID cho admin */}
             <th onClick={() => handleSort('club')} style={{ cursor: 'pointer' }}>
               Đơn vị {sortConfig.key === 'club' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
             </th>
@@ -380,7 +383,7 @@ const TournamentCompetitorList = () => {
                     {isAdmin && <td>{c.player_id}</td>} {/* 🔹 chỉ hiện ID cho admin */}
                     <td>{c.name}</td>
                     <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
-                    <td>{(c.attendance_fee ?? 0).toLocaleString()}</td> {/* 👈 thêm dòng này */}
+                    {isAdmin && <td>{(c.attendance_fee ?? 0).toLocaleString()}</td>} {/* 👈 thêm dòng này */}
                     <td>{c.club}</td>
                     <td>{formatDate(c.selected_date?.slice(0, 10))}</td>
                     <td>{statusText(c.status)}</td>
