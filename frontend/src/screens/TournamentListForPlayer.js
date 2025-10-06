@@ -136,7 +136,7 @@ return (
                   />
                 </div>
               )}
-              <h1 style={{ fontSize: '3.0em', color: '#003399', marginBottom: '10px' }}>
+              <h1 style={{ fontSize: '4.0em', color: '#003399', marginBottom: '10px' }}>
                 {group.group_name}
               </h1>
 
