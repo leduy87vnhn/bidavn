@@ -188,6 +188,51 @@ const TournamentEventForPlayer = () => {
         </div>
       )}
 
+        {/* 🗓️ Ảnh Lịch Thi Đấu từ Google Sheet */}
+        {event.schedule_url && (
+        <div
+            style={{
+            margin: "30px auto",
+            width: "90%",
+            maxWidth: "900px",
+            textAlign: "center",
+            }}
+        >
+            <h3
+            style={{
+                fontFamily: "'Oswald', sans-serif",
+                fontSize: "1.6em",
+                color: "#0044cc",
+                marginBottom: "15px",
+            }}
+            >
+            Lịch Thi Đấu
+            </h3>
+
+            {/* 👉 Tạo link ảnh từ schedule_url */}
+            <img
+            src={
+                event.schedule_url.includes("docs.google.com")
+                ? event.schedule_url
+                    .replace("/edit#gid=", "/export?format=png&gid=")
+                    .replace("/view?usp=sharing", "/export?format=png")
+                : event.schedule_url
+            }
+            alt="Lịch Thi Đấu"
+            style={{
+                width: "100%",
+                maxHeight: "1200px",
+                objectFit: "contain",
+                borderRadius: "12px",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+            }}
+            onError={(e) => {
+                e.currentTarget.style.display = "none";
+            }}
+            />
+        </div>
+        )}
+
       {/* 🏆 Label Danh sách VĐV */}
       <h2
         style={{
