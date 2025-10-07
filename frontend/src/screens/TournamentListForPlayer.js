@@ -245,6 +245,9 @@ return (
                         style={{
                           fontSize: '1.3em',
                           color: '#0044cc',
+                          fontFamily: "'Oswald', sans-serif",
+                          fontWeight: '700',
+                          letterSpacing: '0.5px',
                           height: '3em', // giữ cố định 2 dòng
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -368,10 +371,12 @@ return (
                         <div
                             style={{
                             display: 'flex',
-                            justifyContent: 'center',
+                            flexDirection: 'column', // 🔹 chuyển sang dọc
+                            alignItems: 'center', // 🔹 canh giữa
+                            //justifyContent: 'center',
                             gap: '10px',
                             marginTop: '10px',
-                            flexWrap: 'wrap',
+                            //flexWrap: 'wrap',
                             }}
                         >
                             {ev.schedule_url ? (
