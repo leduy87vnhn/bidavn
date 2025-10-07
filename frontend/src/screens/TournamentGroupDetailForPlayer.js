@@ -162,7 +162,21 @@ const TournamentGroupDetailForPlayer = () => {
                 />
             </div>
             )}
-            <h2 className="tgdp-event-title">{ev.name}</h2>
+            <h2 className="tgdp-event-title">
+              <Link
+                to={`/tournament_events/${ev.id}/detail-for-player`}
+                style={{
+                  color: '#0044cc',
+                  fontFamily: "'Oswald', sans-serif",
+                  fontWeight: '700',
+                  textDecoration: 'none',
+                  display: 'inline-block',
+                  width: '100%',
+                }}
+              >
+                {ev.name}
+              </Link>
+            </h2>
             {/* Thời gian */}
             {(ev.start_date || ev.end_date) && (
             <p className="tgdp-event-line">

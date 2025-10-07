@@ -57,6 +57,7 @@ const TournamentCompetitorList = () => {
   }, [tournamentId]);
 
   useEffect(() => {
+    if (!tournamentId) return;
     const fetchSlots = async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registration_form/slots?tournament_id=${tournamentId}`);

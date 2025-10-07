@@ -256,7 +256,17 @@ return (
                           WebkitBoxOrient: 'vertical',
                         }}
                       >
-                        {ev.name}
+                        <Link
+                          to={`/tournament_events/${ev.id}/detail-for-player`}
+                          style={{
+                            color: '#0044cc',
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            width: '100%',
+                          }}
+                        >
+                          {ev.name}
+                        </Link>
                       </h2>
 
                       {(ev.start_date || ev.end_date) && (
