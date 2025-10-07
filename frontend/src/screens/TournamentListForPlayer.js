@@ -375,7 +375,7 @@ return (
                             flexDirection: 'column', // 🔹 chuyển sang dọc
                             alignItems: 'center', // 🔹 canh giữa
                             justifyContent: 'center',
-                            width: '50%',
+                            width: '100%',
                             gap: '10px',
                             marginTop: '10px',
                             //flexWrap: 'wrap',
