@@ -93,14 +93,33 @@ const TournamentListForPlayer = () => {
       .padStart(2, '0')}`; // chỉ hiển thị ngày-tháng
   };
 
+  // const handleSlide = (groupId, direction) => {
+  //   setEventIndexes((prev) => {
+  //       const max = groups.find((g) => g.group_id === groupId)?.tournament_events.length || 0;
+  //       const newIndex =
+  //       direction === 'left'
+  //           ? Math.max(0, prev[groupId] - 1)
+  //           : Math.min(max - 2, prev[groupId] + 1);
+  //       return { ...prev, [groupId]: newIndex };
+  //   });
+  // };
+
   const handleSlide = (groupId, direction) => {
     setEventIndexes((prev) => {
-        const max = groups.find((g) => g.group_id === groupId)?.tournament_events.length || 0;
-        const newIndex =
-        direction === 'left'
-            ? Math.max(0, prev[groupId] - 1)
-            : Math.min(max - 2, prev[groupId] + 1);
-        return { ...prev, [groupId]: newIndex };
+      const group = groups.find((g) => g.group_id === groupId);
+      const max = group?.tournament_events.length || 0;
+      if (max <= 2) return prev; // không cần xoay nếu chỉ có ≤2 event
+
+      let newIndex;
+      if (direction === 'left') {
+        // nếu đang ở đầu thì xoay vòng về cuối
+        newIndex = prev[groupId] - 1 < 0 ? max - 2 : prev[groupId] - 1;
+      } else {
+        // nếu đang ở cuối thì xoay vòng về đầu
+        newIndex = prev[groupId] + 1 > max - 2 ? 0 : prev[groupId] + 1;
+      }
+
+      return { ...prev, [groupId]: newIndex };
     });
   };
 
