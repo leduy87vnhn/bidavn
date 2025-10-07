@@ -253,13 +253,17 @@ const TournamentCompetitorList = () => {
       </div>
 
       <div style={{ marginBottom: 10 }}>
+        {isAdmin && (
         <label>Lọc theo trạng thái: </label>
+        )}
+        {isAdmin && (
         <select onChange={(e) => handleStatusFilter(e.target.value)}>
           <option value="all">Tất cả</option>
           <option value="1">Đã duyệt</option>
           <option value="0">Chờ duyệt</option>
           <option value="2">Đã huỷ</option>
         </select>
+        )}
         <div style={{ marginTop: 10, marginBottom: 10, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <input
             type="text"
