@@ -80,12 +80,13 @@ const TournamentCompetitorList = () => {
         "ID": c.player_id,
         "Tên": c.name,
         "SĐT": isAdmin ? c.phone : maskPhone(c.phone),
-        "Đơn vị": c.club,
+        //"Đơn vị": c.club,
         "Size trang phục": c.uniform_size,
         "Ngày thi đấu": c.selected_date?.slice(0, 10),
         "Trạng thái": statusText(c.status)
       };
       if (isAdmin) base["Lệ phí"] = c.attendance_fee ?? 0; // ✅ chỉ thêm nếu admin
+      if (isAdmin) base["Đơn vị"] = c.club;
       return base;
     });
 
@@ -272,12 +273,14 @@ const TournamentCompetitorList = () => {
             value={searchPhone}
             onChange={(e) => setSearchPhone(e.target.value)}
           />
-          <input
-            type="text"
-            placeholder="Tìm theo đơn vị"
-            value={searchClub}
-            onChange={(e) => setSearchClub(e.target.value)}
-          />
+          {isAdmin && (
+            <input
+              type="text"
+              placeholder="Tìm theo đơn vị"
+              value={searchClub}
+              onChange={(e) => setSearchClub(e.target.value)}
+            />
+          )}
         </div>
       </div>
 
@@ -336,9 +339,11 @@ const TournamentCompetitorList = () => {
             <th>Tên</th>
             <th>SĐT</th>
             {isAdmin && <th>Lệ phí</th>} {/* 👈 chỉ hiện ID cho admin */}
-            <th onClick={() => handleSort('club')} style={{ cursor: 'pointer' }}>
-              Đơn vị {sortConfig.key === 'club' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
-            </th>
+            {isAdmin &&
+              <th onClick={() => handleSort('club')} style={{ cursor: 'pointer' }}>
+                Đơn vị {sortConfig.key === 'club' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+              </th>
+            } {/* 👈 chỉ hiện ID cho admin */}
             <th onClick={() => handleSort('selected_date')} style={{ cursor: 'pointer' }}>
               Ngày thi đấu {sortConfig.key === 'selected_date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
             </th>
@@ -384,7 +389,7 @@ const TournamentCompetitorList = () => {
                     <td>{c.name}</td>
                     <td>{isAdmin ? c.phone : maskPhone(c.phone)}</td>
                     {isAdmin && <td>{(c.attendance_fee ?? 0).toLocaleString()}</td>} {/* 👈 thêm dòng này */}
-                    <td>{c.club}</td>
+                    {isAdmin && <td>{c.club}</td>}
                     <td>{formatDate(c.selected_date?.slice(0, 10))}</td>
                     <td>{statusText(c.status)}</td>
                   </tr>
