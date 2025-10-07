@@ -1,3 +1,4 @@
+// File: frontend/src/screens/TournamentEventForPlayer.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,7 +21,7 @@ const TournamentEventForPlayer = () => {
   const [loading, setLoading] = useState(true);
 
   const defaultFace =
-    "https://cdn.pixabay.com/photo/2014/04/03/10/32/billiards-311939_1280.png"; // ảnh mặc định anime billiard
+    "https://cdn.pixabay.com/photo/2014/04/03/10/32/billiards-311939_1280.png"; // ảnh mặc định
 
   const formatDate = (isoStr) => {
     if (!isoStr) return "";
@@ -36,13 +37,11 @@ const TournamentEventForPlayer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Lấy thông tin event
         const evRes = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/${eventId}`
         );
         setEvent(evRes.data);
 
-        // Lấy thông tin group
         if (evRes.data.group_id) {
           const groupRes = await axios.get(
             `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${evRes.data.group_id}`
@@ -50,11 +49,10 @@ const TournamentEventForPlayer = () => {
           setGroup(groupRes.data.group);
         }
 
-        // Lấy danh sách vận động viên
         const compRes = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/api/registration_form/by-tournament/${eventId}`
         );
-        setCompetitors(compRes.data.filter((c) => String(c.status) === "1")); // chỉ hiện VĐV đã duyệt
+        setCompetitors(compRes.data.filter((c) => String(c.status) === "1"));
       } catch (err) {
         console.error("❌ Lỗi tải dữ liệu:", err);
       } finally {
@@ -73,6 +71,10 @@ const TournamentEventForPlayer = () => {
 
   const evBgUrl = event.background_image
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${event.background_image}`
+    : null;
+
+  const googleMapUrl = event.location
+    ? `https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed`
     : null;
 
   return (
@@ -153,6 +155,45 @@ const TournamentEventForPlayer = () => {
         )}
       </div>
 
+      {/* 🗺️ Google Map */}
+      {googleMapUrl && (
+        <div
+          style={{
+            margin: "30px auto",
+            width: "90%",
+            maxWidth: "800px",
+            borderRadius: "12px",
+            overflow: "hidden",
+            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+          }}
+        >
+          <iframe
+            src={googleMapUrl}
+            title="Google Map"
+            width="100%"
+            height="350"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      )}
+
+      {/* 🏆 Label Danh sách VĐV */}
+      <h2
+        style={{
+          fontFamily: "'Oswald', sans-serif",
+          textAlign: "center",
+          fontSize: "1.8em",
+          color: "#0044cc",
+          marginTop: "40px",
+          marginBottom: "20px",
+          letterSpacing: "1px",
+        }}
+      >
+        Danh sách vận động viên
+      </h2>
+
       {/* Danh sách VĐV */}
       <div className="tgdp-competitor-grid">
         {competitors.length === 0 ? (
@@ -175,12 +216,6 @@ const TournamentEventForPlayer = () => {
                 <h4>{c.name}</h4>
                 <p>SĐT: {c.phone}</p>
                 {c.club && <p>CLB: {c.club}</p>}
-                {c.uniform_size && <p>Size: {c.uniform_size}</p>}
-                {c.selected_date && (
-                  <p>
-                    Ngày thi đấu: {formatDate(c.selected_date.slice(0, 10))}
-                  </p>
-                )}
               </div>
             </div>
           ))
