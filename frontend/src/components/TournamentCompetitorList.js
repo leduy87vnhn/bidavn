@@ -245,7 +245,7 @@ const TournamentCompetitorList = () => {
           {tournament.ev_background_image && (
             <div className="tgdp-event-bg">
               <img
-                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${tournament.ev_background_image}`}
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${tournament.background_image}`}
                 alt="Event Background"
               />
             </div>
