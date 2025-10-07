@@ -347,6 +347,7 @@ return (
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            width: '50%',
                             gap: '10px',
                             flexWrap: 'wrap',
                             }}
@@ -373,7 +374,8 @@ return (
                             display: 'flex',
                             flexDirection: 'column', // 🔹 chuyển sang dọc
                             alignItems: 'center', // 🔹 canh giữa
-                            //justifyContent: 'center',
+                            justifyContent: 'center',
+                            width: '50%',
                             gap: '10px',
                             marginTop: '10px',
                             //flexWrap: 'wrap',
