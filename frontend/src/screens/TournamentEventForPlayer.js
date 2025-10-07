@@ -215,6 +215,7 @@ const TournamentEventForPlayer = () => {
                 event.schedule_url.includes("docs.google.com")
                 ? event.schedule_url
                     .replace("/edit#gid=", "/export?format=png&gid=")
+                    .replace("/edit?gid=", "/export?format=png&gid=")
                     .replace("/view?usp=sharing", "/export?format=png")
                 : event.schedule_url
             }
