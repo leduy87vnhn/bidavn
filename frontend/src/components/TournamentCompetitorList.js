@@ -6,6 +6,14 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaUsers,
+  FaMoneyBillWave,
+  FaGift
+} from 'react-icons/fa';
+import '../css/tournamentGroupDetailForPlayer.scss'; // để dùng style có sẵn
 
 const TournamentCompetitorList = () => {
   const { id: tournamentId } = useParams(); // tournament id
@@ -206,6 +214,15 @@ const TournamentCompetitorList = () => {
     return `${d}-${m}-${y}`;
   };
 
+  const formatDateEvent = (isoStr) => {
+    if (!isoStr) return '';
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return '';
+    return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${d.getFullYear()}`;
+  };  
+
   return (
     <>
     <div style={{ position: 'relative', zIndex: 1000 }}>
@@ -215,10 +232,64 @@ const TournamentCompetitorList = () => {
     <div style={{ padding: 30 }}>
       <h2>📋 Danh sách VĐV đã đăng ký</h2>
 
-      {tournament && (
+      {/* {tournament && (
         <div style={{ backgroundColor: '#e6ffe6', padding: 15, borderRadius: 8, marginBottom: 20 }}>
           <p><strong>Giải đấu:</strong> {tournament.name}</p>
           <p><strong>Thời gian:</strong> {tournament.start_date?.slice(0, 10)} đến {tournament.end_date?.slice(0, 10)}</p>
+        </div>
+      )} */}
+
+      {tournament && (
+        <div className="tgdp-event-card" style={{ marginBottom: 30 }}>
+          {/* Ảnh nền event nếu có */}
+          {tournament.ev_background_image && (
+            <div className="tgdp-event-bg">
+              <img
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${tournament.ev_background_image}`}
+                alt="Event Background"
+              />
+            </div>
+          )}
+
+          <h2 className="tgdp-event-title">{tournament.name}</h2>
+
+          {/* Ngày thi đấu */}
+          {(tournament.start_date || tournament.end_date) && (
+            <p className="tgdp-event-line">
+              <FaCalendarAlt className="tgdp-icon purple" />{' '}
+              {`${formatDateEvent(tournament.start_date?.slice(0, 10))} - ${formatDateEvent(tournament.end_date?.slice(0, 10))}`}
+            </p>
+          )}
+
+          {/* Địa điểm */}
+          {tournament.location && (
+            <p className="tgdp-event-line">
+              <FaMapMarkerAlt className="tgdp-icon red" /> {tournament.location}
+            </p>
+          )}
+
+          {/* Số lượng / giới hạn */}
+          {tournament.maximum_competitors && (
+            <p className="tgdp-event-line">
+              <FaUsers className="tgdp-icon blue" />{' '}
+              {`${tournament.approved_competitors_count || 0}/${tournament.maximum_competitors} players`}
+            </p>
+          )}
+
+          {/* Lệ phí */}
+          {tournament.attendance_fee_common && (
+            <p className="tgdp-event-line">
+              <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
+              {Number(tournament.attendance_fee_common).toLocaleString()} VNĐ
+            </p>
+          )}
+
+          {/* Giải thưởng */}
+          {tournament.prize && (
+            <p className="tgdp-event-line">
+              <FaGift className="tgdp-icon orange" /> {tournament.prize}
+            </p>
+          )}
         </div>
       )}
 
