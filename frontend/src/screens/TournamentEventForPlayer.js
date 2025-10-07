@@ -13,7 +13,7 @@ import {
 import "../css/tournamentGroupDetailForPlayer.scss";
 
 const TournamentEventForPlayer = () => {
-  const { eventId } = useParams(); // id của tournament_event
+  const { eventId } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [group, setGroup] = useState(null);
@@ -21,17 +21,24 @@ const TournamentEventForPlayer = () => {
   const [loading, setLoading] = useState(true);
 
   const defaultFace =
-    "https://cdn.pixabay.com/photo/2014/04/03/10/32/billiards-311939_1280.png"; // ảnh mặc định
+    "https://cdn.pixabay.com/photo/2014/04/03/10/32/billiards-311939_1280.png";
 
   const formatDate = (isoStr) => {
     if (!isoStr) return "";
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return "";
-    return `${d.getDate().toString().padStart(2, "0")}-${(
-      d.getMonth() + 1
-    )
+    return `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${d.getFullYear()}`;
+  };
+
+  // ⭐ Chỉ hiện 3 số cuối, còn lại là *
+  const maskPhone = (phone) => {
+    if (!phone) return "";
+    const digits = String(phone).replace(/\D/g, "");
+    if (digits.length <= 3) return digits;
+    const last3 = digits.slice(-3);
+    return "*".repeat(digits.length - 3) + last3;
   };
 
   useEffect(() => {
@@ -74,7 +81,9 @@ const TournamentEventForPlayer = () => {
     : null;
 
   const googleMapUrl = event.location
-    ? `https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed`
+    ? `https://www.google.com/maps?q=${encodeURIComponent(
+        event.location
+      )}&output=embed`
     : null;
 
   return (
@@ -209,12 +218,17 @@ const TournamentEventForPlayer = () => {
                     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/players/${c.face_photo}`
                     : defaultFace
                 }
-                alt={c.name}
+                alt="" // tránh lộ chữ alt khi lỗi ảnh
                 className="tgdp-competitor-photo"
+                onError={(e) => {
+                  // fallback khi ảnh 404/lỗi
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = defaultFace;
+                }}
               />
               <div className="tgdp-competitor-info">
                 <h4>{c.name}</h4>
-                <p>SĐT: {c.phone}</p>
+                <p>SĐT: {maskPhone(c.phone)}</p>
                 {c.club && <p>CLB: {c.club}</p>}
               </div>
             </div>
