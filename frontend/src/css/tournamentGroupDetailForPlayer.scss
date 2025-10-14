@@ -353,7 +353,7 @@
 /* --- Style riêng cho phần chi tiết event trong TournamentListForPlayer --- */
 .event-card {
   p {
-    font-size: 1.3em;          /* tăng kích thước chữ */
+    font-size: 1.5em;          /* tăng kích thước chữ */
     line-height: 1.6;          /* giãn dòng thoáng hơn */
     color: #222;               /* màu chữ rõ ràng hơn */
     margin: 6px 0;
@@ -364,7 +364,7 @@
     gap: 6px;
 
     svg {
-      font-size: 1.1em;
+      font-size: 1.3em;
       margin-right: 4px;
       position: relative;
       top: 1px;
@@ -379,7 +379,7 @@
 
   /* 🔹 Tăng độ nổi bật cho tiêu đề event */
   h2 {
-    font-size: 1.5em !important;
+    font-size: 2.0em !important;
     margin-bottom: 10px;
     font-family: 'Oswald', sans-serif;
   }
