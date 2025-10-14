@@ -349,3 +349,38 @@
   margin: 10px 0 6px;
   color: #0a47a9;
 }
+
+/* --- Style riêng cho phần chi tiết event trong TournamentListForPlayer --- */
+.event-card {
+  p {
+    font-size: 1.3em;          /* tăng kích thước chữ */
+    line-height: 1.6;          /* giãn dòng thoáng hơn */
+    color: #222;               /* màu chữ rõ ràng hơn */
+    margin: 6px 0;
+    font-family: 'Oswald', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    svg {
+      font-size: 1.1em;
+      margin-right: 4px;
+      position: relative;
+      top: 1px;
+    }
+  }
+
+  /* 🔹 Nâng cấp font cho các số liệu chính */
+  p strong {
+    color: #003399;
+    font-weight: 700;
+  }
+
+  /* 🔹 Tăng độ nổi bật cho tiêu đề event */
+  h2 {
+    font-size: 1.5em !important;
+    margin-bottom: 10px;
+    font-family: 'Oswald', sans-serif;
+  }
+}
