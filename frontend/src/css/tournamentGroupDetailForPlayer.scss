@@ -104,50 +104,39 @@
   font-size: 16px;
 }
 
-.tgdp-event-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
+// .tgdp-event-actions {
+//   display: flex;
+//   gap: 12px;
+//   margin-top: 16px;
+// }
 
-.tgdp-btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-
-  &.primary {
-    background: #28a745;
-    color: #fff;
-
-    &:hover {
-      background: #1e7e34;
-    }
-  }
-
-  &.secondary {
-    background: #6c757d;
-    color: #fff;
-
-    &:hover {
-      background: #565e64;
-    }
-  }
-}
-
-// .tgdp-group-bg {
-//   position: relative;
+// .tgdp-btn {
+//   padding: 8px 14px;
+//   border-radius: 6px;
+//   font-size: 14px;
+//   font-weight: bold;
+//   text-decoration: none;
 //   text-align: center;
-//   margin-bottom: 20px;
 
-//   img {
-//     max-width: 90%;
-//     border-radius: 12px;
-//     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+//   &.primary {
+//     background: #28a745;
+//     color: #fff;
+
+//     &:hover {
+//       background: #1e7e34;
+//     }
+//   }
+
+//   &.secondary {
+//     background: #6c757d;
+//     color: #fff;
+
+//     &:hover {
+//       background: #565e64;
+//     }
 //   }
 // }
+
 
 /* (7) Ảnh nền group */
 .tgdp-group-bg {
@@ -205,39 +194,39 @@
   right: 24px;
 }
 
-.top-action-button {
-  display: inline-flex;               /* dùng flex để căn icon và text */
-  align-items: center;                /* căn giữa theo chiều dọc */
-  justify-content: center;
-  gap: 6px;                           /* khoảng cách giữa icon và chữ */
-  padding: 10px 18px;                 /* cân chỉnh padding */
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 600;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+// .top-action-button {
+//   display: inline-flex;               /* dùng flex để căn icon và text */
+//   align-items: center;                /* căn giữa theo chiều dọc */
+//   justify-content: center;
+//   gap: 6px;                           /* khoảng cách giữa icon và chữ */
+//   padding: 10px 18px;                 /* cân chỉnh padding */
+//   border-radius: 8px;
+//   font-size: 1.2em;
+//   font-weight: 600;
+//   text-decoration: none;
+//   border: none;
+//   cursor: pointer;
+//   transition: all 0.2s ease-in-out;
 
-  &.primary {
-    background: #007bff;
-    color: #fff;
-    &:hover {
-      background: #0056b3;
-    }
-  }
+//   &.primary {
+//     background: #007bff;
+//     color: #fff;
+//     &:hover {
+//       background: #0056b3;
+//     }
+//   }
 
-  &.grey {
-    background: #ccc;
-    color: #444;
-    cursor: not-allowed;
-  }
-  span.emoji {
-    position: relative;
-    top: -2px;             /* 🔹 đẩy emoji lên một chút */
-    font-size: 1.2em;
-  }
-}
+//   &.grey {
+//     background: #ccc;
+//     color: #444;
+//     cursor: not-allowed;
+//   }
+//   span.emoji {
+//     position: relative;
+//     top: -2px;             /* 🔹 đẩy emoji lên một chút */
+//     font-size: 1.2em;
+//   }
+// }
 
 /* --- Event carousel layout --- */
 .event-carousel-container {
@@ -382,5 +371,83 @@
     font-size: 2.0em !important;
     margin-bottom: 10px;
     font-family: 'Oswald', sans-serif;
+  }
+}
+
+/* --- Nút tiêu chuẩn (áp dụng cho tất cả các loại nút: Đăng ký, Lịch thi đấu, Điều lệ, Danh sách, v.v.) --- */
+.tgdp-btn,
+.top-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 200px;               /* 🔹 cùng độ rộng */
+  height: 46px;               /* 🔹 cùng độ cao */
+  padding: 10px 18px;
+  border-radius: 8px;
+
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1em;           /* 🔹 đồng nhất font */
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  /* 🔹 Trạng thái chính */
+  &.primary {
+    background-color: #28a745;
+    color: #fff;
+
+    &:hover {
+      background-color: #1e7e34;
+    }
+  }
+
+  /* 🔹 Trạng thái phụ */
+  &.secondary {
+    background-color: #6c757d;
+    color: #fff;
+
+    &:hover {
+      background-color: #565e64;
+    }
+  }
+
+  /* 🔹 Trạng thái bị khóa */
+  &.grey {
+    background-color: #ccc;
+    color: #444;
+    cursor: not-allowed;
+  }
+
+  /* 🔹 Emoji hoặc icon */
+  span.emoji {
+    position: relative;
+    top: -1px;
+  }
+
+  svg {
+    font-size: 1.1em;
+    position: relative;
+    top: 1px;
+  }
+}
+
+/* --- Nhóm chứa các nút (đảm bảo canh giữa, đều nhau) --- */
+.tgdp-event-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+
+  .tgdp-btn,
+  .top-action-button {
+    width: 200px;
+    height: 46px;
   }
 }
