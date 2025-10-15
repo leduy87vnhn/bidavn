@@ -162,7 +162,7 @@ return (
               {(group.group_start_date || group.group_end_date) && (
                 <p
                   style={{
-                    fontSize: '2.0em',
+                    fontSize: '2.2em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
