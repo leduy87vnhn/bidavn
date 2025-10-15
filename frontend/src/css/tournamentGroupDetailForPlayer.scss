@@ -375,7 +375,6 @@
 }
 
 /* --- Nút tiêu chuẩn (áp dụng cho tất cả các loại nút: Đăng ký, Lịch thi đấu, Điều lệ, Danh sách, v.v.) --- */
-.tgdp-btn,
 .top-action-button {
   display: inline-flex;
   align-items: center;
@@ -436,11 +435,64 @@
   }
 }
 
+.tgdp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  width: 100%;                 /* 🔹 Tràn hết chiều ngang ô chứa */
+  height: 48px;                /* 🔹 Chiều cao cố định, đồng nhất */
+  border-radius: 8px;
+  padding: 0 18px;
+
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+
+  &.primary {
+    background: #28a745;
+    color: #fff;
+
+    &:hover {
+      background: #1e7e34;
+    }
+  }
+
+  &.grey {
+    background: #ccc;
+    color: #444;
+    cursor: not-allowed;
+  }
+
+  &.secondary {
+    background: #6c757d;
+    color: #fff;
+
+    &:hover {
+      background: #565e64;
+    }
+  }
+
+  svg {
+    position: relative;
+    top: 1px;
+    font-size: 1.1em;
+  }
+}
+
 /* --- Nhóm chứa các nút (đảm bảo canh giữa, đều nhau) --- */
 .tgdp-event-actions {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  //align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 10px;
   margin-top: 12px;

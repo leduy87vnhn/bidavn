@@ -243,7 +243,7 @@ return (
                       )}
                       <h2
                         style={{
-                          fontSize: '1.3em',
+                          fontSize: '1.6em',
                           color: '#0044cc',
                           fontFamily: "'Oswald', sans-serif",
                           fontWeight: '700',
@@ -270,7 +270,7 @@ return (
                       </h2>
 
                       {(ev.start_date || ev.end_date) && (
-                        <p style={{ fontSize: '1.1em' }}>
+                        <p style={{ fontSize: '1.4em' }}>
                           <FaCalendarAlt className="tgdp-icon purple" /> {`${formatDate(ev.start_date)} đến ${formatDate(ev.end_date)}`}
                         </p>
                       )}
@@ -298,21 +298,21 @@ return (
                       )} */}
 
                         {ev.maximum_competitors && (
-                        <p style={{ fontSize: '1.1em' }}>
+                        <p style={{ fontSize: '1.4em' }}>
                             <FaUsers className="tgdp-icon blue" />{' '}
                             {`${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`}
                         </p>
                         )}
 
                         {ev.attendance_fee_common && (
-                        <p style={{ fontSize: '1.1em' }}>
+                        <p style={{ fontSize: '1.4em' }}>
                             <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
                             {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
                         </p>
                         )}
 
                         {ev.prize && (
-                        <p style={{ fontSize: '1.1em' }}>
+                        <p style={{ fontSize: '1.4em' }}>
                             <FaGift className="tgdp-icon orange" /> {ev.prize}
                         </p>
                         )}
@@ -357,7 +357,7 @@ return (
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: '50%',
+                            width: '100%',
                             gap: '10px',
                             flexWrap: 'wrap',
                             }}
@@ -378,38 +378,38 @@ return (
                         </div>
 
                         <div className="tgdp-event-actions">
-                        {/* 🔹 Nhóm 2 nút xuống hàng */}
-                        <div
-                            style={{
-                            display: 'flex',
-                            flexDirection: 'column', // 🔹 chuyển sang dọc
-                            alignItems: 'center', // 🔹 canh giữa
-                            justifyContent: 'center',
-                            width: '100%',
-                            gap: '10px',
-                            marginTop: '10px',
-                            //flexWrap: 'wrap',
-                            }}
-                        >
-                            {ev.schedule_url ? (
-                            <a
-                                href={ev.schedule_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="tgdp-btn primary"
-                            >
-                                📅 Lịch Thi Đấu
-                            </a>
-                            ) : (
-                            <button className="tgdp-btn grey" disabled>
-                                📅 Lịch Thi Đấu
-                            </button>
-                            )}
+                          {/* 🔹 Nhóm 2 nút xuống hàng */}
+                          <div
+                              style={{
+                              display: 'flex',
+                              flexDirection: 'column', // 🔹 chuyển sang dọc
+                              alignItems: 'center', // 🔹 canh giữa
+                              justifyContent: 'center',
+                              width: '100%',
+                              gap: '10px',
+                              marginTop: '10px',
+                              //flexWrap: 'wrap',
+                              }}
+                          >
+                              {ev.schedule_url ? (
+                              <a
+                                  href={ev.schedule_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="tgdp-btn primary"
+                              >
+                                  📅 Lịch Thi Đấu
+                              </a>
+                              ) : (
+                              <button className="tgdp-btn grey" disabled>
+                                  📅 Lịch Thi Đấu
+                              </button>
+                              )}
 
-                            <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
-                            📋 Danh Sách Thi Đấu
-                            </Link>
-                        </div>
+                              <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
+                              📋 Danh Sách Thi Đấu
+                              </Link>
+                          </div>
                         </div>
                     </div>
                   ))}
