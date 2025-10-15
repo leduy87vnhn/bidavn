@@ -179,7 +179,7 @@ return (
               {group.tournament_events[0]?.location && (
                 <p
                   style={{
-                    fontSize: '2.0em',
+                    fontSize: '2.4em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -243,7 +243,7 @@ return (
                       )}
                       <h2
                         style={{
-                          fontSize: '1.6em',
+                          fontSize: '2.0em',
                           color: '#0044cc',
                           fontFamily: "'Oswald', sans-serif",
                           fontWeight: '700',
