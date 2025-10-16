@@ -27,9 +27,9 @@ const TournamentEventForPlayer = () => {
     if (!isoStr) return "";
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return "";
-    return `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1)
+    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
       .toString()
-      .padStart(2, "0")}-${d.getFullYear()}`;
+      .padStart(2, "0")}/${d.getFullYear()}`;
   };
 
   // ⭐ Chỉ hiện 3 số cuối, còn lại là *
@@ -112,7 +112,7 @@ const TournamentEventForPlayer = () => {
           {(group.start_date || group.end_date) && (
             <p className="tgdp-event-line">
               <FaCalendarAlt className="tgdp-icon purple" />{" "}
-              {`${formatDate(group.start_date)} - ${formatDate(group.end_date)}`}
+              {`${formatDate(group.start_date)} đến ${formatDate(group.end_date)}`}
             </p>
           )}
         </div>
@@ -131,7 +131,7 @@ const TournamentEventForPlayer = () => {
         {(event.start_date || event.end_date) && (
           <p className="tgdp-event-line">
             <FaCalendarAlt className="tgdp-icon purple" />{" "}
-            {`${formatDate(event.start_date)} - ${formatDate(event.end_date)}`}
+            {`${formatDate(event.start_date)} đến ${formatDate(event.end_date)}`}
           </p>
         )}
 

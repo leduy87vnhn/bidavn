@@ -88,7 +88,7 @@ const TournamentListForPlayer = () => {
     if (!isoStr) return '';
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return '';
-    return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}`; // chỉ hiển thị ngày-tháng
   };

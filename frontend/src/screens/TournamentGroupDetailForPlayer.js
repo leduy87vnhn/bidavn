@@ -97,7 +97,7 @@ const TournamentGroupDetailForPlayer = () => {
     if (!isoStr) return '';
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return '';
-    return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
         .toString()
         .padStart(2, '0')}-${d.getFullYear()}`;
     };
@@ -181,7 +181,7 @@ const TournamentGroupDetailForPlayer = () => {
             {(ev.start_date || ev.end_date) && (
             <p className="tgdp-event-line">
                 <FaCalendarAlt className="tgdp-icon purple" />{' '}
-                {`${formatDate(ev.start_date)} - ${formatDate(ev.end_date)}`}
+                {`${formatDate(ev.start_date)} đến ${formatDate(ev.end_date)}`}
             </p>
             )}
 
