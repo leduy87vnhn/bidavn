@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import '../tournamentRegistration.scss';
 
 const AccountCreationModal = ({
   isOpen,
@@ -89,7 +90,14 @@ const AccountCreationModal = ({
     <ReactModal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false}>
       <div className="confirm-modal-content">
         <h3>Đăng Ký Tài Khoản</h3>
-        <p>Số điện thoại chưa tồn tại. Bạn có muốn đăng ký tài khoản không?</p>
+        {/* <p>Số điện thoại chưa tồn tại. Bạn có muốn đăng ký tài khoản không?</p> */}
+        {/* 🔹 Thông báo hướng dẫn cho người chưa có tài khoản */}
+        <div className="account-info-message">
+          Hiện tại bạn chưa có tài khoản trên Website <strong>HBSF</strong>.<br />
+          Có tài khoản sẽ thuận tiện cho việc đăng ký các giải đấu sau này.<br />
+          Hệ thống sẽ tự động tạo tài khoản cho bạn với thông tin bạn vừa đăng ký.<br />
+          <strong>Bạn hãy điền bổ sung mật khẩu.</strong>
+        </div>
 
         <label>Số điện thoại:</label>
         <input className="table-input" value={form.phone_number} disabled />
