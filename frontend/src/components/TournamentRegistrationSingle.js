@@ -39,13 +39,6 @@ const TournamentRegistrationSingle = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [accountError, setAccountError] = useState('');
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     alert('Bạn cần đăng nhập để tiếp tục.');
-  //     navigate('/login');
-  //   }
-  // }, [user, navigate]);
-
   // Thêm ở trên cùng trong component (sau các useState/useEffect)
   const sanitizePhone = (v) => (v || '').replace(/\D/g, '').slice(0, 10);
   const handlePhoneChange = (e) => {

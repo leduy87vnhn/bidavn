@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../components/MainLayout.scss'; 
 
 const MainPageEventSlider = () => {
   const [events, setEvents] = useState([]);
