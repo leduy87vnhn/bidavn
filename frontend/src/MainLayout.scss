@@ -40,7 +40,8 @@
 .mainpage-event-slider {
   position: relative;
   width: 100%;
-  height: 500px; /* hoặc đổi thành 100vh nếu muốn full màn hình */
+  //height: 500px; /* hoặc đổi thành 100vh nếu muốn full màn hình */
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,7 +51,8 @@
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* 🔹 hiển thị toàn bộ ảnh, không bị cắt */
+    //object-fit: contain; /* 🔹 hiển thị toàn bộ ảnh, không bị cắt */
+    object-fit: fit;
     object-position: center center; /* 🔹 căn giữa */
     background-color: #000;
   }
