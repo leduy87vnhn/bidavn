@@ -338,30 +338,49 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 12px 30px;
-  border-bottom: 1px solid #ccc;
+  background: linear-gradient(90deg, #001a44, #0033aa); /* 🔹 xanh đậm đồng bộ với header */
+  padding: 14px 40px;
+  border-bottom: 2px solid #002266;
   position: sticky;
   top: 0;
   z-index: 200;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 
   .menu-left {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 28px;
   }
 
   .menu-item {
     font-family: 'Oswald', sans-serif;
-    font-size: 18px; /* 🔹 tăng kích thước chữ menu */
-    font-weight: 500;
-    color: #003399;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff; /* 🔹 chữ trắng nổi bật */
     cursor: pointer;
-    transition: color 0.2s ease;
-  }
+    position: relative;
+    text-transform: uppercase;
+    transition: all 0.25s ease-in-out;
+    padding-bottom: 4px;
 
-  .menu-item:hover {
-    color: #007bff;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background-color: #ffcc00; /* gạch chân vàng đồng bộ phong cách HBSF */
+      transition: width 0.25s ease-in-out;
+    }
+
+    &:hover {
+      color: #ffcc00; /* vàng khi hover */
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
   }
 
   .menu-right {
@@ -370,29 +389,110 @@
     gap: 15px;
 
     .user-name {
-      font-size: 18px; /* 🔹 cùng size với menu */
       font-family: 'Oswald', sans-serif;
-      color: #333;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     button {
-      background-color: #007bff;
-      color: white;
+      background-color: #ff8800;
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 30px;
       font-family: 'Oswald', sans-serif;
-      font-size: 18px; /* 🔹 bằng với menu item */
-      font-weight: 500;
-      padding: 8px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px 22px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.1s ease;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     button:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
+      background-color: #ffaa00;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
+
+    /* 🔸 Hiệu ứng nhấp nháy giữa xanh & cam cho nút Đăng Nhập */
+    .blink-login {
+      animation: blinkBlueOrange 1.2s infinite alternate;
+    }
+
+    @keyframes blinkBlueOrange {
+      0% {
+        background-color: #ff8800; /* cam đậm */
+        color: #fff;
+      }
+      50% {
+        background-color: #007bff; /* xanh lam */
+        color: #fff;
+      }
+      100% {
+        background-color: #ff8800; /* cam đậm */
+        color: #fff;
+      }
+    }
+  }
+
+  /* 🔹 Hiệu ứng nhấp nháy riêng cho "Giải Thể Thao" */
+  .blink-sport {
+    animation: blinkSport 1.5s infinite alternate;
+  }
+
+  @keyframes blinkSport {
+    0% {
+      color: #ffcc00 !important; /* vàng đậm */
+    }
+    50% {
+      color: #00ffff !important; /* xanh ngọc sáng */
+    }
+    100% {
+      color: #ffcc00 !important;
+    }
+  }
+}
+
+/* 🔹 Nút Đăng Ký trên trang tổng hợp giải */
+.btn-register {
+  background-color: #ff8800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #ffaa00;
+  transform: translateY(-2px);
+}
+
+/* 🔸 Hiệu ứng nhấp nháy cho nút Đăng Ký (luôn hoạt động) */
+.blink-register {
+  animation: blinkRegister 1.2s infinite alternate;
+}
+
+@keyframes blinkRegister {
+  0% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+  50% {
+    background-color: #007bff;
+    color: #fff;
+  }
+  100% {
+    background-color: #ff8800;
+    color: #fff;
   }
 }
 
@@ -413,15 +513,17 @@
   padding: 8px 18px;       /* 🔹 đồng nhất chiều cao */
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 110px;        /* 🔹 giúp nút đều nhau */
+  min-width: 130px;        /* 🔹 giúp nút đều nhau */
   text-align: center;
   line-height: 1.4;
 }
 
 /* 🔸 Nút bị disable */
 .btn-disabled {
-  background-color: #999;
+  background-color: #999 !important; /* màu xám */
+  color: #eee !important;            /* chữ xám nhạt */
   cursor: not-allowed;
+  opacity: 0.8;
 }
 
 /* 🔸 Nút Đăng Ký màu cam, cùng kích thước */
