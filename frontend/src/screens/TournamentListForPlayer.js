@@ -229,7 +229,7 @@ return (
                   .slice(eventIndexes[group.group_id], eventIndexes[group.group_id] + 2)
                   .map((ev) => (
                     <div key={ev.id} className="event-card">
-                      {ev.ev_background_image && (
+                      {/* {ev.ev_background_image && (
                         <img
                           src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
                           alt="Event Background"
@@ -239,6 +239,13 @@ return (
                             objectFit: 'cover',
                             borderRadius: '8px',
                           }}
+                        />
+                      )} */}
+                      {ev.ev_background_image && (
+                        <img
+                          className="event-image"
+                          src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
+                          alt="Event Background"
                         />
                       )}
                       <h2
