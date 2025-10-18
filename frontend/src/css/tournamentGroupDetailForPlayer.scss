@@ -140,6 +140,7 @@
 
 /* (7) Ảnh nền group */
 .tgdp-group-bg {
+  position: relative;
   display: flex;
   justify-content: center;   /* 🔹 căn giữa ảnh */
   align-items: center;
@@ -193,13 +194,24 @@
 }
 
 
+// .tgdp-regulation-btn {
+//   position: center;
+//   bottom: 12px;
+//   right: 24px;
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 15px;
+// }
+
 .tgdp-regulation-btn {
-  position: center;
-  bottom: 12px;
-  right: 24px;
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
+  position: absolute;      /* ✅ đè lên ảnh */
+  bottom: 15px;            /* ✅ cách mép dưới */
+  right: 20px;             /* ✅ cách mép phải */
+  z-index: 2;              /* ✅ nổi lên trên ảnh */
+
+  .top-action-button {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  }
 }
 
 // .top-action-button {
