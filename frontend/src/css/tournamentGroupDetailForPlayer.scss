@@ -394,6 +394,24 @@
   }
 }
 
+.event-card img {
+  width: 100%;
+  height: auto;
+  max-height: 220px;           /* ✅ tránh ảnh quá cao */
+  object-fit: contain;          /* ✅ hiển thị toàn bộ ảnh, không bị crop */
+  border-radius: 12px;          /* ✅ bo góc */
+  background-color: #f8f8f8;    /* ✅ nền trung tính khi ảnh nhỏ */
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* 🔹 Hiệu ứng hover: phóng nhẹ + đổ bóng */
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  }
+}
+
 /* --- Nút tiêu chuẩn (áp dụng cho tất cả các loại nút: Đăng ký, Lịch thi đấu, Điều lệ, Danh sách, v.v.) --- */
 .top-action-button {
   display: inline-flex;
