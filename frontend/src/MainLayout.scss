@@ -176,21 +176,22 @@
       }
     }
   }
+
+  /* 🔹 Hiệu ứng nhấp nháy riêng cho "Giải Thể Thao" */
+  .blink-sport {
+    animation: blinkSport 1.5s infinite alternate;
+  }
+
+  @keyframes blinkSport {
+    0% {
+      color: #ffcc00; /* vàng đậm */
+    }
+    50% {
+      color: #00ffff; /* xanh ngọc sáng */
+    }
+    100% {
+      color: #ffcc00;
+    }
+  }
 }
 
-/* 🔹 Hiệu ứng nhấp nháy riêng cho "Giải Thể Thao" */
-.blink-sport {
-  animation: blinkSport 1.5s infinite alternate;
-}
-
-@keyframes blinkSport {
-  0% {
-    color: #ffcc00; /* vàng đậm */
-  }
-  50% {
-    color: #00ffff; /* xanh ngọc sáng */
-  }
-  100% {
-    color: #ffcc00;
-  }
-}
