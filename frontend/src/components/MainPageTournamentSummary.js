@@ -95,6 +95,15 @@ const MainPageTournamentSummary = () => {
               <button className="btn-disabled" disabled>📄 Điều lệ</button>
             )}
           </div>
+          {/* 🔹 Nút Đăng Ký luôn hiển thị và nhấp nháy */}
+          <div className="summary-col action">
+            <button
+              className="btn-register blink-register"
+              onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+            >
+              📝 Đăng Ký
+            </button>
+          </div>
           {user?.user_type === 2 && (
             <div className="summary-col action">
               <button

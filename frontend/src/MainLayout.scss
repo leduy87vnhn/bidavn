@@ -184,13 +184,13 @@
 
   @keyframes blinkSport {
     0% {
-      color: #ffcc00; /* vàng đậm */
+      color: #ffcc00 !important; /* vàng đậm */
     }
     50% {
-      color: #00ffff; /* xanh ngọc sáng */
+      color: #00ffff !important; /* xanh ngọc sáng */
     }
     100% {
-      color: #ffcc00;
+      color: #ffcc00 !important;
     }
   }
 }
