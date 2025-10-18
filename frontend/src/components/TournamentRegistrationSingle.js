@@ -257,7 +257,7 @@ const TournamentRegistrationSingle = () => {
           // ✅ (1) chưa đăng nhập, (2) và số điện thoại không tồn tại → hiện popup tạo tài khoản
           setAccountForm({
             phone_number: competitor.phone,
-            name: '',
+            name: competitor.name,
             password: '',
             email: '',
           });
