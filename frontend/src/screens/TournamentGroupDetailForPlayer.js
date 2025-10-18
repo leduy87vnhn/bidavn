@@ -93,14 +93,14 @@ const TournamentGroupDetailForPlayer = () => {
     ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
     : null;
 
-    const formatDate = (isoStr) => {
+  const formatDate = (isoStr) => {
     if (!isoStr) return '';
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return '';
-    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${d.getFullYear()}`;
-    };
+    return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate()
+      .toString()
+      .padStart(2, '0')}`; // ✅ mm/dd format
+  };
 
   return (
     <div
