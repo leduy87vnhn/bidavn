@@ -195,3 +195,41 @@
   }
 }
 
+/* 🔹 Nút Đăng Ký trên trang tổng hợp giải */
+.btn-register {
+  background-color: #ff8800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #ffaa00;
+  transform: translateY(-2px);
+}
+
+/* 🔸 Hiệu ứng nhấp nháy cho nút Đăng Ký (luôn hoạt động) */
+.blink-register {
+  animation: blinkRegister 1.2s infinite alternate;
+}
+
+@keyframes blinkRegister {
+  0% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+  50% {
+    background-color: #007bff;
+    color: #fff;
+  }
+  100% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+}
