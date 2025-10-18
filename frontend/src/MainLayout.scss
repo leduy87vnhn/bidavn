@@ -133,3 +133,23 @@
     }
   }
 }
+
+/* 🔸 Hiệu ứng nhấp nháy màu cam cho nút Đăng Nhập */
+.blink-login {
+  animation: blinkOrange 1.2s infinite alternate;
+}
+
+@keyframes blinkOrange {
+  0% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+  50% {
+    background-color: #ffaa33;
+    color: #fff;
+  }
+  100% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+}

@@ -36,7 +36,10 @@ const MainPageMenuBar = () => {
             }}>Đăng Xuất</button>
           </>
         ) : (
-          <button onClick={() => navigate('/login')}>Đăng Nhập</button>
+          //<button onClick={() => navigate('/login')}>Đăng Nhập</button>
+          <button className="blink-login" onClick={() => navigate('/login')}>
+            Đăng Nhập
+          </button>
         )}
       </div>
     </div>
