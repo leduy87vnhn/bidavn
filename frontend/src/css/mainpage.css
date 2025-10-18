@@ -395,3 +395,69 @@
     }
   }
 }
+
+/* ==========================
+   🔹 Style thống nhất cho các nút hành động
+   ========================== */
+.btn-download,
+.btn-disabled,
+.btn-register {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;        /* 🔹 đồng nhất cỡ chữ */
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;       /* 🔹 đồng nhất chiều cao */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 110px;        /* 🔹 giúp nút đều nhau */
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* 🔸 Nút bị disable */
+.btn-disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* 🔸 Nút Đăng Ký màu cam, cùng kích thước */
+.btn-register {
+  background-color: #ff8800;
+}
+
+/* 🔸 Nút Ẩn/Hiện màu xanh (vẫn cùng style) */
+.btn-download {
+  background-color: #007bff;
+}
+
+/* Hover hiệu ứng */
+.btn-download:hover {
+  background-color: #0056b3;
+}
+.btn-register:hover {
+  background-color: #ffaa00;
+}
+
+/* 🔹 Hiệu ứng nhấp nháy cho nút Đăng Ký */
+.blink-register {
+  animation: blinkRegister 1.2s infinite alternate;
+}
+
+@keyframes blinkRegister {
+  0% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+  50% {
+    background-color: #007bff;
+    color: #fff;
+  }
+  100% {
+    background-color: #ff8800;
+    color: #fff;
+  }
+}
