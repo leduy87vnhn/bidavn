@@ -76,7 +76,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #001a66, #0040ff); /* 🔹 xanh đậm đồng bộ với header */
+  background: linear-gradient(90deg, #001a44, #0033aa); /* 🔹 xanh đậm đồng bộ với header */
   padding: 14px 40px;
   border-bottom: 2px solid #002266;
   position: sticky;
@@ -93,7 +93,7 @@
   .menu-item {
     font-family: 'Oswald', sans-serif;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 700;
     color: #ffffff; /* 🔹 chữ trắng nổi bật */
     cursor: pointer;
     position: relative;
@@ -129,7 +129,7 @@
     .user-name {
       font-family: 'Oswald', sans-serif;
       font-size: 18px;
-      font-weight: 500;
+      font-weight: 700;
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -142,7 +142,7 @@
       border-radius: 30px;
       font-family: 'Oswald', sans-serif;
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 8px 22px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -175,5 +175,22 @@
         color: #fff;
       }
     }
+  }
+}
+
+/* 🔹 Hiệu ứng nhấp nháy riêng cho "Giải Thể Thao" */
+.blink-sport {
+  animation: blinkSport 1.5s infinite alternate;
+}
+
+@keyframes blinkSport {
+  0% {
+    color: #ffcc00; /* vàng đậm */
+  }
+  50% {
+    color: #00ffff; /* xanh ngọc sáng */
+  }
+  100% {
+    color: #ffcc00;
   }
 }
