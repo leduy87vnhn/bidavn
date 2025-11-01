@@ -250,7 +250,7 @@ return (
                       )}
                       <h2
                         style={{
-                          fontSize: '2.0em',
+                          fontSize: '2.4em',
                           color: '#0044cc',
                           fontFamily: "'Oswald', sans-serif",
                           fontWeight: '700',
