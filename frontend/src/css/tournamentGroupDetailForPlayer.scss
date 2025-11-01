@@ -485,7 +485,7 @@
   padding: 0 18px;
 
   font-family: 'Oswald', sans-serif;
-  font-size: 1.1em;
+  font-size: 1.4em;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
@@ -521,7 +521,7 @@
   svg {
     position: relative;
     top: 1px;
-    font-size: 1.1em;
+    font-size: 1.4em;
   }
 }
 
@@ -564,7 +564,7 @@
 
 /* 🌟 Chỉ áp dụng cho nút Điều Lệ */
 .top-action-button.regulation {
-  transform: scale(2);           /* ✅ tăng kích thước gấp 2 lần */
+  transform: scale(1.5);           /* ✅ tăng kích thước gấp 2 lần */
   font-size: 1.6em !important;   /* ✅ tăng gấp đôi cỡ chữ */
   padding: 16px 20px;            /* ✅ tăng padding tương ứng */
   border-radius: 10px;
@@ -578,7 +578,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    transform: scale(2.1);       /* nhẹ phóng khi hover */
+    transform: scale(1.6);       /* nhẹ phóng khi hover */
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
   }
 }
