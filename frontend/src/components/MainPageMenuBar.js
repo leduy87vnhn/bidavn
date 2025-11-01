@@ -10,7 +10,7 @@ const MainPageMenuBar = () => {
       <div className="menu-left">
         <span className="menu-item" onClick={() => window.location.href = 'https://hbsf.com.vn/'}>Trang Chủ </span>
         <span
-          className="menu-item"
+          className={`menu-item ${user ? 'blink-sport' : ''}`}
           onClick={() => navigate('/tournament_events')}
         >
           Giải Thể Thao

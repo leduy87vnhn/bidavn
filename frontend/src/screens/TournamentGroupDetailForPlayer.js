@@ -1,251 +1,339 @@
-// File: frontend/src/screens/TournamentGroupDetailForPlayer.js
-
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   FaMapMarkerAlt,
   FaUsers,
   FaMoneyBillWave,
   FaGift,
+  FaCalendarAlt,
+  FaChevronLeft,
+  FaChevronRight,
   FaArrowLeft,
-  FaCalendarAlt 
 } from 'react-icons/fa';
 import '../css/tournamentGroupDetailForPlayer.scss';
+import MainPageHeader from '../components/MainPageHeader';
+import MainPageMenuBar from '../components/MainPageMenuBar';
 
 const TournamentGroupDetailForPlayer = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const [group, setGroup] = useState(null);
-  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/group/${groupId}`
-  //       );
-  //       setGroup(res.data.group);
-  //       setEvents(res.data.tournament_events || []);
-  //     } catch (err) {
-  //       console.error('❌ Lỗi tải group:', err);
-  //       setGroup(null);
-  //       setEvents([]);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [groupId]);
+  const [eventIndex, setEventIndex] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchGroup = async () => {
       try {
         const res = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`
         );
-  
-        // tìm group theo groupId
-        const foundGroup = res.data.find(g => String(g.group_id) === String(groupId));
-  
-        if (foundGroup) {
-          setGroup({
-            id: foundGroup.group_id,
-            tournament_name: foundGroup.group_name,
-            start_date: foundGroup.group_start_date,
-            end_date: foundGroup.group_end_date,
-            regulations: foundGroup.group_regulations,
-            display: foundGroup.display,
-            background_image: foundGroup.background_image || null,
-            logo_image: foundGroup.logo_image || null
+        const found = res.data.find(
+          (g) => String(g.group_id) === String(groupId)
+        );
+        if (found) {
+          // Sắp xếp event theo start_date DESC
+          found.tournament_events.sort((a, b) => {
+            const dateA = a.start_date ? new Date(a.start_date) : new Date(0);
+            const dateB = b.start_date ? new Date(b.start_date) : new Date(0);
+            return dateB - dateA;
           });
-          setEvents(foundGroup.tournament_events || []);
-        } else {
-          setGroup(null);
-          setEvents([]);
+          setGroup(found);
         }
       } catch (err) {
         console.error('❌ Lỗi tải group:', err);
-        setGroup(null);
-        setEvents([]);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchGroup();
   }, [groupId]);
-
-  useEffect(() => {
-    const userInfo = localStorage.getItem('user_info');
-    if (userInfo) setUser(JSON.parse(userInfo));
-  }, []);
-
-  if (loading) return <p className="tgdp-loading">Đang tải...</p>;
-  if (!group) return <p className="tgdp-error">Không tìm thấy nhóm giải</p>;
-
-  const logoUrl = group.logo_image
-    ? `${process.env.REACT_APP_API_BASE_URL}/uploads/logos/${group.logo_image}`
-    : null;
-
-  const groupBgUrl = group.background_image
-    ? `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`
-    : null;
 
   const formatDate = (isoStr) => {
     if (!isoStr) return '';
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return '';
-    return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate()
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}`; // ✅ mm/dd format
+      .padStart(2, '0')}`;
   };
 
+  const handleSlide = (direction) => {
+    if (!group) return;
+    const max = group.tournament_events.length;
+    if (max <= 2) return;
+
+    let newIndex = eventIndex;
+    if (direction === 'left') {
+      newIndex = eventIndex - 1 < 0 ? max - 2 : eventIndex - 1;
+    } else {
+      newIndex = eventIndex + 1 > max - 2 ? 0 : eventIndex + 1;
+    }
+    setEventIndex(newIndex);
+  };
+
+  if (loading) return <p className="tgdp-loading">Đang tải...</p>;
+  if (!group) return <p className="tgdp-error">Không tìm thấy nhóm giải.</p>;
+
   return (
-    <div
-      className="tgdp-wrapper"
-    //   style={{
-    //     backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
-    //   }}
-    >
+    <div className="tgdp-wrapper">
+      <MainPageHeader />
+      <MainPageMenuBar />
+
       {/* Nút quay lại */}
-      <div className="tgdp-header">
-        <button onClick={() => navigate('/tournament_events')} className="tgdp-back-btn">
-          <FaArrowLeft /> Quay lại
+      <div style={{ padding: '20px 40px' }}>
+        <button
+          onClick={() => navigate('/tournament_events')}
+          className="tgdp-back-btn"
+        >
+          <FaArrowLeft /> Quay lại danh sách
         </button>
       </div>
 
-    {/* Ảnh background group + nút Điều Lệ */}
-    {groupBgUrl && (
-    <div className="tgdp-group-bg">
-        <img src={groupBgUrl} alt="Group Background" />
+      {/* Thông tin group */}
+      <div key={group.group_id} className="tgdp-group-card">
+        <div
+          className="tournament-group-header"
+          style={{
+            background: '#e8fbe8',
+            borderRadius: '12px',
+            padding: '24px 36px',
+            marginTop: '30px',
+            textAlign: 'center',
+          }}
+        >
+          {group.background_image && (
+            <div className="tgdp-group-bg">
+              <img
+                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${group.background_image}`}
+                alt="Group Background"
+              />
+            </div>
+          )}
+          <h1 className="tournament-group-title">{group.group_name}</h1>
 
-        {/* Nút Điều Lệ đè góc dưới bên phải */}
-        <div className="tgdp-regulation-btn">
-        {group?.regulations ? (
-            <a
-            href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.regulations}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="top-action-button primary"
+          {(group.group_start_date || group.group_end_date) && (
+            <p
+              style={{
+                fontSize: '2.2em',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                color: '#333',
+              }}
             >
-            📥 Điều lệ
-            </a>
-        ) : (
-            <button className="top-action-button grey" disabled>
-            📄 Điều lệ
-            </button>
-        )}
-        </div>
-    </div>
-    )}
-
-      {/* Logo Group */}
-      {/* {logoUrl && (
-        <div className="tgdp-logo">
-          <img src={logoUrl} alt="Tournament Logo" />
-        </div>
-      )} */}
-
-      {/* Các sự kiện */}
-      <div className="tgdp-events">
-        {events.map((ev) => (
-          <div key={ev.id} className="tgdp-event-card">
-
-            {/* Ảnh background event */}
-            {ev.ev_background_image && (
-            <div className="tgdp-event-bg">
-                <img
-                src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
-                alt="Event Background"
-                />
-            </div>
-            )}
-            <h2 className="tgdp-event-title">
-              <Link
-                to={`/tournament_events/${ev.id}/detail-for-player`}
-                style={{
-                  color: '#0044cc',
-                  fontFamily: "'Oswald', sans-serif",
-                  fontWeight: '700',
-                  textDecoration: 'none',
-                  display: 'inline-block',
-                  width: '100%',
-                }}
-              >
-                {ev.name}
-              </Link>
-            </h2>
-            {/* Thời gian */}
-            {(ev.start_date || ev.end_date) && (
-            <p className="tgdp-event-line">
-                <FaCalendarAlt className="tgdp-icon purple" />{' '}
-                {`${formatDate(ev.start_date)} đến ${formatDate(ev.end_date)}`}
+              <FaCalendarAlt className="tgdp-icon purple" />
+              {`${formatDate(group.group_start_date)} đến ${formatDate(
+                group.group_end_date
+              )}`}
             </p>
-            )}
+          )}
 
-            {ev.location && (
-              <p className="tgdp-event-line">
-                <FaMapMarkerAlt className="tgdp-icon red" /> {ev.location}
-              </p>
-            )}
+          {group.tournament_events[0]?.location && (
+            <p
+              style={{
+                fontSize: '2.4em',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                color: '#555',
+                marginTop: '4px',
+              }}
+            >
+              <FaMapMarkerAlt className="tgdp-icon red" />
+              {group.tournament_events[0].location}
+            </p>
+          )}
 
-            {ev.maximum_competitors && (
-              <p className="tgdp-event-line">
-                <FaUsers className="tgdp-icon blue" />{' '}
-                {`${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`}
-              </p>
-            )}
+          {group.group_regulations ? (
+            <a
+              href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="top-action-button primary"
+              style={{
+                marginTop: '10px',
+                fontSize: '1.2em',
+                display: 'inline-block',
+              }}
+            >
+              📥 Điều lệ
+            </a>
+          ) : (
+            <button
+              className="top-action-button grey"
+              disabled
+              style={{
+                marginTop: '10px',
+                fontSize: '1.2em',
+                display: 'inline-block',
+              }}
+            >
+              📄 Điều lệ
+            </button>
+          )}
+        </div>
 
-            {ev.attendance_fee_common && (
-              <p className="tgdp-event-line">
-                <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
-                {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
-              </p>
-            )}
+        {/* Danh sách event trong group */}
+        <div className="event-carousel-container">
+          {group.tournament_events.length > 3 && (
+            <button className="slide-btn left" onClick={() => handleSlide('left')}>
+              <FaChevronLeft />
+            </button>
+          )}
 
-            {ev.prize && (
-              <p className="tgdp-event-line">
-                <FaGift className="tgdp-icon orange" /> {ev.prize}
-              </p>
-            )}
-
-            {/* Các nút hành động */}
-            <div className="tgdp-event-actions">
-                {ev.registration_deadline && new Date(ev.registration_deadline) < new Date() ? (
-                  <button className="tgdp-btn grey" disabled>
-                    📝 Hết hạn đăng ký
-                  </button>
-                ) : (
-                  <Link
-                    to={`/tournament_events/${ev.id}/register-single`}
-                    className="tgdp-btn primary"
+          <div
+            className="event-carousel"
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              gap: '20px',
+            }}
+          >
+            {group.tournament_events
+              .slice(eventIndex, eventIndex + 2)
+              .map((ev) => (
+                <div key={ev.id} className="event-card">
+                  {ev.ev_background_image && (
+                    <img
+                      className="event-image"
+                      src={`${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/${ev.ev_background_image}`}
+                      alt="Event Background"
+                    />
+                  )}
+                  <h2
+                    style={{
+                      fontSize: '2.0em',
+                      color: '#0044cc',
+                      fontFamily: "'Oswald', sans-serif",
+                      fontWeight: '700',
+                      letterSpacing: '0.5px',
+                      height: '3em',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}
                   >
-                    📝 Đăng Ký
-                  </Link>
-                )}
-                {ev.schedule_url ? (
-                    <a
-                    href={ev.schedule_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tgdp-btn primary"
+                    <Link
+                      to={`/tournament_events/${ev.id}/detail-for-player`}
+                      style={{
+                        color: '#0044cc',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        width: '100%',
+                      }}
                     >
-                    📅 Lịch Thi Đấu
-                    </a>
-                ) : (
-                    <button className="tgdp-btn grey" disabled>
-                    📅 Lịch Thi Đấu
-                    </button>
-                )}
-                <Link to={`/tournament_events/${ev.id}/competitors`} className="tgdp-btn primary">
-                    📋 Danh Sách Thi Đấu
-                </Link>
-            </div>
+                      {ev.name}
+                    </Link>
+                  </h2>
 
+                  {(ev.start_date || ev.end_date) && (
+                    <p style={{ fontSize: '1.4em' }}>
+                      <FaCalendarAlt className="tgdp-icon purple" />{' '}
+                      {`${formatDate(ev.start_date)} đến ${formatDate(
+                        ev.end_date
+                      )}`}
+                    </p>
+                  )}
+
+                  {ev.maximum_competitors && (
+                    <p style={{ fontSize: '1.4em' }}>
+                      <FaUsers className="tgdp-icon blue" />{' '}
+                      {`${ev.approved_competitors_count || 0}/${
+                        ev.maximum_competitors
+                      } players`}
+                    </p>
+                  )}
+
+                  {ev.attendance_fee_common && (
+                    <p style={{ fontSize: '1.4em' }}>
+                      <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
+                      {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
+                    </p>
+                  )}
+
+                  {ev.prize && (
+                    <p style={{ fontSize: '1.4em' }}>
+                      <FaGift className="tgdp-icon orange" /> {ev.prize}
+                    </p>
+                  )}
+
+                  {/* Nút hành động */}
+                  <div className="tgdp-event-actions">
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        gap: '10px',
+                        flexWrap: 'wrap',
+                      }}
+                    >
+                      {ev.registration_deadline &&
+                      new Date(ev.registration_deadline) < new Date() ? (
+                        <button className="tgdp-btn grey" disabled>
+                          📝 Hết hạn đăng ký
+                        </button>
+                      ) : (
+                        <Link
+                          to={`/tournament_events/${ev.id}/register-single`}
+                          className="tgdp-btn primary"
+                        >
+                          📝 Đăng Ký
+                        </Link>
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
+                        gap: '10px',
+                        marginTop: '10px',
+                      }}
+                    >
+                      {ev.schedule_url ? (
+                        <a
+                          href={ev.schedule_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="tgdp-btn primary"
+                        >
+                          📅 Lịch Thi Đấu
+                        </a>
+                      ) : (
+                        <button className="tgdp-btn grey" disabled>
+                          📅 Lịch Thi Đấu
+                        </button>
+                      )}
+
+                      <Link
+                        to={`/tournament_events/${ev.id}/competitors`}
+                        className="tgdp-btn primary"
+                      >
+                        📋 Danh Sách Thi Đấu
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
-        ))}
+
+          {group.tournament_events.length > 2 && (
+            <button className="slide-btn right" onClick={() => handleSlide('right')}>
+              <FaChevronRight />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
