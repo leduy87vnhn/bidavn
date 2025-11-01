@@ -108,6 +108,7 @@ const AdminRegistrationList = () => {
       <h2>Danh sách đơn đăng ký</h2>
       <div style={{ marginBottom: 20, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <input
+          type="hidden"
           name="tournament_id"
           placeholder="Mã giải đấu"
           value={filters.tournament_id}
