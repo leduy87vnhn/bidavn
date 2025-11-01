@@ -179,7 +179,7 @@ return (
               {group.tournament_events[0]?.location && (
                 <p
                   style={{
-                    fontSize: '2.4em',
+                    fontSize: '2.2em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -277,7 +277,7 @@ return (
                       </h2>
 
                       {(ev.start_date || ev.end_date) && (
-                        <p style={{ fontSize: '1.4em' }}>
+                        <p style={{ fontSize: '2.0em' }}>
                           <FaCalendarAlt className="tgdp-icon purple" /> {`${formatDate(ev.start_date)} đến ${formatDate(ev.end_date)}`}
                         </p>
                       )}
@@ -305,21 +305,21 @@ return (
                       )} */}
 
                         {ev.maximum_competitors && (
-                        <p style={{ fontSize: '1.4em' }}>
+                        <p style={{ fontSize: '2.0em' }}>
                             <FaUsers className="tgdp-icon blue" />{' '}
                             {`${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`}
                         </p>
                         )}
 
                         {ev.attendance_fee_common && (
-                        <p style={{ fontSize: '1.4em' }}>
+                        <p style={{ fontSize: '2.0em' }}>
                             <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
                             {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
                         </p>
                         )}
 
                         {ev.prize && (
-                        <p style={{ fontSize: '1.4em' }}>
+                        <p style={{ fontSize: '2.0em' }}>
                             <FaGift className="tgdp-icon orange" /> {ev.prize}
                         </p>
                         )}

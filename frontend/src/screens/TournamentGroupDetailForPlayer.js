@@ -233,7 +233,7 @@ const TournamentGroupDetailForPlayer = () => {
                   </h2>
 
                   {(ev.start_date || ev.end_date) && (
-                    <p style={{ fontSize: '1.4em' }}>
+                    <p style={{ fontSize: '2.0em' }}>
                       <FaCalendarAlt className="tgdp-icon purple" />{' '}
                       {`${formatDate(ev.start_date)} đến ${formatDate(
                         ev.end_date
@@ -242,7 +242,7 @@ const TournamentGroupDetailForPlayer = () => {
                   )}
 
                   {ev.maximum_competitors && (
-                    <p style={{ fontSize: '1.4em' }}>
+                    <p style={{ fontSize: '2.0em' }}>
                       <FaUsers className="tgdp-icon blue" />{' '}
                       {`${ev.approved_competitors_count || 0}/${
                         ev.maximum_competitors
@@ -251,14 +251,14 @@ const TournamentGroupDetailForPlayer = () => {
                   )}
 
                   {ev.attendance_fee_common && (
-                    <p style={{ fontSize: '1.4em' }}>
+                    <p style={{ fontSize: '2.0em' }}>
                       <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
                       {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
                     </p>
                   )}
 
                   {ev.prize && (
-                    <p style={{ fontSize: '1.4em' }}>
+                    <p style={{ fontSize: '2.0em' }}>
                       <FaGift className="tgdp-icon orange" /> {ev.prize}
                     </p>
                   )}
