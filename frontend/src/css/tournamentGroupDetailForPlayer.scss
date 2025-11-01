@@ -583,3 +583,30 @@
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
   }
 }
+
+/* 🌟 Hiệu ứng nhấp nháy riêng cho nút 📝 ĐĂNG KÝ */
+.tgdp-btn.primary.register {
+  position: relative;
+  z-index: 1;
+  animation: pulseGreen 2s infinite;   /* ✅ nhấp nháy mỗi 2 giây */
+  box-shadow: 0 0 0 rgba(40, 167, 69, 0.6);
+}
+
+/* 🔹 Định nghĩa animation phát sáng */
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(40, 167, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
+}
+
+/* 🔹 Khi hover, tắt nhấp nháy tạm thời */
+.tgdp-btn.primary.register:hover {
+  animation: none;
+  box-shadow: 0 0 12px rgba(40, 167, 69, 0.7);
+}

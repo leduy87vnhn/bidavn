@@ -283,7 +283,7 @@ const TournamentGroupDetailForPlayer = () => {
                       ) : (
                         <Link
                           to={`/tournament_events/${ev.id}/register-single`}
-                          className="tgdp-btn primary"
+                          className="tgdp-btn primary register"
                         >
                           📝 ĐĂNG KÝ
                         </Link>
