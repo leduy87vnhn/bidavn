@@ -561,3 +561,20 @@
     top: 1px;
   }
 }
+
+/* 🌟 Chỉ áp dụng cho nút Điều Lệ */
+.top-action-button.regulation {
+  transform: scale(2);           /* ✅ tăng kích thước gấp 2 lần */
+  font-size: 2.2em !important;   /* ✅ tăng gấp đôi cỡ chữ */
+  padding: 20px 36px;            /* ✅ tăng padding tương ứng */
+  border-radius: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(2.1);       /* nhẹ phóng khi hover */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  }
+}

@@ -152,18 +152,18 @@ const TournamentGroupDetailForPlayer = () => {
               href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${group.group_regulations}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="top-action-button primary"
+              className="top-action-button primary regulation"
               style={{
                 marginTop: '10px',
                 fontSize: '1.2em',
                 display: 'inline-block',
               }}
             >
-              📥 Điều lệ
+              📥 ĐIỀU LỆ
             </a>
           ) : (
             <button
-              className="top-action-button grey"
+              className="top-action-button grey regulation"
               disabled
               style={{
                 marginTop: '10px',
@@ -171,7 +171,7 @@ const TournamentGroupDetailForPlayer = () => {
                 display: 'inline-block',
               }}
             >
-              📄 Điều lệ
+              📄 ĐIỀU LỆ
             </button>
           )}
         </div>
@@ -252,7 +252,7 @@ const TournamentGroupDetailForPlayer = () => {
 
                   {ev.attendance_fee_common && (
                     <p style={{ fontSize: '2.0em' }}>
-                      <FaMoneyBillWave className="tgdp-icon green" /> Lệ phí:{' '}
+                      <FaMoneyBillWave className="tgdp-icon green" /> LỆ PHÍ:{' '}
                       {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
                     </p>
                   )}
@@ -278,14 +278,14 @@ const TournamentGroupDetailForPlayer = () => {
                       {ev.registration_deadline &&
                       new Date(ev.registration_deadline) < new Date() ? (
                         <button className="tgdp-btn grey" disabled>
-                          📝 Hết hạn đăng ký
+                          📝 HẾT HẠN ĐĂNG KÝ
                         </button>
                       ) : (
                         <Link
                           to={`/tournament_events/${ev.id}/register-single`}
                           className="tgdp-btn primary"
                         >
-                          📝 Đăng Ký
+                          📝 ĐĂNG KÝ
                         </Link>
                       )}
                     </div>
@@ -308,11 +308,11 @@ const TournamentGroupDetailForPlayer = () => {
                           rel="noopener noreferrer"
                           className="tgdp-btn primary"
                         >
-                          📅 Lịch Thi Đấu
+                          📅 LỊCH THI ĐẤU
                         </a>
                       ) : (
                         <button className="tgdp-btn grey" disabled>
-                          📅 Lịch Thi Đấu
+                          📅 LỊCH THI ĐẤU
                         </button>
                       )}
 
@@ -320,7 +320,7 @@ const TournamentGroupDetailForPlayer = () => {
                         to={`/tournament_events/${ev.id}/competitors`}
                         className="tgdp-btn primary"
                       >
-                        📋 Danh Sách Thi Đấu
+                        📋 DANH SÁCH THI ĐẤU
                       </Link>
                     </div>
                   </div>
