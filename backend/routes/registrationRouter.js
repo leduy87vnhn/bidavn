@@ -216,7 +216,7 @@ router.get('/search-player', async (req, res) => {
 
 // 6. Danh sách đơn đăng ký (dành cho admin)
 router.get('/', async (req, res) => {
-  const { tournament, phone, user_name, club, status, athlete_name } = req.query;
+  const { tournament_id, phone, user_name, club, status, athlete_name } = req.query;
 
   try {
     const result = await client.query(
@@ -261,7 +261,7 @@ router.get('/', async (req, res) => {
       `,
       [tournament_id || null, phone || null, user_name || null, club || null, status || null, athlete_name || null]
     );
-// ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%'))
+
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching registrations:', err);
