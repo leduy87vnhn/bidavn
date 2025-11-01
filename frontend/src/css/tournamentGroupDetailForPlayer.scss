@@ -570,6 +570,10 @@
   border-radius: 10px;
   font-weight: 800;
   text-transform: uppercase;
+  width: auto;                     /* ✅ mở rộng tự động theo nội dung */
+  min-width: 380px;                /* ✅ đảm bảo nút đủ dài */
+  height: auto;                    /* ✅ cho phép cao hơn bình thường */
+  line-height: 1.4;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
