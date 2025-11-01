@@ -133,7 +133,7 @@ const TournamentGroupDetailForPlayer = () => {
           {group.tournament_events[0]?.location && (
             <p
               style={{
-                fontSize: '2.4em',
+                fontSize: '2.2em',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
