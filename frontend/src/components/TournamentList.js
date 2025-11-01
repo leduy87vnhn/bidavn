@@ -820,7 +820,8 @@ const TournamentList = () => {
                                         <button
                                         className="primary"
                                         onClick={() =>
-                                            navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)
+                                            //navigate(`/registrations?tournament=${encodeURIComponent(tour.name)}`)
+                                            navigate(`/registrations?tournament_id=${tour.id}`)
                                         }
                                         >
                                         Phê duyệt

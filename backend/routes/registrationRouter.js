@@ -244,7 +244,7 @@ router.get('/', async (req, res) => {
       JOIN tournament_events t ON rf.tournament_id = t.id
       JOIN users u ON rf.user_id = u.id
       WHERE
-        ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%')) AND
+        ($1::int IS NULL OR t.id = $1::int) AND
         ($2::text IS NULL OR LOWER(rf.registered_phone) LIKE LOWER('%' || $2 || '%')) AND
         ($3::text IS NULL OR LOWER(u.name) LIKE LOWER('%' || $3 || '%')) AND
         ($4::text IS NULL OR EXISTS (
@@ -259,9 +259,9 @@ router.get('/', async (req, res) => {
         ))
       ORDER BY rf.id DESC
       `,
-      [tournament || null, phone || null, user_name || null, club || null, status || null, athlete_name || null]
+      [tournament_id || null, phone || null, user_name || null, club || null, status || null, athlete_name || null]
     );
-
+// ($1::text IS NULL OR LOWER(t.name) LIKE LOWER('%' || $1 || '%'))
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching registrations:', err);

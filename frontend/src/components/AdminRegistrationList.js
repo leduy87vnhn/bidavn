@@ -10,12 +10,14 @@ const AdminRegistrationList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const defaultTournament = queryParams.get('tournament');
+  //const defaultTournament = queryParams.get('tournament');
+  const defaultTournamentId = queryParams.get('tournament_id');
   const user = JSON.parse(localStorage.getItem('user_info'));
   const isAdmin = user?.user_type === 2;
 
   const [filters, setFilters] = useState({
-    tournament: defaultTournament,
+    //tournament: defaultTournament,
+    tournament_id: defaultTournamentId,
     phone: '',
     user_name: '',
     club: '',
@@ -28,6 +30,7 @@ const AdminRegistrationList = () => {
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/registrations`, {
         params: {
           ...filters,
+          tournament_id: filters.tournament_id,
           status: isAdmin ? filters.status : 1
         }
       });
@@ -105,9 +108,9 @@ const AdminRegistrationList = () => {
       <h2>Danh sách đơn đăng ký</h2>
       <div style={{ marginBottom: 20, display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <input
-          name="tournament"
-          placeholder="Tên giải đấu"
-          value={filters.tournament}
+          name="tournament_id"
+          placeholder="Mã giải đấu"
+          value={filters.tournament_id}
           disabled
           style={{
             backgroundColor: '#f0f0f0',
