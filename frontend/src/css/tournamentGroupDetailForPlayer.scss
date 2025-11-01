@@ -566,9 +566,9 @@
 .top-action-button.regulation {
   transform: scale(2);           /* ✅ tăng kích thước gấp 2 lần */
   font-size: 1.6em !important;   /* ✅ tăng gấp đôi cỡ chữ */
-  padding: 20px 36px;            /* ✅ tăng padding tương ứng */
+  padding: 16px 20px;            /* ✅ tăng padding tương ứng */
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   width: auto;                     /* ✅ mở rộng tự động theo nội dung */
   min-width: 380px;                /* ✅ đảm bảo nút đủ dài */
