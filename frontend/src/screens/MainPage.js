@@ -15,6 +15,7 @@ const MainPage = () => {
       <MainPageHeader />
       <MainPageMenuBar />
       <MainPageEventSlider />
+      <div style={{ marginTop: '20px' }}></div>
       <MainPageNewsList />
       <MainPageTournamentSummary />
       <MainPageVideoSection />

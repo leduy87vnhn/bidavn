@@ -89,10 +89,10 @@ const MainPageTournamentSummary = () => {
                 rel="noopener noreferrer"
                 className="btn-download"
               >
-                📥 Điều lệ
+                📥 ĐIỀU LỆ
               </a>
             ) : (
-              <button className="btn-disabled" disabled>📄 Điều lệ</button>
+              <button className="btn-disabled" disabled>📄 ĐIỀU LỆ</button>
             )}
           </div>
           {/* 🔹 Nút Đăng Ký luôn hiển thị và nhấp nháy */}

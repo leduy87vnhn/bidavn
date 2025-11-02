@@ -282,6 +282,7 @@
   padding: 12px 16px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
+  gap: 10px; /* giảm khoảng trống giữa các cột */
 }
 
 .summary-row:hover {
@@ -297,11 +298,15 @@
 .summary-col.date {
   white-space: nowrap;
   font-weight: bold;
+  flex: 1;
+  text-align: left;
 }
 
 .summary-col.address {
   font-size: 13px;
   line-height: 1.4;
+  flex: 1.5;
+  text-align: left;
 }
 
 .summary-col.action {
@@ -310,6 +315,18 @@
   justify-content: center;
   align-items: center;
 }
+
+.summary-col.name {
+  flex: 2; /* tên giải to hơn */
+  font-size: 1.6rem; /* 👈 sẽ xử lý luôn ở bước 3 */
+  font-weight: bold;
+   color: #003366;
+}
+
+.summary-col.name:hover {
+  text-decoration: underline;
+}
+
 
 .btn-download {
   background-color: #007bff;
@@ -516,6 +533,12 @@
   min-width: 130px;        /* 🔹 giúp nút đều nhau */
   text-align: center;
   line-height: 1.4;
+}
+
+/* 🔹 Chỉ thu gọn nút “Điều Lệ” trong phần Tournament Summary */
+.summary-col.action .btn-download {
+  padding: 4px 10px !important;
+  min-width: auto !important;
 }
 
 /* 🔸 Nút bị disable */
