@@ -555,8 +555,8 @@
 }
 
 .btn-register {
-  padding: 10px 40px !important; /* rộng hơn để cân chữ và icon */
-  min-width: 150px !important;  /* giữ đủ độ rộng */
+  padding: 10px 32px !important; /* rộng hơn để cân chữ và icon */
+  min-width: 140px !important;  /* giữ đủ độ rộng */
   white-space: nowrap; /* ✅ giữ chữ và icon nằm cùng một dòng */
   line-height: 1.4;
 }
