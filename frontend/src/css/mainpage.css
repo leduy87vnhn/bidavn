@@ -547,16 +547,16 @@
 
 /* 🔹 Điều chỉnh nút “ĐIỀU LỆ” và “ĐĂNG KÝ” cho đều chiều cao và rộng */
 .summary-col.action .btn-download {
-  padding: 8px 14px !important; /* tăng nhẹ chiều cao, cân với Đăng Ký */
-  min-width: 110px !important;  /* đảm bảo không quá hẹp */
+  padding: 10px 24px !important; /* tăng nhẹ chiều cao, cân với Đăng Ký */
+  min-width: 140px !important;  /* đảm bảo không quá hẹp */
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .btn-register {
-  padding: 8px 20px !important; /* rộng hơn để cân chữ và icon */
-  min-width: 130px !important;  /* giữ đủ độ rộng */
+  padding: 10px 24px !important; /* rộng hơn để cân chữ và icon */
+  min-width: 140px !important;  /* giữ đủ độ rộng */
   line-height: 1.4;
 }
 
