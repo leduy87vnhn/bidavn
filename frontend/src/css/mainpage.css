@@ -348,6 +348,16 @@
   cursor: not-allowed;
 }
 
+/* 🔹 Nút ĐIỀU LỆ - thu gọn ngang nhưng giữ chiều cao bằng nút Đăng Ký */
+.btn-regulation {
+  padding: 6px 12px !important;  /* cùng chiều cao (6px trên/dưới), hẹp ngang */
+  min-width: 100px !important;   /* vừa khít chữ */
+  line-height: 1.4;              /* đồng nhất với btn-register */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* =============================
    🔹 Menu Bar Style (MainPageMenuBar)
    ============================= */

@@ -87,7 +87,7 @@ const MainPageTournamentSummary = () => {
                 href={`${process.env.REACT_APP_API_BASE_URL}/uploads/regulations/${item.regulations}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-download"
+                className="btn-download btn-regulation"
               >
                 📥 ĐIỀU LỆ
               </a>
@@ -101,7 +101,7 @@ const MainPageTournamentSummary = () => {
               className="btn-register blink-register"
               onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
             >
-              📝 Đăng Ký
+              📝 ĐĂNG KÝ
             </button>
           </div>
           {user?.user_type === 2 && (
