@@ -295,12 +295,27 @@
   font-size: 14px;
 }
 
-.summary-col.date {
+/* .summary-col.date {
   white-space: nowrap;
   font-weight: bold;
   flex: 1;
   text-align: left;
   font-size: 1.2rem;
+} */
+
+.summary-col.date {
+  white-space: nowrap;
+  font-weight: bold;
+  flex: 1;
+  display: flex;
+  justify-content: center;    /* canh giữa theo ngang */
+  align-items: center;        /* ✅ canh giữa theo dọc */
+  font-size: 1.2rem;
+  position: relative;         /* để thêm hiệu ứng viền chạy */
+  padding: 6px 14px;          /* thêm chút đệm bên trong */
+  border-radius: 10px;
+  color: #000;
+  background-color: #e6f0ff;  /* nền nhẹ giúp nổi hơn */
 }
 
 .summary-col.address {
