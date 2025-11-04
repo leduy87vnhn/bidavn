@@ -7,6 +7,7 @@ const AccountCreationModal = ({
   isOpen,
   onClose,
   phoneNumber,
+  initialName,     // ✅ thêm vào đây
   onSuccess
 }) => {
   const [form, setForm] = useState({
@@ -24,12 +25,12 @@ const AccountCreationModal = ({
 
     // 🔑 Đồng bộ số điện thoại (và tên nếu có) từ props
     useEffect(() => {
-    if (phoneNumber) {
+    if (phoneNumber || initialName) {
         setForm(prev => ({
         ...prev,
-        phone_number: phoneNumber,
+        phone_number: phoneNumber || prev.phone_number,
         // Nếu bạn muốn auto điền tên từ props => thêm dòng này
-        name: prev.name || ''
+        name: initialName || prev.name || ''
         }));
     }
     }, [phoneNumber, isOpen]);
@@ -96,7 +97,7 @@ const AccountCreationModal = ({
           Hiện tại bạn chưa có tài khoản trên Website <strong>HBSF</strong>.<br />
           Có tài khoản sẽ thuận tiện cho việc đăng ký các giải đấu sau này.<br />
           Hệ thống sẽ tự động tạo tài khoản cho bạn với thông tin bạn vừa đăng ký.<br />
-          <strong>Bạn hãy điền bổ sung mật khẩu.</strong>
+          <strong>Bạn hãy tạo bổ sung mật khẩu mới.</strong>
         </div>
 
         <label>Số điện thoại:</label>
@@ -105,7 +106,7 @@ const AccountCreationModal = ({
         <label>Họ tên:</label>
         <input className="table-input" name="name" value={form.name} onChange={handleChange} />
 
-        <label>Mật khẩu:</label>
+        <label>Tạo mật khẩu mới:</label>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <input
             className="table-input"

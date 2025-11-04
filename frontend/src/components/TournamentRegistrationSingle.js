@@ -523,7 +523,6 @@ const TournamentRegistrationSingle = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
             <button
               type="button"
-              //onClick={() => navigate('/tournament_events')}
               onClick={() => navigate(`/tournament-group/${tournament.group_id}/for-player`)}
               style={{
                 padding: '8px 16px',
@@ -576,8 +575,6 @@ const TournamentRegistrationSingle = () => {
         <button
           onClick={() => {
             setShowSuccessModal(false);
-            //navigate(`/tournament_events/${tournamentId}/competitors`);
-            //navigate(`/tournament_events`);
             navigate(`/tournament-group/${tournament.group_id}/for-player`);
           }}
           style={{
@@ -606,6 +603,7 @@ const TournamentRegistrationSingle = () => {
         isOpen={showAccountModal}
         onClose={() => setShowAccountModal(false)}
         phoneNumber={competitor.phone}
+        initialName={competitor.name}    // ✅ thêm dòng này
         onSuccess={(newUser) => {
           setCompetitor(prev => ({ ...prev, name: newUser.name, phone: newUser.phone_number }));
           setRegisteredPhone(newUser.phone_number);
