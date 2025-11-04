@@ -76,9 +76,24 @@ const AccountCreationModal = ({
         modified_date: new Date(),
       });
 
-      alert('✅ Tài khoản đã tạo thành công.');
-      onSuccess(form);  // gọi callback từ parent
-      onClose();        // đóng modal
+      // alert('✅ Tài khoản đã tạo thành công.');
+      // onSuccess(form);  // gọi callback từ parent
+      // onClose();        // đóng modal
+      // ✅ Sau khi tạo xong → tự động đăng nhập
+      try {
+        const loginRes = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, {
+          user_name: phone_number,
+          password: password
+        });
+        const userData = loginRes.data;
+        localStorage.setItem('user_info', JSON.stringify(userData));
+        onSuccess(userData);  // ✅ trả lại user info thật
+      } catch {
+        // ❌ Không hiện alert, chỉ tiếp tục
+        onSuccess(form);
+      }
+      onClose(); // ✅ đóng modal bình thường
+
     } catch (err) {
       console.error('Lỗi tạo tài khoản:', err);
       setError('❌ Không thể tạo tài khoản. Có thể email hoặc số điện thoại đã tồn tại.');
