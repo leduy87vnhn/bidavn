@@ -304,11 +304,14 @@ return (
                       </p>
                       )} */}
 
-                        {ev.maximum_competitors && (
-                        <p style={{ fontSize: '2.0em' }}>
+                        {/* ✅ Hiển thị số vận động viên */}
+                        {(ev.approved_competitors_count || ev.maximum_competitors) && (
+                          <p style={{ fontSize: '2.0em' }}>
                             <FaUsers className="tgdp-icon blue" />{' '}
-                            {`${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`}
-                        </p>
+                            {ev.maximum_competitors && ev.maximum_competitors > 0
+                              ? `${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`
+                              : `${ev.approved_competitors_count || 0} players`}
+                          </p>
                         )}
 
                         {ev.attendance_fee_common && (
