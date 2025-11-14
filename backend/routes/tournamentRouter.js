@@ -692,8 +692,24 @@ router.get('/upcoming-groups', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
+    // const result = await client.query(`
+    //   SELECT t.*, g.tournament_name AS group_name
+    //   FROM tournament_events t
+    //   LEFT JOIN tournament_group g ON t.group_id = g.id
+    //   WHERE t.id = $1
+    // `, [id]);
+
     const result = await client.query(`
-      SELECT t.*, g.tournament_name AS group_name
+      SELECT 
+        t.*, 
+        g.tournament_name AS group_name,
+        (
+          SELECT COUNT(*)
+          FROM registration_form rf
+          LEFT JOIN competitors c ON c.registration_form_id = rf.id
+          LEFT JOIN players p ON c.player_id = p.id
+          WHERE rf.tournament_id = t.id AND rf.status = 1 AND p.id IS NOT NULL
+        ) AS approved_competitors_count
       FROM tournament_events t
       LEFT JOIN tournament_group g ON t.group_id = g.id
       WHERE t.id = $1
