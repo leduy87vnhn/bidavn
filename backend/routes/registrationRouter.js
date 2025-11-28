@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../config/db'); // giả sử bạn đã có client kết nối PostgreSQL
+const axios = require('axios');
 
 // 1. Tạo bản đăng ký mới
 router.post('/', async (req, res) => {
@@ -174,12 +175,52 @@ router.patch('/:id/approve', async (req, res) => {
       `UPDATE registration_form SET status = $1, modified_date = $2 WHERE id = $3`,
       [status, now, id]
     );
+
+    // Lấy lại thông tin đăng ký để có số điện thoại và tên người dùng (không thay đổi DB)
+    try {
+      const infoRes = await client.query(
+        `SELECT rf.registered_phone, u.name AS user_name
+         FROM registration_form rf
+         LEFT JOIN users u ON rf.user_id = u.id
+         WHERE rf.id = $1`,
+        [id]
+      );
+
+      if (String(status) === '1' && infoRes.rows.length > 0) {
+        const { registered_phone, user_name } = infoRes.rows[0];
+        if (registered_phone) {
+          const smsContent = `Thông báo: Đơn đăng ký của ${user_name || ''} đã được duyệt. Cảm ơn bạn đã đăng ký.`;
+          try {
+            await axios.post(
+              'https://api.speedsms.vn/index.php/sms/send',
+              {
+                to: registered_phone,
+                content: smsContent
+              },
+              {
+                headers: {
+                  'Authorization': 'Bearer D3quFjD046WcD8Tne_nRmctregp_yM_w',
+                  'Content-Type': 'application/json'
+                },
+                timeout: 10000
+              }
+            );
+          } catch (smsErr) {
+            console.error('Lỗi gửi SMS:', smsErr?.message || smsErr);
+            // Không trả lỗi về client nếu SMS thất bại
+          }
+        }
+      }
+    } catch (infoErr) {
+      console.error('Lỗi lấy thông tin đăng ký sau khi cập nhật:', infoErr?.message || infoErr);
+    }
+
     res.json({ message: 'Updated' });
   } catch (err) {
     console.error('Error updating status:', err);
     res.status(500).json({ message: 'Server error' });
   }
-});
+}); 
 
 // 4. Lấy background của giải đấu từ tournamentId
 router.get('/background/:tournamentId', async (req, res) => {
