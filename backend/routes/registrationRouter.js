@@ -186,7 +186,7 @@ router.patch('/:id/approve', async (req, res) => {
         [id]
       );
 
-      if (String(status) === '1' && infoRes.rows.length > 0) {
+      if (status === 1 && infoRes.rows.length > 0) {
         const { registered_phone, user_name } = infoRes.rows[0];
         if (registered_phone) {
           const smsContent = `Thông báo: Đơn đăng ký của ${user_name || ''} đã được duyệt. Cảm ơn bạn đã đăng ký.`;
