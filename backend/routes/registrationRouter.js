@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const client = require('../config/db'); // giả sử bạn đã có client kết nối PostgreSQL
 const axios = require('axios');
+const https = require('https');
 
 // 1. Tạo bản đăng ký mới
 router.post('/', async (req, res) => {
@@ -159,6 +160,61 @@ router.get('/by-tournament/:tournamentId', async (req, res) => {
   }
 });
 
+// helper gửi SMS theo mẫu Basic Auth của SpeedSMS (fire-and-forget)
+function sendSMS(phones, content, type = 1, sender = '') {
+  try {
+    const ACCESS_TOKEN = 'D3quFjD046WcD8Tne_nRmctregp_yM_w';
+    const params = JSON.stringify({
+      to: phones,
+      content: content,
+      sms_type: type,
+      sender: sender
+    });
+
+    const auth = 'Basic ' + Buffer.from(ACCESS_TOKEN + ':x').toString('base64');
+
+    const options = {
+      hostname: 'api.speedsms.vn',
+      port: 443,
+      path: '/index.php/sms/send',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': auth
+      }
+    };
+
+    const req = https.request(options, function(res) {
+      res.setEncoding('utf8');
+      let body = '';
+      res.on('data', function(d) {
+        body += d;
+      });
+      res.on('end', function() {
+        try {
+          const json = JSON.parse(body);
+          if (json.status === 'success') {
+            console.log('send sms success');
+          } else {
+            console.error('send sms failed', body);
+          }
+        } catch (e) {
+          console.error('send sms parse response failed', body);
+        }
+      });
+    });
+
+    req.on('error', function(e) {
+      console.error('send sms failed:', e);
+    });
+
+    req.write(params);
+    req.end();
+  } catch (e) {
+    console.error('sendSMS helper error:', e);
+  }
+}
+
 // 3. Phê duyệt hoặc từ chối đăng ký
 router.patch('/:id/approve', async (req, res) => {
   const id = req.params.id;
@@ -190,25 +246,7 @@ router.patch('/:id/approve', async (req, res) => {
         const { registered_phone, user_name } = infoRes.rows[0];
         if (registered_phone) {
           const smsContent = `Thông báo: Đơn đăng ký của ${user_name || ''} đã được duyệt. Cảm ơn bạn đã đăng ký.`;
-          try {
-            await axios.post(
-              'https://api.speedsms.vn/index.php/sms/send',
-              {
-                to: registered_phone,
-                content: smsContent
-              },
-              {
-                headers: {
-                  'Authorization': 'Bearer D3quFjD046WcD8Tne_nRmctregp_yM_w',
-                  'Content-Type': 'application/json'
-                },
-                timeout: 10000
-              }
-            );
-          } catch (smsErr) {
-            console.error('Lỗi gửi SMS:', smsErr?.message || smsErr);
-            // Không trả lỗi về client nếu SMS thất bại
-          }
+          sendSMS(registered_phone, smsContent, 1, '');
         }
       }
     } catch (infoErr) {

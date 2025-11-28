@@ -32,6 +32,8 @@ npm install react-markdown-editor-lite react-markdown --legacy-peer-deps
 npm install markdown-it --legacy-peer-deps
 npm install @mui/x-data-grid --legacy-peer-deps
 npm install multer
+npm install axios
+
 npm i exceljs file-saver
 sudo apt install mailutils
 Configure lại: dpkg-reconfigure postfix
