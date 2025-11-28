@@ -246,7 +246,7 @@ router.patch('/:id/approve', async (req, res) => {
         const { registered_phone, user_name } = infoRes.rows[0];
         if (registered_phone) {
           const smsContent = `Thông báo: Đơn đăng ký của ${user_name || ''} đã được duyệt. Cảm ơn bạn đã đăng ký.`;
-          sendSMS(registered_phone, smsContent, 1, '');
+          sendSMS(registered_phone, smsContent, 5, '84984523382');
         }
       }
     } catch (infoErr) {
