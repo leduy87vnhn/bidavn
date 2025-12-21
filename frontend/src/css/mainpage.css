@@ -35,7 +35,7 @@
 /* New banner-style header */
 .mainpage-header-banner {
   position: relative;
-  background: linear-gradient(180deg, #0033aa 0%, #1e5fcc 30%, #4169e1 60%, #1e90ff 100%);
+  background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
   padding: 80px 40px;
   text-align: center;
   color: white;
@@ -394,7 +394,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(180deg, #001a44 0%, #0033aa 100%);
+  background: linear-gradient(180deg, #0a1929 0%, #1a3a52 100%);
   padding: 14px 40px;
   position: sticky;
   top: 0;
