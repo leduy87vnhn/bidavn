@@ -66,7 +66,13 @@
   letter-spacing: 3px;
   line-height: 1.2;
   color: #0052CC;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 
+    2px 2px 0px #003d99,
+    4px 4px 0px #002d77,
+    6px 6px 0px #001f55,
+    8px 8px 10px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(255, 255, 255, 0.5);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
 }
 
 .header-banner-title .title-line2 {
