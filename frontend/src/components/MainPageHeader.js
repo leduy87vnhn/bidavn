@@ -37,36 +37,12 @@ const MainPageHeader = () => {
   };
 
   return (
-    <div className="mainpage-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {hbsfLogo && (
-          <img
-            src={getLogoUrl(hbsfLogo.settings_value)}
-            alt="HBSF Logo"
-            className="logo"
-            style={{ height: '50px', marginRight: '20px' }}
-          />
-        )}
-        <div className="header-text">
-          <div className="line1">LIÊN ĐOÀN BILLIARDS & SNOOKER</div>
-          <div className="line2">THÀNH PHỐ HỒ CHÍ MINH</div>
-        </div>
+    <div className="mainpage-header-banner">
+      <div className="header-banner-badge">LIÊN ĐOÀN</div>
+      <div className="header-banner-title">
+        <div className="title-line1">BILLIARDS & SNOOKER</div>
+        <div className="title-line2">THÀNH PHỐ HỒ CHÍ MINH</div>
       </div>
-
-      {/* <div>
-        {user ? (
-          <>
-            <span style={{ marginRight: '12px' }}>Xin chào, <strong>{user.name}</strong></span>
-            <button onClick={handleLogout} style={{ padding: '6px 12px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '6px' }}>
-              Đăng xuất
-            </button>
-          </>
-        ) : (
-          <button onClick={handleLogin} style={{ padding: '6px 12px', background: '#007bff', color: 'white', border: 'none', borderRadius: '6px' }}>
-            Đăng nhập
-          </button>
-        )}
-      </div> */}
     </div>
   );
 };

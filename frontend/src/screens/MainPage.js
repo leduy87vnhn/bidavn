@@ -12,8 +12,8 @@ import '../css/mainpage.css';
 const MainPage = () => {
   return (
     <div className="main-container">
-      <MainPageHeader />
       <MainPageMenuBar />
+      <MainPageHeader />
       <MainPageEventSlider />
       <div style={{ marginTop: '20px' }}></div>
       <MainPageNewsList />
