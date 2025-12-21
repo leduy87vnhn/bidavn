@@ -1,6 +1,7 @@
 import React from 'react';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageScrollingText from '../components/MainPageScrollingText';
 import MainPageEventSlider from '../components/MainPageEventSlider';
 import MainPageNewsList from '../components/MainPageNewsList';
 import MainPageVideoSection from '../components/MainPageVideoSection';
@@ -14,6 +15,7 @@ const MainPage = () => {
     <div className="main-container">
       <MainPageMenuBar />
       <MainPageHeader />
+      <MainPageScrollingText />
       <MainPageEventSlider />
       <div style={{ marginTop: '20px' }}></div>
       <MainPageNewsList />

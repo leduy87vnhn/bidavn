@@ -84,6 +84,46 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Scrolling Text Banner */
+.scrolling-text-container {
+  background: #0052CC;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.scrolling-text {
+  display: inline-block;
+  animation: scroll-left 30s linear infinite;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.scrolling-text span {
+  display: inline-block;
+  padding: 0 50px;
+}
+
+.scrolling-text span::after {
+  content: "•";
+  margin-left: 50px;
+  color: white;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .logo {
   height: 60px;
   margin-right: 10px;
