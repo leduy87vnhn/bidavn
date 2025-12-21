@@ -47,7 +47,7 @@
   background: linear-gradient(90deg, #ff8c42, #ff6b35);
   color: white;
   padding: 8px 40px;
-  font-size: 27px;
+  font-size: 40px;
   font-weight: bold;
   letter-spacing: 2px;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
@@ -487,12 +487,14 @@
     position: relative;
     text-transform: uppercase;
     transition: all 0.25s ease-in-out;
-    padding-bottom: 2px;
+    padding-bottom: 0px;
+    display: inline-flex;
+    align-items: center;
 
     &::after {
       content: "";
       position: absolute;
-      bottom: -2px;
+      bottom: -4px;
       left: 0;
       width: 0%;
       height: 2px;
