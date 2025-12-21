@@ -53,6 +53,35 @@
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
   margin-bottom: 12px;
   text-transform: uppercase;
+  position: relative;
+  animation: glowing-border 2s infinite;
+}
+
+@keyframes glowing-border {
+  0% {
+    box-shadow: 
+      0 0 5px #00ff00,
+      0 0 10px #00ff00,
+      0 0 15px #00ff00,
+      0 0 20px #00ff00,
+      inset 0 0 5px rgba(0, 255, 0, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px #00ff00,
+      0 0 20px #00ff00,
+      0 0 30px #00ff00,
+      0 0 40px #00ff00,
+      inset 0 0 10px rgba(0, 255, 0, 0.5);
+  }
+  100% {
+    box-shadow: 
+      0 0 5px #00ff00,
+      0 0 10px #00ff00,
+      0 0 15px #00ff00,
+      0 0 20px #00ff00,
+      inset 0 0 5px rgba(0, 255, 0, 0.3);
+  }
 }
 
 .header-banner-title {
