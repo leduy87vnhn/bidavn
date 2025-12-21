@@ -35,7 +35,7 @@
 /* New banner-style header */
 .mainpage-header-banner {
   position: relative;
-  background: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);
+  background: linear-gradient(180deg, #0033aa 0%, #1e5fcc 30%, #4169e1 60%, #1e90ff 100%);
   padding: 80px 40px;
   text-align: center;
   color: white;
@@ -394,12 +394,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #001a44, #0033aa); /* 🔹 xanh đậm đồng bộ với header */
+  background: linear-gradient(180deg, #001a44 0%, #0033aa 100%);
   padding: 14px 40px;
   position: sticky;
   top: 0;
   z-index: 200;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 
   .menu-left {
     display: flex;
