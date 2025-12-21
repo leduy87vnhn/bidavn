@@ -36,7 +36,7 @@
 .mainpage-header-banner {
   position: relative;
   background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
-  padding: 80px 40px;
+  padding: 40px 40px;
   text-align: center;
   color: white;
   overflow: hidden;
@@ -47,16 +47,16 @@
   background: linear-gradient(90deg, #ff8c42, #ff6b35);
   color: white;
   padding: 8px 40px;
-  font-size: 18px;
+  font-size: 27px;
   font-weight: bold;
   letter-spacing: 2px;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   text-transform: uppercase;
 }
 
 .header-banner-title {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .header-banner-title .title-line1 {
