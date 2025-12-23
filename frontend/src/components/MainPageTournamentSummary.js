@@ -51,8 +51,7 @@ const MainPageTournamentSummary = () => {
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
-    const cleanPath = imagePath.replace(/^~\/billard\/bidavn\/backend/, '');
-    return `${process.env.REACT_APP_API_BASE_URL}${cleanPath}`;
+    return `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${imagePath}`;
   };
 
   return (
