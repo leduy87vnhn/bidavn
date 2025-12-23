@@ -497,14 +497,8 @@
 
 .tournament-arrow {
   position: absolute;
-  top: 50%;
+  top: 20px;
   right: 20px;
-  transform: translateY(-50%);
-}
-
-.tournament-card.right-image .tournament-arrow {
-  left: 20px;
-  right: auto;
 }
 
 .tournament-admin-controls {

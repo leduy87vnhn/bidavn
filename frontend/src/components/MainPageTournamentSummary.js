@@ -65,100 +65,55 @@ const MainPageTournamentSummary = () => {
           .slice()
           .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
           .map((item, index) => {
-            const isEven = index % 2 === 0;
+            // Card lẻ (index 0, 2, 4...) -> hình trái
+            // Card chẵn (index 1, 3, 5...) -> hình phải
+            const isOddCard = index % 2 === 0;
             const imageUrl = getImageUrl(item.image_path);
             
             return (
-              <div key={item.id} className={`tournament-card ${isEven ? 'left-image' : 'right-image'}`}>
-                {isEven ? (
-                  <>
-                    <div className="tournament-image">
-                      <img 
-                        src={imageUrl || 'https://via.placeholder.com/350x250?text=Tournament'} 
-                        alt={item.tournament_name}
-                      />
-                    </div>
-                    <div className="tournament-info">
-                      <h3 
-                        className="tournament-title"
-                        onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+              <div key={item.id} className={`tournament-card ${isOddCard ? 'left-image' : 'right-image'}`}>
+                <div className="tournament-image">
+                  <img 
+                    src={imageUrl || 'https://via.placeholder.com/350x250?text=Tournament'} 
+                    alt={item.tournament_name}
+                  />
+                </div>
+                <div className="tournament-info">
+                  <h3 
+                    className="tournament-title"
+                    onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+                  >
+                    {item.tournament_name}
+                  </h3>
+                  <p className="tournament-description">
+                    {item.description || `Thời gian: ${new Date(item.start_date).toLocaleDateString('vi-VN')} - ${new Date(item.end_date).toLocaleDateString('vi-VN')}`}
+                    <br />
+                    {item.event_location && `Địa điểm: ${item.event_location}`}
+                  </p>
+                  <div className="tournament-arrow">
+                    <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
+                      <path d="M5 20 L15 10 M15 10 L15 30 M15 30 L5 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <path d="M30 20 L40 10 M40 10 L40 30 M40 30 L30 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <path d="M55 20 L65 10 M65 10 L65 30 M65 30 L55 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    </svg>
+                  </div>
+                  {user?.user_type === 2 && (
+                    <div className="tournament-admin-controls">
+                      <button
+                        className="btn-toggle-display"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDisplay(item.id, !item.display);
+                        }}
                       >
-                        {item.tournament_name}
-                      </h3>
-                      <p className="tournament-description">
-                        {item.description || `Thời gian: ${new Date(item.start_date).toLocaleDateString('vi-VN')} - ${new Date(item.end_date).toLocaleDateString('vi-VN')}`}
-                        <br />
-                        {item.event_location && `Địa điểm: ${item.event_location}`}
-                      </p>
-                      <div className="tournament-arrow">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                          <path d="M20 15 L35 30 L20 45" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                          <path d="M30 15 L45 30 L30 45" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                      {user?.user_type === 2 && (
-                        <div className="tournament-admin-controls">
-                          <button
-                            className="btn-toggle-display"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleDisplay(item.id, !item.display);
-                            }}
-                          >
-                            {item.display ? '👁️ Ẩn' : '🚫 Hiện'}
-                          </button>
-                          {item.display === false && (
-                            <span className="hidden-badge">(ĐÃ ẨN)</span>
-                          )}
-                        </div>
+                        {item.display ? '👁️ Ẩn' : '🚫 Hiện'}
+                      </button>
+                      {item.display === false && (
+                        <span className="hidden-badge">(ĐÃ ẨN)</span>
                       )}
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="tournament-info">
-                      <h3 
-                        className="tournament-title"
-                        onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
-                      >
-                        {item.tournament_name}
-                      </h3>
-                      <p className="tournament-description">
-                        {item.description || `Thời gian: ${new Date(item.start_date).toLocaleDateString('vi-VN')} - ${new Date(item.end_date).toLocaleDateString('vi-VN')}`}
-                        <br />
-                        {item.event_location && `Địa điểm: ${item.event_location}`}
-                      </p>
-                      <div className="tournament-arrow">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                          <path d="M20 15 L35 30 L20 45" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                          <path d="M30 15 L45 30 L30 45" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                      {user?.user_type === 2 && (
-                        <div className="tournament-admin-controls">
-                          <button
-                            className="btn-toggle-display"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleDisplay(item.id, !item.display);
-                            }}
-                          >
-                            {item.display ? '👁️ Ẩn' : '🚫 Hiện'}
-                          </button>
-                          {item.display === false && (
-                            <span className="hidden-badge">(ĐÃ ẨN)</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    <div className="tournament-image">
-                      <img 
-                        src={imageUrl || 'https://via.placeholder.com/350x250?text=Tournament'} 
-                        alt={item.tournament_name}
-                      />
-                    </div>
-                  </>
-                )}
+                  )}
+                </div>
               </div>
             );
           })}
