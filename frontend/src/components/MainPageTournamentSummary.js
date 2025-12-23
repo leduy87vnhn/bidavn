@@ -68,7 +68,7 @@ const MainPageTournamentSummary = () => {
             // Card lẻ (index 0, 2, 4...) -> hình trái
             // Card chẵn (index 1, 3, 5...) -> hình phải
             const isOddCard = index % 2 === 0;
-            const imageUrl = getImageUrl(item.image_path);
+            const imageUrl = getImageUrl(item.background_image);
             
             return (
               <div key={item.id} className={`tournament-card ${isOddCard ? 'left-image' : 'right-image'}`}>
