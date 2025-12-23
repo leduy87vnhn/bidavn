@@ -669,16 +669,14 @@ router.get('/upcoming-groups', async (req, res) => {
   try {
     const result = await client.query(`
       SELECT g.id, g.tournament_name, g.start_date, g.end_date, g.display,
+        g.regulations, g.background_image, g.description,
         (
           SELECT location
           FROM tournament_events e
           WHERE e.group_id = g.id
           ORDER BY e.start_date DESC
           LIMIT 1
-        ) AS event_location,
-        g.regulations,
-        g.background_image,
-        g.description
+        ) AS event_location
       FROM tournament_group g
       WHERE g.start_date IS NOT NULL
       ORDER BY g.start_date DESC
