@@ -75,7 +75,7 @@ const MainPageTournamentSummary = () => {
                 <div className="tournament-image">
                   <img 
                     src={imageUrl || 'https://via.placeholder.com/350x250?text=Tournament'} 
-                    alt={item.tournament_name}
+                    alt="Tournament Image"
                   />
                 </div>
                 <div className="tournament-info">

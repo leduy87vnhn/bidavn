@@ -676,7 +676,8 @@ router.get('/upcoming-groups', async (req, res) => {
           ORDER BY e.start_date DESC
           LIMIT 1
         ) AS event_location,
-        g.regulations
+        g.regulations,
+        g.image_path
       FROM tournament_group g
       WHERE g.start_date IS NOT NULL
       ORDER BY g.start_date DESC
