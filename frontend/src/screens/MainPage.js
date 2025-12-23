@@ -17,9 +17,10 @@ const MainPage = () => {
       <MainPageHeader />
       <MainPageScrollingText />
       <MainPageEventSlider />
+      <MainPageScrollingText />
       <div style={{ marginTop: '20px' }}></div>
-      <MainPageNewsList />
       <MainPageTournamentSummary />
+      <MainPageNewsList />
       <MainPageVideoSection />
       <MainPageHbsfInfo />
     </div>

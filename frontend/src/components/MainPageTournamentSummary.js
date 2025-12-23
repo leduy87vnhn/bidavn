@@ -57,7 +57,11 @@ const MainPageTournamentSummary = () => {
   return (
     <div className="mainpage-tournament-summary">
       <div className="tournament-summary-header">
-        <h2>GIẢI THỂ THAO</h2>
+        <h2>
+          <span className="text-orange">GIẢI</span>
+          {' '}
+          <span className="text-blue">THỂ THAO</span>
+        </h2>
       </div>
       <div className="tournament-cards-container">
         {groups
