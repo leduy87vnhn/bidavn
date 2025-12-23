@@ -167,14 +167,14 @@
 .mainpage-event-slider {
   position: relative;
   width: 100%;
-  height: 400px;
   overflow: hidden;
 }
 
 .mainpage-event-slider img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .event-content {
@@ -195,31 +195,55 @@
   background: linear-gradient(180deg, #0052CC 0%, #003d99 100%);
   padding: 80px 40px 100px;
   position: relative;
-  margin: 80px 0;
+  margin: 100px 0;
 }
 
 /* Torn paper effect - top */
 .mainpage-news-section::before {
   content: '';
   position: absolute;
-  top: -50px;
+  top: -2px;
   left: 0;
   right: 0;
-  height: 60px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L30,45 L70,15 L110,50 L150,20 L190,55 L230,10 L270,45 L310,25 L350,50 L390,15 L430,55 L470,20 L510,45 L550,10 L590,50 L630,25 L670,55 L710,15 L750,45 L790,20 L830,50 L870,10 L910,45 L950,25 L990,55 L1030,15 L1070,50 L1110,20 L1150,45 L1200,25 L1200,0 Z' fill='%23ffffff'/%3E%3C/svg%3E") repeat-x;
-  background-size: 200px 60px;
+  height: 30px;
+  background-image: 
+    radial-gradient(circle at 10px 15px, transparent 10px, white 10px, white 11px, transparent 11px),
+    radial-gradient(circle at 30px 5px, transparent 8px, white 8px, white 9px, transparent 9px),
+    radial-gradient(circle at 50px 20px, transparent 12px, white 12px, white 13px, transparent 13px),
+    radial-gradient(circle at 70px 8px, transparent 9px, white 9px, white 10px, transparent 10px),
+    radial-gradient(circle at 90px 18px, transparent 11px, white 11px, white 12px, transparent 12px),
+    radial-gradient(circle at 110px 6px, transparent 10px, white 10px, white 11px, transparent 11px),
+    radial-gradient(circle at 130px 22px, transparent 13px, white 13px, white 14px, transparent 14px),
+    radial-gradient(circle at 150px 10px, transparent 9px, white 9px, white 10px, transparent 10px),
+    radial-gradient(circle at 170px 16px, transparent 11px, white 11px, white 12px, transparent 12px),
+    radial-gradient(circle at 190px 7px, transparent 10px, white 10px, white 11px, transparent 11px);
+  background-size: 200px 30px;
+  background-repeat: repeat-x;
+  background-position: 0 bottom;
 }
 
 /* Torn paper effect - bottom */
 .mainpage-news-section::after {
   content: '';
   position: absolute;
-  bottom: -50px;
+  bottom: -2px;
   left: 0;
   right: 0;
-  height: 60px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,60 L30,15 L70,45 L110,10 L150,40 L190,5 L230,50 L270,15 L310,35 L350,10 L390,45 L430,5 L470,40 L510,15 L550,50 L590,10 L630,35 L670,5 L710,45 L750,15 L790,40 L830,10 L870,50 L910,15 L950,35 L990,5 L1030,45 L1070,10 L1110,40 L1150,15 L1200,35 L1200,60 Z' fill='%23ffffff'/%3E%3C/svg%3E") repeat-x;
-  background-size: 200px 60px;
+  height: 30px;
+  background-image: 
+    radial-gradient(circle at 10px 15px, white 10px, transparent 10px),
+    radial-gradient(circle at 30px 22px, white 8px, transparent 8px),
+    radial-gradient(circle at 50px 8px, white 12px, transparent 12px),
+    radial-gradient(circle at 70px 19px, white 9px, transparent 9px),
+    radial-gradient(circle at 90px 10px, white 11px, transparent 11px),
+    radial-gradient(circle at 110px 21px, white 10px, transparent 10px),
+    radial-gradient(circle at 130px 6px, white 13px, transparent 13px),
+    radial-gradient(circle at 150px 17px, white 9px, transparent 9px),
+    radial-gradient(circle at 170px 11px, white 11px, transparent 11px),
+    radial-gradient(circle at 190px 20px, white 10px, transparent 10px);
+  background-size: 200px 30px;
+  background-repeat: repeat-x;
+  background-position: 0 top;
 }
 
 .news-section-header {
