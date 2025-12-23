@@ -464,7 +464,7 @@
 .mainpage-menu-bar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   background: linear-gradient(180deg, #0a1929 0%, #1a3a52 100%);
   padding: 14px 40px;
   position: sticky;
@@ -479,7 +479,7 @@
 
   .menu-item {
     font-family: 'Oswald', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #ffffff; /* 🔹 chữ trắng nổi bật */
     cursor: pointer;
