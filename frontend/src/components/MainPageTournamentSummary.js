@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 import '../css/mainpage.css';
 
 const MainPageTournamentSummary = () => {
@@ -88,11 +89,18 @@ const MainPageTournamentSummary = () => {
                   >
                     {item.tournament_name}
                   </h3>
-                  <p className="tournament-description">
-                    {item.description || `Thời gian: ${new Date(item.start_date).toLocaleDateString('vi-VN')} - ${new Date(item.end_date).toLocaleDateString('vi-VN')}`}
-                    <br />
-                    {item.event_location && `Địa điểm: ${item.event_location}`}
-                  </p>
+                  <div className="tournament-details">
+                    <p className="tournament-info-item">
+                      <FaCalendarAlt className="info-icon" />
+                      <span>{new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}</span>
+                    </p>
+                    {item.event_location && (
+                      <p className="tournament-info-item">
+                        <FaMapMarkerAlt className="info-icon" />
+                        <span>{item.event_location}</span>
+                      </p>
+                    )}
+                  </div>
                   <div className="tournament-arrow">
                     <svg width="50" height="40" viewBox="0 0 50 40" fill="none">
                       <path d="M5 10 L15 20 L5 30" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>

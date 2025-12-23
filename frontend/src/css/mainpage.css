@@ -188,6 +188,141 @@
   border-radius: 8px;
 }
 
+/* ===========================
+   📰 News Section (MainPageNewsList)
+   ============================= */
+.mainpage-news-section {
+  background: linear-gradient(180deg, #0052CC 0%, #003d99 100%);
+  padding: 60px 40px 80px;
+  position: relative;
+  margin: 60px 0;
+}
+
+/* Torn paper effect - top */
+.mainpage-news-section::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L50,30 L100,10 L150,35 L200,15 L250,30 L300,5 L350,25 L400,15 L450,35 L500,10 L550,30 L600,15 L650,35 L700,20 L750,30 L800,10 L850,35 L900,15 L950,30 L1000,5 L1050,25 L1100,15 L1150,35 L1200,20 L1200,0 Z' fill='%23ffffff'/%3E%3C/svg%3E") repeat-x;
+  background-size: 100px 40px;
+}
+
+/* Torn paper effect - bottom */
+.mainpage-news-section::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0,40 L50,10 L100,30 L150,5 L200,25 L250,10 L300,35 L350,15 L400,25 L450,5 L500,30 L550,10 L600,25 L650,5 L700,20 L750,10 L800,30 L850,5 L900,25 L950,10 L1000,35 L1050,15 L1100,25 L1150,5 L1200,20 L1200,40 Z' fill='%23ffffff'/%3E%3C/svg%3E") repeat-x;
+  background-size: 100px 40px;
+}
+
+.news-section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.news-section-header h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.news-section-header .text-white {
+  color: #ffffff;
+}
+
+.news-section-header .text-yellow {
+  color: #FFD700;
+}
+
+.news-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.news-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+}
+
+.news-card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.news-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-card-content {
+  padding: 20px;
+}
+
+.news-card-date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.news-card-tags {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.news-tag {
+  background: transparent;
+  border: 2px solid #0052CC;
+  border-radius: 20px;
+  padding: 4px 16px;
+  font-size: 13px;
+  color: #0052CC;
+  font-weight: 600;
+}
+
+.news-card-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .news-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .news-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Old styles - deprecated */
 .mainpage-news-list {
   display: flex;
   flex-wrap: wrap;
@@ -490,11 +625,38 @@
   margin: 0 0 15px 0;
   cursor: pointer;
   transition: color 0.3s ease;
+  max-width: 66%;
+  word-wrap: break-word;
+  line-height: 1.3;
 }
 
 .tournament-title:hover {
   color: #ff6600;
   text-decoration: underline;
+}
+
+.tournament-details {
+  margin: 15px 0;
+}
+
+.tournament-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333;
+  margin: 8px 0;
+}
+
+.tournament-info-item .info-icon {
+  color: #0052CC;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.tournament-info-item span {
+  flex: 1;
 }
 
 .tournament-description {

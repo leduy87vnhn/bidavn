@@ -109,21 +109,20 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../css/mainpage.css'; // đảm bảo chứa style mới
+import '../css/mainpage.css';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
-  const [selectedEventIndex, setSelectedEventIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/mainpage/news`);
         const filtered = res.data
-          .filter(e => e.event_photo_second || e.event_photo)
-          .sort((a, b) => new Date(a.event_date) - new Date(b.event_date)); // sắp xếp theo event_date tăng dần
+          .filter(e => e.event_photo)
+          .sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
 
-        setNews(filtered.slice(0, 5)); // lấy 5 sự kiện đầu
+        setNews(filtered.slice(0, 6)); // lấy 6 tin mới nhất
       } catch (err) {
         console.error('Error loading news data:', err);
       }
@@ -136,24 +135,41 @@ const MainPageNewsList = () => {
     return `${process.env.REACT_APP_API_BASE_URL}${cleanPath}`;
   };
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  };
+
   if (!news.length) return null;
 
-  const selectedEvent = news[selectedEventIndex];
-
   return (
-    <div className="news-container">
-      <div className="news-image">
-        <img src={getEventPhotoUrl(selectedEvent.event_photo_second)} alt="event" />
+    <div className="mainpage-news-section">
+      <div className="news-section-header">
+        <h2>
+          <span className="text-white">TIN TỨC</span>
+          {' - '}
+          <span className="text-yellow">SỰ KIỆN</span>
+        </h2>
       </div>
-      <div className="news-list">
-        <div className="news-header">TIN TỨC - SỰ KIỆN</div>
+      <div className="news-cards-grid">
         {news.map((item, idx) => (
-          <div
-            key={idx}
-            className={`news-title-line ${selectedEventIndex === idx ? 'selected' : ''}`}
-            onClick={() => setSelectedEventIndex(idx)}
-          >
-            {item.event_name}
+          <div key={idx} className="news-card">
+            <div className="news-card-image">
+              <img src={getEventPhotoUrl(item.event_photo)} alt={item.event_name} />
+            </div>
+            <div className="news-card-content">
+              <div className="news-card-date">{formatDate(item.event_date)}</div>
+              <div className="news-card-tags">
+                <span className="news-tag">Tag 1</span>
+                <span className="news-tag">Tag 1</span>
+              </div>
+              <p className="news-card-description">
+                {item.event_name}
+              </p>
+            </div>
           </div>
         ))}
       </div>
