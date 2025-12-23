@@ -91,10 +91,9 @@ const MainPageTournamentSummary = () => {
                     {item.event_location && `Địa điểm: ${item.event_location}`}
                   </p>
                   <div className="tournament-arrow">
-                    <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-                      <path d="M5 20 L15 10 M15 10 L15 30 M15 30 L5 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      <path d="M30 20 L40 10 M40 10 L40 30 M40 30 L30 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      <path d="M55 20 L65 10 M65 10 L65 30 M65 30 L55 20" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    <svg width="50" height="40" viewBox="0 0 50 40" fill="none">
+                      <path d="M5 10 L15 20 L5 30" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <path d="M25 10 L35 20 L25 30" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                     </svg>
                   </div>
                   {user?.user_type === 2 && (
