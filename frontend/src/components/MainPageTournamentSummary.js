@@ -102,10 +102,16 @@ const MainPageTournamentSummary = () => {
                     )}
                   </div>
                   <div className="tournament-arrow">
-                    <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
-                      <path d="M10 20 L30 40 L10 60" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      <path d="M55 20 L75 40 L55 60" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                    </svg>
+                    <div className="arrow-box">
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M10 10 L25 20 L10 30" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      </svg>
+                    </div>
+                    <div className="arrow-box">
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M10 10 L25 20 L10 30" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      </svg>
+                    </div>
                   </div>
                   {user?.user_type === 2 && (
                     <div className="tournament-admin-controls">
