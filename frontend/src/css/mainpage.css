@@ -675,6 +675,7 @@
   right: 20px;
   display: flex;
   gap: 8px;
+  cursor: pointer;
 }
 
 .arrow-box {

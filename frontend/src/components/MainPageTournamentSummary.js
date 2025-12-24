@@ -101,12 +101,10 @@ const MainPageTournamentSummary = () => {
                       </p>
                     )}
                   </div>
-                  <div className="tournament-arrow">
-                    <div className="arrow-box">
-                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                        <path d="M10 10 L25 20 L10 30" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      </svg>
-                    </div>
+                  <div 
+                    className="tournament-arrow"
+                    onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+                  >
                     <div className="arrow-box">
                       <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M10 10 L25 20 L10 30" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
