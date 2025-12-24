@@ -102,9 +102,9 @@ const MainPageTournamentSummary = () => {
                     )}
                   </div>
                   <div className="tournament-arrow">
-                    <svg width="50" height="40" viewBox="0 0 50 40" fill="none">
-                      <path d="M5 10 L15 20 L5 30" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      <path d="M25 10 L35 20 L25 30" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
+                      <path d="M10 20 L30 40 L10 60" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <path d="M55 20 L75 40 L55 60" stroke="#FF8800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                     </svg>
                   </div>
                   {user?.user_type === 2 && (
