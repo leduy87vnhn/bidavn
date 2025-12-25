@@ -7,6 +7,7 @@ const MainPageTournamentSummary = () => {
   const [groups, setGroups] = useState([]);
   const [user, setUser] = useState(null);
   const [userLoaded, setUserLoaded] = useState(false);
+  const [expandedItems, setExpandedItems] = useState({});
 
   useEffect(() => {
     const userInfo = localStorage.getItem('user_info');
@@ -50,6 +51,13 @@ const MainPageTournamentSummary = () => {
     }
   };
 
+  const toggleExpand = (itemId, field) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [`${itemId}-${field}`]: !prev[`${itemId}-${field}`]
+    }));
+  };
+
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
     return `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${imagePath}`;
@@ -76,7 +84,11 @@ const MainPageTournamentSummary = () => {
             
             return (
               <div key={item.id} className={`tournament-card ${isOddCard ? 'left-image' : 'right-image'}`}>
-                <div className="tournament-image">
+                <div 
+                  className="tournament-image"
+                  onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+                  style={{ cursor: 'pointer' }}
+                >
                   <img 
                     src={imageUrl || 'https://via.placeholder.com/350x250?text=Tournament'} 
                     alt="Tournament Image"
@@ -89,28 +101,51 @@ const MainPageTournamentSummary = () => {
                   >
                     {item.tournament_name}
                   </h3>
-                  <div className="tournament-details">
-                    <p className="tournament-info-item">
-                      <FaCalendarAlt className="info-icon" />
-                      <span>{new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}</span>
-                    </p>
-                    {item.event_location && (
-                      <p className="tournament-info-item">
-                        <FaMapMarkerAlt className="info-icon" />
-                        <span>{item.event_location}</span>
-                      </p>
-                    )}
-                  </div>
-                  <div 
-                    className="tournament-arrow"
-                    onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
-                  >
-                    <div className="arrow-box">
-                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                        <path d="M10 10 L25 20 L10 30" stroke="#FF8800" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      </svg>
+                  <div className="tournament-details-grid">
+                    <div className="tournament-details-left">
+                      <div 
+                        className={`info-box info-time ${expandedItems[`${item.id}-time`] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(item.id, 'time')}
+                      >
+                        <div className="info-label">
+                          <FaCalendarAlt className="info-icon" />
+                          <span>Thời gian</span>
+                        </div>
+                        <div className="info-content">
+                          {new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}
+                        </div>
+                      </div>
+                      <div 
+                        className={`info-box info-location ${expandedItems[`${item.id}-location`] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(item.id, 'location')}
+                      >
+                        <div className="info-label">
+                          <FaMapMarkerAlt className="info-icon" />
+                          <span>Địa điểm</span>
+                        </div>
+                        <div className="info-content">
+                          {item.event_location || 'Chưa cập nhật'}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="tournament-details-right">
+                      <div 
+                        className={`info-box info-description ${expandedItems[`${item.id}-description`] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(item.id, 'description')}
+                      >
+                        <div className="info-label">Mô tả</div>
+                        <div className="info-content">
+                          {item.description || 'Chưa có mô tả'}
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <button 
+                    className="tournament-register-btn"
+                    onClick={() => window.location.href = `/tournament-group/${item.id}/for-player`}
+                  >
+                    Đăng Ký
+                  </button>
                   {user?.user_type === 2 && (
                     <div className="tournament-admin-controls">
                       <button

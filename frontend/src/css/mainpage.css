@@ -467,7 +467,7 @@
 }
 
 .mainpage-tournament-summary {
-  background-color: #f5f5f5;
+  background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
   padding: 40px 20px;
   font-family: Arial, sans-serif;
   position: relative;
@@ -638,6 +638,80 @@
   text-decoration: underline;
 }
 
+.tournament-details-grid {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0 60px 0;
+}
+
+.tournament-details-left,
+.tournament-details-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-box {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #0052CC;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.info-box:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 8px rgba(0, 82, 204, 0.3);
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #0052CC;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.info-label .info-icon {
+  font-size: 16px;
+}
+
+.info-content {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-time .info-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.info-location .info-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.info-description .info-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.info-box.expanded .info-content {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
 .tournament-details {
   margin: 15px 0;
 }
@@ -667,6 +741,43 @@
   line-height: 1.6;
   color: #333;
   margin: 0 0 15px 0;
+}
+
+.tournament-register-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #FF8800 0%, #FF6600 100%);
+  color: white;
+  border: 3px solid #FF8800;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.2),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.tournament-register-btn:hover {
+  background: linear-gradient(135deg, #FF6600 0%, #FF4400 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.tournament-register-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .tournament-arrow {
