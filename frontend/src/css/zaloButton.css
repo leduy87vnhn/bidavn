@@ -2,8 +2,8 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   background: linear-gradient(135deg, #0068FF 0%, #0052CC 100%);
   border-radius: 50%;
   display: flex;
@@ -19,19 +19,19 @@
 .zalo-floating-button:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(0, 104, 255, 0.6);
-  width: 140px;
-  border-radius: 30px;
+  width: 200px;
+  border-radius: 60px;
 }
 
 .zalo-icon {
-  width: 35px;
-  height: 35px;
+  width: 70px;
+  height: 70px;
   transition: all 0.3s ease;
 }
 
 .zalo-floating-button:hover .zalo-icon {
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
 }
 
 .zalo-text {
@@ -73,17 +73,17 @@
   .zalo-floating-button {
     bottom: 20px;
     right: 20px;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
 
   .zalo-icon {
-    width: 28px;
-    height: 28px;
+    width: 56px;
+    height: 56px;
   }
 
   .zalo-floating-button:hover {
-    width: 50px;
+    width: 100px;
     border-radius: 50%;
   }
 

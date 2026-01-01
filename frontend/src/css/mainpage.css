@@ -197,11 +197,10 @@
    📰 News Section (MainPageNewsList)
    ============================= */
 .mainpage-news-section {
-  background: linear-gradient(180deg, #0052CC 0%, #004099 25%, #003380 50%, #002966 75%, #001f4d 100%);
+  background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
   padding: 80px 40px 100px;
   position: relative;
   margin: 0;
-  clip-path: path('M 0,60 Q 40,20 80,50 Q 120,80 160,40 Q 200,10 240,60 Q 280,90 320,50 Q 360,20 400,70 Q 440,100 480,60 Q 520,30 560,80 Q 600,110 640,70 Q 680,40 720,90 Q 760,120 800,80 Q 840,50 880,100 Q 920,130 960,90 Q 1000,60 1040,110 Q 1080,140 1120,100 Q 1160,70 1200,120 Q 1240,150 1280,110 Q 1320,80 1360,130 Q 1400,160 1440,120 L 1440,900 Q 1400,940 1360,920 Q 1320,960 1280,930 Q 1240,950 1200,910 Q 1160,940 1120,900 Q 1080,930 1040,890 Q 1000,920 960,880 Q 920,910 880,870 Q 840,900 800,860 Q 760,890 720,850 Q 680,880 640,840 Q 600,870 560,830 Q 520,860 480,820 Q 440,850 400,810 Q 360,840 320,800 Q 280,830 240,790 Q 200,820 160,780 Q 120,810 80,770 Q 40,800 0,760 Z');
 }
 
 /* Remove old pseudo elements */
@@ -668,20 +667,32 @@
 
 .tournament-title {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 900;
   color: #FF8800;
   text-transform: uppercase;
   margin: 0 0 15px 0;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   max-width: 80%;
   word-wrap: break-word;
   line-height: 1.3;
+  text-shadow: 
+    2px 2px 0px #CC6600,
+    3px 3px 0px #AA5500,
+    4px 4px 0px #884400,
+    5px 5px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
 }
 
 .tournament-title:hover {
-  color: #ff6600;
-  text-decoration: underline;
+  color: #FFAA33;
+  text-decoration: none;
+  transform: translateY(-2px);
+  text-shadow: 
+    2px 2px 0px #DD7711,
+    3px 3px 0px #BB6600,
+    4px 4px 0px #995500,
+    5px 5px 15px rgba(0, 0, 0, 0.6);
 }
 
 .tournament-details-grid {
@@ -811,8 +822,8 @@
   color: white;
   border: 3px solid #0066CC;
   border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 9.6px 19.2px;
+  font-size: 12.8px;
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
@@ -922,8 +933,8 @@
   }
   
   .tournament-register-btn {
-    padding: 10px 20px;
-    font-size: 14px;
+    padding: 8px 16px;
+    font-size: 11.2px;
   }
 }
 
@@ -988,7 +999,8 @@
     right: auto;
     margin-top: 15px;
     width: 100%;
-    padding: 12px;
+    padding: 9.6px;
+    font-size: 11.2px;
   }
   
   .tournament-summary-header h2 {
@@ -1019,8 +1031,8 @@
   }
   
   .tournament-register-btn {
-    font-size: 14px;
-    padding: 10px;
+    font-size: 11.2px;
+    padding: 8px;
   }
 }
 
