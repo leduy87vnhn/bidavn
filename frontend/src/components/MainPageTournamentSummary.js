@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaInfoCircle } from 'react-icons/fa';
 import '../css/mainpage.css';
 
 const MainPageTournamentSummary = () => {
@@ -63,6 +63,12 @@ const MainPageTournamentSummary = () => {
     return `${process.env.REACT_APP_API_BASE_URL}/uploads/backgrounds/groups/${imagePath}`;
   };
 
+  const openGoogleMaps = (location) => {
+    if (!location || location === 'Chưa cập nhật') return;
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+    window.open(mapsUrl, '_blank');
+  };
+
   return (
     <div className="mainpage-tournament-summary">
       <div className="tournament-summary-header">
@@ -102,41 +108,40 @@ const MainPageTournamentSummary = () => {
                     {item.tournament_name}
                   </h3>
                   <div className="tournament-details-grid">
-                    <div className="tournament-details-left">
-                      <div 
-                        className={`info-box info-time ${expandedItems[`${item.id}-time`] ? 'expanded' : ''}`}
-                        onClick={() => toggleExpand(item.id, 'time')}
-                      >
-                        <div className="info-label">
-                          <FaCalendarAlt className="info-icon" />
-                          <span>Thời gian</span>
-                        </div>
-                        <div className="info-content">
-                          {new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}
-                        </div>
+                    <div 
+                      className={`info-box info-time ${expandedItems[`${item.id}-time`] ? 'expanded' : ''}`}
+                      onClick={() => toggleExpand(item.id, 'time')}
+                    >
+                      <div className="info-icon-wrapper">
+                        <FaCalendarAlt className="info-icon" />
                       </div>
-                      <div 
-                        className={`info-box info-location ${expandedItems[`${item.id}-location`] ? 'expanded' : ''}`}
-                        onClick={() => toggleExpand(item.id, 'location')}
-                      >
-                        <div className="info-label">
-                          <FaMapMarkerAlt className="info-icon" />
-                          <span>Địa điểm</span>
-                        </div>
-                        <div className="info-content">
-                          {item.event_location || 'Chưa cập nhật'}
-                        </div>
+                      <div className="info-content">
+                        {new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}
                       </div>
                     </div>
-                    <div className="tournament-details-right">
-                      <div 
-                        className={`info-box info-description ${expandedItems[`${item.id}-description`] ? 'expanded' : ''}`}
-                        onClick={() => toggleExpand(item.id, 'description')}
-                      >
-                        <div className="info-label">Mô tả</div>
-                        <div className="info-content">
-                          {item.description || 'Chưa có mô tả'}
-                        </div>
+                    <div 
+                      className={`info-box info-location ${expandedItems[`${item.id}-location`] ? 'expanded' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openGoogleMaps(item.event_location);
+                      }}
+                    >
+                      <div className="info-icon-wrapper">
+                        <FaMapMarkerAlt className="info-icon" />
+                      </div>
+                      <div className="info-content">
+                        {item.event_location || 'Chưa cập nhật'}
+                      </div>
+                    </div>
+                    <div 
+                      className={`info-box info-description ${expandedItems[`${item.id}-description`] ? 'expanded' : ''}`}
+                      onClick={() => toggleExpand(item.id, 'description')}
+                    >
+                      <div className="info-icon-wrapper">
+                        <FaInfoCircle className="info-icon" />
+                      </div>
+                      <div className="info-content">
+                        {item.description || 'Chưa có mô tả'}
                       </div>
                     </div>
                   </div>

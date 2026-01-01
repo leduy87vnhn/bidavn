@@ -1,0 +1,93 @@
+.zalo-floating-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #0068FF 0%, #0052CC 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 104, 255, 0.4);
+  transition: all 0.3s ease;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.zalo-floating-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 104, 255, 0.6);
+  width: 140px;
+  border-radius: 30px;
+}
+
+.zalo-icon {
+  width: 35px;
+  height: 35px;
+  transition: all 0.3s ease;
+}
+
+.zalo-floating-button:hover .zalo-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.zalo-text {
+  display: none;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.zalo-floating-button:hover .zalo-text {
+  display: inline;
+}
+
+/* Animation hiệu ứng */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 104, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 104, 255, 0);
+  }
+}
+
+.zalo-floating-button {
+  animation: pulse 2s infinite;
+}
+
+.zalo-floating-button:hover {
+  animation: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .zalo-floating-button {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .zalo-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .zalo-floating-button:hover {
+    width: 50px;
+    border-radius: 50%;
+  }
+
+  .zalo-text {
+    display: none !important;
+  }
+}

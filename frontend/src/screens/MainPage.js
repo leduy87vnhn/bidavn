@@ -7,6 +7,7 @@ import MainPageNewsList from '../components/MainPageNewsList';
 import MainPageVideoSection from '../components/MainPageVideoSection';
 import MainPageHbsfInfo from '../components/MainPageHbsfInfo';
 import MainPageTournamentSummary from '../components/MainPageTournamentSummary';
+import ZaloFloatingButton from '../components/ZaloFloatingButton';
 
 import '../css/mainpage.css';
 
@@ -23,6 +24,7 @@ const MainPage = () => {
       <MainPageNewsList />
       <MainPageVideoSection />
       <MainPageHbsfInfo />
+      <ZaloFloatingButton />
     </div>
   );
 };

@@ -110,6 +110,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/mainpage.css';
+import newsSectionBg from '../assets/images/PC _ Section Tin tức.png';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
@@ -146,7 +147,10 @@ const MainPageNewsList = () => {
   if (!news.length) return null;
 
   return (
-    <div className="mainpage-news-section">
+    <div 
+      className="mainpage-news-section" 
+      style={{ backgroundImage: `url(${newsSectionBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
       <div className="news-section-header">
         <h2>
           <span className="text-white">TIN TỨC</span>

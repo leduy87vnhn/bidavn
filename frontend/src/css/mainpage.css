@@ -301,12 +301,53 @@
 @media (max-width: 992px) {
   .news-cards-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .news-section-header h2 {
+    font-size: 36px;
   }
 }
 
 @media (max-width: 768px) {
   .news-cards-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .mainpage-news-section {
+    padding: 60px 20px 80px;
+  }
+  
+  .news-section-header h2 {
+    font-size: 28px;
+  }
+  
+  .news-card-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainpage-news-section {
+    padding: 40px 15px 60px;
+  }
+  
+  .news-section-header h2 {
+    font-size: 24px;
+  }
+  
+  .news-card-content {
+    padding: 15px;
+  }
+  
+  .news-card-date {
+    font-size: 13px;
+  }
+  
+  .news-card-description {
+    font-size: 14px;
   }
 }
 
@@ -644,52 +685,48 @@
 }
 
 .tournament-details-grid {
-  display: flex;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
   margin: 15px 0 0 0;
-  flex: 1;
-  align-items: stretch;
-}
-
-.tournament-details-left,
-.tournament-details-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-.tournament-details-right .info-box {
-  flex: 1;
 }
 
 .info-box {
   background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
   border: 2px solid #1B5E20;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  min-height: 100px;
 }
 
 .info-box:hover {
   background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
   box-shadow: 0 2px 8px rgba(27, 94, 32, 0.5);
+  transform: translateY(-2px);
 }
 
-.info-label {
+.info-location:hover {
+  background: linear-gradient(135deg, #C62828 0%, #E53935 100%);
+  border-color: #C62828;
+}
+
+.info-icon-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin-bottom: 6px;
-  font-size: 14px;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
-.info-label .info-icon {
-  font-size: 16px;
+.info-icon-wrapper .info-icon {
+  font-size: 24px;
+  color: #FFFFFF;
 }
 
 .info-content {
@@ -698,24 +735,10 @@
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.info-time .info-content {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-
-.info-location .info-content {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-}
-
-.info-description .info-content {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  width: 100%;
 }
 
 .info-box.expanded .info-content {
@@ -855,7 +878,31 @@
   font-size: 12px;
 }
 
-/* Responsive */
+/* ===========================
+   📱 Responsive Design
+   ============================= */
+
+/* Tablet - 992px and below */
+@media (max-width: 992px) {
+  .tournament-details-grid {
+    gap: 10px;
+  }
+  
+  .info-icon-wrapper .info-icon {
+    font-size: 20px;
+  }
+  
+  .info-content {
+    font-size: 13px;
+  }
+  
+  .tournament-register-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile - 768px and below */
 @media (max-width: 768px) {
   .tournament-card.left-image,
   .tournament-card.right-image {
@@ -865,10 +912,76 @@
   .tournament-image {
     flex: 0 0 auto;
     width: 100%;
+    max-height: 200px;
+  }
+  
+  .tournament-image img {
+    height: 200px;
+    object-fit: cover;
   }
   
   .tournament-arrow {
     display: none;
+  }
+  
+  .tournament-details-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .info-box {
+    min-height: 80px;
+    padding: 10px;
+  }
+  
+  .info-icon-wrapper .info-icon {
+    font-size: 22px;
+  }
+  
+  .info-content {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+  
+  .tournament-register-btn {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+  }
+  
+  .tournament-summary-header h2 {
+    font-size: 28px;
+  }
+  
+  .tournament-cards-container {
+    padding: 0 10px;
+  }
+}
+
+/* Small Mobile - 480px and below */
+@media (max-width: 480px) {
+  .tournament-summary-header h2 {
+    font-size: 24px;
+  }
+  
+  .tournament-title {
+    font-size: 18px;
+  }
+  
+  .info-icon-wrapper .info-icon {
+    font-size: 20px;
+  }
+  
+  .info-content {
+    font-size: 12px;
+  }
+  
+  .tournament-register-btn {
+    font-size: 14px;
+    padding: 10px;
   }
 }
 
