@@ -75,6 +75,13 @@
   font-weight: bold;
 }
 
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-event-title {
+    font-size: 1.76rem;
+  }
+}
+
 .tgdp-event-line {
   font-size: 16px;
   margin: 6px 0;
@@ -193,6 +200,13 @@
   font-size: 4.5em !important;
 }
 
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-group-card h1 {
+    font-size: 3.6em !important;
+  }
+}
+
 
 // .tgdp-regulation-btn {
 //   position: center;
@@ -308,6 +322,13 @@
   margin-bottom: 10px;
   line-height: 1.1;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tournament-group-title {
+    font-size: 6.4em !important;
+  }
 }
 
 .tgdp-competitor-grid {
