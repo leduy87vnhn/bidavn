@@ -78,7 +78,7 @@
 /* Mobile responsive - reduce font size by 20% */
 @media (max-width: 768px) {
   .tgdp-event-title {
-    font-size: 1.76rem;
+    font-size: 1.76rem !important;
   }
 }
 
@@ -630,4 +630,97 @@
 .tgdp-btn.primary.register:hover {
   animation: none;
   box-shadow: 0 0 12px rgba(40, 167, 69, 0.7);
+}
+
+/* 🔹 Group info styles */
+.tgdp-group-info {
+  font-size: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #333;
+}
+
+.tgdp-group-info.location {
+  color: #555;
+  margin-top: 4px;
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-group-info {
+    font-size: 1.76em;
+  }
+  
+  .tgdp-group-info.location {
+    font-size: 1.76em;
+  }
+}
+
+/* 🔹 Event title styles in carousel */
+.tgdp-event-carousel-title {
+  font-size: 2.4em;
+  color: #0044cc;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-event-carousel-title {
+    font-size: 1.92em;
+  }
+}
+
+/* 🔹 Event info in carousel */
+.tgdp-event-carousel-info {
+  font-size: 2.0em;
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-event-carousel-info {
+    font-size: 1.6em;
+  }
+}
+
+/* 🔹 Event schedule title */
+.tgdp-schedule-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6em;
+  color: #0044cc;
+  margin-bottom: 15px;
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-schedule-title {
+    font-size: 1.28em;
+  }
+}
+
+/* 🔹 Competitors list title */
+.tgdp-competitors-title {
+  font-family: 'Oswald', sans-serif;
+  text-align: center;
+  font-size: 1.8em;
+  color: #0044cc;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* Mobile responsive - reduce font size by 20% */
+@media (max-width: 768px) {
+  .tgdp-competitors-title {
+    font-size: 1.44em;
+  }
 }

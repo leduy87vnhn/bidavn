@@ -160,16 +160,7 @@ return (
               </h1>
 
               {(group.group_start_date || group.group_end_date) && (
-                <p
-                  style={{
-                    fontSize: '2.2em',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    color: '#333',
-                  }}
-                >
+                <p className="tgdp-group-info">
                   <FaCalendarAlt className="tgdp-icon purple" />
                   {`${formatDate(group.group_start_date)} đến ${formatDate(group.group_end_date)}`}
                 </p>
@@ -177,17 +168,7 @@ return (
 
               {/* 🔹 Địa chỉ của event đầu tiên */}
               {group.tournament_events[0]?.location && (
-                <p
-                  style={{
-                    fontSize: '2.2em',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    color: '#555',
-                    marginTop: '4px',
-                  }}
-                >
+                <p className="tgdp-group-info location">
                   <FaMapMarkerAlt className="tgdp-icon red" />
                   {group.tournament_events[0].location}
                 </p>
@@ -248,21 +229,7 @@ return (
                           alt="Event Background"
                         />
                       )}
-                      <h2
-                        style={{
-                          fontSize: '2.4em',
-                          color: '#0044cc',
-                          fontFamily: "'Oswald', sans-serif",
-                          fontWeight: '700',
-                          letterSpacing: '0.5px',
-                          height: '3em', // giữ cố định 2 dòng
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                        }}
-                      >
+                      <h2 className="tgdp-event-carousel-title">
                         <Link
                           to={`/tournament_events/${ev.id}/detail-for-player`}
                           style={{

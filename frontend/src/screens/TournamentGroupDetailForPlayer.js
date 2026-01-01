@@ -113,16 +113,7 @@ const TournamentGroupDetailForPlayer = () => {
           <h1 className="tournament-group-title">{group.group_name}</h1>
 
           {(group.group_start_date || group.group_end_date) && (
-            <p
-              style={{
-                fontSize: '2.2em',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                color: '#333',
-              }}
-            >
+            <p className="tgdp-group-info">
               <FaCalendarAlt className="tgdp-icon purple" />
               {`${formatDate(group.group_start_date)} đến ${formatDate(
                 group.group_end_date
@@ -131,17 +122,7 @@ const TournamentGroupDetailForPlayer = () => {
           )}
 
           {group.tournament_events[0]?.location && (
-            <p
-              style={{
-                fontSize: '2.2em',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                color: '#555',
-                marginTop: '4px',
-              }}
-            >
+            <p className="tgdp-group-info location">
               <FaMapMarkerAlt className="tgdp-icon red" />
               {group.tournament_events[0].location}
             </p>
@@ -204,21 +185,7 @@ const TournamentGroupDetailForPlayer = () => {
                       alt="Event Background"
                     />
                   )}
-                  <h2
-                    style={{
-                      fontSize: '2.4em',
-                      color: '#0044cc',
-                      fontFamily: "'Oswald', sans-serif",
-                      fontWeight: '700',
-                      letterSpacing: '0.5px',
-                      height: '3em',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                    }}
-                  >
+                  <h2 className="tgdp-event-carousel-title">
                     <Link
                       to={`/tournament_events/${ev.id}/detail-for-player`}
                       style={{
@@ -233,7 +200,7 @@ const TournamentGroupDetailForPlayer = () => {
                   </h2>
 
                   {(ev.start_date || ev.end_date) && (
-                    <p style={{ fontSize: '2.0em' }}>
+                    <p className="tgdp-event-carousel-info">
                       <FaCalendarAlt className="tgdp-icon purple" />{' '}
                       {`${formatDate(ev.start_date)} đến ${formatDate(
                         ev.end_date
@@ -243,7 +210,7 @@ const TournamentGroupDetailForPlayer = () => {
 
                   {/* ✅ Số vận động viên */}
                   {(ev.approved_competitors_count || ev.maximum_competitors) && (
-                    <p style={{ fontSize: '2.0em' }}>
+                    <p className="tgdp-event-carousel-info">
                       <FaUsers className="tgdp-icon blue" />{' '}
                       {ev.maximum_competitors && ev.maximum_competitors > 0
                         ? `${ev.approved_competitors_count || 0}/${ev.maximum_competitors} players`
@@ -252,14 +219,14 @@ const TournamentGroupDetailForPlayer = () => {
                   )}
 
                   {ev.attendance_fee_common && (
-                    <p style={{ fontSize: '2.0em' }}>
+                    <p className="tgdp-event-carousel-info">
                       <FaMoneyBillWave className="tgdp-icon green" /> LỆ PHÍ:{' '}
                       {Number(ev.attendance_fee_common).toLocaleString()} VNĐ
                     </p>
                   )}
 
                   {ev.prize && (
-                    <p style={{ fontSize: '2.0em' }}>
+                    <p className="tgdp-event-carousel-info">
                       <FaGift className="tgdp-icon orange" /> {ev.prize}
                     </p>
                   )}
