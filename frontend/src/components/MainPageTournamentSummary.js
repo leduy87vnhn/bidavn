@@ -108,40 +108,44 @@ const MainPageTournamentSummary = () => {
                     {item.tournament_name}
                   </h3>
                   <div className="tournament-details-grid">
-                    <div 
-                      className={`info-box info-time ${expandedItems[`${item.id}-time`] ? 'expanded' : ''}`}
-                      onClick={() => toggleExpand(item.id, 'time')}
-                    >
-                      <div className="info-icon-wrapper">
-                        <FaCalendarAlt className="info-icon" />
+                    <div className="tournament-details-left">
+                      <div 
+                        className={`info-box info-time ${expandedItems[`${item.id}-time`] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(item.id, 'time')}
+                      >
+                        <div className="info-icon-wrapper">
+                          <FaCalendarAlt className="info-icon" />
+                        </div>
+                        <div className="info-content">
+                          {new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}
+                        </div>
                       </div>
-                      <div className="info-content">
-                        {new Date(item.start_date).toLocaleDateString('vi-VN')} - {new Date(item.end_date).toLocaleDateString('vi-VN')}
+                      <div 
+                        className={`info-box info-location ${expandedItems[`${item.id}-location`] ? 'expanded' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openGoogleMaps(item.event_location);
+                        }}
+                      >
+                        <div className="info-icon-wrapper">
+                          <FaMapMarkerAlt className="info-icon" />
+                        </div>
+                        <div className="info-content">
+                          {item.event_location || 'Chưa cập nhật'}
+                        </div>
                       </div>
                     </div>
-                    <div 
-                      className={`info-box info-location ${expandedItems[`${item.id}-location`] ? 'expanded' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openGoogleMaps(item.event_location);
-                      }}
-                    >
-                      <div className="info-icon-wrapper">
-                        <FaMapMarkerAlt className="info-icon" />
-                      </div>
-                      <div className="info-content">
-                        {item.event_location || 'Chưa cập nhật'}
-                      </div>
-                    </div>
-                    <div 
-                      className={`info-box info-description ${expandedItems[`${item.id}-description`] ? 'expanded' : ''}`}
-                      onClick={() => toggleExpand(item.id, 'description')}
-                    >
-                      <div className="info-icon-wrapper">
-                        <FaInfoCircle className="info-icon" />
-                      </div>
-                      <div className="info-content">
-                        {item.description || 'Chưa có mô tả'}
+                    <div className="tournament-details-right">
+                      <div 
+                        className={`info-box info-description ${expandedItems[`${item.id}-description`] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(item.id, 'description')}
+                      >
+                        <div className="info-icon-wrapper">
+                          <FaInfoCircle className="info-icon" />
+                        </div>
+                        <div className="info-content">
+                          {item.description || 'Chưa có mô tả'}
+                        </div>
                       </div>
                     </div>
                   </div>
