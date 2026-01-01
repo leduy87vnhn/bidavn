@@ -668,24 +668,34 @@
 }
 
 .tournament-title {
-  font-size: 21.6px;
+  font-size: 32px;
   font-weight: 900;
-  font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
-  color: #FF8800;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  font-style: italic;
+  color: #00D4FF;
   text-transform: uppercase;
   margin: 0 0 15px 0;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   max-width: 80%;
   word-wrap: break-word;
   line-height: 1.3;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  -webkit-text-stroke: 3px white;
+  text-stroke: 3px white;
+  paint-order: stroke fill;
+  text-shadow: 
+    4px 4px 0px rgba(0, 0, 0, 0.3),
+    6px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
 .tournament-title:hover {
-  color: #FFAA33;
+  color: #00F0FF;
   text-decoration: none;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
+  text-shadow: 
+    4px 4px 0px rgba(0, 0, 0, 0.4),
+    6px 6px 10px rgba(0, 0, 0, 0.5);
 }
 
 .tournament-details-grid {
