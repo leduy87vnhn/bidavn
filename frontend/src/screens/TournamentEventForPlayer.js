@@ -198,7 +198,14 @@ const TournamentEventForPlayer = () => {
             textAlign: "center",
             }}
         >
-            <h3 className="tgdp-schedule-title">
+            <h3
+            style={{
+                fontFamily: "'Oswald', sans-serif",
+                fontSize: "1.6em",
+                color: "#0044cc",
+                marginBottom: "15px",
+            }}
+            >
             Lịch Thi Đấu
             </h3>
 
@@ -228,7 +235,17 @@ const TournamentEventForPlayer = () => {
         )}
 
       {/* 🏆 Label Danh sách VĐV */}
-      <h2 className="tgdp-competitors-title">
+      <h2
+        style={{
+          fontFamily: "'Oswald', sans-serif",
+          textAlign: "center",
+          fontSize: "1.8em",
+          color: "#0044cc",
+          marginTop: "40px",
+          marginBottom: "20px",
+          letterSpacing: "1px",
+        }}
+      >
         Danh sách vận động viên
       </h2>
 
