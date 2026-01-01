@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 .main-container {
   font-family: Arial, sans-serif;
 }
@@ -666,8 +668,9 @@
 }
 
 .tournament-title {
-  font-size: 24px;
+  font-size: 21.6px;
   font-weight: 900;
+  font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
   color: #FF8800;
   text-transform: uppercase;
   margin: 0 0 15px 0;
@@ -676,7 +679,7 @@
   max-width: 80%;
   word-wrap: break-word;
   line-height: 1.3;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .tournament-title:hover {
