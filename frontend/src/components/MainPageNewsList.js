@@ -110,7 +110,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/mainpage.css';
-import newsSectionBg from '../assets/images/PC _ Section Tin tức.png';
+import newsSectionBg from '../assets/images/news-section-bg.png';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
