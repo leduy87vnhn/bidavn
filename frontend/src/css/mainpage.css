@@ -700,7 +700,7 @@
   gap: 12px;
   margin: 15px 0 0 0;
   flex: 1;
-  min-height: 200px;
+  min-height: 100px;
   width: 100%;
   overflow: hidden;
 }
@@ -731,7 +731,7 @@
   background: #3E4D65;
   border: 2px solid #2a3a4f;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 4px 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -742,6 +742,8 @@
   text-align: left;
   min-width: 0;
   overflow: hidden;
+  height: auto;
+  align-items: center;
 }
 
 .info-box:hover {
@@ -763,7 +765,7 @@
 }
 
 .info-icon-wrapper .info-icon {
-  font-size: 24px;
+  font-size: 16px;
   color: #FFFFFF;
 }
 
