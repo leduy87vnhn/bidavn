@@ -199,7 +199,7 @@
    📰 News Section (MainPageNewsList)
    ============================= */
 .mainpage-news-section {
-  background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
+  background: linear-gradient(180deg, #5184af 0%, #6a9dc9 20%, #83b6e0 40%, #9dcff5 60%, #b6e0ff 80%, #d0ebff 100%);
   padding: 80px 40px 100px;
   position: relative;
   margin: 0;
@@ -430,7 +430,7 @@
 }
 
 .hbsf-info-container {
-  background: linear-gradient(180deg, #d0ebff 0%, #e3f3ff 30%, #f0f8ff 70%, #f8fcff 100%);
+  background: linear-gradient(180deg, #d0ebff 0%, #ddf1ff 30%, #e8f6ff 70%, #eff9ff 100%);
   padding: 20px;
   font-size: 14px;
   color: #1a3a52;
