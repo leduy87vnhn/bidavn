@@ -685,6 +685,12 @@
   letter-spacing: 3px;
   text-shadow: 
     2px 2px 4px rgba(0, 0, 0, 0.5);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: calc(27.2px * 1.3 * 2);
 }
 
 .tournament-title:hover {
@@ -709,12 +715,14 @@
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+  max-width: 50%;
 }
 
 .tournament-details-right {
   flex: 1;
   display: flex;
   min-width: 0;
+  max-width: 50%;
 }
 
 .tournament-details-left .info-box {
