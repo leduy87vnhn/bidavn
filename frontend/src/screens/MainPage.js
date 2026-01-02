@@ -23,6 +23,7 @@ const MainPage = () => {
       <MainPageTournamentSummary />
       <MainPageNewsList />
       <MainPageVideoSection />
+      <MainPageScrollingText />
       <MainPageHbsfInfo />
       <ZaloFloatingButton />
     </div>
