@@ -430,10 +430,10 @@
 }
 
 .hbsf-info-container {
-  background: linear-gradient(180deg, #1a3a52 0%, #122738 30%, #0a1520 70%, #050f1a 100%);
+  background: linear-gradient(180deg, #d0ebff 0%, #e3f3ff 30%, #f0f8ff 70%, #f8fcff 100%);
   padding: 20px;
   font-size: 14px;
-  color: #ffffff;
+  color: #1a3a52;
   border-top: none;
   text-align: left;
   line-height: 1.6;
@@ -447,12 +447,12 @@
   }
 
   a {
-    color: #87ceeb;
+    color: #0a5a8a;
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
-      color: #6bb3e0;
+      color: #083d5c;
     }
   }
 }
@@ -512,7 +512,7 @@
 }
 
 .mainpage-tournament-summary {
-  background: linear-gradient(180deg, #1a3a52 0%, #2d5f8d 20%, #4a8ec2 50%, #6bb3e0 80%, #87ceeb 100%);
+  background: linear-gradient(180deg, #0a1520 0%, #152a3d 20%, #1f3d58 40%, #2a5273 60%, #3d6b91 80%, #5184af 100%);
   padding: 40px 20px;
   font-family: Arial, sans-serif;
   position: relative;
