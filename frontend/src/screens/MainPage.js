@@ -8,7 +8,7 @@ import MainPageVideoSection from '../components/MainPageVideoSection';
 import MainPageHbsfInfo from '../components/MainPageHbsfInfo';
 import MainPageTournamentSummary from '../components/MainPageTournamentSummary';
 import ZaloFloatingButton from '../components/ZaloFloatingButton';
-import giaiTheThaoImage from '../assets/images/giaithethao1.png';
+import giaiTheThaoImage from '../assets/images/giaithethao1.PNG';
 
 import '../css/mainpage.css';
 
