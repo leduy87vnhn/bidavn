@@ -730,7 +730,7 @@
 }
 
 .tournament-details-right .info-box {
-  /* flex: 1 removed to allow natural height */
+  width: 100%;
 }
 
 .info-box {
