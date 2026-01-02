@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaCalendarAlt, FaMapMarkerAlt, FaInfoCircle } from 'react-icons/fa';
 import '../css/mainpage.css';
-import giaiTheThaoImage from '../assets/images/giaithethao1.png';
+import giaiTheThaoImage from '../assets/images/giaithethao1.PNG';
 
 const MainPageTournamentSummary = () => {
   const [groups, setGroups] = useState([]);
