@@ -72,9 +72,6 @@ const MainPageTournamentSummary = () => {
 
   return (
     <div className="mainpage-tournament-summary">
-      <div className="tournament-summary-header">
-        <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
-      </div>
       <div className="tournament-cards-container">
         {groups
           .slice()

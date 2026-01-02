@@ -8,6 +8,7 @@ import MainPageVideoSection from '../components/MainPageVideoSection';
 import MainPageHbsfInfo from '../components/MainPageHbsfInfo';
 import MainPageTournamentSummary from '../components/MainPageTournamentSummary';
 import ZaloFloatingButton from '../components/ZaloFloatingButton';
+import giaiTheThaoImage from '../assets/images/giaithethao1.png';
 
 import '../css/mainpage.css';
 
@@ -20,6 +21,9 @@ const MainPage = () => {
       <MainPageEventSlider />
       <MainPageScrollingText />
       <div style={{ marginTop: '20px' }}></div>
+      <div className="tournament-summary-header">
+        <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
+      </div>
       <MainPageTournamentSummary />
       <MainPageScrollingText />
       <MainPageNewsList />
