@@ -728,8 +728,8 @@
 }
 
 .info-box {
-  background: #3E4D65;
-  border: 2px solid #2a3a4f;
+  background: #556277;
+  border: 2px solid #46556a;
   border-radius: 8px;
   padding: 4px 8px;
   cursor: pointer;
@@ -743,12 +743,11 @@
   min-width: 0;
   overflow: hidden;
   height: auto;
-  align-items: center;
 }
 
 .info-box:hover {
-  background: #4a5d7a;
-  box-shadow: 0 2px 8px rgba(62, 77, 101, 0.5);
+  background: #405164;
+  box-shadow: 0 2px 8px rgba(64, 81, 100, 0.45);
   transform: translateY(-2px);
 }
 
