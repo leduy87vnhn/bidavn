@@ -430,14 +430,14 @@
 }
 
 .hbsf-info-container {
-  background-color: #ffffff;
+  background: linear-gradient(180deg, #1a3a52 0%, #0f2537 50%, #050f1a 100%);
   padding: 20px;
   font-size: 14px;
-  color: #000;
-  border-top: 1px solid #ccc;
+  color: #ffffff;
+  border-top: none;
   text-align: left;
   line-height: 1.6;
-  margin-top: 40px;
+  margin-top: 0;
 
   strong {
     display: block;
@@ -447,11 +447,12 @@
   }
 
   a {
-    color: #000;
+    color: #87ceeb;
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
+      color: #6bb3e0;
     }
   }
 }
