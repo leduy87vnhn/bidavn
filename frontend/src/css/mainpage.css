@@ -199,7 +199,7 @@
    📰 News Section (MainPageNewsList)
    ============================= */
 .mainpage-news-section {
-  background: linear-gradient(180deg, #5184af 0%, #6a9dc9 20%, #83b6e0 40%, #9dcff5 60%, #b6e0ff 80%, #d0ebff 100%);
+  background: linear-gradient(180deg, #5ab3e8 0%, #7ac5f0 20%, #99d6f6 40%, #b8e6fb 60%, #d0f0ff 80%, #e5f7ff 100%);
   padding: 80px 40px 100px;
   position: relative;
   margin: 0;
@@ -430,7 +430,7 @@
 }
 
 .hbsf-info-container {
-  background: linear-gradient(180deg, #d0ebff 0%, #ddf1ff 30%, #e8f6ff 70%, #eff9ff 100%);
+  background: linear-gradient(180deg, #e5f7ff 0%, #f0faff 30%, #f7fcff 70%, #ffffff 100%);
   padding: 20px;
   font-size: 14px;
   color: #1a3a52;
@@ -512,7 +512,7 @@
 }
 
 .mainpage-tournament-summary {
-  background: linear-gradient(180deg, #0a1520 0%, #152a3d 20%, #1f3d58 40%, #2a5273 60%, #3d6b91 80%, #5184af 100%);
+  background: linear-gradient(180deg, #001f3f 0%, #003d6b 15%, #005a96 30%, #0077c2 50%, #3399dd 70%, #5ab3e8 100%);
   padding: 0;
   font-family: Arial, sans-serif;
   position: relative;
