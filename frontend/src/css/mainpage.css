@@ -661,7 +661,7 @@
   padding: 20px 30px;
   border: 3px solid #0052CC;
   border-radius: 8px;
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  background: #102341;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -673,7 +673,7 @@
   font-weight: 900;
   font-family: 'Impact', 'Arial Black', sans-serif;
   font-style: italic;
-  color: #00D4FF;
+  color: #ffffff;
   text-transform: uppercase;
   margin: 0 0 15px 0;
   cursor: pointer;
@@ -682,21 +682,16 @@
   word-wrap: break-word;
   line-height: 1.3;
   letter-spacing: 3px;
-  -webkit-text-stroke: 3px white;
-  text-stroke: 3px white;
-  paint-order: stroke fill;
   text-shadow: 
-    4px 4px 0px rgba(0, 0, 0, 0.3),
-    6px 6px 8px rgba(0, 0, 0, 0.4);
+    2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .tournament-title:hover {
-  color: #00F0FF;
+  color: #e0e0e0;
   text-decoration: none;
   transform: translateY(-2px) scale(1.02);
   text-shadow: 
-    4px 4px 0px rgba(0, 0, 0, 0.4),
-    6px 6px 10px rgba(0, 0, 0, 0.5);
+    2px 2px 6px rgba(0, 0, 0, 0.7);
 }
 
 .tournament-details-grid {
@@ -728,35 +723,36 @@
 }
 
 .info-box {
-  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
-  border: 2px solid #1B5E20;
+  background: #3E4D65;
+  border: 2px solid #2a3a4f;
   border-radius: 8px;
   padding: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  text-align: center;
+  gap: 10px;
+  text-align: left;
 }
 
 .info-box:hover {
-  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-  box-shadow: 0 2px 8px rgba(27, 94, 32, 0.5);
+  background: #4a5d7a;
+  box-shadow: 0 2px 8px rgba(62, 77, 101, 0.5);
   transform: translateY(-2px);
 }
 
 .info-location:hover {
-  background: linear-gradient(135deg, #C62828 0%, #E53935 100%);
-  border-color: #C62828;
+  background: #5a3d65;
+  border-color: #4a2d55;
 }
 
 .info-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .info-icon-wrapper .info-icon {
@@ -766,23 +762,23 @@
 
 .info-content {
   color: #E8F5E9;
-  font-size: 14px;
+  font-size: 16.8px;
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  width: 100%;
+  white-space: nowrap;
   flex: 1;
 }
 
 .info-description .info-content {
-  -webkit-line-clamp: 8;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .info-box.expanded .info-content {
-  display: block;
+  white-space: normal;
   -webkit-line-clamp: unset;
   overflow: visible;
 }
