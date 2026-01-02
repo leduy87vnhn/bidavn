@@ -523,6 +523,17 @@
   margin-bottom: 40px;
   position: relative;
   padding: 30px 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tournament-header-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .tournament-summary-header h2 {

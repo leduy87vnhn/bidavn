@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaCalendarAlt, FaMapMarkerAlt, FaInfoCircle } from 'react-icons/fa';
 import '../css/mainpage.css';
+import giaiTheThaoImage from '../assets/images/giaithethao1.png';
 
 const MainPageTournamentSummary = () => {
   const [groups, setGroups] = useState([]);
@@ -72,11 +73,7 @@ const MainPageTournamentSummary = () => {
   return (
     <div className="mainpage-tournament-summary">
       <div className="tournament-summary-header">
-        <h2>
-          <span className="text-orange">GIẢI</span>
-          {' '}
-          <span className="text-blue">THỂ THAO</span>
-        </h2>
+        <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
       </div>
       <div className="tournament-cards-container">
         {groups
