@@ -21,6 +21,7 @@ const MainPage = () => {
       <MainPageScrollingText />
       <div style={{ marginTop: '20px' }}></div>
       <MainPageTournamentSummary />
+      <MainPageScrollingText />
       <MainPageNewsList />
       <MainPageVideoSection />
       <MainPageScrollingText />
