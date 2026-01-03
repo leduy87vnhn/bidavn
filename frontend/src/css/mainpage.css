@@ -217,19 +217,48 @@
 }
 
 .news-section-header h2 {
-  font-size: 42px;
+  font-size: 52px;
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  font-style: italic;
 }
 
 .news-section-header .text-white {
   color: #ffffff;
+  font-style: italic;
 }
 
 .news-section-header .text-yellow {
   color: #FFD700;
+  font-style: italic;
+}
+
+.news-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 15px;
+}
+
+.subtitle-line {
+  height: 3px;
+  width: 80px;
+  background: linear-gradient(to right, transparent, #ffffff);
+}
+
+.subtitle-line:last-child {
+  background: linear-gradient(to left, transparent, #FFD700);
+}
+
+.subtitle-text {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .news-cards-grid {

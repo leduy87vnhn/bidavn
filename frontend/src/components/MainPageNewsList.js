@@ -150,9 +150,14 @@ const MainPageNewsList = () => {
       <div className="news-section-header">
         <h2>
           <span className="text-white">TIN TỨC</span>
-          {' - '}
+          <span className="text-white"> & </span>
           <span className="text-yellow">SỰ KIỆN</span>
         </h2>
+        <div className="news-subtitle">
+          <span className="subtitle-line"></span>
+          <span className="subtitle-text">NEWS • EVENTS</span>
+          <span className="subtitle-line"></span>
+        </div>
       </div>
       <div className="news-cards-grid">
         {news.map((item, idx) => (
