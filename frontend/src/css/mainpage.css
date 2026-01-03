@@ -199,7 +199,7 @@
    📰 News Section (MainPageNewsList)
    ============================= */
 .mainpage-news-section {
-  background: linear-gradient(180deg, #5ab3e8 0%, #7ac5f0 20%, #99d6f6 40%, #b8e6fb 60%, #d0f0ff 80%, #e5f7ff 100%);
+  background: linear-gradient(180deg, #399EFC 0%, #7ac5f0 20%, #99d6f6 40%, #b8e6fb 60%, #d0f0ff 80%, #e5f7ff 100%);
   padding: 0 0 100px;
   position: relative;
   margin: 0;
@@ -558,7 +558,7 @@
 }
 
 .mainpage-tournament-summary {
-  background: linear-gradient(180deg, #102341 0%, #1a3d5f 15%, #24567d 30%, #2e6f9b 50%, #4a8ec2 70%, #5ab3e8 100%) !important;
+  background: linear-gradient(180deg, #091F40 0%, #1a3d5f 15%, #24567d 30%, #2e6f9b 50%, #4a8ec2 70%, #5ab3e8 100%) !important;
   padding: 0;
   font-family: Arial, sans-serif;
   position: relative;

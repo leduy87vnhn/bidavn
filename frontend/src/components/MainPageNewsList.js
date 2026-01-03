@@ -107,10 +107,10 @@
 
 // export default MainPageNewsList;
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'=
 import axios from 'axios';
 import '../css/mainpage.css';
-import tinTucSuKienImage from '../assets/images/tintucsukien.png';
+import tinTucSuKienImage from '../assets/images/tintucsukien5.png';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
