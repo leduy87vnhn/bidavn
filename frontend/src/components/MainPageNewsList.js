@@ -110,7 +110,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/mainpage.css';
-import tinTucSuKienImage from '../assets/images/tintucsukien.PNG';
+import tinTucSuKienImage from '../assets/images/tintucsukien.png';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
