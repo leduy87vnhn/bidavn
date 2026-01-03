@@ -411,14 +411,11 @@
   display: flex;
   flex-wrap: wrap;
   padding: 20px;
-  background-color: #1a2b4c;
-  max-width: 900px;
-  margin: 0 auto;
-  border-radius: 12px;
+  background-color: #1a2b4c; 
 }
 
 .news-item {
-  width: 40%;
+  width: 50%;
   padding: 12px;
   box-sizing: border-box;
   cursor: pointer;
