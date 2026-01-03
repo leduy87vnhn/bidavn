@@ -199,7 +199,7 @@
    📰 News Section (MainPageNewsList)
    ============================= */
 .mainpage-news-section {
-  background: linear-gradient(180deg, #41A9FF 0%, #7ac5f0 20%, #99d6f6 40%, #b8e6fb 60%, #d0f0ff 80%, #e5f7ff 100%);
+  background: linear-gradient(180deg, #0289f8 0%, #2faef8 20%, #59c0f8 40%, #8fdafd 60%, #b4e5fc 80%, #e5f7ff 100%);
   padding: 0 0 100px;
   position: relative;
   margin: 0;
