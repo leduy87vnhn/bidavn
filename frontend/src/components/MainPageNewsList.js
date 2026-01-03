@@ -110,6 +110,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/mainpage.css';
+import tinTucSuKienImage from '../assets/images/tintucsukien.PNG';
 
 const MainPageNewsList = () => {
   const [news, setNews] = useState([]);
@@ -147,6 +148,9 @@ const MainPageNewsList = () => {
 
   return (
     <div className="mainpage-news-section">
+      <div className="news-header-image">
+        <img src={tinTucSuKienImage} alt="Tin Tức & Sự Kiện" />
+      </div>
       <div className="news-section-header">
         <h2>
           <span className="text-white">TIN TỨC</span>

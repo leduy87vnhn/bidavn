@@ -200,9 +200,24 @@
    ============================= */
 .mainpage-news-section {
   background: linear-gradient(180deg, #5ab3e8 0%, #7ac5f0 20%, #99d6f6 40%, #b8e6fb 60%, #d0f0ff 80%, #e5f7ff 100%);
-  padding: 80px 40px 100px;
+  padding: 0 0 100px;
   position: relative;
   margin: 0;
+}
+
+/* Header Image Section */
+.news-header-image {
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  line-height: 0;
+}
+
+.news-header-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
 
 /* Remove old pseudo elements */
@@ -214,6 +229,7 @@
 .news-section-header {
   text-align: center;
   margin-bottom: 50px;
+  padding-top: 60px;
 }
 
 .news-section-header h2 {
@@ -267,6 +283,7 @@
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 40px;
 }
 
 .news-card {
