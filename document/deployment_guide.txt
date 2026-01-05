@@ -58,6 +58,18 @@ sudo pm2 logs backend-server
 sudo pm2 logs billard-frontend
 sudo pm2 flush
 
+# Nếu gặp lỗi "giaiTheThaoImage is not defined" khi build hoặc chạy frontend:
+# 1. Đảm bảo đã có dòng import ở đầu file sử dụng:
+#    import giaiTheThaoImage from '../assets/images/giaithethao4.PNG';
+# 2. Kiểm tra lại đường dẫn và tên file ảnh đúng chính tả.
+# 3. Nếu vừa thêm ảnh, đổi tên hoặc sửa import, cần build lại:
+#    cd frontend
+#    npm run build
+# 4. Nếu vẫn lỗi, thử xóa thư mục build rồi build lại:
+#    rm -rf build
+#    npm run build
+# 5. Khởi động lại frontend serve/pm2 nếu cần.
+
 Merge code
 git switch main
 git fetch origin
