@@ -6,6 +6,8 @@ import '../css/tournamentGroupDetailForPlayer.scss';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
 
+import giaiTheThaoImage from '../assets/images/giaithethao4.PNG';
+
 const TournamentListForPlayer = () => {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
