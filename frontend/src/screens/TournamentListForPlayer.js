@@ -124,27 +124,30 @@ const TournamentListForPlayer = () => {
     });
   };
 
+
+  // Year-based pagination state
+  const years = Array.from(new Set(groups.map(g => g.group_start_date ? new Date(g.group_start_date).getFullYear() : null).filter(Boolean))).sort((a, b) => b - a);
+  const [selectedYear, setSelectedYear] = useState(years[0] || null);
+  // Sync selectedYear if years change
+  useEffect(() => {
+    if (years.length > 0 && !years.includes(selectedYear)) {
+      setSelectedYear(years[0]);
+    }
+  }, [years]);
+
   if (loading) return <p className="tgdp-loading">Đang tải danh sách...</p>;
 
-return (
-  <div className="tgdp-wrapper">
-    <MainPageHeader />
-    <MainPageMenuBar />
-    <div className="tournament-summary-header">
-      <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
-    </div>
-    {/* Year-based pagination */}
-    {(() => {
-      if (groups.length === 0) {
-        return <p className="tgdp-error">Không có giải đấu nào.</p>;
-      }
-      // Extract all years from group_start_date
-      const years = Array.from(new Set(groups.map(g => g.group_start_date ? new Date(g.group_start_date).getFullYear() : null).filter(Boolean))).sort((a, b) => b - a);
-      const [selectedYear, setSelectedYear] = React.useState(years[0]);
-      // Filter groups by selected year
-      const filteredGroups = groups.filter(g => g.group_start_date && new Date(g.group_start_date).getFullYear() === selectedYear);
-
-      return (
+  return (
+    <div className="tgdp-wrapper">
+      <MainPageHeader />
+      <MainPageMenuBar />
+      <div className="tournament-summary-header">
+        <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
+      </div>
+      {/* Year-based pagination */}
+      {groups.length === 0 ? (
+        <p className="tgdp-error">Không có giải đấu nào.</p>
+      ) : (
         <div>
           <div className="tournament-year-pagination" style={{ display: 'flex', justifyContent: 'center', gap: 12, margin: '24px 0' }}>
             {years.map(year => (
@@ -167,20 +170,19 @@ return (
               </button>
             ))}
           </div>
-          {filteredGroups.length === 0 ? (
+          {groups.filter(g => g.group_start_date && new Date(g.group_start_date).getFullYear() === selectedYear).length === 0 ? (
             <p className="tgdp-error">Không có giải đấu nào cho năm {selectedYear}.</p>
           ) : (
-            filteredGroups.map((group) => (
+            groups.filter(g => g.group_start_date && new Date(g.group_start_date).getFullYear() === selectedYear).map((group) => (
               <div key={group.group_id} className="tgdp-group-card">
                 {/* ...existing code... */}
               </div>
             ))
           )}
         </div>
-      );
-    })()}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default TournamentListForPlayer;
