@@ -19,7 +19,7 @@ const TournamentListForPlayer = () => {
     const fetchGroups = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`
+          `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events?status=all`
         );
 
         // Không lọc display, lấy toàn bộ group từ API
@@ -135,8 +135,8 @@ const TournamentListForPlayer = () => {
 
   return (
     <div className="tgdp-wrapper">
-      <MainPageHeader />
       <MainPageMenuBar />
+      <MainPageHeader />
       <div className="tournament-summary-header">
         <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
       </div>
