@@ -22,12 +22,8 @@ const TournamentListForPlayer = () => {
           `${process.env.REACT_APP_API_BASE_URL}/api/tournament_events/groups-with-events`
         );
 
-        // 🔹 Lọc chỉ các group có display = true (hoặc = 'yes')
-        const visibleGroups = res.data.filter(
-        (g) => g.display === true || g.display === 'yes'
-        );
-
-        const sortedGroups = [...visibleGroups].sort((a, b) => {
+        // Không lọc display, lấy toàn bộ group từ API
+        const sortedGroups = [...res.data].sort((a, b) => {
         const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
         const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
         return dateB - dateA;
