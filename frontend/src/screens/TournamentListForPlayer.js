@@ -23,10 +23,11 @@ const TournamentListForPlayer = () => {
         );
 
         // Không lọc display, lấy toàn bộ group từ API
+        // Sắp xếp group theo group_start_date tăng dần (sớm lên đầu)
         const sortedGroups = [...res.data].sort((a, b) => {
-        const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(0);
-        const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(0);
-        return dateB - dateA;
+          const dateA = a.group_start_date ? new Date(a.group_start_date) : new Date(8640000000000000); // max date nếu null
+          const dateB = b.group_start_date ? new Date(b.group_start_date) : new Date(8640000000000000);
+          return dateA - dateB;
         });
 
         // Sắp xếp event trong mỗi group: start_date DESC (muộn → sớm)
@@ -121,61 +122,25 @@ const TournamentListForPlayer = () => {
   };
 
 
-  // Year-based pagination state
-  const years = Array.from(new Set(groups.map(g => g.group_start_date ? new Date(g.group_start_date).getFullYear() : null).filter(Boolean))).sort((a, b) => b - a);
-  const [selectedYear, setSelectedYear] = useState(years[0] || null);
-  // Sync selectedYear if years change
-  useEffect(() => {
-    if (years.length > 0 && !years.includes(selectedYear)) {
-      setSelectedYear(years[0]);
-    }
-  }, [years]);
+
 
   if (loading) return <p className="tgdp-loading">Đang tải danh sách...</p>;
 
   return (
     <div className="tgdp-wrapper">
-      <MainPageMenuBar />
       <MainPageHeader />
+      <MainPageMenuBar />
       <div className="tournament-summary-header">
         <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
       </div>
-      {/* Year-based pagination */}
       {groups.length === 0 ? (
         <p className="tgdp-error">Không có giải đấu nào.</p>
       ) : (
-        <div>
-          <div className="tournament-year-pagination" style={{ display: 'flex', justifyContent: 'center', gap: 12, margin: '24px 0' }}>
-            {years.map(year => (
-              <button
-                key={year}
-                className={year === selectedYear ? 'year-btn selected' : 'year-btn'}
-                style={{
-                  padding: '8px 20px',
-                  fontSize: '1.2em',
-                  borderRadius: 8,
-                  border: year === selectedYear ? '2px solid #0044cc' : '1px solid #ccc',
-                  background: year === selectedYear ? '#e8fbe8' : '#fff',
-                  color: year === selectedYear ? '#0044cc' : '#333',
-                  cursor: 'pointer',
-                  fontWeight: year === selectedYear ? 700 : 400,
-                }}
-                onClick={() => setSelectedYear(year)}
-              >
-                {year}
-              </button>
-            ))}
+        groups.map((group) => (
+          <div key={group.group_id} className="tgdp-group-card">
+            {/* ...existing code... */}
           </div>
-          {groups.filter(g => g.group_start_date && new Date(g.group_start_date).getFullYear() === selectedYear).length === 0 ? (
-            <p className="tgdp-error">Không có giải đấu nào cho năm {selectedYear}.</p>
-          ) : (
-            groups.filter(g => g.group_start_date && new Date(g.group_start_date).getFullYear() === selectedYear).map((group) => (
-              <div key={group.group_id} className="tgdp-group-card">
-                {/* ...existing code... */}
-              </div>
-            ))
-          )}
-        </div>
+        ))
       )}
     </div>
   );
