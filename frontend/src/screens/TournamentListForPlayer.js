@@ -130,6 +130,7 @@ const TournamentListForPlayer = () => {
     <div className="tgdp-wrapper">
       <MainPageMenuBar />
       <MainPageHeader />
+      <MainPageScrollingText />
       <div className="tournament-summary-header">
         <img src={giaiTheThaoImage} alt="Giải Thể Thao" className="tournament-header-image" />
       </div>

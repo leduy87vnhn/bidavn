@@ -77,8 +77,9 @@ const TournamentGroupDetailForPlayer = () => {
 
   return (
     <div className="tgdp-wrapper">
-      <MainPageHeader />
       <MainPageMenuBar />
+      <MainPageHeader />
+      <MainPageScrollingText />
 
       {/* Nút quay lại */}
       <div style={{ padding: '20px 40px' }}>
