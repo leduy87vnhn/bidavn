@@ -5,6 +5,7 @@ import { FaMapMarkerAlt, FaUsers, FaMoneyBillWave, FaGift, FaCalendarAlt, FaChev
 import '../css/tournamentGroupDetailForPlayer.scss';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageScrollingText from '../components/MainPageScrollingText';
 
 import giaiTheThaoImage from '../assets/images/giaithethao4.PNG';
 

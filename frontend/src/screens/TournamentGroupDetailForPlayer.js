@@ -14,6 +14,7 @@ import {
 import '../css/tournamentGroupDetailForPlayer.scss';
 import MainPageHeader from '../components/MainPageHeader';
 import MainPageMenuBar from '../components/MainPageMenuBar';
+import MainPageScrollingText from '../components/MainPageScrollingText';
 
 const TournamentGroupDetailForPlayer = () => {
   const { groupId } = useParams();
